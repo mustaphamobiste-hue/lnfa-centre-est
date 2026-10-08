@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ligue 2 Amateur - Groupe Centre Est 2026-2027</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background: #f4f6f9; color: #222; padding: 10px; }
+  h1 { text-align: center; color: #1a4d2e; margin-bottom: 12px; font-size: 1.1em; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+  .tab { flex: 1; padding: 12px; text-align: center; border-radius: 8px 8px 0 0; background: #ddd; cursor: pointer; font-weight: bold; font-size: 14px; }
+  .tab.active { background: #1a4d2e; color: white; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  .toolbar { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 12px; }
+  button, select, input { padding: 8px 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 13px; }
+  button { background: #1a4d2e; color: white; cursor: pointer; border: none; }
+  button:hover { background: #2d7a4a; }
+  .btn-small { padding: 5px 8px; font-size: 12px; margin: 1px; }
+  .btn-edit { background: #2980b9; }
+  .btn-del { background: #c0392b; }
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; background: white; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+  table { width: 100%; border-collapse: collapse; min-width: 800px; }
+  th, td { padding: 8px; text-align: left; border-bottom: 1px solid #eee; font-size: 12px; white-space: nowrap; }
+  th { background: #1a4d2e; color: white; position: sticky; top: 0; }
+  tr:hover { background: #f0f8f4; }
+  .score { font-weight: bold; color: #1a4d2e; }
+  .obs { color: #c0392b; font-style: italic; }
+  .obs-empty { color: #999; }
+  .empty { text-align: center; padding: 30px; color: #888; }
+  .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 100; padding: 10px; }
+  .modal.active { display: flex; }
+  .modal-content { background: white; padding: 15px; border-radius: 10px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
+  .modal-content h3 { margin-bottom: 10px; color: #1a4d2e; font-size: 1em; }
+  .modal-content label { display: block; margin-top: 8px; font-size: 12px; color: #555; }
+  .modal-content input, .modal-content select { width: 100%; margin-top: 3px; padding: 8px; }
+  .modal-actions { margin-top: 15px; display: flex; gap: 8px; justify-content: flex-end; }
+  .modal-actions button { padding: 8px 14px; font-size: 13px; }
+  .btn-cancel { background: #888; }
+  .count { text-align: center; font-size: 12px; color: #666; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<h1>🏆 Ligue 2 Amateur – Groupe Centre Est 2026-2027</h1>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('championnat', this)">🏆 Championnat</div>
+  <div class="tab" onclick="switchTab('coupe', this)">🏅 Coupe d'Algérie</div>
+</div>
+
+<!-- ============ ONGLET CHAMPIONNAT ============ -->
+<div id="tab-championnat" class="tab-content active">
+  <div class="toolbar">
+    <button onclick="openModal('championnat')">➕ Ajouter</button>
+    <button onclick="exportData('championnat')">💾 Exporter</button>
+    <button onclick="document.getElementById('importChampionnat').click()">📂 Importer</button>
+    <input type="file" id="importChampionnat" accept=".json" style="display:none" onchange="importData(event,'championnat')">
+  </div>
+  <div class="toolbar">
+    <select id="filterJournee" onchange="render('championnat')">
+      <option value="">Toutes les journées</option>
+    </select>
+    <select id="filterEquipe" onchange="render('championnat')">
+      <option value="">Toutes les équipes</option>
+    </select>
+  </div>
+  <div class="count" id="countChampionnat"></div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>J</th><th>Date</th><th>Heure</th><th>Domicile</th><th>Score</th>
+          <th>Extérieur</th><th>Stade</th><th>Obs.</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="tbody-championnat"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ============ ONGLET COUPE ============ -->
+<div id="tab-coupe" class="tab-content">
+  <div class="toolbar">
+    <button onclick="openModal('coupe')">➕ Ajouter un match MOB</button>
+    <button onclick="exportData('coupe')">💾 Exporter</button>
+    <button onclick="document.getElementById('importCoupe').click()">📂 Importer</button>
+    <input type="file" id="importCoupe" accept=".json" style="display:none" onchange="importData(event,'coupe')">
+  </div>
+  <div class="count" id="countCoupe"></div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Tour</th><th>Date</th><th>Heure</th><th>Domicile</th><th>Score</th>
+          <th>Extérieur</th><th>Stade</th><th>Obs.</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="tbody-coupe"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ============ MODAL ============ -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <h3 id="modalTitle">Ajouter</h3>
+    <input type="hidden" id="editIndex">
+    <input type="hidden" id="editSection">
+    <label id="lblJournee">Journée <input type="number" id="fJournee" min="1" max="30"></label>
+    <label>Date <input type="date" id="fDate"></label>
+    <label>Heure <input type="time" id="fHeure"></label>
+    <label>Équipe domicile <input type="text" id="fDom"></label>
+    <label>Équipe extérieur <input type="text" id="fExt"></label>
+    <label>Score domicile <input type="number" id="fSd" min="0"></label>
+    <label>Score extérieur <input type="number" id="fSe" min="0"></label>
+    <label>Stade <input type="text" id="fStade"></label>
+    <label>Observations <input type="text" id="fObs" placeholder="Report, Huis-Clos..."></label>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+      <button onclick="saveMatch()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============ DONNÉES INITIALES ============
+const EQUIPES = [
+  "Paradou AC", "IRB Nezla", "NRB Beni Oulbane", "NRB Teleghma",
+  "CA Batna", "US Chaouia", "AS Khroub", "MO Constantine",
+  "USM Annaba", "JS Azazga", "MO Béjaïa", "NC Magra",
+  "JSM Skikda", "MSP Batna", "JSD Jijel", "CR Beni Thour"
+];
+
+const CHAMPIONNAT_INIT = [
+  // ============ JOURNÉE 1 ============
+  { journee:1, date:"2026-09-18", heure:"16:00", dom:"AS Khroub", ext:"Paradou AC", stade:"Stade Abed-Hamdani (El Khroub)", obs:"Huis clos", sd:"", se:"" },
+  { journee:1, date:"2026-09-18", heure:"16:00", dom:"USM Annaba", ext:"NC Magra", stade:"Stade 19 Mai 1956 (Annaba)", obs:"", sd:"", se:"" },
+  { journee:1, date:"2026-09-18", heure:"16:00", dom:"US Chaouia", ext:"NRB Beni Oulbane", stade:"Stade Allag Abderrahmane (Aïn Fakroun)", obs:"", sd:"", se:"" },
+  { journee:1, date:"2026-09-18", heure:"16:00", dom:"NRB Teleghma", ext:"MSP Batna", stade:"Stade Khabaza Bachir (Teleghma)", obs:"", sd:"", se:"" },
+  { journee:1, date:"2026-09-18", heure:"16:00", dom:"CA Batna", ext:"JS Azazga", stade:"Stade 1er Novembre 1954 (Batna)", obs:"", sd:"", se:"" },
+  { journee:1, date:"2026-09-18", heure:"16:00", dom:"JSM Skikda", ext:"IRB Nezla", stade:"Stade 20 Août 1955 (Skikda)", obs:"", sd:"", se:"" },
+  { journee:1, date:"", heure:"", dom:"JSD Jijel", ext:"CR Beni Thour", stade:"", obs:"Reporté", sd:"", se:"" },
+  { journee:1, date:"2026-09-18", heure:"16:00", dom:"MO Béjaïa", ext:"MO Constantine", stade:"Stade 1er Novembre 1954 Guendouza (Akbou)", obs:"", sd:"", se:"" },
+  // ============ JOURNÉE 2 ============
+  { journee:2, date:"2026-09-26", heure:"16:00", dom:"CR Beni Thour", ext:"MO Béjaïa", stade:"Stade 18 Février (Ouargla)", obs:"", sd:"", se:"" },
+  { journee:2, date:"2026-09-26", heure:"16:00", dom:"IRB Nezla", ext:"JSD Jijel", stade:"Stade 10 000 places (Touggourt)", obs:"", sd:"", se:"" },
+  { journee:2, date:"2026-09-26", heure:"16:00", dom:"JS Azazga", ext:"JSM Skikda", stade:"Stade Tirsatine (Azazga)", obs:"", sd:"", se:"" },
+  { journee:2, date:"2026-09-26", heure:"16:00", dom:"NRB Beni Oulbane", ext:"CA Batna", stade:"Stade Hammou Boukouffa", obs:"", sd:"", se:"" },
+  { journee:2, date:"2026-09-26", heure:"16:00", dom:"Paradou AC", ext:"NRB Teleghma", stade:"Stade 20 Août 1955 (Alger)", obs:"Huis clos", sd:"", se:"" },
+  { journee:2, date:"2026-09-26", heure:"16:00", dom:"NC Magra", ext:"US Chaouia", stade:"Stade des Frères Boucheligue (Magra)", obs:"", sd:"", se:"" },
+  { journee:2, date:"2026-09-26", heure:"16:00", dom:"AS Khroub", ext:"USM Annaba", stade:"Stade Abed-Hamdani (El Khroub)", obs:"Huis clos", sd:"", se:"" },
+  { journee:2, date:"2026-09-26", heure:"16:00", dom:"MSP Batna", ext:"MO Constantine", stade:"Stade 1er Novembre 1954 (Batna)", obs:"", sd:"", se:"" },
+  // ============ JOURNÉE 3 ============
+  { journee:3, date:"2026-10-02", heure:"15:00", dom:"USM Annaba", ext:"Paradou AC", stade:"Stade 19 Mai 1956 (Annaba)", obs:"", sd:"", se:"" },
+  { journee:3, date:"2026-10-02", heure:"15:00", dom:"NRB Teleghma", ext:"NC Magra", stade:"Stade Khabaza Bachir (Teleghma)", obs:"", sd:"", se:"" },
+  { journee:3, date:"2026-10-03", heure:"15:00", dom:"JSM Skikda", ext:"NRB Beni Oulbane", stade:"Stade 20 Août 1955 (Skikda)", obs:"", sd:"", se:"" },
+  { journee:3, date:"2026-10-02", heure:"15:00", dom:"CA Batna", ext:"MSP Batna", stade:"Stade 1er Novembre 1954 (Batna)", obs:"", sd:"", se:"" },
+  { journee:3, date:"2026-10-03", heure:"15:00", dom:"JSD Jijel", ext:"JS Azazga", stade:"Stade Hocine Rouibah (Jijel)", obs:"", sd:"", se:"" },
+  { journee:3, date:"", heure:"", dom:"MO Béjaïa", ext:"IRB Nezla", stade:"", obs:"Reporté à une date ultérieure", sd:"", se:"" },
+  { journee:3, date:"2026-10-02", heure:"15:00", dom:"MO Constantine", ext:"CR Beni Thour", stade:"Stade Ramdane-Benabdelmalek (Constantine)", obs:"", sd:"", se:"" },
+  { journee:3, date:"2026-10-02", heure:"15:00", dom:"US Chaouia", ext:"AS Khroub", stade:"Stade Allag Abderrahmane (Aïn Fakroun)", obs:"", sd:"", se:"" }
+];
+
+// ============ CHARGEMENT ============
+let data = JSON.parse(localStorage.getItem('l2a_data') || 'null');
+if (!data) {
+  data = {
+    championnat: CHAMPIONNAT_INIT.map((m,i)=>({...m, id:'c'+i})),
+    coupe: []
+  };
+}
+if (!data.coupe) data.coupe = [];
+
+function save() { localStorage.setItem('l2a_data', JSON.stringify(data)); }
+
+// ============ ONGLETS ============
+function switchTab(name, el) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+}
+
+// ============ AFFICHAGE ============
+function formatDate(d) {
+  if (!d) return '';
+  const p = d.split('-');
+  return p.length===3 ? p[2]+'/'+p[1]+'/'+p[0] : d;
+}
+
+function render(section) {
+  const tbody = document.getElementById('tbody-'+section);
+  const count = document.getElementById('count'+section.charAt(0).toUpperCase()+section.slice(1));
+  let list = data[section];
+
+  if (section === 'championnat') {
+    const fj = document.getElementById('filterJournee').value;
+    const fe = document.getElementById('filterEquipe').value;
+    list = list.filter(m =>
+      (!fj || m.journee == fj) &&
+      (!fe || m.dom === fe || m.ext === fe)
+    );
+  }
+
+  if (count) count.textContent = list.length + ' rencontre(s) affichée(s) sur ' + data[section].length;
+
+  if (list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="9" class="empty">Aucune rencontre. Cliquez sur ➕ Ajouter.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = '';
+  list.forEach((m) => {
+    const i = data[section].indexOf(m);
+    const score = (m.sd !== '' && m.se !== '' && m.sd !== null && m.sd !== undefined && m.se !== null && m.se !== undefined)
+      ? `<span class="score">${m.sd} - ${m.se}</span>` : '<span style="color:#999">— vs —</span>';
+    const firstCol = section === 'championnat' ? 'J'+(m.journee||'') : (m.journee||'');
+    tbody.innerHTML += `
+      <tr>
+        <td><b>${firstCol}</b></td>
+        <td>${formatDate(m.date)}</td>
+        <td>${m.heure || ''}</td>
+        <td>${m.dom || ''}</td>
+        <td>${score}</td>
+        <td>${m.ext || ''}</td>
+        <td>${m.stade || ''}</td>
+        <td class="obs ${m.obs?'':'obs-empty'}">${m.obs || '—'}</td>
+        <td>
+          <button class="btn-small btn-edit" onclick="editMatch('${section}', ${i})">✏️</button>
+          <button class="btn-small btn-del" onclick="deleteMatch('${section}', ${i})">🗑️</button>
+        </td>
+      </tr>`;
+  });
+
+  if (section === 'championnat') updateFilters();
+}
+
+function updateFilters() {
+  const journees = [...new Set(data.championnat.map(m => parseInt(m.journee)).filter(Boolean))].sort((a,b)=>a-b);
+  const fsj = document.getElementById('filterJournee');
+  const fse = document.getElementById('filterEquipe');
+  const vj = fsj.value, ve = fse.value;
+  fsj.innerHTML = '<option value="">Toutes les journées</option>' + journees.map(j=>`<option value="${j}">J${j}</option>`).join('');
+  fse.innerHTML = '<option value="">Toutes les équipes</option>' + EQUIPES.map(e=>`<option value="${e}">${e}</option>`).join('');
+  fsj.value = vj; fse.value = ve;
+}
+
+// ============ MODAL ============
+function openModal(section, idx) {
+  document.getElementById('editSection').value = section;
+  document.getElementById('editIndex').value = idx !== undefined ? idx : '';
+  const isChamp = section === 'championnat';
+  document.getElementById('lblJournee').style.display = 'block';
+  document.getElementById('modalTitle').textContent =
+    (idx !== undefined ? 'Modifier' : 'Ajouter') + ' — ' +
+    (isChamp ? '🏆 Championnat' : '🏅 Coupe (MO Béjaïa)');
+
+  if (idx === undefined) {
+    ['fJournee','fDate','fHeure','fDom','fExt','fSd','fSe','fStade','fObs'].forEach(id => document.getElementById(id).value = '');
+    if (!isChamp) document.getElementById('fDom').value = 'MO Béjaïa';
+  }
+  document.getElementById('modal').classList.add('active');
+}
+
+function closeModal() { document.getElementById('modal').classList.remove('active'); }
+
+function editMatch(section, i) {
+  openModal(section, i);
+  const m = data[section][i];
+  document.getElementById('fJournee').value = m.journee || '';
+  document.getElementById('fDate').value = m.date || '';
+  document.getElementById('fHeure').value = m.heure || '';
+  document.getElementById('fDom').value = m.dom || '';
+  document.getElementById('fExt').value = m.ext || '';
+  document.getElementById('fSd').value = m.sd ?? '';
+  document.getElementById('fSe').value = m.se ?? '';
+  document.getElementById('fStade').value = m.stade || '';
+  document.getElementById('fObs').value = m.obs || '';
+}
+
+function saveMatch() {
+  const section = document.getElementById('editSection').value;
+  const m = {
+    journee: document.getElementById('fJournee').value,
+    date: document.getElementById('fDate').value,
+    heure: document.getElementById('fHeure').value,
+    dom: document.getElementById('fDom').value.trim(),
+    ext: document.getElementById('fExt').value.trim(),
+    sd: document.getElementById('fSd').value,
+    se: document.getElementById('fSe').value,
+    stade: document.getElementById('fStade').value.trim(),
+    obs: document.getElementById('fObs').value.trim()
+  };
+  if (!m.dom || !m.ext) { alert('Remplissez les deux équipes'); return; }
+  const idx = document.getElementById('editIndex').value;
+  if (idx === '') {
+    data[section].push({...m, id: section.charAt(0)+Date.now()});
+  } else {
+    data[section][idx] = {...data[section][idx], ...m};
+  }
+  save(); closeModal(); render(section);
+}
+
+function deleteMatch(section, i) {
+  if (confirm('Supprimer cette rencontre ?')) {
+    data[section].splice(i,1); save(); render(section);
+  }
+}
+
+// ============ EXPORT / IMPORT ============
+function exportData(section) {
+  const blob = new Blob([JSON.stringify(data[section], null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'l2a-' + section + '-2026-2027.json';
+  a.click();
+}
+
+function importData(e, section) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const imported = JSON.parse(ev.target.result);
+      if (confirm('Remplacer les données de ' + section + ' ?')) {
+        data[section] = imported; save(); render(section);
+      }
+    } catch { alert('Fichier invalide'); }
+  };
+  reader.readAsText(file);
+}
+
+// ============ INIT ============
+save();
+render('championnat');
+render('coupe');
+</script>
+</body>
+</html>
