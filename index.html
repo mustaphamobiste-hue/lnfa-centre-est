@@ -237,7 +237,6 @@ const CHAMPIONNAT_INIT = [
   { journee:5, date:"2026-10-13", heure:"15:00", dom:"CA Batna", ext:"AS Khroub", stade:"Stade 1er Novembre 1954 (Batna)", obs:"", sd:"", se:"" }
 ];
 
-// Chargement avec conservation des données
 let data = JSON.parse(localStorage.getItem('l2a_data') || 'null');
 if (!data || !data.championnat) {
   data = {
@@ -275,7 +274,6 @@ function render(section) {
       (!fj || m.journee == fj) &&
       (!fe || m.dom === fe || m.ext === fe)
     );
-    // Trier par journée puis par date
     list = [...list].sort((a,b) => {
       if (parseInt(a.journee||0) !== parseInt(b.journee||0)) return parseInt(a.journee||0) - parseInt(b.journee||0);
       return (a.date||'').localeCompare(b.date||'');
