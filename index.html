@@ -7,7 +7,11 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: Arial, sans-serif; background: #f4f6f9; color: #222; padding: 10px; }
-  h1 { text-align: center; color: #1a4d2e; margin-bottom: 12px; font-size: 1.1em; }
+  h1 { text-align: center; color: #1a4d2e; margin-bottom: 12px; font-size: 1.1em; cursor: pointer; user-select: none; }
+  .status { text-align: center; font-size: 12px; margin-bottom: 8px; padding: 6px; border-radius: 6px; font-weight: bold; }
+  .status.online { background: #d4edda; color: #155724; }
+  .status.offline { background: #f8d7da; color: #721c24; }
+  .status.loading { background: #fff3cd; color: #856404; }
   .tabs { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
   .tab { flex: 1; min-width: 80px; padding: 10px 6px; text-align: center; border-radius: 8px 8px 0 0; background: #ddd; cursor: pointer; font-weight: bold; font-size: 12px; }
   .tab.active { background: #1a4d2e; color: white; }
@@ -21,7 +25,7 @@
   .btn-edit { background: #2980b9; }
   .btn-del { background: #c0392b; }
   .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; background: white; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-  table { width: 100%; border-collapse: collapse; min-width: 800px; }
+  table { width: 100%; border-collapse: collapse; min-width: 900px; }
   th, td { padding: 8px; text-align: left; border-bottom: 1px solid #eee; font-size: 12px; white-space: nowrap; }
   th { background: #1a4d2e; color: white; position: sticky; top: 0; }
   tr:hover { background: #f0f8f4; }
@@ -49,11 +53,15 @@
   .legend { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin: 10px 0; font-size: 11px; }
   .legend-item { display: flex; align-items: center; gap: 5px; }
   .legend-color { width: 15px; height: 15px; border-radius: 3px; }
+  .admin-badge { display: inline-block; background: #27ae60; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; margin-left: 8px; }
+  .admin-panel { background: #f0e6ff; border: 2px solid #8e44ad; border-radius: 8px; padding: 10px; margin-bottom: 12px; }
 </style>
 </head>
 <body>
 
-<h1>🏆 Ligue 2 Amateur – Groupe Centre Est 2026-2027</h1>
+<h1 id="mainTitle">🏆 Ligue 2 Amateur – Groupe Centre Est 2026-2027<span id="adminBadge"></span></h1>
+
+<div id="statusBar" class="status loading">⏳ Connexion à Firebase...</div>
 
 <div class="tabs">
   <div class="tab active" onclick="switchTab('championnat', this)">🏆 Championnat</div>
@@ -61,10 +69,20 @@
   <div class="tab" onclick="switchTab('classement', this)">📊 Classement</div>
 </div>
 
+<div id="adminPanel" class="admin-panel" style="display:none;">
+  <div style="text-align:center; margin-bottom:8px;">
+    <strong style="color:#8e44ad;">🔐 Mode Admin activé</strong>
+    <button class="btn-small btn-del" onclick="logoutAdmin()" style="margin-left:10px;">Déconnexion</button>
+  </div>
+  <div style="text-align:center; font-size:12px; color:#666;">
+    Vous pouvez maintenant modifier les scores directement.
+  </div>
+</div>
+
 <!-- CHAMPIONNAT -->
 <div id="tab-championnat" class="tab-content active">
   <div class="toolbar">
-    <button onclick="openModal('championnat')">➕ Ajouter</button>
+    <button onclick="openModal('championnat')" id="btnAddChamp" style="display:none;">➕ Ajouter</button>
     <button onclick="exportData('championnat')">💾 Exporter</button>
     <button onclick="document.getElementById('importChampionnat').click()">📂 Importer</button>
     <input type="file" id="importChampionnat" accept=".json" style="display:none" onchange="importData(event,'championnat')">
@@ -94,7 +112,7 @@
 <!-- COUPE -->
 <div id="tab-coupe" class="tab-content">
   <div class="toolbar">
-    <button onclick="openModal('coupe')">➕ Ajouter un match MOB</button>
+    <button onclick="openModal('coupe')" id="btnAddCoupe" style="display:none;">➕ Ajouter un match MOB</button>
     <button onclick="exportData('coupe')">💾 Exporter</button>
     <button onclick="document.getElementById('importCoupe').click()">📂 Importer</button>
     <input type="file" id="importCoupe" accept=".json" style="display:none" onchange="importData(event,'coupe')">
@@ -139,7 +157,7 @@
   </div>
 </div>
 
-<!-- MODAL -->
+<!-- MODAL MATCH -->
 <div class="modal" id="modal">
   <div class="modal-content">
     <h3 id="modalTitle">Ajouter</h3>
@@ -162,7 +180,39 @@
   </div>
 </div>
 
-<script>
+<!-- MODAL ADMIN -->
+<div class="modal" id="modalAdmin">
+  <div class="modal-content">
+    <h3>🔐 Accès Admin</h3>
+    <label>Mot de passe <input type="password" id="adminPwd" onkeypress="if(event.key==='Enter') tryLogin()"></label>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeAdminModal()">Annuler</button>
+      <button onclick="tryLogin()">Connexion</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDr_pGZnYTSDXGbQprDuvMFeWnuinxRpH8",
+  authDomain: "lnfa-centre-est.firebaseapp.com",
+  databaseURL: "https://lnfa-centre-est-default-rtdb.firebaseio.com",
+  projectId: "lnfa-centre-est",
+  storageBucket: "lnfa-centre-est.firebasestorage.app",
+  messagingSenderId: "638227294907",
+  appId: "1:638227294907:web:694f8c2e597954f59e579e"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const ADMIN_PASSWORD = "Béjaïa#2026!Mob";
+let isAdmin = false;
+let clickCount = 0;
+
 const EQUIPES = [
   "Paradou AC", "IRB Nezla", "NRB Beni Oulbane", "NRB Teleghma",
   "CA Batna", "US Chaouia", "AS Khroub", "MO Constantine",
@@ -190,7 +240,6 @@ const STADES = [
 ];
 
 const CHAMPIONNAT_INIT = [
-  // J1
   { journee:1, date:"2026-09-18", heure:"16:00", dom:"AS Khroub", ext:"Paradou AC", stade:"Stade Abed-Hamdani (El Khroub)", obs:"Huis clos", sd:"0", se:"0" },
   { journee:1, date:"2026-09-18", heure:"16:00", dom:"USM Annaba", ext:"NC Magra", stade:"Stade 19 Mai 1956 (Annaba)", obs:"", sd:"3", se:"0" },
   { journee:1, date:"2026-09-18", heure:"16:00", dom:"US Chaouia", ext:"NRB Beni Oulbane", stade:"Stade Allag Abderrahmane (Aïn Fakroun)", obs:"", sd:"1", se:"1" },
@@ -199,7 +248,6 @@ const CHAMPIONNAT_INIT = [
   { journee:1, date:"2026-09-18", heure:"16:00", dom:"JSM Skikda", ext:"IRB Nezla", stade:"Stade 20 Août 1955 (Skikda)", obs:"", sd:"2", se:"0" },
   { journee:1, date:"", heure:"", dom:"JSD Jijel", ext:"CR Beni Thour", stade:"", obs:"Reporté", sd:"", se:"" },
   { journee:1, date:"2026-09-18", heure:"16:00", dom:"MO Béjaïa", ext:"MO Constantine", stade:"Stade 1er Novembre 1954 Guendouza (Akbou)", obs:"", sd:"0", se:"0" },
-  // J2
   { journee:2, date:"2026-09-26", heure:"16:00", dom:"CR Beni Thour", ext:"MO Béjaïa", stade:"Stade 18 Février (Ouargla)", obs:"", sd:"1", se:"3" },
   { journee:2, date:"2026-09-26", heure:"16:00", dom:"IRB Nezla", ext:"JSD Jijel", stade:"Stade 10 000 places (Touggourt)", obs:"", sd:"1", se:"0" },
   { journee:2, date:"2026-09-26", heure:"16:00", dom:"JS Azazga", ext:"JSM Skikda", stade:"Stade Tirsatine (Azazga)", obs:"", sd:"1", se:"0" },
@@ -208,7 +256,6 @@ const CHAMPIONNAT_INIT = [
   { journee:2, date:"2026-09-26", heure:"16:00", dom:"NC Magra", ext:"US Chaouia", stade:"Stade des Frères Boucheligue (Magra)", obs:"", sd:"1", se:"0" },
   { journee:2, date:"2026-09-26", heure:"16:00", dom:"AS Khroub", ext:"USM Annaba", stade:"Stade Abed-Hamdani (El Khroub)", obs:"Huis clos", sd:"1", se:"0" },
   { journee:2, date:"2026-09-26", heure:"16:00", dom:"MSP Batna", ext:"MO Constantine", stade:"Stade 1er Novembre 1954 (Batna)", obs:"", sd:"0", se:"0" },
-  // J3
   { journee:3, date:"2026-10-02", heure:"15:00", dom:"USM Annaba", ext:"Paradou AC", stade:"Stade 19 Mai 1956 (Annaba)", obs:"", sd:"2", se:"1" },
   { journee:3, date:"2026-10-02", heure:"15:00", dom:"NRB Teleghma", ext:"NC Magra", stade:"Stade Khabaza Bachir (Teleghma)", obs:"", sd:"1", se:"2" },
   { journee:3, date:"2026-10-03", heure:"15:00", dom:"JSM Skikda", ext:"NRB Beni Oulbane", stade:"Stade 20 Août 1955 (Skikda)", obs:"", sd:"1", se:"0" },
@@ -217,7 +264,6 @@ const CHAMPIONNAT_INIT = [
   { journee:3, date:"", heure:"", dom:"MO Béjaïa", ext:"IRB Nezla", stade:"", obs:"Reporté à une date ultérieure", sd:"", se:"" },
   { journee:3, date:"2026-10-02", heure:"15:00", dom:"MO Constantine", ext:"CR Beni Thour", stade:"Stade Ramdane-Benabdelmalek (Constantine)", obs:"", sd:"2", se:"1" },
   { journee:3, date:"2026-10-02", heure:"15:00", dom:"US Chaouia", ext:"AS Khroub", stade:"Stade Allag Abderrahmane (Aïn Fakroun)", obs:"", sd:"0", se:"0" },
-  // J4
   { journee:4, date:"2026-10-09", heure:"15:00", dom:"USM Annaba", ext:"US Chaouia", stade:"Stade 19 Mai 1956 (Annaba)", obs:"", sd:"", se:"" },
   { journee:4, date:"2026-10-09", heure:"15:00", dom:"IRB Nezla", ext:"MO Constantine", stade:"Stade 10 000 places (Touggourt)", obs:"", sd:"", se:"" },
   { journee:4, date:"2026-10-10", heure:"15:00", dom:"JS Azazga", ext:"MO Béjaïa", stade:"Stade Tirsatine (Azazga)", obs:"", sd:"", se:"" },
@@ -226,7 +272,6 @@ const CHAMPIONNAT_INIT = [
   { journee:4, date:"2026-10-09", heure:"15:00", dom:"NC Magra", ext:"CA Batna", stade:"Stade des Frères Boucheligue (Magra)", obs:"", sd:"", se:"" },
   { journee:4, date:"2026-10-09", heure:"15:00", dom:"AS Khroub", ext:"NRB Teleghma", stade:"Stade Abed-Hamdani (El Khroub)", obs:"", sd:"", se:"" },
   { journee:4, date:"2026-10-09", heure:"15:00", dom:"MSP Batna", ext:"CR Beni Thour", stade:"Stade 1er Novembre 1954 (Batna)", obs:"", sd:"", se:"" },
-  // J5
   { journee:5, date:"2026-10-13", heure:"15:00", dom:"US Chaouia", ext:"Paradou AC", stade:"Stade Allag Abderrahmane (Aïn Fakroun)", obs:"", sd:"", se:"" },
   { journee:5, date:"2026-10-13", heure:"15:00", dom:"JSM Skikda", ext:"NC Magra", stade:"Stade 20 Août 1955 (Skikda)", obs:"", sd:"", se:"" },
   { journee:5, date:"2026-10-15", heure:"15:00", dom:"MO Béjaïa", ext:"NRB Beni Oulbane", stade:"Stade des Martyrs (Akbou)", obs:"", sd:"", se:"" },
@@ -237,16 +282,60 @@ const CHAMPIONNAT_INIT = [
   { journee:5, date:"2026-10-13", heure:"15:00", dom:"CA Batna", ext:"AS Khroub", stade:"Stade 1er Novembre 1954 (Batna)", obs:"", sd:"", se:"" }
 ];
 
-let data = JSON.parse(localStorage.getItem('l2a_data') || 'null');
-if (!data || !data.championnat) {
-  data = {
-    championnat: CHAMPIONNAT_INIT.map((m,i)=>({...m, id:'c'+i})),
-    coupe: []
-  };
+let data = {
+  championnat: [],
+  coupe: []
+};
+ 
+function handleTitleClick() {
+  clickCount++;
+  if (clickCount >= 5) {
+    clickCount = 0;
+    if (isAdmin) {
+      logoutAdmin();
+    } else {
+      openAdminModal();
+    }
+  }
+  setTimeout(() => { clickCount = 0; }, 2000);
 }
-if (!data.coupe) data.coupe = [];
 
-function save() { localStorage.setItem('l2a_data', JSON.stringify(data)); }
+function openAdminModal() {
+  document.getElementById('adminPwd').value = '';
+  document.getElementById('modalAdmin').classList.add('active');
+}
+
+function closeAdminModal() {
+  document.getElementById('modalAdmin').classList.remove('active');
+}
+
+function tryLogin() {
+  const pwd = document.getElementById('adminPwd').value;
+  if (pwd === ADMIN_PASSWORD) {
+    isAdmin = true;
+    document.getElementById('adminBadge').innerHTML = '<span class="admin-badge">ADMIN</span>';
+    document.getElementById('adminPanel').style.display = 'block';
+    document.getElementById('btnAddChamp').style.display = 'inline-block';
+    document.getElementById('btnAddCoupe').style.display = 'inline-block';
+    closeAdminModal();
+    alert('✅ Connexion admin réussie !');
+    render('championnat');
+    render('coupe');
+  } else {
+    alert('❌ Mot de passe incorrect');
+    document.getElementById('adminPwd').value = '';
+  }
+}
+
+function logoutAdmin() {
+  isAdmin = false;
+  document.getElementById('adminBadge').innerHTML = '';
+  document.getElementById('adminPanel').style.display = 'none';
+  document.getElementById('btnAddChamp').style.display = 'none';
+  document.getElementById('btnAddCoupe').style.display = 'none';
+  render('championnat');
+  render('coupe');
+}
 
 function switchTab(name, el) {
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
@@ -291,23 +380,24 @@ function render(section) {
   list.forEach((m) => {
     const i = data[section].indexOf(m);
     const score = (m.sd !== '' && m.se !== '' && m.sd !== null && m.sd !== undefined && m.se !== null && m.se !== undefined)
-      ? `<span class="score">${m.sd} - ${m.se}</span>` : '<span style="color:#999">— vs —</span>';
+      ? '<span class="score">' + m.sd + ' - ' + m.se + '</span>' : '<span style="color:#999">— vs —</span>';
     const firstCol = section === 'championnat' ? 'J'+(m.journee||'') : (m.journee||'');
-    tbody.innerHTML += `
-      <tr>
-        <td><b>${firstCol}</b></td>
-        <td>${formatDate(m.date)}</td>
-        <td>${m.heure || ''}</td>
-        <td>${m.dom || ''}</td>
-        <td>${score}</td>
-        <td>${m.ext || ''}</td>
-        <td>${m.stade || ''}</td>
-        <td class="obs ${m.obs?'':'obs-empty'}">${m.obs || '—'}</td>
-        <td>
-          <button class="btn-small btn-edit" onclick="editMatch('${section}', ${i})">✏️</button>
-          <button class="btn-small btn-del" onclick="deleteMatch('${section}', ${i})">🗑️</button>
-        </td>
-      </tr>`;
+    let adminButtons = '';
+    if (isAdmin) {
+      adminButtons = '<button class="btn-small btn-edit" onclick="editMatch(\'' + section + '\',' + i + ')">✏️</button>' +
+                     '<button class="btn-small btn-del" onclick="deleteMatch(\'' + section + '\',' + i + ')">🗑️</button>';
+    }
+    tbody.innerHTML += '<tr>' +
+      '<td><b>' + firstCol + '</b></td>' +
+      '<td>' + formatDate(m.date) + '</td>' +
+      '<td>' + (m.heure || '') + '</td>' +
+      '<td>' + (m.dom || '') + '</td>' +
+      '<td>' + score + '</td>' +
+      '<td>' + (m.ext || '') + '</td>' +
+      '<td>' + (m.stade || '') + '</td>' +
+      '<td class="obs ' + (m.obs?'':'obs-empty') + '">' + (m.obs || '—') + '</td>' +
+      '<td>' + adminButtons + '</td>' +
+      '</tr>';
   });
 
   if (section === 'championnat') updateFilters();
@@ -318,20 +408,20 @@ function updateFilters() {
   const fsj = document.getElementById('filterJournee');
   const fse = document.getElementById('filterEquipe');
   const vj = fsj.value, ve = fse.value;
-  fsj.innerHTML = '<option value="">Toutes les journées</option>' + journees.map(j=>`<option value="${j}">J${j}</option>`).join('');
-  fse.innerHTML = '<option value="">Toutes les équipes</option>' + EQUIPES.map(e=>`<option value="${e}">${e}</option>`).join('');
+  fsj.innerHTML = '<option value="">Toutes les journées</option>' + journees.map(j=>'<option value="'+j+'">J'+j+'</option>').join('');
+  fse.innerHTML = '<option value="">Toutes les équipes</option>' + EQUIPES.map(e=>'<option value="'+e+'">'+e+'</option>').join('');
   fsj.value = vj; fse.value = ve;
   const sel = document.getElementById('selectJourneeClassement');
   const vc = sel.value;
   sel.innerHTML = '<option value="all">Général (toutes journées)</option>' +
-    journees.map(j=>`<option value="${j}">Après J${j}</option>`).join('');
+    journees.map(j=>'<option value="'+j+'">Après J'+j+'</option>').join('');
   sel.value = vc || 'all';
 }
 
 function populateSelects() {
-  document.getElementById('fDom').innerHTML = '<option value="">-- Choisir --</option>' + EQUIPES.map(e=>`<option value="${e}">${e}</option>`).join('');
-  document.getElementById('fExt').innerHTML = '<option value="">-- Choisir --</option>' + EQUIPES.map(e=>`<option value="${e}">${e}</option>`).join('');
-  document.getElementById('fStade').innerHTML = '<option value="">-- Choisir --</option>' + STADES.map(s=>`<option value="${s}">${s}</option>`).join('') + '<option value="__AUTRE__">✏️ Autre stade...</option>';
+  document.getElementById('fDom').innerHTML = '<option value="">-- Choisir --</option>' + EQUIPES.map(e=>'<option value="'+e+'">'+e+'</option>').join('');
+  document.getElementById('fExt').innerHTML = '<option value="">-- Choisir --</option>' + EQUIPES.map(e=>'<option value="'+e+'">'+e+'</option>').join('');
+  document.getElementById('fStade').innerHTML = '<option value="">-- Choisir --</option>' + STADES.map(s=>'<option value="'+s+'">'+s+'</option>').join('') + '<option value="__AUTRE__">✏️ Autre stade...</option>';
 }
 
 function onStadeChange() {
@@ -340,14 +430,13 @@ function onStadeChange() {
 }
 
 function openModal(section, idx) {
+  if (!isAdmin) return;
+  populateSelects();
   document.getElementById('editSection').value = section;
   document.getElementById('editIndex').value = idx !== undefined ? idx : '';
   const isChamp = section === 'championnat';
   document.getElementById('lblJournee').style.display = 'block';
-  document.getElementById('modalTitle').textContent =
-    (idx !== undefined ? 'Modifier' : 'Ajouter') + ' — ' +
-    (isChamp ? '🏆 Championnat' : '🏅 Coupe (MO Béjaïa)');
-
+  document.getElementById('modalTitle').textContent = (idx !== undefined ? 'Modifier' : 'Ajouter') + ' — ' + (isChamp ? '🏆 Championnat' : '🏅 Coupe');
   if (idx === undefined) {
     ['fJournee','fDate','fHeure','fSd','fSe','fObs','fStadeAutre'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('fDom').value = '';
@@ -362,8 +451,8 @@ function openModal(section, idx) {
 function closeModal() { document.getElementById('modal').classList.remove('active'); }
 
 function editMatch(section, i) {
-  populateSelects();
   const m = data[section][i];
+  populateSelects();
   document.getElementById('editSection').value = section;
   document.getElementById('editIndex').value = i;
   document.getElementById('modalTitle').textContent = 'Modifier — ' + (section === 'championnat' ? '🏆 Championnat' : '🏅 Coupe');
@@ -389,7 +478,7 @@ function editMatch(section, i) {
   document.getElementById('modal').classList.add('active');
 }
 
-function saveMatch() {
+async function saveMatch() {
   const section = document.getElementById('editSection').value;
   let stade = document.getElementById('fStade').value;
   if (stade === '__AUTRE__') stade = document.getElementById('fStadeAutre').value.trim();
@@ -412,13 +501,17 @@ function saveMatch() {
   } else {
     data[section][idx] = {...data[section][idx], ...m};
   }
-  save(); closeModal(); render(section);
+  await saveToFirebase();
+  closeModal();
+  render(section);
   if (document.getElementById('tab-classement').classList.contains('active')) renderClassement();
 }
 
-function deleteMatch(section, i) {
+async function deleteMatch(section, i) {
   if (confirm('Supprimer cette rencontre ?')) {
-    data[section].splice(i,1); save(); render(section);
+    data[section].splice(i,1);
+    await saveToFirebase();
+    render(section);
     if (document.getElementById('tab-classement').classList.contains('active')) renderClassement();
   }
 }
@@ -426,10 +519,8 @@ function deleteMatch(section, i) {
 function renderClassement() {
   const journeeMax = document.getElementById('selectJourneeClassement').value;
   const tbody = document.getElementById('tbody-classement');
-
   const stats = {};
   EQUIPES.forEach(e => stats[e] = { j:0, g:0, n:0, p:0, bp:0, bc:0, pts:0 });
-
   data.championnat.forEach(m => {
     if (m.sd === '' || m.se === '' || m.sd === null || m.se === null || m.sd === undefined || m.se === undefined) return;
     if (journeeMax !== 'all' && parseInt(m.journee) > parseInt(journeeMax)) return;
@@ -443,7 +534,6 @@ function renderClassement() {
     else if (sd < se) { stats[m.ext].g++; stats[m.ext].pts+=3; stats[m.dom].p++; }
     else { stats[m.dom].n++; stats[m.dom].pts++; stats[m.ext].n++; stats[m.ext].pts++; }
   });
-
   const classement = EQUIPES.map(e => ({ equipe: e, ...stats[e], diff: stats[e].bp - stats[e].bc }))
     .sort((a,b) => {
       if (b.pts !== a.pts) return b.pts - a.pts;
@@ -451,12 +541,10 @@ function renderClassement() {
       if (b.bp !== a.bp) return b.bp - a.bp;
       return a.equipe.localeCompare(b.equipe);
     });
-
   if (classement.every(c => c.j === 0)) {
     tbody.innerHTML = '<tr><td colspan="10" class="empty">Aucun match joué pour le moment.</td></tr>';
     return;
   }
-
   tbody.innerHTML = '';
   classement.forEach((c, idx) => {
     const pos = idx + 1;
@@ -464,19 +552,18 @@ function renderClassement() {
     if (pos === 1) zoneClass = 'zone-montee';
     else if (pos === 2 || pos === 3) zoneClass = 'zone-playoff';
     else if (pos >= 14) zoneClass = 'zone-relégation';
-    tbody.innerHTML += `
-      <tr class="${zoneClass}">
-        <td><b>${pos}</b></td>
-        <td class="equipe">${c.equipe}</td>
-        <td>${c.j}</td>
-        <td>${c.g}</td>
-        <td>${c.n}</td>
-        <td>${c.p}</td>
-        <td>${c.bp}</td>
-        <td>${c.bc}</td>
-        <td>${c.diff > 0 ? '+'+c.diff : c.diff}</td>
-        <td><b>${c.pts}</b></td>
-      </tr>`;
+    tbody.innerHTML += '<tr class="' + zoneClass + '">' +
+      '<td><b>' + pos + '</b></td>' +
+      '<td class="equipe">' + c.equipe + '</td>' +
+      '<td>' + c.j + '</td>' +
+      '<td>' + c.g + '</td>' +
+      '<td>' + c.n + '</td>' +
+      '<td>' + c.p + '</td>' +
+      '<td>' + c.bp + '</td>' +
+      '<td>' + c.bc + '</td>' +
+      '<td>' + (c.diff > 0 ? '+'+c.diff : c.diff) + '</td>' +
+      '<td><b>' + c.pts + '</b></td>' +
+      '</tr>';
   });
 }
 
@@ -492,11 +579,13 @@ function importData(e, section) {
   const file = e.target.files[0];
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = ev => {
+  reader.onload = async ev => {
     try {
       const imported = JSON.parse(ev.target.result);
       if (confirm('Remplacer les données de ' + section + ' ?')) {
-        data[section] = imported; save(); render(section);
+        data[section] = imported;
+        await saveToFirebase();
+        render(section);
         if (document.getElementById('tab-classement').classList.contains('active')) renderClassement();
       }
     } catch { alert('Fichier invalide'); }
@@ -504,10 +593,73 @@ function importData(e, section) {
   reader.readAsText(file);
 }
 
-save();
-populateSelects();
-render('championnat');
-render('coupe');
+async function loadFromFirebase() {
+  const statusBar = document.getElementById('statusBar');
+  statusBar.className = 'status loading';
+  statusBar.textContent = '⏳ Chargement des données...';
+  try {
+    const championnatRef = ref(db, 'championnat');
+    const snapshot = await get(championnatRef);
+    if (snapshot.exists()) {
+      const fb = snapshot.val();
+      if (Array.isArray(fb)) data.championnat = fb;
+      else data.championnat = [];
+    } else {
+      data.championnat = CHAMPIONNAT_INIT.map((m,i)=>({...m, id:'c'+i}));
+      await saveToFirebase();
+    }
+    statusBar.className = 'status online';
+    statusBar.textContent = '🟢 Connecté à Firebase (' + data.championnat.length + ' matchs)';
+    render('championnat');
+    render('coupe');
+  } catch (error) {
+    console.error('Erreur Firebase:', error);
+    statusBar.className = 'status offline';
+    statusBar.textContent = '🔴 Hors ligne - Données locales';
+    const localData = JSON.parse(localStorage.getItem('l2a_data') || 'null');
+    if (localData && localData.championnat) {
+      data = localData;
+    } else {
+      data.championnat = CHAMPIONNAT_INIT.map((m,i)=>({...m, id:'c'+i}));
+    }
+    render('championnat');
+    render('coupe');
+  }
+}
+
+async function saveToFirebase() {
+  try {
+    const championnatRef = ref(db, 'championnat');
+    await set(championnatRef, data.championnat);
+    localStorage.setItem('l2a_data', JSON.stringify(data));
+    return true;
+  } catch (error) {
+    console.error('Erreur sauvegarde:', error);
+    localStorage.setItem('l2a_data', JSON.stringify(data));
+    return false;
+  }
+}
+
+document.getElementById('mainTitle').addEventListener('click', handleTitleClick);
+window.addEventListener('DOMContentLoaded', () => {
+  loadFromFirebase();
+});
+
+window.switchTab = switchTab;
+window.openModal = openModal;
+window.closeModal = closeModal;
+window.saveMatch = saveMatch;
+window.editMatch = editMatch;
+window.deleteMatch = deleteMatch;
+window.exportData = exportData;
+window.importData = importData;
+window.renderClassement = renderClassement;
+window.onStadeChange = onStadeChange;
+window.tryLogin = tryLogin;
+window.closeAdminModal = closeAdminModal;
+window.logoutAdmin = logoutAdmin;
+window.handleTitleClick = handleTitleClick;
+
 </script>
 </body>
-</html>
+</html> 
