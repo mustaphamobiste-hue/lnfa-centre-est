@@ -79,7 +79,6 @@
   </div>
 </div>
 
-<!-- CHAMPIONNAT -->
 <div id="tab-championnat" class="tab-content active">
   <div class="toolbar">
     <button onclick="openModal('championnat')" id="btnAddChamp" style="display:none;">➕ Ajouter</button>
@@ -88,12 +87,13 @@
     <input type="file" id="importChampionnat" accept=".json" style="display:none" onchange="importData(event,'championnat')">
   </div>
   <div class="toolbar">
-    <select id="filterJournee" onchange="render('championnat')">
+    <select id="filterJournee">
       <option value="">Toutes les journées</option>
     </select>
-    <select id="filterEquipe" onchange="render('championnat')">
+    <select id="filterEquipe">
       <option value="">Toutes les équipes</option>
     </select>
+    <button onclick="render('championnat')" style="background:#2980b9;">🔍 Filtrer</button>
   </div>
   <div class="count" id="countChampionnat"></div>
   <div class="table-wrap">
@@ -108,8 +108,6 @@
     </table>
   </div>
 </div>
-
-<!-- COUPE -->
 <div id="tab-coupe" class="tab-content">
   <div class="toolbar">
     <button onclick="openModal('coupe')" id="btnAddCoupe" style="display:none;">➕ Ajouter un match MOB</button>
@@ -131,7 +129,6 @@
   </div>
 </div>
 
-<!-- CLASSEMENT -->
 <div id="tab-classement" class="tab-content">
   <div class="classement-filters">
     <label style="font-size:13px;">Classement après : </label>
@@ -157,7 +154,6 @@
   </div>
 </div>
 
-<!-- MODAL MATCH -->
 <div class="modal" id="modal">
   <div class="modal-content">
     <h3 id="modalTitle">Ajouter</h3>
@@ -180,7 +176,6 @@
   </div>
 </div>
 
-<!-- MODAL ADMIN -->
 <div class="modal" id="modalAdmin">
   <div class="modal-content">
     <h3>🔐 Accès Admin</h3>
@@ -191,7 +186,6 @@
     </div>
   </div>
 </div>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
@@ -239,63 +233,17 @@ const STADES = [
   "Stade Ramdane-Benabdelmalek (Constantine)"
 ];
 
-const CHAMPIONNAT_INIT = [
-  { journee:1, date:"2026-09-18", heure:"16:00", dom:"AS Khroub", ext:"Paradou AC", stade:"Stade Abed-Hamdani (El Khroub)", obs:"Huis clos", sd:"0", se:"0" },
-  { journee:1, date:"2026-09-18", heure:"16:00", dom:"USM Annaba", ext:"NC Magra", stade:"Stade 19 Mai 1956 (Annaba)", obs:"", sd:"3", se:"0" },
-  { journee:1, date:"2026-09-18", heure:"16:00", dom:"US Chaouia", ext:"NRB Beni Oulbane", stade:"Stade Allag Abderrahmane (Aïn Fakroun)", obs:"", sd:"1", se:"1" },
-  { journee:1, date:"2026-09-18", heure:"16:00", dom:"NRB Teleghma", ext:"MSP Batna", stade:"Stade Khabaza Bachir (Teleghma)", obs:"", sd:"1", se:"1" },
-  { journee:1, date:"2026-09-18", heure:"16:00", dom:"CA Batna", ext:"JS Azazga", stade:"Stade 1er Novembre 1954 (Batna)", obs:"", sd:"2", se:"2" },
-  { journee:1, date:"2026-09-18", heure:"16:00", dom:"JSM Skikda", ext:"IRB Nezla", stade:"Stade 20 Août 1955 (Skikda)", obs:"", sd:"2", se:"0" },
-  { journee:1, date:"", heure:"", dom:"JSD Jijel", ext:"CR Beni Thour", stade:"", obs:"Reporté", sd:"", se:"" },
-  { journee:1, date:"2026-09-18", heure:"16:00", dom:"MO Béjaïa", ext:"MO Constantine", stade:"Stade 1er Novembre 1954 Guendouza (Akbou)", obs:"", sd:"0", se:"0" },
-  { journee:2, date:"2026-09-26", heure:"16:00", dom:"CR Beni Thour", ext:"MO Béjaïa", stade:"Stade 18 Février (Ouargla)", obs:"", sd:"1", se:"3" },
-  { journee:2, date:"2026-09-26", heure:"16:00", dom:"IRB Nezla", ext:"JSD Jijel", stade:"Stade 10 000 places (Touggourt)", obs:"", sd:"1", se:"0" },
-  { journee:2, date:"2026-09-26", heure:"16:00", dom:"JS Azazga", ext:"JSM Skikda", stade:"Stade Tirsatine (Azazga)", obs:"", sd:"1", se:"0" },
-  { journee:2, date:"2026-09-26", heure:"16:00", dom:"NRB Beni Oulbane", ext:"CA Batna", stade:"Stade Hammou Boukouffa (Beni Oulbane)", obs:"", sd:"1", se:"0" },
-  { journee:2, date:"2026-09-26", heure:"16:00", dom:"Paradou AC", ext:"NRB Teleghma", stade:"Stade 20 Août 1955 (Alger)", obs:"Huis clos", sd:"2", se:"1" },
-  { journee:2, date:"2026-09-26", heure:"16:00", dom:"NC Magra", ext:"US Chaouia", stade:"Stade des Frères Boucheligue (Magra)", obs:"", sd:"1", se:"0" },
-  { journee:2, date:"2026-09-26", heure:"16:00", dom:"AS Khroub", ext:"USM Annaba", stade:"Stade Abed-Hamdani (El Khroub)", obs:"Huis clos", sd:"1", se:"0" },
-  { journee:2, date:"2026-09-26", heure:"16:00", dom:"MSP Batna", ext:"MO Constantine", stade:"Stade 1er Novembre 1954 (Batna)", obs:"", sd:"0", se:"0" },
-  { journee:3, date:"2026-10-02", heure:"15:00", dom:"USM Annaba", ext:"Paradou AC", stade:"Stade 19 Mai 1956 (Annaba)", obs:"", sd:"2", se:"1" },
-  { journee:3, date:"2026-10-02", heure:"15:00", dom:"NRB Teleghma", ext:"NC Magra", stade:"Stade Khabaza Bachir (Teleghma)", obs:"", sd:"1", se:"2" },
-  { journee:3, date:"2026-10-03", heure:"15:00", dom:"JSM Skikda", ext:"NRB Beni Oulbane", stade:"Stade 20 Août 1955 (Skikda)", obs:"", sd:"1", se:"0" },
-  { journee:3, date:"2026-10-02", heure:"15:00", dom:"CA Batna", ext:"MSP Batna", stade:"Stade 1er Novembre 1954 (Batna)", obs:"", sd:"0", se:"1" },
-  { journee:3, date:"2026-10-03", heure:"15:00", dom:"JSD Jijel", ext:"JS Azazga", stade:"Stade Hocine Rouibah (Jijel)", obs:"", sd:"0", se:"0" },
-  { journee:3, date:"", heure:"", dom:"MO Béjaïa", ext:"IRB Nezla", stade:"", obs:"Reporté à une date ultérieure", sd:"", se:"" },
-  { journee:3, date:"2026-10-02", heure:"15:00", dom:"MO Constantine", ext:"CR Beni Thour", stade:"Stade Ramdane-Benabdelmalek (Constantine)", obs:"", sd:"2", se:"1" },
-  { journee:3, date:"2026-10-02", heure:"15:00", dom:"US Chaouia", ext:"AS Khroub", stade:"Stade Allag Abderrahmane (Aïn Fakroun)", obs:"", sd:"0", se:"0" },
-  { journee:4, date:"2026-10-09", heure:"15:00", dom:"USM Annaba", ext:"US Chaouia", stade:"Stade 19 Mai 1956 (Annaba)", obs:"", sd:"", se:"" },
-  { journee:4, date:"2026-10-09", heure:"15:00", dom:"IRB Nezla", ext:"MO Constantine", stade:"Stade 10 000 places (Touggourt)", obs:"", sd:"", se:"" },
-  { journee:4, date:"2026-10-10", heure:"15:00", dom:"JS Azazga", ext:"MO Béjaïa", stade:"Stade Tirsatine (Azazga)", obs:"", sd:"", se:"" },
-  { journee:4, date:"2026-10-09", heure:"15:00", dom:"NRB Beni Oulbane", ext:"JSD Jijel", stade:"Stade Hammou Boukouffa (Beni Oulbane)", obs:"", sd:"", se:"" },
-  { journee:4, date:"2026-10-09", heure:"15:00", dom:"Paradou AC", ext:"JSM Skikda", stade:"Stade 20 Août 1955 (Alger)", obs:"Huis clos", sd:"", se:"" },
-  { journee:4, date:"2026-10-09", heure:"15:00", dom:"NC Magra", ext:"CA Batna", stade:"Stade des Frères Boucheligue (Magra)", obs:"", sd:"", se:"" },
-  { journee:4, date:"2026-10-09", heure:"15:00", dom:"AS Khroub", ext:"NRB Teleghma", stade:"Stade Abed-Hamdani (El Khroub)", obs:"", sd:"", se:"" },
-  { journee:4, date:"2026-10-09", heure:"15:00", dom:"MSP Batna", ext:"CR Beni Thour", stade:"Stade 1er Novembre 1954 (Batna)", obs:"", sd:"", se:"" },
-  { journee:5, date:"2026-10-13", heure:"15:00", dom:"US Chaouia", ext:"Paradou AC", stade:"Stade Allag Abderrahmane (Aïn Fakroun)", obs:"", sd:"", se:"" },
-  { journee:5, date:"2026-10-13", heure:"15:00", dom:"JSM Skikda", ext:"NC Magra", stade:"Stade 20 Août 1955 (Skikda)", obs:"", sd:"", se:"" },
-  { journee:5, date:"2026-10-15", heure:"15:00", dom:"MO Béjaïa", ext:"NRB Beni Oulbane", stade:"Stade des Martyrs (Akbou)", obs:"", sd:"", se:"" },
-  { journee:5, date:"2026-10-13", heure:"15:00", dom:"JSD Jijel", ext:"MSP Batna", stade:"Stade Hocine Rouibah (Jijel)", obs:"", sd:"", se:"" },
-  { journee:5, date:"2026-10-14", heure:"15:00", dom:"MO Constantine", ext:"JS Azazga", stade:"Stade Ramdane-Benabdelmalek (Constantine)", obs:"", sd:"", se:"" },
-  { journee:5, date:"2026-10-13", heure:"15:00", dom:"CR Beni Thour", ext:"IRB Nezla", stade:"Stade 18 Février (Ouargla)", obs:"", sd:"", se:"" },
-  { journee:5, date:"2026-10-13", heure:"15:00", dom:"NRB Teleghma", ext:"USM Annaba", stade:"Stade Khabaza Bachir (Teleghma)", obs:"", sd:"", se:"" },
-  { journee:5, date:"2026-10-13", heure:"15:00", dom:"CA Batna", ext:"AS Khroub", stade:"Stade 1er Novembre 1954 (Batna)", obs:"", sd:"", se:"" }
-];
+const CHAMPIONNAT_INIT = [];
 
 let data = {
   championnat: [],
   coupe: []
 };
- 
 function handleTitleClick() {
   clickCount++;
   if (clickCount >= 5) {
     clickCount = 0;
-    if (isAdmin) {
-      logoutAdmin();
-    } else {
-      openAdminModal();
-    }
+    if (isAdmin) { logoutAdmin(); } else { openAdminModal(); }
   }
   setTimeout(() => { clickCount = 0; }, 2000);
 }
@@ -359,10 +307,11 @@ function render(section) {
   if (section === 'championnat') {
     const fj = document.getElementById('filterJournee').value;
     const fe = document.getElementById('filterEquipe').value;
-    list = list.filter(m =>
-      (!fj || m.journee == fj) &&
-      (!fe || m.dom === fe || m.ext === fe)
-    );
+    list = list.filter(m => {
+      const matchJournee = (!fj || String(m.journee) === String(fj));
+      const matchEquipe = (!fe || m.dom === fe || m.ext === fe);
+      return matchJournee && matchEquipe;
+    });
     list = [...list].sort((a,b) => {
       if (parseInt(a.journee||0) !== parseInt(b.journee||0)) return parseInt(a.journee||0) - parseInt(b.journee||0);
       return (a.date||'').localeCompare(b.date||'');
@@ -410,7 +359,8 @@ function updateFilters() {
   const vj = fsj.value, ve = fse.value;
   fsj.innerHTML = '<option value="">Toutes les journées</option>' + journees.map(j=>'<option value="'+j+'">J'+j+'</option>').join('');
   fse.innerHTML = '<option value="">Toutes les équipes</option>' + EQUIPES.map(e=>'<option value="'+e+'">'+e+'</option>').join('');
-  fsj.value = vj; fse.value = ve;
+  if (vj) fsj.value = vj;
+  if (ve) fse.value = ve;
   const sel = document.getElementById('selectJourneeClassement');
   const vc = sel.value;
   sel.innerHTML = '<option value="all">Général (toutes journées)</option>' +
@@ -662,4 +612,4 @@ window.handleTitleClick = handleTitleClick;
 
 </script>
 </body>
-</html> 
+</html>
