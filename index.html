@@ -55,6 +55,52 @@
   .legend-color { width: 15px; height: 15px; border-radius: 3px; }
   .admin-badge { display: inline-block; background: #27ae60; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; margin-left: 8px; }
   .admin-panel { background: #f0e6ff; border: 2px solid #8e44ad; border-radius: 8px; padding: 10px; margin-bottom: 12px; }
+  .next-match {
+  background: linear-gradient(135deg, #1a4d2e 0%, #0d2b1a 100%);
+  color: white; padding: 15px 10px; border-radius: 10px;
+  margin-bottom: 12px; text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  border: 2px solid #c9a961;
+}
+.next-match-title {
+  font-size: 12px; text-transform: uppercase; letter-spacing: 2px;
+  color: #c9a961; margin-bottom: 8px; font-weight: bold;
+}
+.next-match-teams {
+  font-size: 1.3em; font-weight: bold; margin-bottom: 10px;
+  animation: blinkMatch 1.5s ease-in-out infinite;
+}
+.next-match-teams .vs {
+  color: #c9a961; margin: 0 8px; font-size: 0.9em;
+}
+@keyframes blinkMatch {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+.next-match-date {
+  font-size: 12px; color: #d4edda; margin-bottom: 10px;
+}
+.countdown {
+  display: flex; justify-content: center; gap: 6px;
+}
+.cd-box {
+  background: rgba(255,255,255,0.15); border-radius: 6px;
+  padding: 6px 8px; min-width: 50px;
+  border: 1px solid rgba(255,255,255,0.25);
+}
+.cd-num {
+  font-size: 1.4em; font-weight: bold; color: #c9a961;
+  display: block; line-height: 1;
+}
+.cd-label {
+  font-size: 9px; text-transform: uppercase; opacity: 0.8;
+  letter-spacing: 1px;
+}
+@media (max-width: 400px) {
+  .next-match-teams { font-size: 1.05em; }
+  .cd-box { min-width: 42px; padding: 5px 6px; }
+  .cd-num { font-size: 1.2em; }
+}
 </style>
 </head>
 <body>
@@ -69,7 +115,22 @@
   <div class="tab" onclick="switchTab('classement', this)">📊 Classement</div>
 </div>
 
-<div id="adminPanel" class="admin-panel" style="display:none;">
+<div id="nextMatchBanner" class="next-match" style="display:none;">
+  <div class="next-match-title">⚡ Prochain match ⚡</div>
+  <div class="next-match-teams" id="nextMatchTeams">
+    <span id="nextMatchDom"></span>
+    <span class="vs">VS</span>
+    <span id="nextMatchExt"></span>
+  </div>
+  <div class="next-match-date" id="nextMatchDate"></div>
+  <div class="countdown" id="countdown">
+    <div class="cd-box"><span class="cd-num" id="cdDays">--</span><span class="cd-label">Jours</span></div>
+    <div class="cd-box"><span class="cd-num" id="cdHours">--</span><span class="cd-label">Heures</span></div>
+    <div class="cd-box"><span class="cd-num" id="cdMins">--</span><span class="cd-label">Min</span></div>
+    <div class="cd-box"><span class="cd-num" id="cdSecs">--</span><span class="cd-label">Sec</span></div>
+  </div>
+</div>
+  <div id="adminPanel" class="admin-panel" style="display:none;">
   <div style="text-align:center; margin-bottom:8px;">
     <strong style="color:#8e44ad;">🔐 Mode Admin activé</strong>
     <button class="btn-small btn-del" onclick="logoutAdmin()" style="margin-left:10px;">Déconnexion</button>
@@ -562,6 +623,7 @@ async function loadFromFirebase() {
     statusBar.textContent = '🟢 Connecté à Firebase (' + data.championnat.length + ' matchs)';
     render('championnat');
     render('coupe');
+    updateNextMatch();
   } catch (error) {
     console.error('Erreur Firebase:', error);
     statusBar.className = 'status offline';
@@ -574,6 +636,7 @@ async function loadFromFirebase() {
     }
     render('championnat');
     render('coupe');
+    updateNextMatch();
   }
 }
 
@@ -608,9 +671,60 @@ window.onStadeChange = onStadeChange;
 window.tryLogin = tryLogin;
 window.closeAdminModal = closeAdminModal;
 window.logoutAdmin = logoutAdmin;
-window.handleTitleClick = handleTitleClick;
-window.render = render;
+window.handleTitleClick = handleTitleClick;window.render = render;
 
+// ============ PROCHAIN MATCH (compte à rebours) ============
+let countdownInterval = null;
+
+function updateNextMatch() {
+  if (!data.championnat || data.championnat.length === 0) return;
+  const now = new Date();
+  const mobMatches = data.championnat.filter(m =>
+    (m.dom === 'MO Béjaïa' || m.ext === 'MO Béjaïa') &&
+    (m.sd === '' || m.sd === undefined || m.sd === null) &&
+    m.date
+  );
+  if (mobMatches.length === 0) {
+    document.getElementById('nextMatchBanner').style.display = 'none';
+    return;
+  }
+  mobMatches.sort((a,b) => (a.date + (a.heure||'15:00')).localeCompare(b.date + (b.heure||'15:00')));
+  let next = mobMatches.find(m => new Date(m.date + 'T' + (m.heure || '15:00')) > now);
+  if (!next) next = mobMatches[mobMatches.length - 1];
+
+  const matchDate = new Date(next.date + 'T' + (next.heure || '15:00'));
+
+  document.getElementById('nextMatchDom').textContent = next.dom;
+  document.getElementById('nextMatchExt').textContent = next.ext;
+  const p = next.date.split('-');
+  document.getElementById('nextMatchDate').textContent =
+    '📅 ' + p[2] + '/' + p[1] + '/' + p[0] + ' à ' + (next.heure || '15:00') +
+    (next.stade ? ' • ' + next.stade : '');
+  document.getElementById('nextMatchBanner').style.display = 'block';
+
+  if (countdownInterval) clearInterval(countdownInterval);
+
+  function tick() {
+    const diff = matchDate - new Date();
+    if (diff <= 0) {
+      ['cdDays','cdHours','cdMins','cdSecs'].forEach(id => document.getElementById(id).textContent = '0');
+      document.getElementById('nextMatchTeams').textContent = '🔴 MATCH EN COURS 🔴';
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cdDays').textContent = d;
+    document.getElementById('cdHours').textContent = String(h).padStart(2,'0');
+    document.getElementById('cdMins').textContent = String(m).padStart(2,'0');
+    document.getElementById('cdSecs').textContent = String(s).padStart(2,'0');
+  }
+  tick();
+  countdownInterval = setInterval(tick, 1000);
+}
+
+window.updateNextMatch = updateNextMatch;
 </script>
 </body>
 </html>
