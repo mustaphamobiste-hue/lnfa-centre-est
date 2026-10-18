@@ -13,7 +13,7 @@
   .status.offline { background: #f8d7da; color: #721c24; }
   .status.loading { background: #fff3cd; color: #856404; }
   .tabs { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
-  .tab { flex: 1; min-width: 80px; padding: 10px 6px; text-align: center; border-radius: 8px 8px 0 0; background: #ddd; cursor: pointer; font-weight: bold; font-size: 12px; }
+  .tab { flex: 1; min-width: 70px; padding: 10px 4px; text-align: center; border-radius: 8px 8px 0 0; background: #ddd; cursor: pointer; font-weight: bold; font-size: 11px; }
   .tab.active { background: #1a4d2e; color: white; }
   .tab-content { display: none; }
   .tab-content.active { display: block; }
@@ -25,7 +25,7 @@
   .btn-edit { background: #2980b9; }
   .btn-del { background: #c0392b; }
   .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; background: white; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-  table { width: 100%; border-collapse: collapse; min-width: 900px; }
+  table { width: 100%; border-collapse: collapse; min-width: 800px; }
   th, td { padding: 8px; text-align: left; border-bottom: 1px solid #eee; font-size: 12px; white-space: nowrap; }
   th { background: #1a4d2e; color: white; position: sticky; top: 0; }
   tr:hover { background: #f0f8f4; }
@@ -33,29 +33,22 @@
   .obs { color: #c0392b; font-style: italic; }
   .obs-empty { color: #999; }
   .empty { text-align: center; padding: 30px; color: #888; }
-  .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 100; padding: 10px; }
+  .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 100; padding: 10px; }
   .modal.active { display: flex; }
-  .modal-content { background: white; padding: 15px; border-radius: 10px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
-  .modal-content h3 { margin-bottom: 10px; color: #1a4d2e; font-size: 1em; }
+  .modal-content { background: white; padding: 20px; border-radius: 10px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; position: relative; }
+  .modal-close { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; color: #888; }
+  .modal-content h3 { margin-bottom: 15px; color: #1a4d2e; font-size: 1.2em; padding-right: 20px; }
   .modal-content label { display: block; margin-top: 8px; font-size: 12px; color: #555; }
-  .modal-content input, .modal-content select { width: 100%; margin-top: 3px; padding: 8px; }
+  .modal-content input, .modal-content select, .modal-content textarea { width: 100%; margin-top: 3px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit;}
   .modal-actions { margin-top: 15px; display: flex; gap: 8px; justify-content: flex-end; }
-  .modal-actions button { padding: 8px 14px; font-size: 13px; }
   .btn-cancel { background: #888; }
   .count { text-align: center; font-size: 12px; color: #666; margin-bottom: 8px; }
-  .classement-table { min-width: 100%; font-size: 11px; }
-  .classement-table th, .classement-table td { padding: 6px 4px; text-align: center; }
-  .classement-table td.equipe { text-align: left; font-weight: bold; }
+  .logo-mini { width: 25px; height: 25px; object-fit: contain; vertical-align: middle; margin-right: 6px; border-radius: 4px; }
   .zone-montee { background: #d4edda !important; }
   .zone-playoff { background: #fff3cd !important; }
   .zone-relégation { background: #f8d7da !important; }
-  .classement-filters { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 12px; }
-  .legend { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin: 10px 0; font-size: 11px; }
-  .legend-item { display: flex; align-items: center; gap: 5px; }
-  .legend-color { width: 15px; height: 15px; border-radius: 3px; }
-  .admin-badge { display: inline-block; background: #27ae60; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; margin-left: 8px; }
-  .admin-panel { background: #f0e6ff; border: 2px solid #8e44ad; border-radius: 8px; padding: 10px; margin-bottom: 12px; }
-  .logo-mini { width: 25px; height: 25px; object-fit: contain; vertical-align: middle; margin-right: 6px; border-radius: 4px; }
+  
+  /* Prochain Match */
   .next-match { background: linear-gradient(135deg, #1a4d2e 0%, #0d2b1a 100%); color: white; padding: 15px 10px; border-radius: 10px; margin-bottom: 12px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); border: 2px solid #c9a961; }
   .next-match-title { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: #c9a961; margin-bottom: 8px; font-weight: bold; }
   .next-match-teams { font-size: 1.3em; font-weight: bold; margin-bottom: 10px; animation: blinkMatch 1.5s ease-in-out infinite; }
@@ -66,6 +59,29 @@
   .cd-box { background: rgba(255,255,255,0.15); border-radius: 6px; padding: 6px 8px; min-width: 50px; border: 1px solid rgba(255,255,255,0.25); }
   .cd-num { font-size: 1.4em; font-weight: bold; color: #c9a961; display: block; line-height: 1; }
   .cd-label { font-size: 9px; text-transform: uppercase; opacity: 0.8; letter-spacing: 1px; }
+
+  /* Carrousel */
+  .carousel-container { width: 100%; overflow-x: auto; display: flex; gap: 10px; padding: 10px 0; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+  .carousel-item { flex: 0 0 80%; max-width: 300px; scroll-snap-align: start; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); overflow: hidden; cursor: pointer; }
+  .carousel-item img { width: 100%; height: 120px; object-fit: cover; }
+  .carousel-item p { padding: 8px; font-size: 12px; font-weight: bold; color: #1a4d2e; line-height: 1.2; white-space: normal; }
+
+  /* Actualités */
+  .news-card { background: white; border-radius: 8px; overflow: hidden; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; }
+  .news-card img { width: 100%; height: 180px; object-fit: cover; }
+  .news-card-body { padding: 15px; }
+  .news-card-title { font-size: 1.1em; font-weight: bold; color: #1a4d2e; margin-bottom: 5px; }
+  .news-card-date { font-size: 11px; color: #777; margin-bottom: 10px; }
+  .news-card-preview { font-size: 13px; color: #444; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .article-full-text { line-height: 1.6; font-size: 14px; color: #333; white-space: pre-wrap; margin-top: 10px; }
+  .article-full-img { width: 100%; border-radius: 8px; margin-bottom: 15px; }
+
+  /* Sub-tabs Championnat */
+  .sub-tabs { display: flex; gap: 10px; justify-content: center; margin-bottom: 15px; }
+  .sub-tab { padding: 8px 15px; background: #e0e0e0; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 13px; }
+  .sub-tab.active { background: #1a4d2e; color: white; }
+
+  /* Historique */
   .historique-container { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); max-width: 900px; margin: 0 auto; }
   .historique-header { text-align: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 2px solid #c9a961; }
   .historique-logo { max-width: 180px; margin: 0 auto 15px; display: block; }
@@ -74,11 +90,24 @@
   .historique-section { margin-bottom: 30px; }
   .historique-section-title { color: #1a4d2e; font-size: 1.15em; font-weight: bold; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid #c9a961; }
   .historique-text { color: #333; line-height: 1.7; font-size: 0.95em; text-align: justify; margin-bottom: 12px; }
+  .historique-image { width: 100%; border-radius: 8px; margin: 12px 0; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+  .historique-image-caption { text-align: center; font-size: 0.8em; color: #777; font-style: italic; margin-top: -8px; margin-bottom: 15px; }
   .historique-fiche { background: #f0f8f4; border-left: 4px solid #1a4d2e; padding: 15px; border-radius: 6px; margin: 15px 0; }
   .historique-fiche-item { display: flex; margin-bottom: 8px; font-size: 0.9em; }
   .historique-fiche-label { font-weight: bold; color: #1a4d2e; min-width: 140px; }
   .historique-fiche-value { color: #333; }
-  @media (max-width: 400px) { .next-match-teams { font-size: 1.05em; } .cd-box { min-width: 42px; padding: 5px 6px; } .cd-num { font-size: 1.2em; } }
+  .historique-list { padding-left: 20px; margin: 12px 0; }
+  .historique-list li { margin-bottom: 6px; color: #333; line-height: 1.5; font-size: 0.9em; }
+  .historique-ultras { background: #fff8e6; border-left: 4px solid #c9a961; padding: 12px; border-radius: 6px; margin: 10px 0; }
+  .historique-ultras-name { font-weight: bold; color: #1a4d2e; font-size: 0.95em; }
+  .historique-ultras-info { font-size: 0.85em; color: #555; margin-top: 3px; }
+
+  @media (max-width: 400px) {
+    .next-match-teams { font-size: 1.05em; }
+    .cd-box { min-width: 42px; padding: 5px 6px; }
+    .cd-num { font-size: 1.2em; }
+    .carousel-item { flex: 0 0 85%; }
+  }
 </style>
 </head>
 <body>
@@ -91,10 +120,11 @@
   <div class="tab active" onclick="switchTab('championnat', this)">🏆 Championnat</div>
   <div class="tab" onclick="switchTab('coupe', this)">🏅 Coupe</div>
   <div class="tab" onclick="switchTab('classement', this)">📊 Classement</div>
+  <div class="tab" onclick="switchTab('actualite', this)">📰 Actualité</div>
   <div class="tab" onclick="switchTab('historique', this)">📜 Historique</div>
 </div>
 
-<div id="adminPanel" class="admin-panel" style="display:none;">
+<div id="adminPanel" class="admin-panel" style="display:none; background:#f0e6ff; border:2px solid #8e44ad; border-radius:8px; padding:10px; margin-bottom:12px;">
   <div style="text-align:center; margin-bottom:8px;">
     <strong style="color:#8e44ad;">🔐 Mode Admin activé</strong>
     <button class="btn-small btn-del" onclick="logoutAdmin()" style="margin-left:10px;">Déconnexion</button>
@@ -120,8 +150,18 @@
   </div>
 </div>
 
+<!-- Carrousel des actualités (sous le chrono) -->
+<div id="carouselSection" style="margin-bottom: 12px;">
+  <div style="font-size: 12px; font-weight: bold; color: #1a4d2e; margin-bottom: 5px; padding-left: 5px;">📰 Dernières Actualités</div>
+  <div class="carousel-container" id="homeCarousel"></div>
+</div>
+
 <!-- ONGLET CHAMPIONNAT -->
 <div id="tab-championnat" class="tab-content active">
+  <div class="sub-tabs">
+    <div class="sub-tab active" id="subtab-programme" onclick="switchSubTab('programme')">📅 Programme</div>
+    <div class="sub-tab" id="subtab-resultats" onclick="switchSubTab('resultats')">📊 Résultats</div>
+  </div>
   <div class="toolbar">
     <button onclick="openModal('championnat')" id="btnAddChamp" style="display:none;">➕ Ajouter</button>
     <button onclick="exportData('championnat')">💾 Exporter</button>
@@ -129,10 +169,10 @@
     <input type="file" id="importChampionnat" accept=".json" style="display:none" onchange="importData(event,'championnat')">
   </div>
   <div class="toolbar">
-    <select id="filterJournee">
+    <select id="filterJournee" onchange="render('championnat')">
       <option value="">Toutes les journées</option>
     </select>
-    <select id="filterEquipe">
+    <select id="filterEquipe" onchange="render('championnat')">
       <option value="">Toutes les équipes</option>
     </select>
     <button onclick="render('championnat')" style="background:#2980b9;">🔍 Filtrer</button>
@@ -175,19 +215,19 @@
 
 <!-- ONGLET CLASSEMENT -->
 <div id="tab-classement" class="tab-content">
-  <div class="classement-filters">
+  <div class="classement-filters" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 12px;">
     <label style="font-size:13px;">Classement après : </label>
     <select id="selectJourneeClassement" onchange="renderClassement()">
       <option value="all">Général (toutes journées)</option>
     </select>
   </div>
-  <div class="legend">
-    <div class="legend-item"><div class="legend-color" style="background:#d4edda;"></div> Montée directe</div>
-    <div class="legend-item"><div class="legend-color" style="background:#fff3cd;"></div> Playoffs</div>
-    <div class="legend-item"><div class="legend-color" style="background:#f8d7da;"></div> Relégation</div>
+  <div class="legend" style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin: 10px 0; font-size: 11px;">
+    <div class="legend-item" style="display: flex; align-items: center; gap: 5px;"><div class="legend-color" style="width: 15px; height: 15px; border-radius: 3px; background:#d4edda;"></div> Montée directe</div>
+    <div class="legend-item" style="display: flex; align-items: center; gap: 5px;"><div class="legend-color" style="width: 15px; height: 15px; border-radius: 3px; background:#fff3cd;"></div> Playoffs</div>
+    <div class="legend-item" style="display: flex; align-items: center; gap: 5px;"><div class="legend-color" style="width: 15px; height: 15px; border-radius: 3px; background:#f8d7da;"></div> Relégation</div>
   </div>
   <div class="table-wrap">
-    <table class="classement-table">
+    <table class="classement-table" style="min-width: 100%; font-size: 11px;">
       <thead>
         <tr>
           <th>Pos</th><th>Équipe</th><th>J</th><th>G</th><th>N</th><th>P</th>
@@ -196,6 +236,13 @@
       </thead>
       <tbody id="tbody-classement"></tbody>
     </table>
+  </div>
+</div>
+
+<!-- ONGLET ACTUALITE -->
+<div id="tab-actualite" class="tab-content">
+  <div id="news-container" style="max-width: 800px; margin: 0 auto;">
+    <!-- Les articles seront injectés ici par JS -->
   </div>
 </div>
 
@@ -210,214 +257,73 @@
     <div class="historique-section">
       <div class="historique-section-title">📋 Fiche d'identité</div>
       <div class="historique-fiche">
-        <div class="historique-fiche-item">
-          <div class="historique-fiche-label">Nom officiel :</div>
-          <div class="historique-fiche-value">Mouloudia Olympique de Béjaïa (M.O.B)</div>
-        </div>
-        <div class="historique-fiche-item">
-          <div class="historique-fiche-label">Date de fondation :</div>
-          <div class="historique-fiche-value">5 juillet 1954</div>
-        </div>
-        <div class="historique-fiche-item">
-          <div class="historique-fiche-label">Surnom :</div>
-          <div class="historique-fiche-value">Les Crabes 🦀</div>
-        </div>
-        <div class="historique-fiche-item">
-          <div class="historique-fiche-label">Stade :</div>
-          <div class="historique-fiche-value">Stade de l'Unité Maghrébine (Béjaïa)</div>
-        </div>
-        <div class="historique-fiche-item">
-          <div class="historique-fiche-label">Couleurs à domicile :</div>
-          <div class="historique-fiche-value">Vert et Noir</div>
-        </div>
-        <div class="historique-fiche-item">
-          <div class="historique-fiche-label">Couleurs à l'extérieur :</div>
-          <div class="historique-fiche-value">Vert et Blanc</div>
-        </div>
-        <div class="historique-fiche-item">
-          <div class="historique-fiche-label">Championnat actuel :</div>
-          <div class="historique-fiche-value">Ligue 2 Amateur (Groupe Centre-Est) 2026/2027</div>
-        </div>
+        <div class="historique-fiche-item"><div class="historique-fiche-label">Nom officiel :</div><div class="historique-fiche-value">Mouloudia Olympique de Béjaïa (M.O.B)</div></div>
+        <div class="historique-fiche-item"><div class="historique-fiche-label">Date de fondation :</div><div class="historique-fiche-value">5 juillet 1954</div></div>
+        <div class="historique-fiche-item"><div class="historique-fiche-label">Surnom :</div><div class="historique-fiche-value">Les Crabes 🦀</div></div>
+        <div class="historique-fiche-item"><div class="historique-fiche-label">Stade :</div><div class="historique-fiche-value">Stade de l'Unité Maghrébine (Béjaïa)</div></div>
+        <div class="historique-fiche-item"><div class="historique-fiche-label">Couleurs :</div><div class="historique-fiche-value">Vert et Noir (domicile) / Vert et Blanc (extérieur)</div></div>
+        <div class="historique-fiche-item"><div class="historique-fiche-label">Championnat actuel :</div><div class="historique-fiche-value">Ligue 2 Amateur (Groupe Centre-Est) 2026/2027</div></div>
       </div>
     </div>
-
-<!-- NAISSANCE DU CLUB (1954-1962) -->
-<div class="historique-section">
-  <div class="historique-section-title">📅 La naissance et le sacrifice (1954-1962)</div>
-  <div class="historique-text">
-    La trajectoire du MOB est intimement liée à l'histoire de l'Algérie. Le 5 juillet 1954, 
-    le récépissé de déclaration est officiellement déposé par M. Abdelhafid Tamzali, 
-    marquant la naissance administrative du club.
-  </div>
-  <img src="https://i.postimg.cc/zvngc2PV/1000012070.jpg" alt="Abdelhafid Tamzali" class="historique-image">
-  <div class="historique-image-caption">M. Abdelhafid Tamzali, premier président du MO Béjaïa (1954)</div>
-</div>
-
-<!-- LES PRÉSIDENTS DU MOB -->
-<div class="historique-section">
-  <div class="historique-section-title">👥 Les présidents du MO Béjaïa depuis la création</div>
-  <img src="https://i.postimg.cc/DyLg9BbL/les-dirigeants-du-MOB-post-independance.jpg" alt="Dirigeants du MOB" class="historique-image">
-  <div class="historique-image-caption">Les dirigeants post-indépendance</div>
-  <ul class="historique-list">
-    <li>Tamzali Abdelhafid</li>
-    <li>Yousfi Loucif</li>
-    <li>Hadahoum Salah</li>
-    <li>Belhocine Hocine</li>
-    <li>Mendil Boualem</li>
-    <li>Dali Ahmed</li>
-    <li>Zaouche Salah</li>
-    <li>Benalouche Salah</li>
-    <li>Kasri Allaoua</li>
-    <li>Tighidet Ahcen</li>
-    <li>Ferdjoukh Abdelkader</li>
-    <li>Maître Yanat</li>
-    <li>Ladjouz</li>
-    <li>Oulmou Mohamed</li>
-    <li>Tikheroubine Mohamed</li>
-    <li>Berri Larbi</li>
-    <li>Allouache Larbi</li>
-    <li>Hamouche Yahia</li>
-    <li>Bannai Zahir</li>
-    <li>Rezki Mustapha</li>
-    <li>Leklak Norredine</li>
-    <li>Bouchaara</li>
-    <li>Maouche Nacer</li>
-    <li>Bouchebah Mustapha</li>
-    <li>Adrar Akli</li>
-    <li>Attia Zahir</li>
-    <li>Ikhlef Boubekeur</li>
-    <li>Hassisen Farid</li>
-    <li>Boudiab Rezki</li>
-    <li>Benai Arab</li>
-    <li>Boukhiba Djamel</li>
-  </ul>
-</div>
-
-<!-- LE PARCOURS DU CLUB -->
-<div class="historique-section">
-  <div class="historique-section-title">🗺️ Le parcours du MOB à travers les divisions</div>
-  <div class="historique-text">
-    Le parcours du MOB à travers les divisions du football algérien est un véritable voyage, 
-    marqué par des périodes de transition et une reconstruction progressive.
-  </div>
-  <img src="https://i.postimg.cc/0Nb9QMvG/MO-Bejaia-archive-1.jpg" alt="MO Béjaïa archive 1" class="historique-image">
-  <div class="historique-image-caption">MOB, histoire et archives</div>
-  <ul class="historique-list">
-    <li><b>1962 - 1963</b> : Reprise post-indépendance dans la division Nationale de Constantine.</li>
-    <li><b>1964 - 1965</b> : Évolution en Division 2 (Division d'Honneur).</li>
-    <li><b>1966 - 1969</b> : Passage en Division 4 (Promotion d'Honneur).</li>
-    <li><b>1977 - 1990</b> : Longue période de transition où le MOB fusionne et joue sous l'appellation du MBB (Mechâal Baladiat Béjaïa), oscillant entre la D2 et la D3.</li>
-    <li><b>1994 - 2001</b> : Le club stabilise sa structure en Division 3 (Région Est).</li>
-    <li><b>2012</b> : Le grand retour en Ligue 2, prémisse d'un âge d'or imminent.</li>
-  </ul>
-  <img src="https://i.postimg.cc/zv3C2kYH/MO-Bejaia-archive-2.jpg" alt="MO Béjaïa archive 2" class="historique-image">
-  <div class="historique-image-caption">MOB, histoire et archives</div>
-</div>
-
-<!-- L'ÂGE D'OR (2013-2015) -->
-<div class="historique-section">
-  <div class="historique-section-title">🏆 L'âge d'or national (2013-2015)</div>
-  <div class="historique-text">
-    Après des décennies de lutte dans les divisions inférieures, le MOB écrit les plus belles 
-    pages de son histoire au milieu des années 2010. Au terme de la saison 2012/2013, le club 
-    accède pour la toute première fois de son histoire à la Ligue 1 Professionnelle. Après une 
-    première saison de maintien (2013/2014), l'exercice 2014/2015 vire au chef-d'œuvre :
-  </div>
-  <ul class="historique-list">
-    <li>🏆 Une victoire historique en <b>Coupe d'Algérie</b>, le tout premier trophée majeur du club.</li>
-    <li>🥈 Une place de <b>Vice Champion d'Algérie</b>, qualifiant le club pour les joutes continentales.</li>
-  </ul>
-  <img src="https://i.postimg.cc/9XZfdg0N/joie-de-toute-l-equipe-apres-la-victoire-MO-Bejaia-1-0-RC-arbaa.jpg" alt="Joie victoire RC Arbaâ" class="historique-image">
-  <div class="historique-image-caption">Historique : Le MOB décroche sa première Coupe d'Algérie (1-0 vs RC Arbaâ) au stade Mustapha Tchaker de Blida</div>
-  <img src="https://i.postimg.cc/R0XvC72C/le-groupe-a-Bejaia-apres-la-finale-coupe-d-Algerie-2015-MO-Bejaia-1-0-RC-Arbaa-cou.jpg" alt="Groupe après la finale 2015" class="historique-image">
-  <div class="historique-image-caption">Le groupe à Béjaïa après la victoire en Coupe d'Algérie 2015</div>
-</div>
-
-<!-- L'ÉPOPÉE AFRICAINE (2016) -->
-<div class="historique-section">
-  <div class="historique-section-title">🌍 Le rêve africain (2016)</div>
-  <div class="historique-text">
-    Propulsé sur la scène continentale, le MOB surprend l'Afrique. Après un beau parcours en 
-    Ligue des Champions, les Crabes sont reversés en Coupe de la CAF et se hissent jusqu'en 
-    <b>Finale en novembre 2016</b>.
-  </div>
-  <ul class="historique-list">
-    <li><b>Match aller</b> (29 octobre 2016) : MO Béjaïa 1-1 TP Mazembe</li>
-    <li><b>Match retour</b> : TP Mazembe 4-1 MO Béjaïa</li>
-  </ul>
-  <div class="historique-text">
-    Le MOB s'incline, mais sort la tête haute d'une aventure mémorable.
-  </div>
-  <img src="https://i.postimg.cc/13Jh0wD6/1000011470.jpg" alt="Délégation MOB à Obuasi" class="historique-image">
-  <div class="historique-image-caption">La délégation du MO Béjaïa au cœur de la ville d'Obuasi au Ghana (Finale CAF 2016)</div>
-</div>
-
-<!-- DESCENTE ET RECONSTRUCTION (2017-2026) -->
-<div class="historique-section">
-  <div class="historique-section-title">📉 Descente, reconstruction et grand retour (2017-2026)</div>
-  <div class="historique-text">
-    Le football est fait de cycles. Après avoir touché les sommets, les Vert et Noir connaissent 
-    des années plus instables, oscillant entre la Ligue 1 et la Ligue 2 (2017 à 2022), avant de 
-    chuter jusqu'en Division 3 (Inter-régions) entre 2023 et 2025.
-  </div>
-  <div class="historique-text">
-    Mais l'esprit des Crabes ne meurt jamais. À force de persévérance, le MOB valide son retour 
-    en <b>Ligue 2 Amateur (Groupe Centre-Est)</b> pour l'exercice 2025/2026, stabilisant ses 
-    bases pour entamer la nouvelle saison 2026/2027 avec la ferme intention de redonner au club 
-    la place qu'il mérite.
-  </div>
-  <img src="https://i.postimg.cc/qRvygGRm/MOB-archive-3.jpg" alt="MOB archive 3" class="historique-image">
-  <div class="historique-image-caption">MOB, histoire et archives</div>
-</div>
-
-<!-- LE 12ème HOMME -->
-<div class="historique-section">
-  <div class="historique-section-title">🥁 Le 12ème Homme : La ferveur des supporters</div>
-  <div class="historique-text">
-    Si le MOB est respecté partout en Algérie, il le doit à son public unique. Les tribunes du 
-    Stade de l'Unité Maghrébine vibrent au rythme de groupes Ultras organisés et passionnés.
-  </div>
-  <img src="https://i.postimg.cc/K8cDTMZ9/Stade-de-l-unite-Maghrebine-de-Bejaia.jpg" alt="Stade Unité Maghrébine" class="historique-image">
-  <div class="historique-image-caption">Le Stade de l'Unité Maghrébine de Béjaïa</div>
-  
-  <div class="historique-ultras">
-    <div class="historique-ultras-name">🔥 Ultras Granchio (UG)</div>
-    <div class="historique-ultras-info">Fondé le 2 octobre 2009. Ce groupe historique donne de la voix depuis le Couvert B du stade.</div>
-  </div>
-  
-  <div class="historique-ultras">
-    <div class="historique-ultras-name">👑 Ultras Saldae Kings (USK)</div>
-    <div class="historique-ultras-info">Fondé le 4 mars 2011. Ils animent avec ferveur le Couvert A.</div>
-  </div>
-  
-  <div class="historique-ultras">
-    <div class="historique-ultras-name">🦅 Ultras Free Men 16 (UFM16)</div>
-    <div class="historique-ultras-info">Fondé le 19 juin 2016. Ils occupent la mythique tribune "Adrar N Tizi".</div>
-  </div>
-  
-  <div class="historique-ultras">
-    <div class="historique-ultras-name">💀 Ultra Mobiste (UM)</div>
-    <div class="historique-ultras-info">Fondé le 11 janvier 2025. Ce groupe puissant est né de la fusion de trois entités phares qui occupent le Virage Sud-Est :
-      <ul class="historique-list" style="margin-top:5px;">
-        <li>Ultras Pirate Boys (UPB) — créé à l'origine en 2011</li>
-        <li>La Banda Berberista — fidèle depuis janvier 2015</li>
-        <li>Le KOP 12 — toujours très actif dans cette partie du stade</li>
+    <div class="historique-section">
+      <div class="historique-section-title">📅 La naissance et le sacrifice (1954-1962)</div>
+      <div class="historique-text">La trajectoire du MOB est intimement liée à l'histoire de l'Algérie. Le 5 juillet 1954, le récépissé de déclaration est officiellement déposé par M. Abdelhafid Tamzali, marquant la naissance administrative du club.</div>
+      <img src="https://i.postimg.cc/zvngc2PV/1000012070.jpg" alt="Abdelhafid Tamzali" class="historique-image">
+      <div class="historique-image-caption">M. Abdelhafid Tamzali, premier président du MO Béjaïa (1954)</div>
+    </div>
+    <div class="historique-section">
+      <div class="historique-section-title">👥 Les présidents du MO Béjaïa depuis la création</div>
+      <img src="https://i.postimg.cc/DyLg9BbL/les-dirigeants-du-MOB-post-independance.jpg" alt="Dirigeants du MOB" class="historique-image">
+      <div class="historique-image-caption">Les dirigeants post-indépendance</div>
+      <ul class="historique-list">
+        <li>Tamzali Abdelhafid</li><li>Yousfi Loucif</li><li>Hadahoum Salah</li><li>Belhocine Hocine</li><li>Mendil Boualem</li><li>Dali Ahmed</li><li>Zaouche Salah</li><li>Benalouche Salah</li><li>Kasri Allaoua</li><li>Tighidet Ahcen</li><li>Ferdjoukh Abdelkader</li><li>Maître Yanat</li><li>Ladjouz</li><li>Oulmou Mohamed</li><li>Tikheroubine Mohamed</li><li>Berri Larbi</li><li>Allouache Larbi</li><li>Hamouche Yahia</li><li>Bannai Zahir</li><li>Rezki Mustapha</li><li>Leklak Norredine</li><li>Bouchaara</li><li>Maouche Nacer</li><li>Bouchebah Mustapha</li><li>Adrar Akli</li><li>Attia Zahir</li><li>Ikhlef Boubekeur</li><li>Hassisen Farid</li><li>Boudiab Rezki</li><li>Benai Arab</li><li>Boukhiba Djamel</li>
       </ul>
     </div>
-  </div>
-  
-  <div class="historique-text" style="margin-top:15px;">
-    Derrière ces groupes d'avant-garde, c'est toute une ville et des milliers d'autres supporters 
-    qui garnissent le reste des tribunes à chaque "Match-Day", portant le Vert et le Noir comme 
-    un symbole d'identité et de mémoire collective.
-  </div>
-</div>
+    <div class="historique-section">
+      <div class="historique-section-title">🗺️ Le parcours du MOB à travers les divisions</div>
+      <div class="historique-text">Le parcours du MOB à travers les divisions du football algérien est un véritable voyage, marqué par des périodes de transition et une reconstruction progressive.</div>
+      <img src="https://i.postimg.cc/0Nb9QMvG/MO-Bejaia-archive-1.jpg" alt="Archive 1" class="historique-image"><div class="historique-image-caption">MOB, histoire et archives</div>
+      <ul class="historique-list">
+        <li><b>1962 - 1963</b> : Reprise post-indépendance dans la division Nationale de Constantine.</li><li><b>1964 - 1965</b> : Évolution en Division 2 (Division d'Honneur).</li><li><b>1966 - 1969</b> : Passage en Division 4 (Promotion d'Honneur).</li><li><b>1977 - 1990</b> : Longue période de transition où le MOB fusionne et joue sous l'appellation du MBB (Mechâal Baladiat Béjaïa), oscillant entre la D2 et la D3.</li><li><b>1994 - 2001</b> : Le club stabilise sa structure en Division 3 (Région Est).</li><li><b>2012</b> : Le grand retour en Ligue 2, prémisse d'un âge d'or imminent.</li>
+      </ul>
+      <img src="https://i.postimg.cc/zv3C2kYH/MO-Bejaia-archive-2.jpg" alt="Archive 2" class="historique-image"><div class="historique-image-caption">MOB, histoire et archives</div>
+    </div>
+    <div class="historique-section">
+      <div class="historique-section-title">🏆 L'âge d'or national (2013-2015)</div>
+      <div class="historique-text">Après des décennies de lutte dans les divisions inférieures, le MOB écrit les plus belles pages de son histoire au milieu des années 2010. Au terme de la saison 2012/2013, le club accède pour la toute première fois de son histoire à la Ligue 1 Professionnelle. Après une première saison de maintien (2013/2014), l'exercice 2014/2015 vire au chef-d'œuvre :</div>
+      <ul class="historique-list"><li>🏆 Une victoire historique en <b>Coupe d'Algérie</b>, le tout premier trophée majeur du club.</li><li>🥈 Une place de <b>Vice Champion d'Algérie</b>, qualifiant le club pour les joutes continentales.</li></ul>
+      <img src="https://i.postimg.cc/9XZfdg0N/joie-de-toute-l-equipe-apres-la-victoire-MO-Bejaia-1-0-RC-arbaa.jpg" alt="Victoire RC Arbaa" class="historique-image"><div class="historique-image-caption">Historique : Le MOB décroche sa première Coupe d'Algérie (1-0 vs RC Arbaâ) au stade Mustapha Tchaker de Blida</div>
+      <img src="https://i.postimg.cc/R0XvC72C/le-groupe-a-Bejaia-apres-la-finale-coupe-d-Algerie-2015-MO-Bejaia-1-0-RC-Arbaa-cou.jpg" alt="Groupe finale 2015" class="historique-image"><div class="historique-image-caption">Le groupe à Béjaïa après la victoire en Coupe d'Algérie 2015</div>
+    </div>
+    <div class="historique-section">
+      <div class="historique-section-title">🌍 Le rêve africain (2016)</div>
+      <div class="historique-text">Propulsé sur la scène continentale, le MOB surprend l'Afrique. Après un beau parcours en Ligue des Champions, les Crabes sont reversés en Coupe de la CAF et se hissent jusqu'en <b>Finale en novembre 2016</b>.</div>
+      <ul class="historique-list"><li><b>Match aller</b> (29 octobre 2016) : MO Béjaïa 1-1 TP Mazembe</li><li><b>Match retour</b> : TP Mazembe 4-1 MO Béjaïa</li></ul>
+      <div class="historique-text">Le MOB s'incline, mais sort la tête haute d'une aventure mémorable.</div>
+      <img src="https://i.postimg.cc/13Jh0wD6/1000011470.jpg" alt="Obuasi" class="historique-image"><div class="historique-image-caption">La délégation du MO Béjaïa au cœur de la ville d'Obuasi au Ghana (Finale CAF 2016)</div>
+    </div>
+    <div class="historique-section">
+      <div class="historique-section-title">📉 Descente, reconstruction et grand retour (2017-2026)</div>
+      <div class="historique-text">Le football est fait de cycles. Après avoir touché les sommets, les Vert et Noir connaissent des années plus instables, oscillant entre la Ligue 1 et la Ligue 2 (2017 à 2022), avant de chuter jusqu'en Division 3 (Inter-régions) entre 2023 et 2025.</div>
+      <div class="historique-text">Mais l'esprit des Crabes ne meurt jamais. À force de persévérance, le MOB valide son retour en <b>Ligue 2 Amateur (Groupe Centre-Est)</b> pour l'exercice 2025/2026, stabilisant ses bases pour entamer la nouvelle saison 2026/2027 avec la ferme intention de redonner au club la place qu'il mérite.</div>
+      <img src="https://i.postimg.cc/qRvygGRm/MOB-archive-3.jpg" alt="Archive 3" class="historique-image"><div class="historique-image-caption">MOB, histoire et archives</div>
+    </div>
+    <div class="historique-section">
+      <div class="historique-section-title">🥁 Le 12ème Homme : La ferveur des supporters</div>
+      <div class="historique-text">Si le MOB est respecté partout en Algérie, il le doit à son public unique. Les tribunes du Stade de l'Unité Maghrébine vibrent au rythme de groupes Ultras organisés et passionnés.</div>
+      <img src="https://i.postimg.cc/K8cDTMZ9/Stade-de-l-unite-Maghrebine-de-Bejaia.jpg" alt="Stade Unité Maghrébine" class="historique-image"><div class="historique-image-caption">Le Stade de l'Unité Maghrébine de Béjaïa</div>
+      <div class="historique-ultras"><div class="historique-ultras-name">🔥 Ultras Granchio (UG)</div><div class="historique-ultras-info">Fondé le 2 octobre 2009. Ce groupe historique donne de la voix depuis le Couvert B du stade.</div></div>
+      <div class="historique-ultras"><div class="historique-ultras-name">👑 Ultras Saldae Kings (USK)</div><div class="historique-ultras-info">Fondé le 4 mars 2011. Ils animent avec ferveur le Couvert A.</div></div>
+      <div class="historique-ultras"><div class="historique-ultras-name">🦅 Ultras Free Men 16 (UFM16)</div><div class="historique-ultras-info">Fondé le 19 juin 2016. Ils occupent la mythique tribune "Adrar N Tizi".</div></div>
+      <div class="historique-ultras"><div class="historique-ultras-name">💀 Ultra Mobiste (UM)</div><div class="historique-ultras-info">Fondé le 11 janvier 2025. Ce groupe puissant est né de la fusion de trois entités phares qui occupent le Virage Sud-Est :<ul class="historique-list" style="margin-top:5px;"><li>Ultras Pirate Boys (UPB) — créé à l'origine en 2011</li><li>La Banda Berberista — fidèle depuis janvier 2015</li><li>Le KOP 12 — toujours très actif dans cette partie du stade</li></ul></div></div>
+    </div>
   </div>
 </div>
 
 <!-- MODAL MATCH -->
 <div class="modal" id="modal">
   <div class="modal-content">
+    <span class="modal-close" onclick="closeModal()">×</span>
     <h3 id="modalTitle">Ajouter</h3>
     <input type="hidden" id="editIndex">
     <input type="hidden" id="editSection">
@@ -441,12 +347,24 @@
 <!-- MODAL ADMIN -->
 <div class="modal" id="modalAdmin">
   <div class="modal-content">
+    <span class="modal-close" onclick="closeAdminModal()">×</span>
     <h3>🔐 Accès Admin</h3>
     <label>Mot de passe <input type="password" id="adminPwd" onkeypress="if(event.key==='Enter') tryLogin()"></label>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeAdminModal()">Annuler</button>
       <button onclick="tryLogin()">Connexion</button>
     </div>
+  </div>
+</div>
+
+<!-- MODAL ARTICLE -->
+<div class="modal" id="modalArticle">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeArticleModal()">×</span>
+    <h3 id="articleTitle"></h3>
+    <div id="articleDate" style="font-size: 11px; color:#777; margin-bottom: 10px;"></div>
+    <img id="articleImg" src="" style="width:100%; border-radius:8px; margin-bottom:15px; display:none;">
+    <div id="articleText" class="article-full-text"></div>
   </div>
 </div>
 
@@ -467,16 +385,23 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
+// Création automatique de la clé admin si absente
+(async () => {
+  try {
+    const adminRef = ref(db, 'config/admin_pass');
+    const adminSnap = await get(adminRef);
+    if (!adminSnap.exists()) {
+      await set(adminRef, 'Béjaïa#2026!Mob');
+    }
+  } catch (e) { console.log(e); }
+})();
+
 const ADMIN_PASSWORD = "Béjaïa#2026!Mob";
 let isAdmin = false;
 let clickCount = 0;
+let currentSubTab = 'programme';
 
-const EQUIPES = [
-  "Paradou AC", "IRB Nezla", "NRB Beni Oulbane", "NRB Teleghma",
-  "CA Batna", "US Chaouia", "AS Khroub", "MO Constantine",
-  "USM Annaba", "JS Azazga", "MO Béjaïa", "NC Magra",
-  "JSM Skikda", "MSP Batna", "JSD Jijel", "CR Beni Thour"
-];
+const EQUIPES = ["Paradou AC", "IRB Nezla", "NRB Beni Oulbane", "NRB Teleghma", "CA Batna", "US Chaouia", "AS Khroub", "MO Constantine", "USM Annaba", "JS Azazga", "MO Béjaïa", "NC Magra", "JSM Skikda", "MSP Batna", "JSD Jijel", "CR Beni Thour"];
 
 const LOGOS = {
   "Paradou AC": "https://i.postimg.cc/QCDDzw1H/Paradou-AC-logo-officiel.png",
@@ -497,29 +422,48 @@ const LOGOS = {
   "CR Beni Thour": "https://i.postimg.cc/k4Ks4hZQ/CR-Beni-Thour-logo-officiel.png"
 };
 
-const STADES = [
-  "Stade Abed-Hamdani (El Khroub)",
-  "Stade 19 Mai 1956 (Annaba)",
-  "Stade Allag Abderrahmane (Aïn Fakroun)",
-  "Stade Khabaza Bachir (Teleghma)",
-  "Stade 1er Novembre 1954 (Batna)",
-  "Stade 20 Août 1955 (Skikda)",
-  "Stade 18 Février (Ouargla)",
-  "Stade 10 000 places (Touggourt)",
-  "Stade Tirsatine (Azazga)",
-  "Stade Hammou Boukouffa (Beni Oulbane)",
-  "Stade 20 Août 1955 (Alger)",
-  "Stade des Frères Boucheligue (Magra)",
-  "Stade 1er Novembre 1954 Guendouza (Akbou)",
-  "Stade des Martyrs (Akbou)",
-  "Stade Hocine Rouibah (Jijel)",
-  "Stade Ramdane-Benabdelmalek (Constantine)"
+const STADES = ["Stade Abed-Hamdani (El Khroub)","Stade 19 Mai 1956 (Annaba)","Stade Allag Abderrahmane (Aïn Fakroun)","Stade Khabaza Bachir (Teleghma)","Stade 1er Novembre 1954 (Batna)","Stade 20 Août 1955 (Skikda)","Stade 18 Février (Ouargla)","Stade 10 000 places (Touggourt)","Stade Tirsatine (Azazga)","Stade Hammou Boukouffa (Beni Oulbane)","Stade 20 Août 1955 (Alger)","Stade des Frères Boucheligue (Magra)","Stade 1er Novembre 1954 Guendouza (Akbou)","Stade des Martyrs (Akbou)","Stade Hocine Rouibah (Jijel)","Stade Ramdane-Benabdelmalek (Constantine)"];
+
+const ARTICLES_INIT = [
+  {
+    id: "a1",
+    date: "2026-10-13",
+    titre: "COUP DE MASSUE / J5 : MO Béjaïa vs NRB Beni Oulbane se jouera à huis clos",
+    image: "https://i.postimg.cc/NjDfRd1H/MO-Bejaia-vs-NRB-Beni-Oulbane-a-Huis-Clos.jpg",
+    texte: "C'est une bien triste nouvelle qui vient de tomber pour l'ensemble de la famille mobiste. La Ligue Nationale du Football Amateur (LNFA) a officialisé le programme de la 5ᵉ journée de Ligue 2 Amateur (Groupe Centre-Est), confirmant que la rencontre opposant le MO Béjaïa au NRB Beni Oulbane, ce jeudi 15 octobre 2026 à 15 h 00, se disputera à huis clos (sans public) au Stade des Martyrs d'Akbou.\n\nRappel des Informations :\n- Affiche : MO Béjaïa vs NRB Beni Oulbane\n- Compétition : Ligue 2 Amateur (Groupe Centre-Est) – 5ᵉ Journée\n- Date : Jeudi 15 Octobre 2026\n- Coup d'envoi : 15 h 00\n- Lieu : Stade des Martyrs d'Akbou\n- Statut : Huis-Clos"
+  },
+  {
+    id: "a2",
+    date: "2026-10-07",
+    titre: "DOMICILIATION DU MOB À AKBOU : Une nouvelle étape officiellement franchie",
+    image: "https://i.postimg.cc/5yqMRPjy/Domiciliation-du-MO-Bejaia-a-Akbou.jpg",
+    texte: "La direction du MO Béjaïa a officiellement exprimé sa reconnaissance à l'ensemble des responsables et institutions ayant contribué à l'aboutissement du dossier permettant au club d'évoluer au Stade des Martyrs d'Akbou.\n\nAu centre de ces remerciements figure M. Mehdi Amine Mohamed, nouveau Secrétaire général de la Wilaya de Béjaïa, dont la direction du MOB souligne la disponibilité, l'implication et les efforts déployés depuis le début des démarches.\n\nSelon la direction du club, son intervention a largement contribué à l'aboutissement de l'accord conclu avec l'Olympique Akbou, ouvrant ainsi la possibilité pour le Mouloudia Olympique Béjaïa de recevoir ses adversaires dans cette enceinte.\n\nLe Stade des Martyrs d'Akbou devient ainsi une solution concrète pour permettre au MOB de recevoir ses adversaires dans de meilleures conditions, notamment avec la possibilité de retrouver son public.\n\nMOB AVANT TOUT\nCRABE UN JOUR, MOB TOUJOURS"
+  },
+  {
+    id: "a3",
+    date: "2026-10-01",
+    titre: "MATCH AMICAL DE LUXE : Le MO Béjaïa au test de la JS Kabylie",
+    image: "https://i.postimg.cc/4dYdjTTY/JS-Kabylie-MO-Bejaia-en-amical.jpg",
+    texte: "Face au report de dernière minute de la 3ᵉ journée de Ligue 2 Amateur contre l'IRB Nezla, la direction et le staff technique du MO Béjaïa ont réagi avec rapidité pour maintenir l'équipe dans un rythme de compétition élevé.\n\nCe vendredi 2 octobre 2026 à 17 h 00, les Crabes disputent un test amical de premier plan face à la JS Kabylie sur le terrain annexe du complexe Hocine Aït Ahmed de Tizi Ouzou.\n\nAprès un bilan prometteur de 4 points glanés lors des deux premières journées du championnat, le coach Hamide Lamara profitera de cette opposition de haut niveau pour évaluer le rythme de jeu face à un adversaire de l'élite nationale et tester de nouvelles variantes tactiques.\n\nRepères : JS Kabylie vs MO Béjaïa - Vendredi 02 Octobre 2026 - 17h00 - Stade annexe Hocine Aït Ahmed (Tizi Ouzou) - Match amical."
+  },
+  {
+    id: "a4",
+    date: "2026-10-01",
+    titre: "MOB - IRB NEZLA REPORTÉ : Le dossier de domiciliation entre dans une nouvelle phase",
+    image: "https://i.postimg.cc/Hscx6m9z/MO-Bejaia-vs-IRB-Nezla-reporte.jpg",
+    texte: "La Ligue Nationale de Football Amateur vient d'annoncer officiellement le report de la rencontre devant opposer le Mouloudia de Béjaïa à l'ittihad de Nezla, comptant pour la troisième journée du championnat de Ligue 2 Amateur, Groupe Centre-Est.\n\nInitialement programmée le vendredi 2 octobre 2026 à 15h00, la rencontre devait se dérouler au stade du 1er-Novembre 1954 de Guendouza, à Akbou.\n\nLa LNFA indique désormais que cette confrontation est reportée à une date ultérieure. Ce report offre mécaniquement un délai supplémentaire pour clarifier les conditions dans lesquelles le Mouloudia de Béjaïa pourra recevoir ses prochains adversaires.\n\nCe qui est établi : La rencontre MOB - IRB Nezla est reportée. Ce qui reste à déterminer : La nouvelle date, le stade, la jauge, et la situation de la domiciliation."
+  },
+  {
+    id: "a5",
+    date: "2026-09-18",
+    titre: "MO BEJAIA : LE HOME KIT 2026/27 DEVOILE",
+    image: "https://i.postimg.cc/TYqSML0c/Nouvelle-tenue-MO-Bejaia-2026-2027.jpg",
+    texte: "Le MO Béjaïa tient désormais sa nouvelle tunique domicile pour la saison 2026-2027. Le club a dévoilé son HOME KIT 2026/27 à travers une série de photographies.\n\nFidèle à l'identité du club, la nouvelle tunique repose sur les deux couleurs historiques du MO Béjaïa : le vert et le noir. Le maillot présente une alternance de bandes verticales vertes et noires, accompagnées de motifs graphiques plus fins.\n\nSur la partie supérieure, on retrouve le blason du MOB, tandis que le logo de l'équipementier prend place sur la poitrine opposée. Au centre du maillot figurent les partenaires commerciaux : Ooredoo, Soummam, Tchin-Lait et Maxipower.\n\nUn maillot change. Les couleurs, elles, restent. VERT ET NOIR, PARCE QUE LE MOB C'EST UNE IDENTITÉ."
+  }
 ];
 
-let data = {
-  championnat: [],
-  coupe: []
-};
+let data = { championnat: [], coupe: [] };
+let articles = [];
 
 function handleTitleClick() {
   clickCount++;
@@ -530,20 +474,14 @@ function handleTitleClick() {
   setTimeout(() => { clickCount = 0; }, 2000);
 }
 
-function openAdminModal() {
-  document.getElementById('adminPwd').value = '';
-  document.getElementById('modalAdmin').classList.add('active');
-}
-
-function closeAdminModal() {
-  document.getElementById('modalAdmin').classList.remove('active');
-}
+function openAdminModal() { document.getElementById('adminPwd').value = ''; document.getElementById('modalAdmin').classList.add('active'); }
+function closeAdminModal() { document.getElementById('modalAdmin').classList.remove('active'); }
 
 function tryLogin() {
   const pwd = document.getElementById('adminPwd').value;
   if (pwd === ADMIN_PASSWORD) {
     isAdmin = true;
-    document.getElementById('adminBadge').innerHTML = '<span class="admin-badge">ADMIN</span>';
+    document.getElementById('adminBadge').innerHTML = '<span class="admin-badge" style="display:inline-block;background:#27ae60;color:white;padding:3px 8px;border-radius:12px;font-size:11px;margin-left:8px;">ADMIN</span>';
     document.getElementById('adminPanel').style.display = 'block';
     document.getElementById('btnAddChamp').style.display = 'inline-block';
     document.getElementById('btnAddCoupe').style.display = 'inline-block';
@@ -575,6 +513,13 @@ function switchTab(name, el) {
   if (name === 'classement') renderClassement();
 }
 
+function switchSubTab(mode) {
+  currentSubTab = mode;
+  document.getElementById('subtab-programme').classList.toggle('active', mode === 'programme');
+  document.getElementById('subtab-resultats').classList.toggle('active', mode === 'resultats');
+  render('championnat');
+}
+
 function formatDate(d) {
   if (!d) return '';
   const p = d.split('-');
@@ -595,11 +540,20 @@ function render(section) {
   if (section === 'championnat') {
     const fj = document.getElementById('filterJournee').value;
     const fe = document.getElementById('filterEquipe').value;
+    
+    // Filtrer selon le sous-onglet (Programme ou Résultats)
+    if (currentSubTab === 'programme') {
+      list = list.filter(m => m.sd === '' || m.sd === null || m.sd === undefined);
+    } else {
+      list = list.filter(m => m.sd !== '' && m.sd !== null && m.sd !== undefined);
+    }
+
     list = list.filter(m => {
       const matchJournee = (!fj || String(m.journee) === String(fj));
       const matchEquipe = (!fe || m.dom === fe || m.ext === fe);
       return matchJournee && matchEquipe;
     });
+    
     list = [...list].sort((a,b) => {
       if (parseInt(a.journee||0) !== parseInt(b.journee||0)) return parseInt(a.journee||0) - parseInt(b.journee||0);
       return (a.date||'').localeCompare(b.date||'');
@@ -609,7 +563,7 @@ function render(section) {
   if (count) count.textContent = list.length + ' rencontre(s) affichée(s) sur ' + data[section].length;
 
   if (list.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="9" class="empty">Aucune rencontre. Cliquez sur ➕ Ajouter.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9" class="empty">Aucune rencontre.</td></tr>';
     return;
   }
 
@@ -880,6 +834,47 @@ function updateNextMatch() {
   countdownInterval = setInterval(tick, 1000);
 }
 
+function renderCarousel() {
+  const container = document.getElementById('homeCarousel');
+  if (!container) return;
+  const sorted = [...articles].sort((a,b) => b.date.localeCompare(a.date)).slice(0, 5);
+  container.innerHTML = sorted.map(a => `
+    <div class="carousel-item" onclick="openArticleModal('${a.id}')">
+      <img src="${a.image}" alt="${a.titre}">
+      <p>${a.titre}</p>
+    </div>
+  `).join('');
+}
+
+function renderNewsTab() {
+  const container = document.getElementById('news-container');
+  if (!container) return;
+  const sorted = [...articles].sort((a,b) => b.date.localeCompare(a.date));
+  container.innerHTML = sorted.map(a => `
+    <div class="news-card" onclick="openArticleModal('${a.id}')">
+      <img src="${a.image}" alt="${a.titre}">
+      <div class="news-card-body">
+        <div class="news-card-title">${a.titre}</div>
+        <div class="news-card-date">📅 ${formatDate(a.date)}</div>
+        <div class="news-card-preview">${a.texte}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openArticleModal(id) {
+  const a = articles.find(x => x.id === id);
+  if (!a) return;
+  document.getElementById('articleTitle').textContent = a.titre;
+  document.getElementById('articleDate').textContent = '📅 ' + formatDate(a.date);
+  document.getElementById('articleImg').src = a.image;
+  document.getElementById('articleImg').style.display = 'block';
+  document.getElementById('articleText').textContent = a.texte;
+  document.getElementById('modalArticle').classList.add('active');
+}
+
+function closeArticleModal() { document.getElementById('modalArticle').classList.remove('active'); }
+
 async function loadFromFirebase() {
   const statusBar = document.getElementById('statusBar');
   statusBar.className = 'status loading';
@@ -896,19 +891,31 @@ async function loadFromFirebase() {
     }
     statusBar.className = 'status online';
     statusBar.textContent = '🟢 Connecté à Firebase (' + data.championnat.length + ' matchs)';
+    
+    // Charger les articles depuis le stockage local ou les initialiser
+    const savedArticles = localStorage.getItem('l2a_articles');
+    if (savedArticles) {
+      articles = JSON.parse(savedArticles);
+    } else {
+      articles = ARTICLES_INIT;
+      localStorage.setItem('l2a_articles', JSON.stringify(articles));
+    }
+
     render('championnat');
     render('coupe');
+    renderCarousel();
+    renderNewsTab();
     updateNextMatch();
   } catch (error) {
     console.error('Erreur Firebase:', error);
     statusBar.className = 'status offline';
     statusBar.textContent = '🔴 Hors ligne - Données locales';
     const localData = JSON.parse(localStorage.getItem('l2a_data') || 'null');
-    if (localData && localData.championnat) {
-      data = localData;
-    }
+    if (localData && localData.championnat) data = localData;
     render('championnat');
     render('coupe');
+    renderCarousel();
+    renderNewsTab();
     updateNextMatch();
   }
 }
@@ -947,6 +954,9 @@ window.logoutAdmin = logoutAdmin;
 window.handleTitleClick = handleTitleClick;
 window.render = render;
 window.updateNextMatch = updateNextMatch;
+window.switchSubTab = switchSubTab;
+window.openArticleModal = openArticleModal;
+window.closeArticleModal = closeArticleModal;
 
 </script>
 </body>
