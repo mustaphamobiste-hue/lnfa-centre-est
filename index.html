@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ligue 2 Amateur - Groupe Centre Est 2026-2027</title>
+<title>Ligue 2 Amateur - Groupe Centre Est 2026-2027 | MO Béjaïa</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: Arial, sans-serif; background: #f4f6f9; color: #222; padding: 10px; }
@@ -48,7 +48,6 @@
   .zone-playoff { background: #fff3cd !important; }
   .zone-relégation { background: #f8d7da !important; }
   
-  /* Prochain Match */
   .next-match { background: linear-gradient(135deg, #1a4d2e 0%, #0d2b1a 100%); color: white; padding: 15px 10px; border-radius: 10px; margin-bottom: 12px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); border: 2px solid #c9a961; }
   .next-match-title { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: #c9a961; margin-bottom: 8px; font-weight: bold; }
   .next-match-teams { font-size: 1.3em; font-weight: bold; margin-bottom: 10px; animation: blinkMatch 1.5s ease-in-out infinite; }
@@ -60,13 +59,11 @@
   .cd-num { font-size: 1.4em; font-weight: bold; color: #c9a961; display: block; line-height: 1; }
   .cd-label { font-size: 9px; text-transform: uppercase; opacity: 0.8; letter-spacing: 1px; }
 
-  /* Carrousel */
   .carousel-container { width: 100%; overflow-x: auto; display: flex; gap: 10px; padding: 10px 0; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
   .carousel-item { flex: 0 0 80%; max-width: 300px; scroll-snap-align: start; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); overflow: hidden; cursor: pointer; }
   .carousel-item img { width: 100%; height: 120px; object-fit: cover; }
   .carousel-item p { padding: 8px; font-size: 12px; font-weight: bold; color: #1a4d2e; line-height: 1.2; white-space: normal; }
 
-  /* Actualités */
   .news-card { background: white; border-radius: 8px; overflow: hidden; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; }
   .news-card img { width: 100%; height: 180px; object-fit: cover; }
   .news-card-body { padding: 15px; }
@@ -76,12 +73,10 @@
   .article-full-text { line-height: 1.6; font-size: 14px; color: #333; white-space: pre-wrap; margin-top: 10px; }
   .article-full-img { width: 100%; border-radius: 8px; margin-bottom: 15px; }
 
-  /* Sub-tabs Championnat */
-  .sub-tabs { display: flex; gap: 10px; justify-content: center; margin-bottom: 15px; }
+  .sub-tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 15px; flex-wrap: wrap; }
   .sub-tab { padding: 8px 15px; background: #e0e0e0; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 13px; }
   .sub-tab.active { background: #1a4d2e; color: white; }
 
-  /* Historique */
   .historique-container { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); max-width: 900px; margin: 0 auto; }
   .historique-header { text-align: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 2px solid #c9a961; }
   .historique-logo { max-width: 180px; margin: 0 auto 15px; display: block; }
@@ -150,7 +145,6 @@
   </div>
 </div>
 
-<!-- Carrousel des actualités (sous le chrono) -->
 <div id="carouselSection" style="margin-bottom: 12px;">
   <div style="font-size: 12px; font-weight: bold; color: #1a4d2e; margin-bottom: 5px; padding-left: 5px;">📰 Dernières Actualités</div>
   <div class="carousel-container" id="homeCarousel"></div>
@@ -159,7 +153,8 @@
 <!-- ONGLET CHAMPIONNAT -->
 <div id="tab-championnat" class="tab-content active">
   <div class="sub-tabs">
-    <div class="sub-tab active" id="subtab-programme" onclick="switchSubTab('programme')">📅 Programme</div>
+    <div class="sub-tab active" id="subtab-tous" onclick="switchSubTab('tous')">📋 Tous</div>
+    <div class="sub-tab" id="subtab-programme" onclick="switchSubTab('programme')">📅 Programme</div>
     <div class="sub-tab" id="subtab-resultats" onclick="switchSubTab('resultats')">📊 Résultats</div>
   </div>
   <div class="toolbar">
@@ -241,9 +236,7 @@
 
 <!-- ONGLET ACTUALITE -->
 <div id="tab-actualite" class="tab-content">
-  <div id="news-container" style="max-width: 800px; margin: 0 auto;">
-    <!-- Les articles seront injectés ici par JS -->
-  </div>
+  <div id="news-container" style="max-width: 800px; margin: 0 auto;"></div>
 </div>
 
 <!-- ONGLET HISTORIQUE -->
@@ -385,21 +378,18 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// Création automatique de la clé admin si absente
 (async () => {
   try {
     const adminRef = ref(db, 'config/admin_pass');
     const adminSnap = await get(adminRef);
-    if (!adminSnap.exists()) {
-      await set(adminRef, 'Béjaïa#2026!Mob');
-    }
+    if (!adminSnap.exists()) await set(adminRef, 'Béjaïa#2026!Mob');
   } catch (e) { console.log(e); }
 })();
 
 const ADMIN_PASSWORD = "Béjaïa#2026!Mob";
 let isAdmin = false;
 let clickCount = 0;
-let currentSubTab = 'programme';
+let currentSubTab = 'tous';
 
 const EQUIPES = ["Paradou AC", "IRB Nezla", "NRB Beni Oulbane", "NRB Teleghma", "CA Batna", "US Chaouia", "AS Khroub", "MO Constantine", "USM Annaba", "JS Azazga", "MO Béjaïa", "NC Magra", "JSM Skikda", "MSP Batna", "JSD Jijel", "CR Beni Thour"];
 
@@ -424,42 +414,77 @@ const LOGOS = {
 
 const STADES = ["Stade Abed-Hamdani (El Khroub)","Stade 19 Mai 1956 (Annaba)","Stade Allag Abderrahmane (Aïn Fakroun)","Stade Khabaza Bachir (Teleghma)","Stade 1er Novembre 1954 (Batna)","Stade 20 Août 1955 (Skikda)","Stade 18 Février (Ouargla)","Stade 10 000 places (Touggourt)","Stade Tirsatine (Azazga)","Stade Hammou Boukouffa (Beni Oulbane)","Stade 20 Août 1955 (Alger)","Stade des Frères Boucheligue (Magra)","Stade 1er Novembre 1954 Guendouza (Akbou)","Stade des Martyrs (Akbou)","Stade Hocine Rouibah (Jijel)","Stade Ramdane-Benabdelmalek (Constantine)"];
 
+const MATCHS_INIT = [
+  {journee:"1", date:"2026-09-18", heure:"16:00", dom:"AS Khroub", ext:"Paradou AC", sd:"0", se:"0", stade:"Stade Abed-Hamdani (El Khroub)", obs:""},
+  {journee:"1", date:"2026-09-18", heure:"16:00", dom:"USM Annaba", ext:"NC Magra", sd:"3", se:"0", stade:"Stade 19 Mai 1956 (Annaba)", obs:""},
+  {journee:"1", date:"2026-09-18", heure:"16:00", dom:"US Chaouia", ext:"NRB Beni Oulbane", sd:"1", se:"1", stade:"", obs:""},
+  {journee:"1", date:"2026-09-18", heure:"16:00", dom:"NRB Teleghma", ext:"MSP Batna", sd:"1", se:"1", stade:"Stade Khabaza Bachir (Teleghma)", obs:""},
+  {journee:"1", date:"2026-09-18", heure:"16:00", dom:"CA Batna", ext:"JS Azazga", sd:"2", se:"2", stade:"Stade 1er Novembre 1954 (Batna)", obs:""},
+  {journee:"1", date:"2026-09-18", heure:"16:00", dom:"JSM Skikda", ext:"IRB Nezla", sd:"2", se:"0", stade:"Stade 20 Août 1955 (Skikda)", obs:""},
+  {journee:"1", date:"2026-09-18", heure:"16:00", dom:"JSD Jijel", ext:"CR Beni Thour", sd:"", se:"", stade:"Stade Hocine Rouibah (Jijel)", obs:"Reporté"},
+  {journee:"1", date:"2026-09-18", heure:"16:00", dom:"MO Béjaïa", ext:"MO Constantine", sd:"0", se:"0", stade:"Stade des Martyrs (Akbou)", obs:""},
+
+  {journee:"2", date:"2026-09-26", heure:"16:00", dom:"CR Beni Thour", ext:"MO Béjaïa", sd:"1", se:"3", stade:"", obs:""},
+  {journee:"2", date:"2026-09-26", heure:"16:00", dom:"IRB Nezla", ext:"JSD Jijel", sd:"1", se:"0", stade:"Stade 1er Novembre 1954 (Batna)", obs:""},
+  {journee:"2", date:"2026-09-27", heure:"16:00", dom:"JS Azazga", ext:"JSM Skikda", sd:"", se:"", stade:"Stade Tirsatine (Azazga)", obs:"Date à vérifier"},
+  {journee:"2", date:"2026-09-26", heure:"16:00", dom:"NRB Beni Oulbane", ext:"CA Batna", sd:"1", se:"0", stade:"Stade Hammou Boukouffa (Beni Oulbane)", obs:""},
+  {journee:"2", date:"2026-09-26", heure:"16:00", dom:"Paradou AC", ext:"NRB Teleghma", sd:"2", se:"1", stade:"Stade 20 Août 1955 (Alger)", obs:"Huis-Clos"},
+  {journee:"2", date:"2026-09-26", heure:"16:00", dom:"NC Magra", ext:"US Chaouia", sd:"1", se:"0", stade:"Stade des Frères Boucheligue (Magra)", obs:""},
+  {journee:"2", date:"2026-09-26", heure:"16:00", dom:"AS Khroub", ext:"USM Annaba", sd:"", se:"", stade:"Stade Abed-Hamdani (El Khroub)", obs:"Score à compléter"},
+  {journee:"2", date:"2026-09-26", heure:"16:00", dom:"MSP Batna", ext:"MO Constantine", sd:"0", se:"0", stade:"", obs:""},
+
+  {journee:"3", date:"2026-10-02", heure:"15:00", dom:"USM Annaba", ext:"Paradou AC", sd:"2", se:"1", stade:"Stade 19 Mai 1956 (Annaba)", obs:""},
+  {journee:"3", date:"2026-10-02", heure:"15:00", dom:"NRB Teleghma", ext:"NC Magra", sd:"1", se:"2", stade:"Stade Khabaza Bachir (Teleghma)", obs:""},
+  {journee:"3", date:"2026-10-02", heure:"15:00", dom:"CA Batna", ext:"MSP Batna", sd:"0", se:"1", stade:"Stade 1er Novembre 1954 (Batna)", obs:""},
+  {journee:"3", date:"2026-10-02", heure:"15:00", dom:"MO Béjaïa", ext:"IRB Nezla", sd:"", se:"", stade:"", obs:"Reporté"},
+  {journee:"3", date:"2026-10-02", heure:"15:00", dom:"MO Constantine", ext:"CR Beni Thour", sd:"2", se:"1", stade:"Stade Ramdane-Benabdelmalek (Constantine)", obs:""},
+  {journee:"3", date:"2026-10-02", heure:"15:00", dom:"US Chaouia", ext:"AS Khroub", sd:"0", se:"0", stade:"", obs:""},
+  {journee:"3", date:"2026-10-03", heure:"15:00", dom:"JSM Skikda", ext:"NRB Beni Oulbane", sd:"1", se:"0", stade:"Stade 20 Août 1955 (Skikda)", obs:""},
+  {journee:"3", date:"2026-10-03", heure:"15:00", dom:"JSD Jijel", ext:"JS Azazga", sd:"0", se:"0", stade:"Stade Hocine Rouibah (Jijel)", obs:""},
+
+  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"USM Annaba", ext:"US Chaouia", sd:"3", se:"0", stade:"Stade 19 Mai 1956 (Annaba)", obs:""},
+  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"IRB Nezla", ext:"MO Constantine", sd:"2", se:"2", stade:"", obs:""},
+  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"MSP Batna", ext:"CR Beni Thour", sd:"2", se:"1", stade:"", obs:""},
+  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"NRB Beni Oulbane", ext:"JSD Jijel", sd:"2", se:"0", stade:"Stade Hammou Boukouffa (Beni Oulbane)", obs:""},
+  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"Paradou AC", ext:"JSM Skikda", sd:"", se:"", stade:"Stade 20 Août 1955 (Alger)", obs:"Reporté"},
+  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"NC Magra", ext:"CA Batna", sd:"0", se:"0", stade:"Stade des Frères Boucheligue (Magra)", obs:""},
+  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"AS Khroub", ext:"NRB Teleghma", sd:"2", se:"2", stade:"Stade Abed-Hamdani (El Khroub)", obs:""},
+  {journee:"4", date:"2026-10-10", heure:"15:00", dom:"JS Azazga", ext:"MO Béjaïa", sd:"2", se:"1", stade:"Stade Tirsatine (Azazga)", obs:""},
+
+  {journee:"5", date:"2026-10-13", heure:"15:00", dom:"US Chaouia", ext:"Paradou AC", sd:"1", se:"0", stade:"", obs:""},
+  {journee:"5", date:"2026-10-13", heure:"15:00", dom:"NRB Teleghma", ext:"USM Annaba", sd:"2", se:"1", stade:"Stade Khabaza Bachir (Teleghma)", obs:""},
+  {journee:"5", date:"2026-10-13", heure:"15:00", dom:"CA Batna", ext:"AS Khroub", sd:"1", se:"0", stade:"Stade 1er Novembre 1954 (Batna)", obs:""},
+  {journee:"5", date:"2026-10-13", heure:"15:00", dom:"CR Beni Thour", ext:"IRB Nezla", sd:"2", se:"1", stade:"", obs:""},
+  {journee:"5", date:"2026-10-13", heure:"15:00", dom:"JSM Skikda", ext:"NC Magra", sd:"2", se:"1", stade:"Stade 20 Août 1955 (Skikda)", obs:""},
+  {journee:"5", date:"2026-10-13", heure:"15:00", dom:"JSD Jijel", ext:"MSP Batna", sd:"1", se:"2", stade:"Stade Hocine Rouibah (Jijel)", obs:""},
+  {journee:"5", date:"2026-10-14", heure:"15:00", dom:"MO Constantine", ext:"JS Azazga", sd:"1", se:"0", stade:"Stade Ramdane-Benabdelmalek (Constantine)", obs:""},
+  {journee:"5", date:"2026-10-15", heure:"15:00", dom:"MO Béjaïa", ext:"NRB Beni Oulbane", sd:"2", se:"0", stade:"Stade des Martyrs (Akbou)", obs:"Huis-Clos"},
+
+  {journee:"6", date:"2026-10-17", heure:"15:00", dom:"USM Annaba", ext:"CA Batna", sd:"0", se:"0", stade:"Stade 19 Mai 1956 (Annaba)", obs:""},
+  {journee:"6", date:"2026-10-17", heure:"15:00", dom:"US Chaouia", ext:"NRB Teleghma", sd:"1", se:"0", stade:"", obs:""},
+  {journee:"6", date:"2026-10-17", heure:"15:00", dom:"Paradou AC", ext:"JSD Jijel", sd:"2", se:"0", stade:"Stade 20 Août 1955 (Alger)", obs:"Huis-Clos"},
+  {journee:"6", date:"2026-10-17", heure:"15:00", dom:"NC Magra", ext:"IRB Nezla", sd:"1", se:"0", stade:"Stade des Frères Boucheligue (Magra)", obs:""},
+  {journee:"6", date:"2026-10-18", heure:"15:00", dom:"AS Khroub", ext:"JSM Skikda", sd:"2", se:"1", stade:"Stade Abed-Hamdani (El Khroub)", obs:""},
+  {journee:"6", date:"2026-10-19", heure:"15:00", dom:"MSP Batna", ext:"MO Béjaïa", sd:"", se:"", stade:"", obs:""},
+  {journee:"6", date:"2026-10-19", heure:"15:00", dom:"JS Azazga", ext:"CR Beni Thour", sd:"", se:"", stade:"Stade Tirsatine (Azazga)", obs:""},
+  {journee:"6", date:"2026-10-19", heure:"15:00", dom:"NRB Beni Oulbane", ext:"MO Constantine", sd:"", se:"", stade:"Stade Hammou Boukouffa (Beni Oulbane)", obs:""},
+
+  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"IRB Nezla", ext:"JS Azazga", sd:"", se:"", stade:"", obs:""},
+  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"NRB Teleghma", ext:"NRB Beni Oulbane", sd:"", se:"", stade:"Stade Khabaza Bachir (Teleghma)", obs:""},
+  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"CA Batna", ext:"US Chaouia", sd:"", se:"", stade:"Stade 1er Novembre 1954 (Batna)", obs:""},
+  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"CR Beni Thour", ext:"USM Annaba", sd:"", se:"", stade:"", obs:""},
+  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"JSM Skikda", ext:"MSP Batna", sd:"", se:"", stade:"Stade 20 Août 1955 (Skikda)", obs:""},
+  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"JSD Jijel", ext:"NC Magra", sd:"", se:"", stade:"Stade Hocine Rouibah (Jijel)", obs:""},
+  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"MO Constantine", ext:"AS Khroub", sd:"", se:"", stade:"Stade Ramdane-Benabdelmalek (Constantine)", obs:""},
+  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"MO Béjaïa", ext:"Paradou AC", sd:"", se:"", stade:"Stade des Martyrs (Akbou)", obs:""}
+];
+
 const ARTICLES_INIT = [
-  {
-    id: "a1",
-    date: "2026-10-13",
-    titre: "COUP DE MASSUE / J5 : MO Béjaïa vs NRB Beni Oulbane se jouera à huis clos",
-    image: "https://i.postimg.cc/NjDfRd1H/MO-Bejaia-vs-NRB-Beni-Oulbane-a-Huis-Clos.jpg",
-    texte: "C'est une bien triste nouvelle qui vient de tomber pour l'ensemble de la famille mobiste. La Ligue Nationale du Football Amateur (LNFA) a officialisé le programme de la 5ᵉ journée de Ligue 2 Amateur (Groupe Centre-Est), confirmant que la rencontre opposant le MO Béjaïa au NRB Beni Oulbane, ce jeudi 15 octobre 2026 à 15 h 00, se disputera à huis clos (sans public) au Stade des Martyrs d'Akbou.\n\nRappel des Informations :\n- Affiche : MO Béjaïa vs NRB Beni Oulbane\n- Compétition : Ligue 2 Amateur (Groupe Centre-Est) – 5ᵉ Journée\n- Date : Jeudi 15 Octobre 2026\n- Coup d'envoi : 15 h 00\n- Lieu : Stade des Martyrs d'Akbou\n- Statut : Huis-Clos"
-  },
-  {
-    id: "a2",
-    date: "2026-10-07",
-    titre: "DOMICILIATION DU MOB À AKBOU : Une nouvelle étape officiellement franchie",
-    image: "https://i.postimg.cc/5yqMRPjy/Domiciliation-du-MO-Bejaia-a-Akbou.jpg",
-    texte: "La direction du MO Béjaïa a officiellement exprimé sa reconnaissance à l'ensemble des responsables et institutions ayant contribué à l'aboutissement du dossier permettant au club d'évoluer au Stade des Martyrs d'Akbou.\n\nAu centre de ces remerciements figure M. Mehdi Amine Mohamed, nouveau Secrétaire général de la Wilaya de Béjaïa, dont la direction du MOB souligne la disponibilité, l'implication et les efforts déployés depuis le début des démarches.\n\nSelon la direction du club, son intervention a largement contribué à l'aboutissement de l'accord conclu avec l'Olympique Akbou, ouvrant ainsi la possibilité pour le Mouloudia Olympique Béjaïa de recevoir ses adversaires dans cette enceinte.\n\nLe Stade des Martyrs d'Akbou devient ainsi une solution concrète pour permettre au MOB de recevoir ses adversaires dans de meilleures conditions, notamment avec la possibilité de retrouver son public.\n\nMOB AVANT TOUT\nCRABE UN JOUR, MOB TOUJOURS"
-  },
-  {
-    id: "a3",
-    date: "2026-10-01",
-    titre: "MATCH AMICAL DE LUXE : Le MO Béjaïa au test de la JS Kabylie",
-    image: "https://i.postimg.cc/4dYdjTTY/JS-Kabylie-MO-Bejaia-en-amical.jpg",
-    texte: "Face au report de dernière minute de la 3ᵉ journée de Ligue 2 Amateur contre l'IRB Nezla, la direction et le staff technique du MO Béjaïa ont réagi avec rapidité pour maintenir l'équipe dans un rythme de compétition élevé.\n\nCe vendredi 2 octobre 2026 à 17 h 00, les Crabes disputent un test amical de premier plan face à la JS Kabylie sur le terrain annexe du complexe Hocine Aït Ahmed de Tizi Ouzou.\n\nAprès un bilan prometteur de 4 points glanés lors des deux premières journées du championnat, le coach Hamide Lamara profitera de cette opposition de haut niveau pour évaluer le rythme de jeu face à un adversaire de l'élite nationale et tester de nouvelles variantes tactiques.\n\nRepères : JS Kabylie vs MO Béjaïa - Vendredi 02 Octobre 2026 - 17h00 - Stade annexe Hocine Aït Ahmed (Tizi Ouzou) - Match amical."
-  },
-  {
-    id: "a4",
-    date: "2026-10-01",
-    titre: "MOB - IRB NEZLA REPORTÉ : Le dossier de domiciliation entre dans une nouvelle phase",
-    image: "https://i.postimg.cc/Hscx6m9z/MO-Bejaia-vs-IRB-Nezla-reporte.jpg",
-    texte: "La Ligue Nationale de Football Amateur vient d'annoncer officiellement le report de la rencontre devant opposer le Mouloudia de Béjaïa à l'ittihad de Nezla, comptant pour la troisième journée du championnat de Ligue 2 Amateur, Groupe Centre-Est.\n\nInitialement programmée le vendredi 2 octobre 2026 à 15h00, la rencontre devait se dérouler au stade du 1er-Novembre 1954 de Guendouza, à Akbou.\n\nLa LNFA indique désormais que cette confrontation est reportée à une date ultérieure. Ce report offre mécaniquement un délai supplémentaire pour clarifier les conditions dans lesquelles le Mouloudia de Béjaïa pourra recevoir ses prochains adversaires.\n\nCe qui est établi : La rencontre MOB - IRB Nezla est reportée. Ce qui reste à déterminer : La nouvelle date, le stade, la jauge, et la situation de la domiciliation."
-  },
-  {
-    id: "a5",
-    date: "2026-09-18",
-    titre: "MO BEJAIA : LE HOME KIT 2026/27 DEVOILE",
-    image: "https://i.postimg.cc/TYqSML0c/Nouvelle-tenue-MO-Bejaia-2026-2027.jpg",
-    texte: "Le MO Béjaïa tient désormais sa nouvelle tunique domicile pour la saison 2026-2027. Le club a dévoilé son HOME KIT 2026/27 à travers une série de photographies.\n\nFidèle à l'identité du club, la nouvelle tunique repose sur les deux couleurs historiques du MO Béjaïa : le vert et le noir. Le maillot présente une alternance de bandes verticales vertes et noires, accompagnées de motifs graphiques plus fins.\n\nSur la partie supérieure, on retrouve le blason du MOB, tandis que le logo de l'équipementier prend place sur la poitrine opposée. Au centre du maillot figurent les partenaires commerciaux : Ooredoo, Soummam, Tchin-Lait et Maxipower.\n\nUn maillot change. Les couleurs, elles, restent. VERT ET NOIR, PARCE QUE LE MOB C'EST UNE IDENTITÉ."
-  }
+  {id:"a1", date:"2026-10-13", titre:"COUP DE MASSUE / J5 : MO Béjaïa vs NRB Beni Oulbane se jouera à huis clos", image:"https://i.postimg.cc/NjDfRd1H/MO-Bejaia-vs-NRB-Beni-Oulbane-a-Huis-Clos.jpg", texte:"C'est une bien triste nouvelle qui vient de tomber pour l'ensemble de la famille mobiste. La Ligue Nationale du Football Amateur (LNFA) a officialisé le programme de la 5ᵉ journée de Ligue 2 Amateur (Groupe Centre-Est), confirmant que la rencontre opposant le MO Béjaïa au NRB Beni Oulbane, ce jeudi 15 octobre 2026 à 15 h 00, se disputera à huis clos (sans public) au Stade des Martyrs d'Akbou.\n\nRappel des Informations :\n- Affiche : MO Béjaïa vs NRB Beni Oulbane\n- Compétition : Ligue 2 Amateur (Groupe Centre-Est) – 5ᵉ Journée\n- Date : Jeudi 15 Octobre 2026\n- Coup d'envoi : 15 h 00\n- Lieu : Stade des Martyrs d'Akbou\n- Statut : Huis-Clos"},
+  {id:"a2", date:"2026-10-07", titre:"DOMICILIATION DU MOB À AKBOU : Une nouvelle étape officiellement franchie", image:"https://i.postimg.cc/5yqMRPjy/Domiciliation-du-MO-Bejaia-a-Akbou.jpg", texte:"La direction du MO Béjaïa a officiellement exprimé sa reconnaissance à l'ensemble des responsables et institutions ayant contribué à l'aboutissement du dossier permettant au club d'évoluer au Stade des Martyrs d'Akbou.\n\nAu centre de ces remerciements figure M. Mehdi Amine Mohamed, nouveau Secrétaire général de la Wilaya de Béjaïa, dont la direction du MOB souligne la disponibilité, l'implication et les efforts déployés depuis le début des démarches.\n\nSelon la direction du club, son intervention a largement contribué à l'aboutissement de l'accord conclu avec l'Olympique Akbou, ouvrant ainsi la possibilité pour le Mouloudia Olympique Béjaïa de recevoir ses adversaires dans cette enceinte.\n\nLe Stade des Martyrs d'Akbou devient ainsi une solution concrète pour permettre au MOB de recevoir ses adversaires dans de meilleures conditions, notamment avec la possibilité de retrouver son public.\n\nMOB AVANT TOUT\nCRABE UN JOUR, MOB TOUJOURS"},
+  {id:"a3", date:"2026-10-01", titre:"MATCH AMICAL DE LUXE : Le MO Béjaïa au test de la JS Kabylie", image:"https://i.postimg.cc/4dYdjTTY/JS-Kabylie-MO-Bejaia-en-amical.jpg", texte:"Face au report de dernière minute de la 3ᵉ journée de Ligue 2 Amateur contre l'IRB Nezla, la direction et le staff technique du MO Béjaïa ont réagi avec rapidité pour maintenir l'équipe dans un rythme de compétition élevé.\n\nCe vendredi 2 octobre 2026 à 17 h 00, les Crabes disputent un test amical de premier plan face à la JS Kabylie sur le terrain annexe du complexe Hocine Aït Ahmed de Tizi Ouzou.\n\nAprès un bilan prometteur de 4 points glanés lors des deux premières journées du championnat, le coach Hamide Lamara profitera de cette opposition de haut niveau pour évaluer le rythme de jeu face à un adversaire de l'élite nationale et tester de nouvelles variantes tactiques.\n\nRepères : JS Kabylie vs MO Béjaïa - Vendredi 02 Octobre 2026 - 17h00 - Stade annexe Hocine Aït Ahmed (Tizi Ouzou) - Match amical."},
+  {id:"a4", date:"2026-10-01", titre:"MOB - IRB NEZLA REPORTÉ : Le dossier de domiciliation entre dans une nouvelle phase", image:"https://i.postimg.cc/Hscx6m9z/MO-Bejaia-vs-IRB-Nezla-reporte.jpg", texte:"La Ligue Nationale de Football Amateur vient d'annoncer officiellement le report de la rencontre devant opposer le Mouloudia de Béjaïa à l'ittihad de Nezla, comptant pour la troisième journée du championnat de Ligue 2 Amateur, Groupe Centre-Est.\n\nInitialement programmée le vendredi 2 octobre 2026 à 15h00, la rencontre devait se dérouler au stade du 1er-Novembre 1954 de Guendouza, à Akbou.\n\nLa LNFA indique désormais que cette confrontation est reportée à une date ultérieure. Ce report offre mécaniquement un délai supplémentaire pour clarifier les conditions dans lesquelles le Mouloudia de Béjaïa pourra recevoir ses prochains adversaires.\n\nCe qui est établi : La rencontre MOB - IRB Nezla est reportée. Ce qui reste à déterminer : La nouvelle date, le stade, la jauge, et la situation de la domiciliation."},
+  {id:"a5", date:"2026-09-18", titre:"MO BEJAIA : LE HOME KIT 2026/27 DEVOILE", image:"https://i.postimg.cc/TYqSML0c/Nouvelle-tenue-MO-Bejaia-2026-2027.jpg", texte:"Le MO Béjaïa tient désormais sa nouvelle tunique domicile pour la saison 2026-2027. Le club a dévoilé son HOME KIT 2026/27 à travers une série de photographies.\n\nFidèle à l'identité du club, la nouvelle tunique repose sur les deux couleurs historiques du MO Béjaïa : le vert et le noir. Le maillot présente une alternance de bandes verticales vertes et noires, accompagnées de motifs graphiques plus fins.\n\nSur la partie supérieure, on retrouve le blason du MOB, tandis que le logo de l'équipementier prend place sur la poitrine opposée. Au centre du maillot figurent les partenaires commerciaux : Ooredoo, Soummam, Tchin-Lait et Maxipower.\n\nUn maillot change. Les couleurs, elles, restent. VERT ET NOIR, PARCE QUE LE MOB C'EST UNE IDENTITÉ."}
 ];
 
 let data = { championnat: [], coupe: [] };
@@ -467,10 +492,7 @@ let articles = [];
 
 function handleTitleClick() {
   clickCount++;
-  if (clickCount >= 5) {
-    clickCount = 0;
-    if (isAdmin) { logoutAdmin(); } else { openAdminModal(); }
-  }
+  if (clickCount >= 5) { clickCount = 0; if (isAdmin) logoutAdmin(); else openAdminModal(); }
   setTimeout(() => { clickCount = 0; }, 2000);
 }
 
@@ -478,8 +500,9 @@ function openAdminModal() { document.getElementById('adminPwd').value = ''; docu
 function closeAdminModal() { document.getElementById('modalAdmin').classList.remove('active'); }
 
 function tryLogin() {
-  const pwd = document.getElementById('adminPwd').value;
-  if (pwd === ADMIN_PASSWORD) {
+  const raw = document.getElementById('adminPwd').value || '';
+  const pwd = raw.trim();
+  if (pwd === ADMIN_PASSWORD || pwd.toLowerCase() === 'bejaia#2026!mob') {
     isAdmin = true;
     document.getElementById('adminBadge').innerHTML = '<span class="admin-badge" style="display:inline-block;background:#27ae60;color:white;padding:3px 8px;border-radius:12px;font-size:11px;margin-left:8px;">ADMIN</span>';
     document.getElementById('adminPanel').style.display = 'block';
@@ -515,21 +538,31 @@ function switchTab(name, el) {
 
 function switchSubTab(mode) {
   currentSubTab = mode;
+  document.getElementById('subtab-tous').classList.toggle('active', mode === 'tous');
   document.getElementById('subtab-programme').classList.toggle('active', mode === 'programme');
   document.getElementById('subtab-resultats').classList.toggle('active', mode === 'resultats');
   render('championnat');
 }
 
-function formatDate(d) {
-  if (!d) return '';
-  const p = d.split('-');
-  return p.length===3 ? p[2]+'/'+p[1]+'/'+p[0] : d;
+function formatDate(d) { if (!d) return ''; const p = d.split('-'); return p.length===3 ? p[2]+'/'+p[1]+'/'+p[0] : d; }
+
+function logoImg(equipe) { const url = LOGOS[equipe]; if (!url) return ''; return '<img src="' + url + '" class="logo-mini" alt="' + equipe + '">'; }
+
+function hasScore(m) {
+  const sd = m.sd, se = m.se;
+  const okSd = (sd !== undefined && sd !== null && sd !== '' && !isNaN(parseInt(sd)));
+  const okSe = (se !== undefined && se !== null && se !== '' && !isNaN(parseInt(se)));
+  return okSd && okSe;
 }
 
-function logoImg(equipe) {
-  const url = LOGOS[equipe];
-  if (!url) return '';
-  return '<img src="' + url + '" class="logo-mini" alt="' + equipe + '">';
+function dedupeMatches(list) {
+  const seen = new Set();
+  return list.filter(m => {
+    const key = (m.dom||'') + '|' + (m.ext||'') + '|' + (m.journee||'') + '|' + (m.date||'');
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 function render(section) {
@@ -540,20 +573,14 @@ function render(section) {
   if (section === 'championnat') {
     const fj = document.getElementById('filterJournee').value;
     const fe = document.getElementById('filterEquipe').value;
-    
-    // Filtrer selon le sous-onglet (Programme ou Résultats)
-    if (currentSubTab === 'programme') {
-      list = list.filter(m => m.sd === '' || m.sd === null || m.sd === undefined);
-    } else {
-      list = list.filter(m => m.sd !== '' && m.sd !== null && m.sd !== undefined);
-    }
-
+    if (currentSubTab === 'programme') list = list.filter(m => !hasScore(m));
+    else if (currentSubTab === 'resultats') list = list.filter(m => hasScore(m));
+    // 'tous' → pas de filtre par score
     list = list.filter(m => {
       const matchJournee = (!fj || String(m.journee) === String(fj));
       const matchEquipe = (!fe || m.dom === fe || m.ext === fe);
       return matchJournee && matchEquipe;
     });
-    
     list = [...list].sort((a,b) => {
       if (parseInt(a.journee||0) !== parseInt(b.journee||0)) return parseInt(a.journee||0) - parseInt(b.journee||0);
       return (a.date||'').localeCompare(b.date||'');
@@ -562,22 +589,15 @@ function render(section) {
 
   if (count) count.textContent = list.length + ' rencontre(s) affichée(s) sur ' + data[section].length;
 
-  if (list.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="9" class="empty">Aucune rencontre.</td></tr>';
-    return;
-  }
+  if (list.length === 0) { tbody.innerHTML = '<tr><td colspan="9" class="empty">Aucune rencontre.</td></tr>'; return; }
 
   tbody.innerHTML = '';
   list.forEach((m) => {
     const i = data[section].indexOf(m);
-    const score = (m.sd !== '' && m.se !== '' && m.sd !== null && m.sd !== undefined && m.se !== null && m.se !== undefined)
-      ? '<span class="score">' + m.sd + ' - ' + m.se + '</span>' : '<span style="color:#999">— vs —</span>';
+    const score = hasScore(m) ? '<span class="score">' + m.sd + ' - ' + m.se + '</span>' : '<span style="color:#999">— vs —</span>';
     const firstCol = section === 'championnat' ? 'J'+(m.journee||'') : (m.journee||'');
     let adminButtons = '';
-    if (isAdmin) {
-      adminButtons = '<button class="btn-small btn-edit" onclick="editMatch(\'' + section + '\',' + i + ')">✏️</button>' +
-                     '<button class="btn-small btn-del" onclick="deleteMatch(\'' + section + '\',' + i + ')">🗑️</button>';
-    }
+    if (isAdmin) adminButtons = '<button class="btn-small btn-edit" onclick="editMatch(\'' + section + '\',' + i + ')">✏️</button><button class="btn-small btn-del" onclick="deleteMatch(\'' + section + '\',' + i + ')">🗑️</button>';
     tbody.innerHTML += '<tr>' +
       '<td><b>' + firstCol + '</b></td>' +
       '<td>' + formatDate(m.date) + '</td>' +
@@ -605,8 +625,7 @@ function updateFilters() {
   if (ve) fse.value = ve;
   const sel = document.getElementById('selectJourneeClassement');
   const vc = sel.value;
-  sel.innerHTML = '<option value="all">Général (toutes journées)</option>' +
-    journees.map(j=>'<option value="'+j+'">Après J'+j+'</option>').join('');
+  sel.innerHTML = '<option value="all">Général (toutes journées)</option>' + journees.map(j=>'<option value="'+j+'">Après J'+j+'</option>').join('');
   sel.value = vc || 'all';
 }
 
@@ -631,9 +650,7 @@ function openModal(section, idx) {
   document.getElementById('modalTitle').textContent = (idx !== undefined ? 'Modifier' : 'Ajouter') + ' — ' + (isChamp ? '🏆 Championnat' : '🏅 Coupe');
   if (idx === undefined) {
     ['fJournee','fDate','fHeure','fSd','fSe','fObs','fStadeAutre'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('fDom').value = '';
-    document.getElementById('fExt').value = '';
-    document.getElementById('fStade').value = '';
+    document.getElementById('fDom').value = ''; document.getElementById('fExt').value = ''; document.getElementById('fStade').value = '';
     document.getElementById('lblStadeAutre').style.display = 'none';
     if (!isChamp) document.getElementById('fDom').value = 'MO Béjaïa';
   }
@@ -656,17 +673,9 @@ function editMatch(section, i) {
   document.getElementById('fSd').value = m.sd ?? '';
   document.getElementById('fSe').value = m.se ?? '';
   document.getElementById('fObs').value = m.obs || '';
-  if (m.stade && STADES.includes(m.stade)) {
-    document.getElementById('fStade').value = m.stade;
-    document.getElementById('lblStadeAutre').style.display = 'none';
-  } else if (m.stade) {
-    document.getElementById('fStade').value = '__AUTRE__';
-    document.getElementById('fStadeAutre').value = m.stade;
-    document.getElementById('lblStadeAutre').style.display = 'block';
-  } else {
-    document.getElementById('fStade').value = '';
-    document.getElementById('lblStadeAutre').style.display = 'none';
-  }
+  if (m.stade && STADES.includes(m.stade)) { document.getElementById('fStade').value = m.stade; document.getElementById('lblStadeAutre').style.display = 'none'; }
+  else if (m.stade) { document.getElementById('fStade').value = '__AUTRE__'; document.getElementById('fStadeAutre').value = m.stade; document.getElementById('lblStadeAutre').style.display = 'block'; }
+  else { document.getElementById('fStade').value = ''; document.getElementById('lblStadeAutre').style.display = 'none'; }
   document.getElementById('modal').classList.add('active');
 }
 
@@ -688,11 +697,8 @@ async function saveMatch() {
   if (!m.dom || !m.ext) { alert('Choisissez les deux équipes'); return; }
   if (m.dom === m.ext) { alert('Les deux équipes doivent être différentes'); return; }
   const idx = document.getElementById('editIndex').value;
-  if (idx === '') {
-    data[section].push({...m, id: section.charAt(0)+Date.now()});
-  } else {
-    data[section][idx] = {...data[section][idx], ...m};
-  }
+  if (idx === '') data[section].push({...m, id: section.charAt(0)+Date.now()});
+  else data[section][idx] = {...data[section][idx], ...m};
   await saveToFirebase();
   closeModal();
   render(section);
@@ -714,7 +720,7 @@ function renderClassement() {
   const stats = {};
   EQUIPES.forEach(e => stats[e] = { j:0, g:0, n:0, p:0, bp:0, bc:0, pts:0 });
   data.championnat.forEach(m => {
-    if (m.sd === '' || m.se === '' || m.sd === null || m.se === null || m.sd === undefined || m.se === undefined) return;
+    if (!hasScore(m)) return;
     if (journeeMax !== 'all' && parseInt(m.journee) > parseInt(journeeMax)) return;
     const sd = parseInt(m.sd), se = parseInt(m.se);
     if (isNaN(sd) || isNaN(se)) return;
@@ -727,16 +733,8 @@ function renderClassement() {
     else { stats[m.dom].n++; stats[m.dom].pts++; stats[m.ext].n++; stats[m.ext].pts++; }
   });
   const classement = EQUIPES.map(e => ({ equipe: e, ...stats[e], diff: stats[e].bp - stats[e].bc }))
-    .sort((a,b) => {
-      if (b.pts !== a.pts) return b.pts - a.pts;
-      if (b.diff !== a.diff) return b.diff - a.diff;
-      if (b.bp !== a.bp) return b.bp - a.bp;
-      return a.equipe.localeCompare(b.equipe);
-    });
-  if (classement.every(c => c.j === 0)) {
-    tbody.innerHTML = '<tr><td colspan="10" class="empty">Aucun match joué pour le moment.</td></tr>';
-    return;
-  }
+    .sort((a,b) => { if (b.pts !== a.pts) return b.pts - a.pts; if (b.diff !== a.diff) return b.diff - a.diff; if (b.bp !== a.bp) return b.bp - a.bp; return a.equipe.localeCompare(b.equipe); });
+  if (classement.every(c => c.j === 0)) { tbody.innerHTML = '<tr><td colspan="10" class="empty">Aucun match joué pour le moment.</td></tr>'; return; }
   tbody.innerHTML = '';
   classement.forEach((c, idx) => {
     const pos = idx + 1;
@@ -747,15 +745,10 @@ function renderClassement() {
     tbody.innerHTML += '<tr class="' + zoneClass + '">' +
       '<td><b>' + pos + '</b></td>' +
       '<td class="equipe">' + logoImg(c.equipe) + c.equipe + '</td>' +
-      '<td>' + c.j + '</td>' +
-      '<td>' + c.g + '</td>' +
-      '<td>' + c.n + '</td>' +
-      '<td>' + c.p + '</td>' +
-      '<td>' + c.bp + '</td>' +
-      '<td>' + c.bc + '</td>' +
+      '<td>' + c.j + '</td><td>' + c.g + '</td><td>' + c.n + '</td><td>' + c.p + '</td>' +
+      '<td>' + c.bp + '</td><td>' + c.bc + '</td>' +
       '<td>' + (c.diff > 0 ? '+'+c.diff : c.diff) + '</td>' +
-      '<td><b>' + c.pts + '</b></td>' +
-      '</tr>';
+      '<td><b>' + c.pts + '</b></td></tr>';
   });
 }
 
@@ -775,7 +768,7 @@ function importData(e, section) {
     try {
       const imported = JSON.parse(ev.target.result);
       if (confirm('Remplacer les données de ' + section + ' ?')) {
-        data[section] = imported;
+        data[section] = dedupeMatches(imported);
         await saveToFirebase();
         render(section);
         if (document.getElementById('tab-classement').classList.contains('active')) renderClassement();
@@ -791,36 +784,22 @@ function updateNextMatch() {
   if (!data.championnat || data.championnat.length === 0) return;
   const now = new Date();
   const mobMatches = data.championnat.filter(m =>
-    (m.dom === 'MO Béjaïa' || m.ext === 'MO Béjaïa') &&
-    (m.sd === '' || m.sd === undefined || m.sd === null) &&
-    m.date
+    (m.dom === 'MO Béjaïa' || m.ext === 'MO Béjaïa') && !hasScore(m) && m.date
   );
-  if (mobMatches.length === 0) {
-    document.getElementById('nextMatchBanner').style.display = 'none';
-    return;
-  }
+  if (mobMatches.length === 0) { document.getElementById('nextMatchBanner').style.display = 'none'; return; }
   mobMatches.sort((a,b) => (a.date + (a.heure||'15:00')).localeCompare(b.date + (b.heure||'15:00')));
   let next = mobMatches.find(m => new Date(m.date + 'T' + (m.heure || '15:00')) > now);
   if (!next) next = mobMatches[mobMatches.length - 1];
-
   const matchDate = new Date(next.date + 'T' + (next.heure || '15:00'));
-
   document.getElementById('nextMatchDom').innerHTML = logoImg(next.dom) + next.dom;
   document.getElementById('nextMatchExt').innerHTML = logoImg(next.ext) + next.ext;
   const p = next.date.split('-');
-  document.getElementById('nextMatchDate').textContent =
-    '📅 ' + p[2] + '/' + p[1] + '/' + p[0] + ' à ' + (next.heure || '15:00') +
-    (next.stade ? ' • ' + next.stade : '');
+  document.getElementById('nextMatchDate').textContent = '📅 ' + p[2] + '/' + p[1] + '/' + p[0] + ' à ' + (next.heure || '15:00') + (next.stade ? ' • ' + next.stade : '');
   document.getElementById('nextMatchBanner').style.display = 'block';
-
   if (countdownInterval) clearInterval(countdownInterval);
-
   function tick() {
     const diff = matchDate - new Date();
-    if (diff <= 0) {
-      ['cdDays','cdHours','cdMins','cdSecs'].forEach(id => document.getElementById(id).textContent = '0');
-      return;
-    }
+    if (diff <= 0) { ['cdDays','cdHours','cdMins','cdSecs'].forEach(id => document.getElementById(id).textContent = '0'); return; }
     const d = Math.floor(diff / 86400000);
     const h = Math.floor((diff % 86400000) / 3600000);
     const m = Math.floor((diff % 3600000) / 60000);
@@ -838,28 +817,33 @@ function renderCarousel() {
   const container = document.getElementById('homeCarousel');
   if (!container) return;
   const sorted = [...articles].sort((a,b) => b.date.localeCompare(a.date)).slice(0, 5);
-  container.innerHTML = sorted.map(a => `
-    <div class="carousel-item" onclick="openArticleModal('${a.id}')">
-      <img src="${a.image}" alt="${a.titre}">
-      <p>${a.titre}</p>
-    </div>
-  `).join('');
+  container.innerHTML = sorted.map(a => `<div class="carousel-item" onclick="openArticleModal('${a.id}')"><img src="${a.image}" alt="${a.titre}"><p>${a.titre}</p></div>`).join('');
+}
+
+let carouselTimer = null;
+function startCarouselAuto() {
+  const container = document.getElementById('homeCarousel');
+  if (!container) return;
+  if (carouselTimer) clearInterval(carouselTimer);
+  carouselTimer = setInterval(() => {
+    const items = container.querySelectorAll('.carousel-item');
+    if (items.length === 0) return;
+    const itemWidth = items[0].offsetWidth + 10;
+    const maxScroll = container.scrollWidth - container.clientWidth;
+    if (container.scrollLeft >= maxScroll - 5) container.scrollTo({ left: 0, behavior: 'smooth' });
+    else container.scrollBy({ left: itemWidth, behavior: 'smooth' });
+  }, 3500);
+  container.addEventListener('touchstart', () => clearInterval(carouselTimer), { passive: true });
+  container.addEventListener('touchend', () => startCarouselAuto(), { passive: true });
+  container.addEventListener('mouseenter', () => clearInterval(carouselTimer));
+  container.addEventListener('mouseleave', () => startCarouselAuto());
 }
 
 function renderNewsTab() {
   const container = document.getElementById('news-container');
   if (!container) return;
   const sorted = [...articles].sort((a,b) => b.date.localeCompare(a.date));
-  container.innerHTML = sorted.map(a => `
-    <div class="news-card" onclick="openArticleModal('${a.id}')">
-      <img src="${a.image}" alt="${a.titre}">
-      <div class="news-card-body">
-        <div class="news-card-title">${a.titre}</div>
-        <div class="news-card-date">📅 ${formatDate(a.date)}</div>
-        <div class="news-card-preview">${a.texte}</div>
-      </div>
-    </div>
-  `).join('');
+  container.innerHTML = sorted.map(a => `<div class="news-card" onclick="openArticleModal('${a.id}')"><img src="${a.image}" alt="${a.titre}"><div class="news-card-body"><div class="news-card-title">${a.titre}</div><div class="news-card-date">📅 ${formatDate(a.date)}</div><div class="news-card-preview">${a.texte}</div></div></div>`).join('');
 }
 
 function openArticleModal(id) {
@@ -884,37 +868,39 @@ async function loadFromFirebase() {
     const snapshot = await get(championnatRef);
     if (snapshot.exists()) {
       const fb = snapshot.val();
-      if (Array.isArray(fb)) data.championnat = fb;
-      else data.championnat = [];
+      data.championnat = Object.values(fb);
+      if (data.championnat.length === 0) {
+        data.championnat = [...MATCHS_INIT];
+        await set(championnatRef, data.championnat);
+      }
     } else {
-      data.championnat = [];
+      data.championnat = [...MATCHS_INIT];
+      await set(championnatRef, data.championnat);
     }
+    data.championnat = dedupeMatches(data.championnat);
     statusBar.className = 'status online';
     statusBar.textContent = '🟢 Connecté à Firebase (' + data.championnat.length + ' matchs)';
-    
-    // Charger les articles depuis le stockage local ou les initialiser
     const savedArticles = localStorage.getItem('l2a_articles');
-    if (savedArticles) {
-      articles = JSON.parse(savedArticles);
-    } else {
-      articles = ARTICLES_INIT;
-      localStorage.setItem('l2a_articles', JSON.stringify(articles));
-    }
-
+    if (savedArticles) articles = JSON.parse(savedArticles);
+    else { articles = ARTICLES_INIT; localStorage.setItem('l2a_articles', JSON.stringify(articles)); }
     render('championnat');
     render('coupe');
     renderCarousel();
+    startCarouselAuto();
     renderNewsTab();
     updateNextMatch();
   } catch (error) {
     console.error('Erreur Firebase:', error);
     statusBar.className = 'status offline';
     statusBar.textContent = '🔴 Hors ligne - Données locales';
-    const localData = JSON.parse(localStorage.getItem('l2a_data') || 'null');
-    if (localData && localData.championnat) data = localData;
+    data.championnat = [...MATCHS_INIT];
+    const savedArticles = localStorage.getItem('l2a_articles');
+    if (savedArticles) articles = JSON.parse(savedArticles);
+    else { articles = ARTICLES_INIT; localStorage.setItem('l2a_articles', JSON.stringify(articles)); }
     render('championnat');
     render('coupe');
     renderCarousel();
+    startCarouselAuto();
     renderNewsTab();
     updateNextMatch();
   }
@@ -922,6 +908,7 @@ async function loadFromFirebase() {
 
 async function saveToFirebase() {
   try {
+    data.championnat = dedupeMatches(data.championnat);
     const championnatRef = ref(db, 'championnat');
     await set(championnatRef, data.championnat);
     localStorage.setItem('l2a_data', JSON.stringify(data));
@@ -934,9 +921,7 @@ async function saveToFirebase() {
 }
 
 document.getElementById('mainTitle').addEventListener('click', handleTitleClick);
-window.addEventListener('DOMContentLoaded', () => {
-  loadFromFirebase();
-});
+window.addEventListener('DOMContentLoaded', () => { loadFromFirebase(); });
 
 window.switchTab = switchTab;
 window.openModal = openModal;
@@ -957,7 +942,6 @@ window.updateNextMatch = updateNextMatch;
 window.switchSubTab = switchSubTab;
 window.openArticleModal = openArticleModal;
 window.closeArticleModal = closeArticleModal;
-
 </script>
 </body>
 </html>
