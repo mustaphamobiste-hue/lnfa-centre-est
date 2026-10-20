@@ -376,7 +376,7 @@
     <label>Extérieur <select id="fExt"></select></label>
     <label>Score domicile <input type="number" id="fSd" min="0"></label>
     <label>Score extérieur <input type="number" id="fSe" min="0"></label>
-    <label>Stade <input type="text" id="fStade"></label>
+    <label>Stade <select id="fStade"></select></label>
     <label>Observations <input type="text" id="fObs"></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalMatch')">Annuler</button><button onclick="saveMatch()">Enregistrer</button></div>
   </div>
@@ -767,7 +767,7 @@ function renderMob() {
 
 function openModal(id) { document.getElementById(id).classList.add('active'); }
 function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-
+const STADES = ["Stade Abed-Hamdani (El Khroub)", "Stade 19 Mai 1956 (Annaba)", "Stade Klag Abderrahmane (Aïn Fakroun)", "Stade Khabaza Bachir (Teleghma)", "Stade 1er Novembre 1954 (Batna)", "Stade 20 Août 1955 (Skikda)", "Stade 18 Février (Ouargla)", "Stade 10 000 places (Touggourt)", "Stade Tirsatine (Azazga)", "Stade Hammou Boukouffa (Beni Oulbane)", "Stade 20 Août 1955 (Alger)", "Stade des Frères Boucheligue (Magra)", "Stade 1er Novembre 1954 Guendouza (Akbou)", "Stade des Martyrs (Akbou)", "Stade Hocine Rouibah (Jijel)", "Stade Ramdane-Benabdelmalek (Constantine)"];
 function openModalMatch(section, idx) {
   if (!isAdmin) return;
   document.getElementById('editSectionMatch').value = section;
@@ -775,6 +775,7 @@ function openModalMatch(section, idx) {
   document.getElementById('modalTitleMatch').textContent = (idx !== undefined ? 'Modifier' : 'Ajouter') + ' un match';
   document.getElementById('fDom').innerHTML = EQUIPES.map(e=>`<option value="${e}">${e}</option>`).join('');
   document.getElementById('fExt').innerHTML = EQUIPES.map(e=>`<option value="${e}">${e}</option>`).join('');
+  document.getElementById('fStade').innerHTML = STADES.map(s=>`<option value="${s}">${s}</option>`).join('');
   if (idx !== undefined) {
     const m = data[section][idx];
     document.getElementById('fJournee').value = m.journee||''; document.getElementById('fDate').value = m.date||''; document.getElementById('fHeure').value = m.heure||'';
