@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ligue 2 Amateur - Groupe Centre Est 2026-2027 | MO Béjaïa</title>
+<title>MO Béjaïa - Ligue 2 Amateur 2026-2027</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: Arial, sans-serif; background: #f4f6f9; color: #222; padding: 10px; }
@@ -18,12 +18,14 @@
   .tab-content { display: none; }
   .tab-content.active { display: block; }
   .toolbar { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 12px; }
-  button, select, input { padding: 8px 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 13px; }
+  button, select, input, textarea { padding: 8px 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 13px; font-family: inherit; }
   button { background: #1a4d2e; color: white; cursor: pointer; border: none; }
   button:hover { background: #2d7a4a; }
   .btn-small { padding: 5px 8px; font-size: 12px; margin: 1px; }
   .btn-edit { background: #2980b9; }
   .btn-del { background: #c0392b; }
+  .btn-live { background: #e74c3c; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
   .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; background: white; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
   table { width: 100%; border-collapse: collapse; min-width: 800px; }
   th, td { padding: 8px; text-align: left; border-bottom: 1px solid #eee; font-size: 12px; white-space: nowrap; }
@@ -71,11 +73,26 @@
   .news-card-date { font-size: 11px; color: #777; margin-bottom: 10px; }
   .news-card-preview { font-size: 13px; color: #444; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   .article-full-text { line-height: 1.6; font-size: 14px; color: #333; white-space: pre-wrap; margin-top: 10px; }
-  .article-full-img { width: 100%; border-radius: 8px; margin-bottom: 15px; }
 
   .sub-tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 15px; flex-wrap: wrap; }
   .sub-tab { padding: 8px 15px; background: #e0e0e0; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 13px; }
   .sub-tab.active { background: #1a4d2e; color: white; }
+
+  .mob-card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+  .mob-title { color: #1a4d2e; font-size: 1.1em; font-weight: bold; margin-bottom: 10px; border-bottom: 2px solid #c9a961; padding-bottom: 5px; }
+  .live-score { font-size: 2em; font-weight: bold; text-align: center; color: #e74c3c; margin: 10px 0; }
+  .live-update { font-size: 12px; color: #666; text-align: center; font-style: italic; margin-bottom: 10px; }
+  .mob-text { font-size: 14px; line-height: 1.6; white-space: pre-wrap; }
+
+  .club-section { margin-bottom: 20px; }
+  .club-title { color: #1a4d2e; font-size: 1.2em; font-weight: bold; margin-bottom: 10px; padding-left: 10px; border-left: 4px solid #c9a961; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+  .player-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.15); cursor: pointer; text-align: center; position: relative; border-bottom: 4px solid #1a4d2e; }
+  .player-card img { width: 100%; height: 150px; object-fit: cover; object-position: top; background: #e0e0e0; }
+  .player-card .pc-num { position: absolute; top: 5px; left: 5px; background: #c9a961; color: #1a4d2e; font-weight: bold; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; border: 2px solid white; }
+  .player-card .pc-info { padding: 8px; }
+  .player-card .pc-name { font-weight: bold; font-size: 12px; color: #1a4d2e; line-height: 1.2; margin-bottom: 3px; }
+  .player-card .pc-pos { font-size: 10px; color: #666; }
 
   .historique-container { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); max-width: 900px; margin: 0 auto; }
   .historique-header { text-align: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 2px solid #c9a961; }
@@ -90,12 +107,9 @@
   .historique-fiche { background: #f0f8f4; border-left: 4px solid #1a4d2e; padding: 15px; border-radius: 6px; margin: 15px 0; }
   .historique-fiche-item { display: flex; margin-bottom: 8px; font-size: 0.9em; }
   .historique-fiche-label { font-weight: bold; color: #1a4d2e; min-width: 140px; }
-  .historique-fiche-value { color: #333; }
   .historique-list { padding-left: 20px; margin: 12px 0; }
   .historique-list li { margin-bottom: 6px; color: #333; line-height: 1.5; font-size: 0.9em; }
   .historique-ultras { background: #fff8e6; border-left: 4px solid #c9a961; padding: 12px; border-radius: 6px; margin: 10px 0; }
-  .historique-ultras-name { font-weight: bold; color: #1a4d2e; font-size: 0.95em; }
-  .historique-ultras-info { font-size: 0.85em; color: #555; margin-top: 3px; }
 
   @media (max-width: 400px) {
     .next-match-teams { font-size: 1.05em; }
@@ -107,13 +121,14 @@
 </head>
 <body>
 
-<h1 id="mainTitle">🏆 Ligue 2 Amateur – Groupe Centre Est 2026-2027<span id="adminBadge"></span></h1>
+<h1 id="mainTitle">🦀 MO Béjaïa – Ligue 2 Amateur 2026-2027<span id="adminBadge"></span></h1>
 
 <div id="statusBar" class="status loading">⏳ Connexion à Firebase...</div>
 
 <div class="tabs">
   <div class="tab active" onclick="switchTab('championnat', this)">🏆 Championnat</div>
-  <div class="tab" onclick="switchTab('coupe', this)">🏅 Coupe</div>
+  <div class="tab" onclick="switchTab('mob', this)">🦀 MOB</div>
+  <div class="tab" onclick="switchTab('club', this)">👥 Club</div>
   <div class="tab" onclick="switchTab('classement', this)">📊 Classement</div>
   <div class="tab" onclick="switchTab('actualite', this)">📰 Actualité</div>
   <div class="tab" onclick="switchTab('historique', this)">📜 Historique</div>
@@ -123,9 +138,6 @@
   <div style="text-align:center; margin-bottom:8px;">
     <strong style="color:#8e44ad;">🔐 Mode Admin activé</strong>
     <button class="btn-small btn-del" onclick="logoutAdmin()" style="margin-left:10px;">Déconnexion</button>
-  </div>
-  <div style="text-align:center; font-size:12px; color:#666;">
-    Vous pouvez maintenant modifier les scores directement.
   </div>
 </div>
 
@@ -158,53 +170,103 @@
     <div class="sub-tab" id="subtab-resultats" onclick="switchSubTab('resultats')">📊 Résultats</div>
   </div>
   <div class="toolbar">
-    <button onclick="openModal('championnat')" id="btnAddChamp" style="display:none;">➕ Ajouter</button>
+    <button onclick="openModalMatch('championnat')" id="btnAddChamp" style="display:none;">➕ Ajouter</button>
     <button onclick="exportData('championnat')">💾 Exporter</button>
     <button onclick="document.getElementById('importChampionnat').click()">📂 Importer</button>
     <input type="file" id="importChampionnat" accept=".json" style="display:none" onchange="importData(event,'championnat')">
   </div>
   <div class="toolbar">
-    <select id="filterJournee" onchange="render('championnat')">
-      <option value="">Toutes les journées</option>
-    </select>
-    <select id="filterEquipe" onchange="render('championnat')">
-      <option value="">Toutes les équipes</option>
-    </select>
+    <select id="filterJournee" onchange="render('championnat')"><option value="">Toutes les journées</option></select>
+    <select id="filterEquipe" onchange="render('championnat')"><option value="">Toutes les équipes</option></select>
     <button onclick="render('championnat')" style="background:#2980b9;">🔍 Filtrer</button>
   </div>
   <div class="count" id="countChampionnat"></div>
   <div class="table-wrap">
     <table>
-      <thead>
-        <tr>
-          <th>J</th><th>Date</th><th>Heure</th><th>Domicile</th><th>Score</th>
-          <th>Extérieur</th><th>Stade</th><th>Obs.</th><th>Actions</th>
-        </tr>
-      </thead>
+      <thead><tr><th>J</th><th>Date</th><th>Heure</th><th>Domicile</th><th>Score</th><th>Extérieur</th><th>Stade</th><th>Obs.</th><th>Actions</th></tr></thead>
       <tbody id="tbody-championnat"></tbody>
     </table>
   </div>
 </div>
 
-<!-- ONGLET COUPE -->
-<div id="tab-coupe" class="tab-content">
-  <div class="toolbar">
-    <button onclick="openModal('coupe')" id="btnAddCoupe" style="display:none;">➕ Ajouter un match MOB</button>
-    <button onclick="exportData('coupe')">💾 Exporter</button>
-    <button onclick="document.getElementById('importCoupe').click()">📂 Importer</button>
-    <input type="file" id="importCoupe" accept=".json" style="display:none" onchange="importData(event,'coupe')">
+<!-- ONGLET MOB -->
+<div id="tab-mob" class="tab-content">
+  <div class="sub-tabs">
+    <div class="sub-tab active" id="subtab-mob-avant" onclick="switchSubTabMob('avant')">⏳ Avant-match</div>
+    <div class="sub-tab" id="subtab-mob-day" onclick="switchSubTabMob('day')">🏟️ Match Day</div>
+    <div class="sub-tab" id="subtab-mob-apres" onclick="switchSubTabMob('apres')">📊 Après-match</div>
   </div>
-  <div class="count" id="countCoupe"></div>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Tour</th><th>Date</th><th>Heure</th><th>Domicile</th><th>Score</th>
-          <th>Extérieur</th><th>Stade</th><th>Obs.</th><th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="tbody-coupe"></tbody>
-    </table>
+  
+  <div id="mob-avant" class="mob-section">
+    <div class="toolbar" id="mob-avant-toolbar" style="display:none;">
+      <button onclick="openModalMob('avant')" class="btn-edit">✏️ Modifier le texte</button>
+    </div>
+    <div class="mob-card">
+      <div class="mob-title">📅 Le match à venir</div>
+      <div id="mob-avant-auto" style="text-align:center; font-weight:bold; margin-bottom:10px; color:#1a4d2e;"></div>
+    </div>
+    <div class="mob-card">
+      <div class="mob-title">📝 Infos & Analyse</div>
+      <div id="mob-avant-text" class="mob-text">Chargement...</div>
+    </div>
+  </div>
+
+  <div id="mob-day" class="mob-section" style="display:none;">
+    <div class="toolbar" id="mob-day-toolbar" style="display:none;">
+      <button onclick="openModalMob('day')" class="btn-edit">✏️ Modifier le texte</button>
+      <button onclick="openModalLive()" class="btn-live" id="btn-live">🔴 Gérer le Live</button>
+    </div>
+    <div class="mob-card" style="border: 2px solid #e74c3c; display:none;" id="live-widget">
+      <div class="mob-title" style="color:#e74c3c; border-color:#e74c3c;">🔴 Live</div>
+      <div class="live-score" id="live-score">0 - 0</div>
+      <div class="live-update" id="live-status">Match en cours</div>
+    </div>
+    <div class="mob-card">
+      <div class="mob-title">🏟️ Le match du jour</div>
+      <div id="mob-day-auto" style="text-align:center; font-weight:bold; margin-bottom:10px; color:#1a4d2e;"></div>
+    </div>
+    <div class="mob-card">
+      <div class="mob-title">📝 Compo & Ambiance</div>
+      <div id="mob-day-text" class="mob-text">Chargement...</div>
+    </div>
+  </div>
+
+  <div id="mob-apres" class="mob-section" style="display:none;">
+    <div class="toolbar" id="mob-apres-toolbar" style="display:none;">
+      <button onclick="openModalMob('apres')" class="btn-edit">✏️ Modifier le texte</button>
+    </div>
+    <div class="mob-card">
+      <div class="mob-title">📊 Dernier résultat</div>
+      <div id="mob-apres-auto" style="text-align:center; font-weight:bold; margin-bottom:10px; color:#1a4d2e;"></div>
+    </div>
+    <div class="mob-card">
+      <div class="mob-title">📝 Résumé & Réactions</div>
+      <div id="mob-apres-text" class="mob-text">Chargement...</div>
+    </div>
+  </div>
+</div>
+
+<!-- ONGLET CLUB -->
+<div id="tab-club" class="tab-content">
+  <div class="toolbar" id="club-toolbar" style="display:none;">
+    <button onclick="openModalPlayer('new')">➕ Ajouter Joueur</button>
+    <button onclick="openModalStaff('new')">➕ Ajouter Staff</button>
+    <button onclick="openModalDirigeant('new')">➕ Ajouter Dirigeant</button>
+  </div>
+
+  <div class="club-section">
+    <div class="club-title">🛡️ Staff Technique</div>
+    <div class="card-grid" id="grid-staff"></div>
+  </div>
+
+  <div class="club-section">
+    <div class="club-title">⚽ Effectif (Saison 2026-2027)</div>
+    <div class="card-grid" id="grid-players"></div>
+  </div>
+
+  <div class="club-section">
+    <div class="club-title">👔 Dirigeants (CSA)</div>
+    <div class="card-grid" id="grid-dirigeants"></div>
   </div>
 </div>
 
@@ -212,23 +274,11 @@
 <div id="tab-classement" class="tab-content">
   <div class="classement-filters" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 12px;">
     <label style="font-size:13px;">Classement après : </label>
-    <select id="selectJourneeClassement" onchange="renderClassement()">
-      <option value="all">Général (toutes journées)</option>
-    </select>
-  </div>
-  <div class="legend" style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin: 10px 0; font-size: 11px;">
-    <div class="legend-item" style="display: flex; align-items: center; gap: 5px;"><div class="legend-color" style="width: 15px; height: 15px; border-radius: 3px; background:#d4edda;"></div> Montée directe</div>
-    <div class="legend-item" style="display: flex; align-items: center; gap: 5px;"><div class="legend-color" style="width: 15px; height: 15px; border-radius: 3px; background:#fff3cd;"></div> Playoffs</div>
-    <div class="legend-item" style="display: flex; align-items: center; gap: 5px;"><div class="legend-color" style="width: 15px; height: 15px; border-radius: 3px; background:#f8d7da;"></div> Relégation</div>
+    <select id="selectJourneeClassement" onchange="renderClassement()"><option value="all">Général (toutes journées)</option></select>
   </div>
   <div class="table-wrap">
     <table class="classement-table" style="min-width: 100%; font-size: 11px;">
-      <thead>
-        <tr>
-          <th>Pos</th><th>Équipe</th><th>J</th><th>G</th><th>N</th><th>P</th>
-          <th>BP</th><th>BC</th><th>Diff</th><th>Pts</th>
-        </tr>
-      </thead>
+      <thead><tr><th>Pos</th><th>Équipe</th><th>J</th><th>G</th><th>N</th><th>P</th><th>BP</th><th>BC</th><th>Diff</th><th>Pts</th></tr></thead>
       <tbody id="tbody-classement"></tbody>
     </table>
   </div>
@@ -250,12 +300,12 @@
     <div class="historique-section">
       <div class="historique-section-title">📋 Fiche d'identité</div>
       <div class="historique-fiche">
-        <div class="historique-fiche-item"><div class="historique-fiche-label">Nom officiel :</div><div class="historique-fiche-value">Mouloudia Olympique de Béjaïa (M.O.B)</div></div>
-        <div class="historique-fiche-item"><div class="historique-fiche-label">Date de fondation :</div><div class="historique-fiche-value">5 juillet 1954</div></div>
-        <div class="historique-fiche-item"><div class="historique-fiche-label">Surnom :</div><div class="historique-fiche-value">Les Crabes 🦀</div></div>
-        <div class="historique-fiche-item"><div class="historique-fiche-label">Stade :</div><div class="historique-fiche-value">Stade de l'Unité Maghrébine (Béjaïa)</div></div>
-        <div class="historique-fiche-item"><div class="historique-fiche-label">Couleurs :</div><div class="historique-fiche-value">Vert et Noir (domicile) / Vert et Blanc (extérieur)</div></div>
-        <div class="historique-fiche-item"><div class="historique-fiche-label">Championnat actuel :</div><div class="historique-fiche-value">Ligue 2 Amateur (Groupe Centre-Est) 2026/2027</div></div>
+        <div class="historique-fiche-item"><div class="historique-fiche-label">Nom officiel :</div><div>Mouloudia Olympique de Béjaïa (M.O.B)</div></div>
+        <div class="historique-fiche-item"><div class="historique-fiche-label">Date de fondation :</div><div>5 juillet 1954</div></div>
+        <div class="historique-fiche-item"><div class="historique-fiche-label">Surnom :</div><div>Les Crabes 🦀</div></div>
+        <div class="historique-fiche-item"><div class="historique-fiche-label">Stade :</div><div>Stade de l'Unité Maghrébine (Béjaïa)</div></div>
+        <div class="historique-fiche-item"><div class="historique-fiche-label">Couleurs :</div><div>Vert et Noir (domicile) / Vert et Blanc (extérieur)</div></div>
+        <div class="historique-fiche-item"><div class="historique-fiche-label">Championnat actuel :</div><div>Ligue 2 Amateur (Groupe Centre-Est) 2026/2027</div></div>
       </div>
     </div>
     <div class="historique-section">
@@ -313,51 +363,110 @@
   </div>
 </div>
 
-<!-- MODAL MATCH -->
-<div class="modal" id="modal">
+<!-- MODALS -->
+<div class="modal" id="modalMatch">
   <div class="modal-content">
-    <span class="modal-close" onclick="closeModal()">×</span>
-    <h3 id="modalTitle">Ajouter</h3>
-    <input type="hidden" id="editIndex">
-    <input type="hidden" id="editSection">
-    <label id="lblJournee">Journée <input type="number" id="fJournee" min="1" max="30"></label>
+    <span class="modal-close" onclick="closeModal('modalMatch')">×</span>
+    <h3 id="modalTitleMatch">Ajouter un Match</h3>
+    <input type="hidden" id="editSectionMatch"><input type="hidden" id="editIndexMatch">
+    <label>Journée <input type="number" id="fJournee" min="1" max="30"></label>
     <label>Date <input type="date" id="fDate"></label>
     <label>Heure <input type="time" id="fHeure"></label>
-    <label>Équipe domicile <select id="fDom"></select></label>
-    <label>Équipe extérieur <select id="fExt"></select></label>
+    <label>Domicile <select id="fDom"></select></label>
+    <label>Extérieur <select id="fExt"></select></label>
     <label>Score domicile <input type="number" id="fSd" min="0"></label>
     <label>Score extérieur <input type="number" id="fSe" min="0"></label>
-    <label>Stade <select id="fStade" onchange="onStadeChange()"></select></label>
-    <label id="lblStadeAutre" style="display:none;">Autre stade (préciser) <input type="text" id="fStadeAutre"></label>
-    <label>Observations <input type="text" id="fObs" placeholder="Report, Huis-Clos..."></label>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
-      <button onclick="saveMatch()">Enregistrer</button>
-    </div>
+    <label>Stade <input type="text" id="fStade"></label>
+    <label>Observations <input type="text" id="fObs"></label>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalMatch')">Annuler</button><button onclick="saveMatch()">Enregistrer</button></div>
   </div>
 </div>
 
-<!-- MODAL ADMIN -->
 <div class="modal" id="modalAdmin">
   <div class="modal-content">
-    <span class="modal-close" onclick="closeAdminModal()">×</span>
+    <span class="modal-close" onclick="closeModal('modalAdmin')">×</span>
     <h3>🔐 Accès Admin</h3>
     <label>Mot de passe <input type="password" id="adminPwd" onkeypress="if(event.key==='Enter') tryLogin()"></label>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeAdminModal()">Annuler</button>
-      <button onclick="tryLogin()">Connexion</button>
-    </div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalAdmin')">Annuler</button><button onclick="tryLogin()">Connexion</button></div>
   </div>
 </div>
 
-<!-- MODAL ARTICLE -->
 <div class="modal" id="modalArticle">
   <div class="modal-content">
-    <span class="modal-close" onclick="closeArticleModal()">×</span>
+    <span class="modal-close" onclick="closeModal('modalArticle')">×</span>
     <h3 id="articleTitle"></h3>
     <div id="articleDate" style="font-size: 11px; color:#777; margin-bottom: 10px;"></div>
     <img id="articleImg" src="" style="width:100%; border-radius:8px; margin-bottom:15px; display:none;">
     <div id="articleText" class="article-full-text"></div>
+  </div>
+</div>
+
+<div class="modal" id="modalPlayer">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('modalPlayer')">×</span>
+    <h3>⚽ Joueur</h3>
+    <input type="hidden" id="editPlayerIdx">
+    <label>Numéro <input type="number" id="pNum"></label>
+    <label>Nom <input type="text" id="pNom"></label>
+    <label>Poste <input type="text" id="pPoste"></label>
+    <label>Date de naissance <input type="text" id="pDdn" placeholder="Ex: 14/06/1998"></label>
+    <label>Lieu de naissance <input type="text" id="pLieu"></label>
+    <label>Nationalité <input type="text" id="pNat"></label>
+    <label>Taille / Poids <input type="text" id="pTaille"></label>
+    <label>Pied fort <input type="text" id="pPied"></label>
+    <label>Club précédent <input type="text" id="pPrev"></label>
+    <label>Lien Image <input type="url" id="pImg"></label>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalPlayer')">Annuler</button><button onclick="savePlayer()">Enregistrer</button></div>
+  </div>
+</div>
+
+<div class="modal" id="modalStaff">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('modalStaff')">×</span>
+    <h3>🛡️ Membre du Staff</h3>
+    <input type="hidden" id="editStaffIdx">
+    <label>Nom <input type="text" id="sNom"></label>
+    <label>Fonction <input type="text" id="sFonction"></label>
+    <label>Date/Lieu de naissance <input type="text" id="sDdn"></label>
+    <label>Diplôme / Infos <input type="text" id="sInfos"></label>
+    <label>Lien Image <input type="url" id="sImg"></label>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalStaff')">Annuler</button><button onclick="saveStaff()">Enregistrer</button></div>
+  </div>
+</div>
+
+<div class="modal" id="modalDirigeant">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('modalDirigeant')">×</span>
+    <h3>👔 Dirigeant</h3>
+    <input type="hidden" id="editDirIdx">
+    <label>Nom <input type="text" id="dNom"></label>
+    <label>Fonction <input type="text" id="dFonction"></label>
+    <label>Lien Image <input type="url" id="dImg"></label>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalDirigeant')">Annuler</button><button onclick="saveDirigeant()">Enregistrer</button></div>
+  </div>
+</div>
+
+<div class="modal" id="modalMob">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('modalMob')">×</span>
+    <h3>📝 Modifier le texte</h3>
+    <input type="hidden" id="mobSection">
+    <label>Contenu (texte libre) <textarea id="mobTextInput" rows="10"></textarea></label>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalMob')">Annuler</button><button onclick="saveMobText()">Enregistrer</button></div>
+  </div>
+</div>
+
+<div class="modal" id="modalLive">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('modalLive')">×</span>
+    <h3>🔴 Gérer le Live</h3>
+    <label>Statut <select id="liveStatut"><option value="inactif">Inactif (cacher)</option><option value="actif">Match en cours 🔴</option><option value="termine">Match terminé</option></select></label>
+    <div style="display:flex; gap:10px; margin-top:10px;">
+      <label style="flex:1;">Score MOB <input type="number" id="liveSd" min="0"></label>
+      <label style="flex:1;">Score Adv <input type="number" id="liveSe" min="0"></label>
+    </div>
+    <label>Texte (ex: "45' But de Yaya !") <input type="text" id="liveTexte"></label>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalLive')">Annuler</button><button onclick="saveLive()">Mettre à jour</button></div>
   </div>
 </div>
 
@@ -378,18 +487,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-(async () => {
-  try {
-    const adminRef = ref(db, 'config/admin_pass');
-    const adminSnap = await get(adminRef);
-    if (!adminSnap.exists()) await set(adminRef, 'Béjaïa#2026!Mob');
-  } catch (e) { console.log(e); }
-})();
-
 const ADMIN_PASSWORD = "Béjaïa#2026!Mob";
 let isAdmin = false;
 let clickCount = 0;
 let currentSubTab = 'tous';
+let currentMobSubTab = 'avant';
 
 const EQUIPES = ["Paradou AC", "IRB Nezla", "NRB Beni Oulbane", "NRB Teleghma", "CA Batna", "US Chaouia", "AS Khroub", "MO Constantine", "USM Annaba", "JS Azazga", "MO Béjaïa", "NC Magra", "JSM Skikda", "MSP Batna", "JSD Jijel", "CR Beni Thour"];
 
@@ -412,8 +514,6 @@ const LOGOS = {
   "CR Beni Thour": "https://i.postimg.cc/k4Ks4hZQ/CR-Beni-Thour-logo-officiel.png"
 };
 
-const STADES = ["Stade Abed-Hamdani (El Khroub)","Stade 19 Mai 1956 (Annaba)","Stade Allag Abderrahmane (Aïn Fakroun)","Stade Khabaza Bachir (Teleghma)","Stade 1er Novembre 1954 (Batna)","Stade 20 Août 1955 (Skikda)","Stade 18 Février (Ouargla)","Stade 10 000 places (Touggourt)","Stade Tirsatine (Azazga)","Stade Hammou Boukouffa (Beni Oulbane)","Stade 20 Août 1955 (Alger)","Stade des Frères Boucheligue (Magra)","Stade 1er Novembre 1954 Guendouza (Akbou)","Stade des Martyrs (Akbou)","Stade Hocine Rouibah (Jijel)","Stade Ramdane-Benabdelmalek (Constantine)"];
-
 const MATCHS_INIT = [
   {journee:"1", date:"2026-09-18", heure:"16:00", dom:"AS Khroub", ext:"Paradou AC", sd:"0", se:"0", stade:"Stade Abed-Hamdani (El Khroub)", obs:""},
   {journee:"1", date:"2026-09-18", heure:"16:00", dom:"USM Annaba", ext:"NC Magra", sd:"3", se:"0", stade:"Stade 19 Mai 1956 (Annaba)", obs:""},
@@ -423,63 +523,105 @@ const MATCHS_INIT = [
   {journee:"1", date:"2026-09-18", heure:"16:00", dom:"JSM Skikda", ext:"IRB Nezla", sd:"2", se:"0", stade:"Stade 20 Août 1955 (Skikda)", obs:""},
   {journee:"1", date:"2026-09-18", heure:"16:00", dom:"JSD Jijel", ext:"CR Beni Thour", sd:"", se:"", stade:"Stade Hocine Rouibah (Jijel)", obs:"Reporté"},
   {journee:"1", date:"2026-09-18", heure:"16:00", dom:"MO Béjaïa", ext:"MO Constantine", sd:"0", se:"0", stade:"Stade des Martyrs (Akbou)", obs:""},
-
   {journee:"2", date:"2026-09-26", heure:"16:00", dom:"CR Beni Thour", ext:"MO Béjaïa", sd:"1", se:"3", stade:"", obs:""},
-  {journee:"2", date:"2026-09-26", heure:"16:00", dom:"IRB Nezla", ext:"JSD Jijel", sd:"1", se:"0", stade:"Stade 1er Novembre 1954 (Batna)", obs:""},
-  {journee:"2", date:"2026-09-27", heure:"16:00", dom:"JS Azazga", ext:"JSM Skikda", sd:"", se:"", stade:"Stade Tirsatine (Azazga)", obs:"Date à vérifier"},
-  {journee:"2", date:"2026-09-26", heure:"16:00", dom:"NRB Beni Oulbane", ext:"CA Batna", sd:"1", se:"0", stade:"Stade Hammou Boukouffa (Beni Oulbane)", obs:""},
-  {journee:"2", date:"2026-09-26", heure:"16:00", dom:"Paradou AC", ext:"NRB Teleghma", sd:"2", se:"1", stade:"Stade 20 Août 1955 (Alger)", obs:"Huis-Clos"},
-  {journee:"2", date:"2026-09-26", heure:"16:00", dom:"NC Magra", ext:"US Chaouia", sd:"1", se:"0", stade:"Stade des Frères Boucheligue (Magra)", obs:""},
-  {journee:"2", date:"2026-09-26", heure:"16:00", dom:"AS Khroub", ext:"USM Annaba", sd:"", se:"", stade:"Stade Abed-Hamdani (El Khroub)", obs:"Score à compléter"},
+  {journee:"2", date:"2026-09-26", heure:"16:00", dom:"IRB Nezla", ext:"JSD Jijel", sd:"1", se:"0", stade:"", obs:""},
+  {journee:"2", date:"2026-09-27", heure:"16:00", dom:"JS Azazga", ext:"JSM Skikda", sd:"", se:"", stade:"", obs:"Date à vérifier"},
+  {journee:"2", date:"2026-09-26", heure:"16:00", dom:"NRB Beni Oulbane", ext:"CA Batna", sd:"1", se:"0", stade:"", obs:""},
+  {journee:"2", date:"2026-09-26", heure:"16:00", dom:"Paradou AC", ext:"NRB Teleghma", sd:"2", se:"1", stade:"", obs:"Huis-Clos"},
+  {journee:"2", date:"2026-09-26", heure:"16:00", dom:"NC Magra", ext:"US Chaouia", sd:"1", se:"0", stade:"", obs:""},
+  {journee:"2", date:"2026-09-26", heure:"16:00", dom:"AS Khroub", ext:"USM Annaba", sd:"", se:"", stade:"", obs:"Score à compléter"},
   {journee:"2", date:"2026-09-26", heure:"16:00", dom:"MSP Batna", ext:"MO Constantine", sd:"0", se:"0", stade:"", obs:""},
-
-  {journee:"3", date:"2026-10-02", heure:"15:00", dom:"USM Annaba", ext:"Paradou AC", sd:"2", se:"1", stade:"Stade 19 Mai 1956 (Annaba)", obs:""},
-  {journee:"3", date:"2026-10-02", heure:"15:00", dom:"NRB Teleghma", ext:"NC Magra", sd:"1", se:"2", stade:"Stade Khabaza Bachir (Teleghma)", obs:""},
-  {journee:"3", date:"2026-10-02", heure:"15:00", dom:"CA Batna", ext:"MSP Batna", sd:"0", se:"1", stade:"Stade 1er Novembre 1954 (Batna)", obs:""},
+  {journee:"3", date:"2026-10-02", heure:"15:00", dom:"USM Annaba", ext:"Paradou AC", sd:"2", se:"1", stade:"", obs:""},
+  {journee:"3", date:"2026-10-02", heure:"15:00", dom:"NRB Teleghma", ext:"NC Magra", sd:"1", se:"2", stade:"", obs:""},
+  {journee:"3", date:"2026-10-02", heure:"15:00", dom:"CA Batna", ext:"MSP Batna", sd:"0", se:"1", stade:"", obs:""},
   {journee:"3", date:"2026-10-02", heure:"15:00", dom:"MO Béjaïa", ext:"IRB Nezla", sd:"", se:"", stade:"", obs:"Reporté"},
-  {journee:"3", date:"2026-10-02", heure:"15:00", dom:"MO Constantine", ext:"CR Beni Thour", sd:"2", se:"1", stade:"Stade Ramdane-Benabdelmalek (Constantine)", obs:""},
+  {journee:"3", date:"2026-10-02", heure:"15:00", dom:"MO Constantine", ext:"CR Beni Thour", sd:"2", se:"1", stade:"", obs:""},
   {journee:"3", date:"2026-10-02", heure:"15:00", dom:"US Chaouia", ext:"AS Khroub", sd:"0", se:"0", stade:"", obs:""},
-  {journee:"3", date:"2026-10-03", heure:"15:00", dom:"JSM Skikda", ext:"NRB Beni Oulbane", sd:"1", se:"0", stade:"Stade 20 Août 1955 (Skikda)", obs:""},
-  {journee:"3", date:"2026-10-03", heure:"15:00", dom:"JSD Jijel", ext:"JS Azazga", sd:"0", se:"0", stade:"Stade Hocine Rouibah (Jijel)", obs:""},
-
-  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"USM Annaba", ext:"US Chaouia", sd:"3", se:"0", stade:"Stade 19 Mai 1956 (Annaba)", obs:""},
+  {journee:"3", date:"2026-10-03", heure:"15:00", dom:"JSM Skikda", ext:"NRB Beni Oulbane", sd:"1", se:"0", stade:"", obs:""},
+  {journee:"3", date:"2026-10-03", heure:"15:00", dom:"JSD Jijel", ext:"JS Azazga", sd:"0", se:"0", stade:"", obs:""},
+  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"USM Annaba", ext:"US Chaouia", sd:"3", se:"0", stade:"", obs:""},
   {journee:"4", date:"2026-10-09", heure:"15:00", dom:"IRB Nezla", ext:"MO Constantine", sd:"2", se:"2", stade:"", obs:""},
   {journee:"4", date:"2026-10-09", heure:"15:00", dom:"MSP Batna", ext:"CR Beni Thour", sd:"2", se:"1", stade:"", obs:""},
-  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"NRB Beni Oulbane", ext:"JSD Jijel", sd:"2", se:"0", stade:"Stade Hammou Boukouffa (Beni Oulbane)", obs:""},
-  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"Paradou AC", ext:"JSM Skikda", sd:"", se:"", stade:"Stade 20 Août 1955 (Alger)", obs:"Reporté"},
-  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"NC Magra", ext:"CA Batna", sd:"0", se:"0", stade:"Stade des Frères Boucheligue (Magra)", obs:""},
-  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"AS Khroub", ext:"NRB Teleghma", sd:"2", se:"2", stade:"Stade Abed-Hamdani (El Khroub)", obs:""},
-  {journee:"4", date:"2026-10-10", heure:"15:00", dom:"JS Azazga", ext:"MO Béjaïa", sd:"2", se:"1", stade:"Stade Tirsatine (Azazga)", obs:""},
-
+  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"NRB Beni Oulbane", ext:"JSD Jijel", sd:"2", se:"0", stade:"", obs:""},
+  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"Paradou AC", ext:"JSM Skikda", sd:"", se:"", stade:"", obs:"Reporté"},
+  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"NC Magra", ext:"CA Batna", sd:"0", se:"0", stade:"", obs:""},
+  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"AS Khroub", ext:"NRB Teleghma", sd:"2", se:"2", stade:"", obs:""},
+  {journee:"4", date:"2026-10-10", heure:"15:00", dom:"JS Azazga", ext:"MO Béjaïa", sd:"2", se:"1", stade:"", obs:""},
   {journee:"5", date:"2026-10-13", heure:"15:00", dom:"US Chaouia", ext:"Paradou AC", sd:"1", se:"0", stade:"", obs:""},
-  {journee:"5", date:"2026-10-13", heure:"15:00", dom:"NRB Teleghma", ext:"USM Annaba", sd:"2", se:"1", stade:"Stade Khabaza Bachir (Teleghma)", obs:""},
-  {journee:"5", date:"2026-10-13", heure:"15:00", dom:"CA Batna", ext:"AS Khroub", sd:"1", se:"0", stade:"Stade 1er Novembre 1954 (Batna)", obs:""},
+  {journee:"5", date:"2026-10-13", heure:"15:00", dom:"NRB Teleghma", ext:"USM Annaba", sd:"2", se:"1", stade:"", obs:""},
+  {journee:"5", date:"2026-10-13", heure:"15:00", dom:"CA Batna", ext:"AS Khroub", sd:"1", se:"0", stade:"", obs:""},
   {journee:"5", date:"2026-10-13", heure:"15:00", dom:"CR Beni Thour", ext:"IRB Nezla", sd:"2", se:"1", stade:"", obs:""},
-  {journee:"5", date:"2026-10-13", heure:"15:00", dom:"JSM Skikda", ext:"NC Magra", sd:"2", se:"1", stade:"Stade 20 Août 1955 (Skikda)", obs:""},
-  {journee:"5", date:"2026-10-13", heure:"15:00", dom:"JSD Jijel", ext:"MSP Batna", sd:"1", se:"2", stade:"Stade Hocine Rouibah (Jijel)", obs:""},
-  {journee:"5", date:"2026-10-14", heure:"15:00", dom:"MO Constantine", ext:"JS Azazga", sd:"1", se:"0", stade:"Stade Ramdane-Benabdelmalek (Constantine)", obs:""},
+  {journee:"5", date:"2026-10-13", heure:"15:00", dom:"JSM Skikda", ext:"NC Magra", sd:"2", se:"1", stade:"", obs:""},
+  {journee:"5", date:"2026-10-13", heure:"15:00", dom:"JSD Jijel", ext:"MSP Batna", sd:"1", se:"2", stade:"", obs:""},
+  {journee:"5", date:"2026-10-14", heure:"15:00", dom:"MO Constantine", ext:"JS Azazga", sd:"1", se:"0", stade:"", obs:""},
   {journee:"5", date:"2026-10-15", heure:"15:00", dom:"MO Béjaïa", ext:"NRB Beni Oulbane", sd:"2", se:"0", stade:"Stade des Martyrs (Akbou)", obs:"Huis-Clos"},
-
-  {journee:"6", date:"2026-10-17", heure:"15:00", dom:"USM Annaba", ext:"CA Batna", sd:"0", se:"0", stade:"Stade 19 Mai 1956 (Annaba)", obs:""},
+  {journee:"6", date:"2026-10-17", heure:"15:00", dom:"USM Annaba", ext:"CA Batna", sd:"0", se:"0", stade:"", obs:""},
   {journee:"6", date:"2026-10-17", heure:"15:00", dom:"US Chaouia", ext:"NRB Teleghma", sd:"1", se:"0", stade:"", obs:""},
-  {journee:"6", date:"2026-10-17", heure:"15:00", dom:"Paradou AC", ext:"JSD Jijel", sd:"2", se:"0", stade:"Stade 20 Août 1955 (Alger)", obs:"Huis-Clos"},
-  {journee:"6", date:"2026-10-17", heure:"15:00", dom:"NC Magra", ext:"IRB Nezla", sd:"1", se:"0", stade:"Stade des Frères Boucheligue (Magra)", obs:""},
-  {journee:"6", date:"2026-10-18", heure:"15:00", dom:"AS Khroub", ext:"JSM Skikda", sd:"2", se:"1", stade:"Stade Abed-Hamdani (El Khroub)", obs:""},
-  {journee:"6", date:"2026-10-19", heure:"15:00", dom:"MSP Batna", ext:"MO Béjaïa", sd:"", se:"", stade:"", obs:""},
-  {journee:"6", date:"2026-10-19", heure:"15:00", dom:"JS Azazga", ext:"CR Beni Thour", sd:"", se:"", stade:"Stade Tirsatine (Azazga)", obs:""},
-  {journee:"6", date:"2026-10-19", heure:"15:00", dom:"NRB Beni Oulbane", ext:"MO Constantine", sd:"", se:"", stade:"Stade Hammou Boukouffa (Beni Oulbane)", obs:""},
-
+  {journee:"6", date:"2026-10-17", heure:"15:00", dom:"Paradou AC", ext:"JSD Jijel", sd:"2", se:"0", stade:"", obs:"Huis-Clos"},
+  {journee:"6", date:"2026-10-17", heure:"15:00", dom:"NC Magra", ext:"IRB Nezla", sd:"1", se:"0", stade:"", obs:""},
+  {journee:"6", date:"2026-10-18", heure:"15:00", dom:"AS Khroub", ext:"JSM Skikda", sd:"2", se:"1", stade:"", obs:""},
+  {journee:"6", date:"2026-10-19", heure:"15:00", dom:"MSP Batna", ext:"MO Béjaïa", sd:"1", se:"0", stade:"Stade 1er Novembre 1954 (Batna)", obs:""},
+  {journee:"6", date:"2026-10-19", heure:"15:00", dom:"JS Azazga", ext:"CR Beni Thour", sd:"", se:"", stade:"", obs:""},
+  {journee:"6", date:"2026-10-19", heure:"15:00", dom:"NRB Beni Oulbane", ext:"MO Constantine", sd:"", se:"", stade:"", obs:""},
   {journee:"7", date:"2026-10-24", heure:"15:00", dom:"IRB Nezla", ext:"JS Azazga", sd:"", se:"", stade:"", obs:""},
-  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"NRB Teleghma", ext:"NRB Beni Oulbane", sd:"", se:"", stade:"Stade Khabaza Bachir (Teleghma)", obs:""},
-  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"CA Batna", ext:"US Chaouia", sd:"", se:"", stade:"Stade 1er Novembre 1954 (Batna)", obs:""},
+  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"NRB Teleghma", ext:"NRB Beni Oulbane", sd:"", se:"", stade:"", obs:""},
+  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"CA Batna", ext:"US Chaouia", sd:"", se:"", stade:"", obs:""},
   {journee:"7", date:"2026-10-24", heure:"15:00", dom:"CR Beni Thour", ext:"USM Annaba", sd:"", se:"", stade:"", obs:""},
-  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"JSM Skikda", ext:"MSP Batna", sd:"", se:"", stade:"Stade 20 Août 1955 (Skikda)", obs:""},
-  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"JSD Jijel", ext:"NC Magra", sd:"", se:"", stade:"Stade Hocine Rouibah (Jijel)", obs:""},
-  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"MO Constantine", ext:"AS Khroub", sd:"", se:"", stade:"Stade Ramdane-Benabdelmalek (Constantine)", obs:""},
+  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"JSM Skikda", ext:"MSP Batna", sd:"", se:"", stade:"", obs:""},
+  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"JSD Jijel", ext:"NC Magra", sd:"", se:"", stade:"", obs:""},
+  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"MO Constantine", ext:"AS Khroub", sd:"", se:"", stade:"", obs:""},
   {journee:"7", date:"2026-10-24", heure:"15:00", dom:"MO Béjaïa", ext:"Paradou AC", sd:"", se:"", stade:"Stade des Martyrs (Akbou)", obs:""}
 ];
 
-const ARTICLES_INIT = [
+const STAFF_INIT = [
+  { nom: "Hamide Aït-Ahmed Lamara", fonction: "Entraîneur principal", ddn: "14/06/1974 (Charleville-Mézières)", infos: "Licence UEFA Pro", img: "https://i.postimg.cc/MZd2ppjW/Hamide-Lamara-Ait-Ahmed-entraineur-MO-Bejaia-saison-2026-2027.jpg" },
+  { nom: "Mourad Tairi", fonction: "Entraîneur des gardiens", ddn: "08/03/1974 (Aokas)", infos: "", img: "https://i.postimg.cc/L5sW1jZj/Mourad-Tairi-entraineur-des-gardiens-MO-Bejaia-saison-2026-2027.png" },
+  { nom: "Abdelkader Djafri", fonction: "Préparateur physique", ddn: "06/07/1984 (Tighennif)", infos: "", img: "https://i.postimg.cc/vB0qbDSd/Abdelkader-Djafri-preparateur-physique-MO-Bejaia-saison-2026-2027.png" }
+];
+
+const DIRIGEANTS_INIT = [
+  { nom: "Hachemi Belameri", fonction: "Président", img: "https://i.postimg.cc/Gm9Zd8DK/Hachemi-Belameri-President-du-MO-Bejaia.jpg" },
+  { nom: "Tarik Hamoum", fonction: "Coordinateur technique", img: "https://i.postimg.cc/GpGgmkmK/Tarik-Hammoum-coordinateur-technique.jpg" },
+  { nom: "Baila Mahrez", fonction: "Président des jeunes catégories", img: "https://i.postimg.cc/nzn2Vg5b/Baila-Mahrez-President-des-jeunes-categories-du-MOB.jpg" },
+  { nom: "Rachid Aït Idir", fonction: "Membre", img: "" },
+  { nom: "Fouad Larab", fonction: "Membre", img: "" },
+  { nom: "Abdelaziz Maouche", fonction: "Membre", img: "" },
+  { nom: "Sofiane Idirene", fonction: "Membre", img: "" }
+];
+
+const PLAYERS_INIT = [
+  {num:7, nom:"Bouakaz Abderrahim", poste:"Milieu", ddn:"02/07/2002", lieu:"Khenchela", nat:"Algérienne", taille:"-", pied:"-", prev:"USM El Harrach", img:"https://i.postimg.cc/d1Xjvpmb/Abderahim-Bouakaz-rejoint-le-MOB.jpg"},
+  {num:4, nom:"Rebiai Hamza", poste:"Défenseur central", ddn:"11/01/1994", lieu:"El Cheria", nat:"Algérienne", taille:"1,79m", pied:"Droitier", prev:"MB Rouissat", img:"https://i.postimg.cc/kXw7ty6V/Rebiai-Hamza-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:5, nom:"Guessoum Kelyan Jean Said", poste:"Défenseur central", ddn:"05/02/1999", lieu:"Alès, France", nat:"Franco-Algérienne", taille:"1,76m", pied:"Droitier", prev:"MC Oran", img:"https://i.postimg.cc/qRjTSsfg/Guessoum-Kelyan-Jean-Said-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:22, nom:"Oukaci Juba", poste:"Milieu central", ddn:"08/07/1996", lieu:"Azazga", nat:"Algérienne", taille:"1,71m", pied:"Gaucher", prev:"JS Saoura", img:"https://i.postimg.cc/ry1nVVzh/Oukaci-Juba-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:24, nom:"Ben Mazouz Mohamed Saïd", poste:"Attaquant", ddn:"22/03/2004", lieu:"Beni Messous", nat:"Algérienne", taille:"1,82m", pied:"Droitier", prev:"ES Sahel", img:"https://i.postimg.cc/PqHNkQcd/Ben-Mazouz-Mohamed-Said-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:27, nom:"Ziane Islem", poste:"Attaquant / Ailier", ddn:"25/10/2006", lieu:"Béjaïa", nat:"Algérienne", taille:"-", pied:"-", prev:"JS Kabylie", img:"https://i.postimg.cc/WzqsZdKW/Ziane-Islem-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:16, nom:"Sami Tlemcani", poste:"Gardien", ddn:"21/07/2004", lieu:"Saint-Maurice, France", nat:"Algérienne", taille:"1,95m", pied:"Droitier", prev:"GS Ilioupoli", img:"https://i.postimg.cc/02dy0wjL/Tlemcani-Sami-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:21, nom:"Yaya Nadjim", poste:"Attaquant / Ailier", ddn:"12/06/2001", lieu:"Timezrit", nat:"Algérienne", taille:"-", pied:"-", prev:"MO Béjaïa", img:"https://i.postimg.cc/gJsnkLhD/Yaya-Nadjim-renouvelle-avec-le-MO-Bejaia-saison-2026-27.jpg"},
+  {num:10, nom:"Yaya Faouzi", poste:"Milieu offensif", ddn:"21/09/1989", lieu:"Timezrit", nat:"Algérienne", taille:"1,74m", pied:"Droitier", prev:"-", img:"https://i.postimg.cc/wxbjfpQ9/Yaya-Faouzi-renouvelle-au-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:15, nom:"Amine Benbelaid", poste:"Milieu offensif", ddn:"25/03/1992", lieu:"Oran", nat:"Algérienne", taille:"-", pied:"-", prev:"WA Tlemcen", img:"https://i.postimg.cc/NMnv4gqz/Benbelaid-Amine-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:29, nom:"Ait Mouloud Rayane Karim", poste:"Attaquant / Ailier", ddn:"30/11/2003", lieu:"Tiaret", nat:"Algérienne", taille:"-", pied:"Droitier", prev:"JSM Tiaret", img:"https://i.postimg.cc/zGvSm5sm/Ait-Mouloud-Rayane-Karim-rejoint-le-MOB.jpg"},
+  {num:18, nom:"Benleguemari Chaouki", poste:"Défenseur central", ddn:"12/04/2000", lieu:"Constantine", nat:"Algérienne", taille:"-", pied:"Droitier", prev:"RC Arbaa", img:"https://i.postimg.cc/vHhpZ9GT/Benleguemari-Chaouki-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:28, nom:"Nacef Tariq", poste:"Milieu relayeur / Défensif", ddn:"28/04/2001", lieu:"Chlef", nat:"Algérienne", taille:"-", pied:"-", prev:"RC Arbaa", img:"https://i.postimg.cc/wBgycSC6/Nacef-Tariq-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:14, nom:"Mohamed Benazza Essedik", poste:"Milieu offensif", ddn:"-", lieu:"-", nat:"Algérienne", taille:"-", pied:"-", prev:"WA Souk Ahras", img:"https://i.postimg.cc/zvB62sDM/Benazza-Mohamed-Essedik-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:6, nom:"Sabri Mohamed Abderrahmane", poste:"Défenseur / Milieu défensif", ddn:"19/11/2005", lieu:"Tizi Ouzou", nat:"Algérienne", taille:"-", pied:"-", prev:"Olympique Akbou", img:"https://i.postimg.cc/Nj3vrHzM/Sabri-Mohamed-Abderrahmane-a-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:12, nom:"Boukebal Zakaria", poste:"Défenseur latéral gauche", ddn:"09/01/2002", lieu:"Sidi Moussa", nat:"Algérienne", taille:"-", pied:"Gaucher", prev:"RC Arbaa", img:"https://i.postimg.cc/TwqcJz2t/Boukebal-Zakaria-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:23, nom:"Akram Akhrib", poste:"Attaquant / Ailier", ddn:"12/02/2005", lieu:"Tizi-Ouzou", nat:"Algérienne", taille:"-", pied:"-", prev:"SS Sidi Aïch", img:"https://i.postimg.cc/kXXdK9Ms/Akhrib-Akram-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:20, nom:"Bounaama Abdessamed", poste:"Arrière gauche", ddn:"26/02/1994", lieu:"El Bayadh", nat:"Algérienne", taille:"-", pied:"Gaucher", prev:"NA Hussein Dey", img:"https://i.postimg.cc/sxWKZMQw/Bounaama-Abdessamad-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:1, nom:"Benmeddah Mohammed Hamza", poste:"Gardien", ddn:"11/11/2003", lieu:"Béni Saf", nat:"Algérienne", taille:"-", pied:"-", prev:"CR Témouchent", img:"https://i.postimg.cc/HLNy75cQ/Benmeddah-Mohammed-Hamza-rejoint-le-MO-Bejaia.jpg"},
+  {num:8, nom:"Zamoum Aimad", poste:"Latéral droit / Ailier", ddn:"02/02/2002", lieu:"Béjaïa", nat:"Algérienne", taille:"-", pied:"Droitier", prev:"JSM Béjaïa", img:"https://i.postimg.cc/x8Xhpjkz/Zamoum-Aimad-rejoint-le-MO-Bejaia-mercato-estival-2026-2027.jpg"},
+  {num:26, nom:"Tamer Nizar", poste:"Attaquant / Meneur", ddn:"31/07/2001", lieu:"Biskra", nat:"Algérienne", taille:"-", pied:"-", prev:"NC Magra", img:"https://i.postimg.cc/tCwZMBcH/Nizar-Tamer-rejoint-le-MO-Bejaia-mercato-estival-2026-2027.jpg"},
+  {num:9, nom:"Bouzid Dadache", poste:"Avant-centre", ddn:"27/09/1993", lieu:"Bordj Bou Arréridj", nat:"Algérienne", taille:"-", pied:"Droitier", prev:"RC Arbaa", img:"https://i.postimg.cc/PqgkGwjT/Dadache-Bouzid-rejoint-le-MO-Bejaia-mercato-estival-2026-2027.jpg"},
+  {num:2, nom:"Djelloul Abbou M'hamed", poste:"Latéral droit", ddn:"28/02/2001", lieu:"Relizane", nat:"Algérienne", taille:"-", pied:"-", prev:"CR Témouchent", img:"https://i.postimg.cc/wTTzKNPM/Djelloul-Abbou-M-hamed-rejoint-le-MO-Bejaia.jpg"},
+  {num:11, nom:"Hammi Waris", poste:"Polyvalent (Ailier / Attaquant)", ddn:"20/11/2004", lieu:"Beni Djellil", nat:"Algérienne", taille:"-", pied:"-", prev:"JSM Béjaïa", img:"https://i.postimg.cc/Kc0VMHqv/Hammi-Waris-rejoint-le-MO-Bejaia.jpg"},
+  {num:13, nom:"Hadded Foued", poste:"Milieu défensif", ddn:"01/11/1990", lieu:"Collo", nat:"Algérienne", taille:"-", pied:"Droitier", prev:"RC Kouba", img:"https://i.postimg.cc/t4QzZdjT/Hadded-Foued-rejoint-le-MO-Bejaia.jpg"},
+  {num:19, nom:"Touil Lahouari", poste:"Attaquant", ddn:"30/07/1991", lieu:"Aïn El Turk", nat:"Algérienne", taille:"1,65m", pied:"-", prev:"GC Mascara", img:"https://i.postimg.cc/wjHvZ3zT/Touil-Lahouari-rejoint-le-MO-Bejaia.jpg"},
+  {num:3, nom:"Ramy Baba", poste:"Attaquant", ddn:"05/04/2006", lieu:"Constantine", nat:"Algérienne", taille:"-", pied:"-", prev:"USM Alger", img:"https://i.postimg.cc/9fd8rL0K/Ramy-Baba.jpg"},
+  {num:30, nom:"Aouchiche Mohamed Islem", poste:"Gardien", ddn:"01/12/2006", lieu:"Béjaïa", nat:"Algérienne", taille:"-", pied:"-", prev:"ES Sétif U20", img:"https://i.postimg.cc/RhkmcpMk/Aouchiche-Mohamed-Islem-rejoint-le-MO-Bejaia.jpg"}
+];
+
+let data = { championnat: [], coupe: [], players: [], staff: [], dirigeants: [], mob: {}, live: {} };
+let articles = [
   {id:"a1", date:"2026-10-13", titre:"COUP DE MASSUE / J5 : MO Béjaïa vs NRB Beni Oulbane se jouera à huis clos", image:"https://i.postimg.cc/NjDfRd1H/MO-Bejaia-vs-NRB-Beni-Oulbane-a-Huis-Clos.jpg", texte:"C'est une bien triste nouvelle qui vient de tomber pour l'ensemble de la famille mobiste. La Ligue Nationale du Football Amateur (LNFA) a officialisé le programme de la 5ᵉ journée de Ligue 2 Amateur (Groupe Centre-Est), confirmant que la rencontre opposant le MO Béjaïa au NRB Beni Oulbane, ce jeudi 15 octobre 2026 à 15 h 00, se disputera à huis clos (sans public) au Stade des Martyrs d'Akbou.\n\nRappel des Informations :\n- Affiche : MO Béjaïa vs NRB Beni Oulbane\n- Compétition : Ligue 2 Amateur (Groupe Centre-Est) – 5ᵉ Journée\n- Date : Jeudi 15 Octobre 2026\n- Coup d'envoi : 15 h 00\n- Lieu : Stade des Martyrs d'Akbou\n- Statut : Huis-Clos"},
   {id:"a2", date:"2026-10-07", titre:"DOMICILIATION DU MOB À AKBOU : Une nouvelle étape officiellement franchie", image:"https://i.postimg.cc/5yqMRPjy/Domiciliation-du-MO-Bejaia-a-Akbou.jpg", texte:"La direction du MO Béjaïa a officiellement exprimé sa reconnaissance à l'ensemble des responsables et institutions ayant contribué à l'aboutissement du dossier permettant au club d'évoluer au Stade des Martyrs d'Akbou.\n\nAu centre de ces remerciements figure M. Mehdi Amine Mohamed, nouveau Secrétaire général de la Wilaya de Béjaïa, dont la direction du MOB souligne la disponibilité, l'implication et les efforts déployés depuis le début des démarches.\n\nSelon la direction du club, son intervention a largement contribué à l'aboutissement de l'accord conclu avec l'Olympique Akbou, ouvrant ainsi la possibilité pour le Mouloudia Olympique Béjaïa de recevoir ses adversaires dans cette enceinte.\n\nLe Stade des Martyrs d'Akbou devient ainsi une solution concrète pour permettre au MOB de recevoir ses adversaires dans de meilleures conditions, notamment avec la possibilité de retrouver son public.\n\nMOB AVANT TOUT\nCRABE UN JOUR, MOB TOUJOURS"},
   {id:"a3", date:"2026-10-01", titre:"MATCH AMICAL DE LUXE : Le MO Béjaïa au test de la JS Kabylie", image:"https://i.postimg.cc/4dYdjTTY/JS-Kabylie-MO-Bejaia-en-amical.jpg", texte:"Face au report de dernière minute de la 3ᵉ journée de Ligue 2 Amateur contre l'IRB Nezla, la direction et le staff technique du MO Béjaïa ont réagi avec rapidité pour maintenir l'équipe dans un rythme de compétition élevé.\n\nCe vendredi 2 octobre 2026 à 17 h 00, les Crabes disputent un test amical de premier plan face à la JS Kabylie sur le terrain annexe du complexe Hocine Aït Ahmed de Tizi Ouzou.\n\nAprès un bilan prometteur de 4 points glanés lors des deux premières journées du championnat, le coach Hamide Lamara profitera de cette opposition de haut niveau pour évaluer le rythme de jeu face à un adversaire de l'élite nationale et tester de nouvelles variantes tactiques.\n\nRepères : JS Kabylie vs MO Béjaïa - Vendredi 02 Octobre 2026 - 17h00 - Stade annexe Hocine Aït Ahmed (Tizi Ouzou) - Match amical."},
@@ -487,45 +629,26 @@ const ARTICLES_INIT = [
   {id:"a5", date:"2026-09-18", titre:"MO BEJAIA : LE HOME KIT 2026/27 DEVOILE", image:"https://i.postimg.cc/TYqSML0c/Nouvelle-tenue-MO-Bejaia-2026-2027.jpg", texte:"Le MO Béjaïa tient désormais sa nouvelle tunique domicile pour la saison 2026-2027. Le club a dévoilé son HOME KIT 2026/27 à travers une série de photographies.\n\nFidèle à l'identité du club, la nouvelle tunique repose sur les deux couleurs historiques du MO Béjaïa : le vert et le noir. Le maillot présente une alternance de bandes verticales vertes et noires, accompagnées de motifs graphiques plus fins.\n\nSur la partie supérieure, on retrouve le blason du MOB, tandis que le logo de l'équipementier prend place sur la poitrine opposée. Au centre du maillot figurent les partenaires commerciaux : Ooredoo, Soummam, Tchin-Lait et Maxipower.\n\nUn maillot change. Les couleurs, elles, restent. VERT ET NOIR, PARCE QUE LE MOB C'EST UNE IDENTITÉ."}
 ];
 
-let data = { championnat: [], coupe: [] };
-let articles = [];
-
-function handleTitleClick() {
-  clickCount++;
-  if (clickCount >= 5) { clickCount = 0; if (isAdmin) logoutAdmin(); else openAdminModal(); }
-  setTimeout(() => { clickCount = 0; }, 2000);
-}
-
-function openAdminModal() { document.getElementById('adminPwd').value = ''; document.getElementById('modalAdmin').classList.add('active'); }
-function closeAdminModal() { document.getElementById('modalAdmin').classList.remove('active'); }
-
+function handleTitleClick() { clickCount++; if (clickCount >= 5) { clickCount = 0; if (isAdmin) logoutAdmin(); else openModal('modalAdmin'); } setTimeout(() => { clickCount = 0; }, 2000); }
 function tryLogin() {
-  const raw = document.getElementById('adminPwd').value || '';
-  const pwd = raw.trim();
+  const pwd = (document.getElementById('adminPwd').value || '').trim();
   if (pwd === ADMIN_PASSWORD || pwd.toLowerCase() === 'bejaia#2026!mob') {
     isAdmin = true;
-    document.getElementById('adminBadge').innerHTML = '<span class="admin-badge" style="display:inline-block;background:#27ae60;color:white;padding:3px 8px;border-radius:12px;font-size:11px;margin-left:8px;">ADMIN</span>';
+    document.getElementById('adminBadge').innerHTML = '<span style="background:#27ae60;color:white;padding:3px 8px;border-radius:12px;font-size:11px;margin-left:8px;">ADMIN</span>';
     document.getElementById('adminPanel').style.display = 'block';
     document.getElementById('btnAddChamp').style.display = 'inline-block';
-    document.getElementById('btnAddCoupe').style.display = 'inline-block';
-    closeAdminModal();
-    alert('✅ Connexion admin réussie !');
-    render('championnat');
-    render('coupe');
-  } else {
-    alert('❌ Mot de passe incorrect');
-    document.getElementById('adminPwd').value = '';
-  }
+    document.getElementById('club-toolbar').style.display = 'flex';
+    document.getElementById('mob-avant-toolbar').style.display = 'flex';
+    document.getElementById('mob-day-toolbar').style.display = 'flex';
+    document.getElementById('mob-apres-toolbar').style.display = 'flex';
+    closeModal('modalAdmin'); alert('✅ Admin connecté');
+    render('championnat'); renderClub(); renderMob();
+  } else { alert('❌ Mot de passe incorrect'); }
 }
-
 function logoutAdmin() {
-  isAdmin = false;
-  document.getElementById('adminBadge').innerHTML = '';
-  document.getElementById('adminPanel').style.display = 'none';
-  document.getElementById('btnAddChamp').style.display = 'none';
-  document.getElementById('btnAddCoupe').style.display = 'none';
-  render('championnat');
-  render('coupe');
+  isAdmin = false; document.getElementById('adminBadge').innerHTML = ''; document.getElementById('adminPanel').style.display = 'none';
+  ['btnAddChamp', 'club-toolbar', 'mob-avant-toolbar', 'mob-day-toolbar', 'mob-apres-toolbar'].forEach(id => document.getElementById(id).style.display = 'none');
+  render('championnat'); renderClub(); renderMob();
 }
 
 function switchTab(name, el) {
@@ -534,8 +657,10 @@ function switchTab(name, el) {
   el.classList.add('active');
   document.getElementById('tab-'+name).classList.add('active');
   if (name === 'classement') renderClassement();
+  if (name === 'club') renderClub();
+  if (name === 'mob') renderMob();
+  if (name === 'actualite') renderNewsTab();
 }
-
 function switchSubTab(mode) {
   currentSubTab = mode;
   document.getElementById('subtab-tous').classList.toggle('active', mode === 'tous');
@@ -543,249 +668,247 @@ function switchSubTab(mode) {
   document.getElementById('subtab-resultats').classList.toggle('active', mode === 'resultats');
   render('championnat');
 }
+function switchSubTabMob(mode) {
+  currentMobSubTab = mode;
+  document.getElementById('subtab-mob-avant').classList.toggle('active', mode === 'avant');
+  document.getElementById('subtab-mob-day').classList.toggle('active', mode === 'day');
+  document.getElementById('subtab-mob-apres').classList.toggle('active', mode === 'apres');
+  document.getElementById('mob-avant').style.display = mode === 'avant' ? 'block' : 'none';
+  document.getElementById('mob-day').style.display = mode === 'day' ? 'block' : 'none';
+  document.getElementById('mob-apres').style.display = mode === 'apres' ? 'block' : 'none';
+  renderMob();
+}
 
 function formatDate(d) { if (!d) return ''; const p = d.split('-'); return p.length===3 ? p[2]+'/'+p[1]+'/'+p[0] : d; }
-
-function logoImg(equipe) { const url = LOGOS[equipe]; if (!url) return ''; return '<img src="' + url + '" class="logo-mini" alt="' + equipe + '">'; }
-
-function hasScore(m) {
-  const sd = m.sd, se = m.se;
-  const okSd = (sd !== undefined && sd !== null && sd !== '' && !isNaN(parseInt(sd)));
-  const okSe = (se !== undefined && se !== null && se !== '' && !isNaN(parseInt(se)));
-  return okSd && okSe;
-}
-
-function dedupeMatches(list) {
-  const seen = new Set();
-  return list.filter(m => {
-    const key = (m.dom||'') + '|' + (m.ext||'') + '|' + (m.journee||'') + '|' + (m.date||'');
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
-}
+function logoImg(equipe) { const url = LOGOS[equipe]; return url ? `<img src="${url}" class="logo-mini" alt="${equipe}">` : ''; }
+function hasScore(m) { const sd=m.sd, se=m.se; return (sd!==undefined && sd!==null && sd!=='' && !isNaN(parseInt(sd)) && se!==undefined && se!==null && se!=='' && !isNaN(parseInt(se))); }
 
 function render(section) {
-  const tbody = document.getElementById('tbody-'+section);
-  const count = document.getElementById('count'+section.charAt(0).toUpperCase()+section.slice(1));
-  let list = data[section];
+  if (section !== 'championnat') return;
+  const tbody = document.getElementById('tbody-championnat');
+  const count = document.getElementById('countChampionnat');
+  let list = data.championnat;
+  const fj = document.getElementById('filterJournee').value;
+  const fe = document.getElementById('filterEquipe').value;
+  
+  if (currentSubTab === 'programme') list = list.filter(m => !hasScore(m));
+  else if (currentSubTab === 'resultats') list = list.filter(m => hasScore(m));
+  
+  list = list.filter(m => (!fj || String(m.journee) === String(fj)) && (!fe || m.dom === fe || m.ext === fe));
+  list = [...list].sort((a,b) => (parseInt(a.journee||0) - parseInt(b.journee||0)) || (a.date||'').localeCompare(b.date||''));
 
-  if (section === 'championnat') {
-    const fj = document.getElementById('filterJournee').value;
-    const fe = document.getElementById('filterEquipe').value;
-    if (currentSubTab === 'programme') list = list.filter(m => !hasScore(m));
-    else if (currentSubTab === 'resultats') list = list.filter(m => hasScore(m));
-    // 'tous' → pas de filtre par score
-    list = list.filter(m => {
-      const matchJournee = (!fj || String(m.journee) === String(fj));
-      const matchEquipe = (!fe || m.dom === fe || m.ext === fe);
-      return matchJournee && matchEquipe;
-    });
-    list = [...list].sort((a,b) => {
-      if (parseInt(a.journee||0) !== parseInt(b.journee||0)) return parseInt(a.journee||0) - parseInt(b.journee||0);
-      return (a.date||'').localeCompare(b.date||'');
-    });
-  }
-
-  if (count) count.textContent = list.length + ' rencontre(s) affichée(s) sur ' + data[section].length;
-
+  count.textContent = `${list.length} rencontre(s) affichée(s) sur ${data.championnat.length}`;
   if (list.length === 0) { tbody.innerHTML = '<tr><td colspan="9" class="empty">Aucune rencontre.</td></tr>'; return; }
+  tbody.innerHTML = list.map((m) => {
+    const realIdx = data.championnat.indexOf(m);
+    const score = hasScore(m) ? `<span class="score">${m.sd} - ${m.se}</span>` : '<span style="color:#999">— vs —</span>';
+    const adminButtons = isAdmin ? `<button class="btn-small btn-edit" onclick="openModalMatch('championnat',${realIdx})">✏️</button><button class="btn-small btn-del" onclick="deleteItem('championnat',${realIdx})">🗑️</button>` : '';
+    return `<tr><td><b>J${m.journee||''}</b></td><td>${formatDate(m.date)}</td><td>${m.heure||''}</td><td>${logoImg(m.dom)}${m.dom}</td><td>${score}</td><td>${logoImg(m.ext)}${m.ext}</td><td>${m.stade||''}</td><td class="obs ${m.obs?'':'obs-empty'}">${m.obs||'—'}</td><td>${adminButtons}</td></tr>`;
+  }).join('');
 
-  tbody.innerHTML = '';
-  list.forEach((m) => {
-    const i = data[section].indexOf(m);
-    const score = hasScore(m) ? '<span class="score">' + m.sd + ' - ' + m.se + '</span>' : '<span style="color:#999">— vs —</span>';
-    const firstCol = section === 'championnat' ? 'J'+(m.journee||'') : (m.journee||'');
-    let adminButtons = '';
-    if (isAdmin) adminButtons = '<button class="btn-small btn-edit" onclick="editMatch(\'' + section + '\',' + i + ')">✏️</button><button class="btn-small btn-del" onclick="deleteMatch(\'' + section + '\',' + i + ')">🗑️</button>';
-    tbody.innerHTML += '<tr>' +
-      '<td><b>' + firstCol + '</b></td>' +
-      '<td>' + formatDate(m.date) + '</td>' +
-      '<td>' + (m.heure || '') + '</td>' +
-      '<td>' + logoImg(m.dom) + (m.dom || '') + '</td>' +
-      '<td>' + score + '</td>' +
-      '<td>' + logoImg(m.ext) + (m.ext || '') + '</td>' +
-      '<td>' + (m.stade || '') + '</td>' +
-      '<td class="obs ' + (m.obs?'':'obs-empty') + '">' + (m.obs || '—') + '</td>' +
-      '<td>' + adminButtons + '</td>' +
-      '</tr>';
-  });
-
-  if (section === 'championnat') updateFilters();
-}
-
-function updateFilters() {
   const journees = [...new Set(data.championnat.map(m => parseInt(m.journee)).filter(Boolean))].sort((a,b)=>a-b);
-  const fsj = document.getElementById('filterJournee');
-  const fse = document.getElementById('filterEquipe');
-  const vj = fsj.value, ve = fse.value;
-  fsj.innerHTML = '<option value="">Toutes les journées</option>' + journees.map(j=>'<option value="'+j+'">J'+j+'</option>').join('');
-  fse.innerHTML = '<option value="">Toutes les équipes</option>' + EQUIPES.map(e=>'<option value="'+e+'">'+e+'</option>').join('');
-  if (vj) fsj.value = vj;
-  if (ve) fse.value = ve;
-  const sel = document.getElementById('selectJourneeClassement');
-  const vc = sel.value;
-  sel.innerHTML = '<option value="all">Général (toutes journées)</option>' + journees.map(j=>'<option value="'+j+'">Après J'+j+'</option>').join('');
-  sel.value = vc || 'all';
+  document.getElementById('filterJournee').innerHTML = '<option value="">Toutes les journées</option>' + journees.map(j=>`<option value="${j}">J${j}</option>`).join('');
+  document.getElementById('filterEquipe').innerHTML = '<option value="">Toutes les équipes</option>' + EQUIPES.map(e=>`<option value="${e}">${e}</option>`).join('');
+  document.getElementById('selectJourneeClassement').innerHTML = '<option value="all">Général</option>' + journees.map(j=>`<option value="${j}">Après J${j}</option>`).join('');
 }
 
-function populateSelects() {
-  document.getElementById('fDom').innerHTML = '<option value="">-- Choisir --</option>' + EQUIPES.map(e=>'<option value="'+e+'">'+e+'</option>').join('');
-  document.getElementById('fExt').innerHTML = '<option value="">-- Choisir --</option>' + EQUIPES.map(e=>'<option value="'+e+'">'+e+'</option>').join('');
-  document.getElementById('fStade').innerHTML = '<option value="">-- Choisir --</option>' + STADES.map(s=>'<option value="'+s+'">'+s+'</option>').join('') + '<option value="__AUTRE__">✏️ Autre stade...</option>';
+function renderClub() {
+  const gridStaff = document.getElementById('grid-staff');
+  const gridPlayers = document.getElementById('grid-players');
+  const gridDir = document.getElementById('grid-dirigeants');
+  
+  gridStaff.innerHTML = data.staff.map((s, i) => `
+    <div class="player-card" onclick="openModalStaff(${i})">
+      <img src="${s.img || 'https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png'}">
+      <div class="pc-info"><div class="pc-name">${s.nom}</div><div class="pc-pos">${s.fonction}</div></div>
+    </div>
+  `).join('');
+
+  gridPlayers.innerHTML = data.players.sort((a,b)=>a.num - b.num).map((p, i) => `
+    <div class="player-card" onclick="openModalPlayer(${i})">
+      <div class="pc-num">${p.num}</div>
+      <img src="${p.img || 'https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png'}">
+      <div class="pc-info"><div class="pc-name">${p.nom}</div><div class="pc-pos">${p.poste}</div></div>
+    </div>
+  `).join('');
+
+  gridDir.innerHTML = data.dirigeants.map((d, i) => `
+    <div class="player-card" onclick="openModalDirigeant(${i})">
+      <img src="${d.img || 'https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png'}">
+      <div class="pc-info"><div class="pc-name">${d.nom}</div><div class="pc-pos">${d.fonction}</div></div>
+    </div>
+  `).join('');
 }
 
-function onStadeChange() {
-  const v = document.getElementById('fStade').value;
-  document.getElementById('lblStadeAutre').style.display = (v === '__AUTRE__') ? 'block' : 'none';
+function renderMob() {
+  const now = new Date();
+  const mobMatches = data.championnat.filter(m => (m.dom === 'MO Béjaïa' || m.ext === 'MO Béjaïa')).sort((a,b)=> new Date(a.date) - new Date(b.date));
+  
+  const nextMatch = mobMatches.find(m => new Date(m.date + 'T' + (m.heure || '15:00')) > now) || mobMatches[mobMatches.length-1];
+  const lastMatch = [...mobMatches].reverse().find(m => new Date(m.date + 'T' + (m.heure || '15:00')) <= now && hasScore(m));
+
+  const formatM = (m) => m ? `${m.dom} ${hasScore(m) ? m.sd+'-'+m.se : 'vs'} ${m.ext}` : "Aucun match.";
+
+  document.getElementById('mob-avant-auto').innerHTML = nextMatch ? `Prochain match : ${formatM(nextMatch)}<br><span style="font-size:12px; color:#666">${formatDate(nextMatch.date)} à ${nextMatch.heure} - ${nextMatch.stade||''}</span>` : "Pas de match à venir.";
+  document.getElementById('mob-day-auto').innerHTML = nextMatch && nextMatch.date === now.toISOString().split('T')[0] ? formatM(nextMatch) : (lastMatch && lastMatch.date === now.toISOString().split('T')[0] ? formatM(lastMatch) : "Pas de match aujourd'hui.");
+  document.getElementById('mob-apres-auto').innerHTML = lastMatch ? `Dernier résultat : ${formatM(lastMatch)}` : "Pas de résultat récent.";
+
+  document.getElementById('mob-avant-text').textContent = data.mob.avant || "Aucune info pour le moment.";
+  document.getElementById('mob-day-text').textContent = data.mob.day || "Aucune info pour le moment.";
+  document.getElementById('mob-apres-text').textContent = data.mob.apres || "Aucune info pour le moment.";
+
+  const liveW = document.getElementById('live-widget');
+  if (data.live.statut === 'actif' || data.live.statut === 'termine') {
+    liveW.style.display = 'block';
+    document.getElementById('live-score').textContent = `${data.live.sd || 0} - ${data.live.se || 0}`;
+    document.getElementById('live-status').textContent = data.live.texte || (data.live.statut === 'actif' ? 'Match en cours' : 'Match terminé');
+  } else { liveW.style.display = 'none'; }
 }
 
-function openModal(section, idx) {
+function openModal(id) { document.getElementById(id).classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+function openModalMatch(section, idx) {
   if (!isAdmin) return;
-  populateSelects();
-  document.getElementById('editSection').value = section;
-  document.getElementById('editIndex').value = idx !== undefined ? idx : '';
-  const isChamp = section === 'championnat';
-  document.getElementById('lblJournee').style.display = 'block';
-  document.getElementById('modalTitle').textContent = (idx !== undefined ? 'Modifier' : 'Ajouter') + ' — ' + (isChamp ? '🏆 Championnat' : '🏅 Coupe');
-  if (idx === undefined) {
-    ['fJournee','fDate','fHeure','fSd','fSe','fObs','fStadeAutre'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('fDom').value = ''; document.getElementById('fExt').value = ''; document.getElementById('fStade').value = '';
-    document.getElementById('lblStadeAutre').style.display = 'none';
-    if (!isChamp) document.getElementById('fDom').value = 'MO Béjaïa';
+  document.getElementById('editSectionMatch').value = section;
+  document.getElementById('editIndexMatch').value = idx !== undefined ? idx : '';
+  document.getElementById('modalTitleMatch').textContent = (idx !== undefined ? 'Modifier' : 'Ajouter') + ' un match';
+  document.getElementById('fDom').innerHTML = EQUIPES.map(e=>`<option value="${e}">${e}</option>`).join('');
+  document.getElementById('fExt').innerHTML = EQUIPES.map(e=>`<option value="${e}">${e}</option>`).join('');
+  if (idx !== undefined) {
+    const m = data[section][idx];
+    document.getElementById('fJournee').value = m.journee||''; document.getElementById('fDate').value = m.date||''; document.getElementById('fHeure').value = m.heure||'';
+    document.getElementById('fDom').value = m.dom||''; document.getElementById('fExt').value = m.ext||''; document.getElementById('fSd').value = m.sd??''; document.getElementById('fSe').value = m.se??'';
+    document.getElementById('fStade').value = m.stade||''; document.getElementById('fObs').value = m.obs||'';
+  } else {
+    ['fJournee','fDate','fHeure','fSd','fSe','fStade','fObs'].forEach(id => document.getElementById(id).value = '');
   }
-  document.getElementById('modal').classList.add('active');
-}
-
-function closeModal() { document.getElementById('modal').classList.remove('active'); }
-
-function editMatch(section, i) {
-  const m = data[section][i];
-  populateSelects();
-  document.getElementById('editSection').value = section;
-  document.getElementById('editIndex').value = i;
-  document.getElementById('modalTitle').textContent = 'Modifier — ' + (section === 'championnat' ? '🏆 Championnat' : '🏅 Coupe');
-  document.getElementById('fJournee').value = m.journee || '';
-  document.getElementById('fDate').value = m.date || '';
-  document.getElementById('fHeure').value = m.heure || '';
-  document.getElementById('fDom').value = m.dom || '';
-  document.getElementById('fExt').value = m.ext || '';
-  document.getElementById('fSd').value = m.sd ?? '';
-  document.getElementById('fSe').value = m.se ?? '';
-  document.getElementById('fObs').value = m.obs || '';
-  if (m.stade && STADES.includes(m.stade)) { document.getElementById('fStade').value = m.stade; document.getElementById('lblStadeAutre').style.display = 'none'; }
-  else if (m.stade) { document.getElementById('fStade').value = '__AUTRE__'; document.getElementById('fStadeAutre').value = m.stade; document.getElementById('lblStadeAutre').style.display = 'block'; }
-  else { document.getElementById('fStade').value = ''; document.getElementById('lblStadeAutre').style.display = 'none'; }
-  document.getElementById('modal').classList.add('active');
+  openModal('modalMatch');
 }
 
 async function saveMatch() {
-  const section = document.getElementById('editSection').value;
-  let stade = document.getElementById('fStade').value;
-  if (stade === '__AUTRE__') stade = document.getElementById('fStadeAutre').value.trim();
+  const section = document.getElementById('editSectionMatch').value;
+  const idx = document.getElementById('editIndexMatch').value;
   const m = {
-    journee: document.getElementById('fJournee').value,
-    date: document.getElementById('fDate').value,
-    heure: document.getElementById('fHeure').value,
-    dom: document.getElementById('fDom').value,
-    ext: document.getElementById('fExt').value,
-    sd: document.getElementById('fSd').value,
-    se: document.getElementById('fSe').value,
-    stade: stade,
-    obs: document.getElementById('fObs').value.trim()
+    journee: document.getElementById('fJournee').value, date: document.getElementById('fDate').value, heure: document.getElementById('fHeure').value,
+    dom: document.getElementById('fDom').value, ext: document.getElementById('fExt').value, sd: document.getElementById('fSd').value, se: document.getElementById('fSe').value,
+    stade: document.getElementById('fStade').value, obs: document.getElementById('fObs').value.trim()
   };
-  if (!m.dom || !m.ext) { alert('Choisissez les deux équipes'); return; }
-  if (m.dom === m.ext) { alert('Les deux équipes doivent être différentes'); return; }
-  const idx = document.getElementById('editIndex').value;
-  if (idx === '') data[section].push({...m, id: section.charAt(0)+Date.now()});
-  else data[section][idx] = {...data[section][idx], ...m};
-  await saveToFirebase();
-  closeModal();
-  render(section);
-  if (document.getElementById('tab-classement').classList.contains('active')) renderClassement();
+  if (idx === '') data[section].push(m); else data[section][idx] = m;
+  await saveToFirebase(); closeModal('modalMatch'); render('championnat');
 }
 
-async function deleteMatch(section, i) {
-  if (confirm('Supprimer cette rencontre ?')) {
-    data[section].splice(i,1);
-    await saveToFirebase();
-    render(section);
-    if (document.getElementById('tab-classement').classList.contains('active')) renderClassement();
-  }
+function openModalPlayer(idx) {
+  if (!isAdmin) return;
+  document.getElementById('editPlayerIdx').value = idx === 'new' ? '' : idx;
+  const p = idx !== 'new' ? data.players[idx] : {num:'', nom:'', poste:'', ddn:'', lieu:'', nat:'', taille:'', pied:'', prev:'', img:''};
+  document.getElementById('pNum').value = p.num; document.getElementById('pNom').value = p.nom; document.getElementById('pPoste').value = p.poste;
+  document.getElementById('pDdn').value = p.ddn; document.getElementById('pLieu').value = p.lieu; document.getElementById('pNat').value = p.nat;
+  document.getElementById('pTaille').value = p.taille; document.getElementById('pPied').value = p.pied; document.getElementById('pPrev').value = p.prev; document.getElementById('pImg').value = p.img;
+  openModal('modalPlayer');
+}
+async function savePlayer() {
+  const idx = document.getElementById('editPlayerIdx').value;
+  const p = {
+    num: parseInt(document.getElementById('pNum').value), nom: document.getElementById('pNom').value, poste: document.getElementById('pPoste').value,
+    ddn: document.getElementById('pDdn').value, lieu: document.getElementById('pLieu').value, nat: document.getElementById('pNat').value,
+    taille: document.getElementById('pTaille').value, pied: document.getElementById('pPied').value, prev: document.getElementById('pPrev').value, img: document.getElementById('pImg').value
+  };
+  if (idx === '') data.players.push(p); else data.players[parseInt(idx)] = p;
+  await saveToFirebase(); closeModal('modalPlayer'); renderClub();
+}
+
+function openModalStaff(idx) {
+  if (!isAdmin) return;
+  document.getElementById('editStaffIdx').value = idx === 'new' ? '' : idx;
+  const s = idx !== 'new' ? data.staff[idx] : {nom:'', fonction:'', ddn:'', infos:'', img:''};
+  document.getElementById('sNom').value = s.nom; document.getElementById('sFonction').value = s.fonction;
+  document.getElementById('sDdn').value = s.ddn; document.getElementById('sInfos').value = s.infos; document.getElementById('sImg').value = s.img;
+  openModal('modalStaff');
+}
+async function saveStaff() {
+  const idx = document.getElementById('editStaffIdx').value;
+  const s = { nom: document.getElementById('sNom').value, fonction: document.getElementById('sFonction').value, ddn: document.getElementById('sDdn').value, infos: document.getElementById('sInfos').value, img: document.getElementById('sImg').value };
+  if (idx === '') data.staff.push(s); else data.staff[parseInt(idx)] = s;
+  await saveToFirebase(); closeModal('modalStaff'); renderClub();
+}
+
+function openModalDirigeant(idx) {
+  if (!isAdmin) return;
+  document.getElementById('editDirIdx').value = idx === 'new' ? '' : idx;
+  const d = idx !== 'new' ? data.dirigeants[idx] : {nom:'', fonction:'', img:''};
+  document.getElementById('dNom').value = d.nom; document.getElementById('dFonction').value = d.fonction; document.getElementById('dImg').value = d.img;
+  openModal('modalDirigeant');
+}
+async function saveDirigeant() {
+  const idx = document.getElementById('editDirIdx').value;
+  const d = { nom: document.getElementById('dNom').value, fonction: document.getElementById('dFonction').value, img: document.getElementById('dImg').value };
+  if (idx === '') data.dirigeants.push(d); else data.dirigeants[parseInt(idx)] = d;
+  await saveToFirebase(); closeModal('modalDirigeant'); renderClub();
+}
+
+function openModalMob(section) {
+  if (!isAdmin) return;
+  document.getElementById('mobSection').value = section;
+  document.getElementById('mobTextInput').value = data.mob[section] || '';
+  openModal('modalMob');
+}
+async function saveMobText() {
+  const section = document.getElementById('mobSection').value;
+  data.mob[section] = document.getElementById('mobTextInput').value;
+  await saveToFirebase(); closeModal('modalMob'); renderMob();
+}
+
+function openModalLive() {
+  if (!isAdmin) return;
+  document.getElementById('liveStatut').value = data.live.statut || 'inactif';
+  document.getElementById('liveSd').value = data.live.sd || 0;
+  document.getElementById('liveSe').value = data.live.se || 0;
+  document.getElementById('liveTexte').value = data.live.texte || '';
+  openModal('modalLive');
+}
+async function saveLive() {
+  data.live = {
+    statut: document.getElementById('liveStatut').value,
+    sd: document.getElementById('liveSd').value,
+    se: document.getElementById('liveSe').value,
+    texte: document.getElementById('liveTexte').value
+  };
+  await saveToFirebase(); closeModal('modalLive'); renderMob();
+}
+
+async function deleteItem(section, idx) {
+  if (confirm('Supprimer cet élément ?')) { data[section].splice(idx,1); await saveToFirebase(); if(section==='championnat') render('championnat'); else renderClub(); }
 }
 
 function renderClassement() {
-  const journeeMax = document.getElementById('selectJourneeClassement').value;
+  const jMax = document.getElementById('selectJourneeClassement').value;
   const tbody = document.getElementById('tbody-classement');
-  const stats = {};
-  EQUIPES.forEach(e => stats[e] = { j:0, g:0, n:0, p:0, bp:0, bc:0, pts:0 });
+  const stats = {}; EQUIPES.forEach(e => stats[e] = { j:0, g:0, n:0, p:0, bp:0, bc:0, pts:0 });
   data.championnat.forEach(m => {
-    if (!hasScore(m)) return;
-    if (journeeMax !== 'all' && parseInt(m.journee) > parseInt(journeeMax)) return;
+    if (!hasScore(m) || (jMax !== 'all' && parseInt(m.journee) > parseInt(jMax))) return;
     const sd = parseInt(m.sd), se = parseInt(m.se);
-    if (isNaN(sd) || isNaN(se)) return;
-    if (!stats[m.dom] || !stats[m.ext]) return;
-    stats[m.dom].j++; stats[m.ext].j++;
-    stats[m.dom].bp += sd; stats[m.dom].bc += se;
-    stats[m.ext].bp += se; stats[m.ext].bc += sd;
+    if (isNaN(sd) || isNaN(se) || !stats[m.dom] || !stats[m.ext]) return;
+    stats[m.dom].j++; stats[m.ext].j++; stats[m.dom].bp += sd; stats[m.dom].bc += se; stats[m.ext].bp += se; stats[m.ext].bc += sd;
     if (sd > se) { stats[m.dom].g++; stats[m.dom].pts+=3; stats[m.ext].p++; }
     else if (sd < se) { stats[m.ext].g++; stats[m.ext].pts+=3; stats[m.dom].p++; }
     else { stats[m.dom].n++; stats[m.dom].pts++; stats[m.ext].n++; stats[m.ext].pts++; }
   });
-  const classement = EQUIPES.map(e => ({ equipe: e, ...stats[e], diff: stats[e].bp - stats[e].bc }))
-    .sort((a,b) => { if (b.pts !== a.pts) return b.pts - a.pts; if (b.diff !== a.diff) return b.diff - a.diff; if (b.bp !== a.bp) return b.bp - a.bp; return a.equipe.localeCompare(b.equipe); });
-  if (classement.every(c => c.j === 0)) { tbody.innerHTML = '<tr><td colspan="10" class="empty">Aucun match joué pour le moment.</td></tr>'; return; }
-  tbody.innerHTML = '';
-  classement.forEach((c, idx) => {
+  const classement = EQUIPES.map(e => ({ equipe: e, ...stats[e], diff: stats[e].bp - stats[e].bc })).sort((a,b) => (b.pts-a.pts) || (b.diff-a.diff) || (b.bp-a.bp) || a.equipe.localeCompare(b.equipe));
+  if (classement.every(c => c.j === 0)) { tbody.innerHTML = '<tr><td colspan="10" class="empty">Aucun match joué.</td></tr>'; return; }
+  tbody.innerHTML = classement.map((c, idx) => {
     const pos = idx + 1;
-    let zoneClass = '';
-    if (pos === 1) zoneClass = 'zone-montee';
-    else if (pos === 2 || pos === 3) zoneClass = 'zone-playoff';
-    else if (pos >= 14) zoneClass = 'zone-relégation';
-    tbody.innerHTML += '<tr class="' + zoneClass + '">' +
-      '<td><b>' + pos + '</b></td>' +
-      '<td class="equipe">' + logoImg(c.equipe) + c.equipe + '</td>' +
-      '<td>' + c.j + '</td><td>' + c.g + '</td><td>' + c.n + '</td><td>' + c.p + '</td>' +
-      '<td>' + c.bp + '</td><td>' + c.bc + '</td>' +
-      '<td>' + (c.diff > 0 ? '+'+c.diff : c.diff) + '</td>' +
-      '<td><b>' + c.pts + '</b></td></tr>';
-  });
+    let z = ''; if (pos === 1) z = 'zone-montee'; else if (pos <= 3) z = 'zone-playoff'; else if (pos >= 14) z = 'zone-relégation';
+    return `<tr class="${z}"><td><b>${pos}</b></td><td class="equipe">${logoImg(c.equipe)}${c.equipe}</td><td>${c.j}</td><td>${c.g}</td><td>${c.n}</td><td>${c.p}</td><td>${c.bp}</td><td>${c.bc}</td><td>${c.diff>0?'+'+c.diff:c.diff}</td><td><b>${c.pts}</b></td></tr>`;
+  }).join('');
 }
 
-function exportData(section) {
-  const blob = new Blob([JSON.stringify(data[section], null, 2)], {type:'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'l2a-' + section + '-2026-2027.json';
-  a.click();
-}
-
-function importData(e, section) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = async ev => {
-    try {
-      const imported = JSON.parse(ev.target.result);
-      if (confirm('Remplacer les données de ' + section + ' ?')) {
-        data[section] = dedupeMatches(imported);
-        await saveToFirebase();
-        render(section);
-        if (document.getElementById('tab-classement').classList.contains('active')) renderClassement();
-      }
-    } catch { alert('Fichier invalide'); }
-  };
-  reader.readAsText(file);
-}
-
+// --- WIDGETS (Chrono & Carrousel) ---
 let countdownInterval = null;
-
 function updateNextMatch() {
   if (!data.championnat || data.championnat.length === 0) return;
   const now = new Date();
-  const mobMatches = data.championnat.filter(m =>
-    (m.dom === 'MO Béjaïa' || m.ext === 'MO Béjaïa') && !hasScore(m) && m.date
-  );
+  const mobMatches = data.championnat.filter(m => (m.dom === 'MO Béjaïa' || m.ext === 'MO Béjaïa') && !hasScore(m) && m.date);
   if (mobMatches.length === 0) { document.getElementById('nextMatchBanner').style.display = 'none'; return; }
   mobMatches.sort((a,b) => (a.date + (a.heure||'15:00')).localeCompare(b.date + (b.heure||'15:00')));
   let next = mobMatches.find(m => new Date(m.date + 'T' + (m.heure || '15:00')) > now);
@@ -813,6 +936,7 @@ function updateNextMatch() {
   countdownInterval = setInterval(tick, 1000);
 }
 
+let carouselTimer = null;
 function renderCarousel() {
   const container = document.getElementById('homeCarousel');
   if (!container) return;
@@ -820,7 +944,6 @@ function renderCarousel() {
   container.innerHTML = sorted.map(a => `<div class="carousel-item" onclick="openArticleModal('${a.id}')"><img src="${a.image}" alt="${a.titre}"><p>${a.titre}</p></div>`).join('');
 }
 
-let carouselTimer = null;
 function startCarouselAuto() {
   const container = document.getElementById('homeCarousel');
   if (!container) return;
@@ -833,10 +956,6 @@ function startCarouselAuto() {
     if (container.scrollLeft >= maxScroll - 5) container.scrollTo({ left: 0, behavior: 'smooth' });
     else container.scrollBy({ left: itemWidth, behavior: 'smooth' });
   }, 3500);
-  container.addEventListener('touchstart', () => clearInterval(carouselTimer), { passive: true });
-  container.addEventListener('touchend', () => startCarouselAuto(), { passive: true });
-  container.addEventListener('mouseenter', () => clearInterval(carouselTimer));
-  container.addEventListener('mouseleave', () => startCarouselAuto());
 }
 
 function renderNewsTab() {
@@ -856,92 +975,51 @@ function openArticleModal(id) {
   document.getElementById('articleText').textContent = a.texte;
   document.getElementById('modalArticle').classList.add('active');
 }
-
 function closeArticleModal() { document.getElementById('modalArticle').classList.remove('active'); }
 
+// 🔥 FIREBASE CORRIGÉ POUR NE PLUS BLOQUER L'ÉCRAN 🔥
 async function loadFromFirebase() {
-  const statusBar = document.getElementById('statusBar');
-  statusBar.className = 'status loading';
-  statusBar.textContent = '⏳ Chargement des données...';
+  document.getElementById('statusBar').textContent = '⏳ Chargement...';
+  
+  data.championnat = [...MATCHS_INIT]; data.players = [...PLAYERS_INIT]; data.staff = [...STAFF_INIT]; data.dirigeants = [...DIRIGEANTS_INIT];
+  render('championnat'); renderClub(); renderMob();
+  renderCarousel(); startCarouselAuto(); renderNewsTab(); updateNextMatch();
+  
+  document.getElementById('statusBar').className = 'status online';
+  document.getElementById('statusBar').textContent = `🟢 Connecté (${data.championnat.length} matchs)`;
+
   try {
-    const championnatRef = ref(db, 'championnat');
-    const snapshot = await get(championnatRef);
-    if (snapshot.exists()) {
-      const fb = snapshot.val();
-      data.championnat = Object.values(fb);
-      if (data.championnat.length === 0) {
-        data.championnat = [...MATCHS_INIT];
-        await set(championnatRef, data.championnat);
+    get(ref(db, 'data_v10')).then((snap) => {
+      if (snap.exists()) {
+        const fb = snap.val();
+        data.championnat = fb.championnat || [...MATCHS_INIT];
+        data.players = fb.players || [...PLAYERS_INIT];
+        data.staff = fb.staff || [...STAFF_INIT];
+        data.dirigeants = fb.dirigeants || [...DIRIGEANTS_INIT];
+        data.mob = fb.mob || {};
+        data.live = fb.live || {};
+        render('championnat'); renderClub(); renderMob(); renderCarousel(); renderNewsTab(); updateNextMatch();
       }
-    } else {
-      data.championnat = [...MATCHS_INIT];
-      await set(championnatRef, data.championnat);
-    }
-    data.championnat = dedupeMatches(data.championnat);
-    statusBar.className = 'status online';
-    statusBar.textContent = '🟢 Connecté à Firebase (' + data.championnat.length + ' matchs)';
-    const savedArticles = localStorage.getItem('l2a_articles');
-    if (savedArticles) articles = JSON.parse(savedArticles);
-    else { articles = ARTICLES_INIT; localStorage.setItem('l2a_articles', JSON.stringify(articles)); }
-    render('championnat');
-    render('coupe');
-    renderCarousel();
-    startCarouselAuto();
-    renderNewsTab();
-    updateNextMatch();
-  } catch (error) {
-    console.error('Erreur Firebase:', error);
-    statusBar.className = 'status offline';
-    statusBar.textContent = '🔴 Hors ligne - Données locales';
-    data.championnat = [...MATCHS_INIT];
-    const savedArticles = localStorage.getItem('l2a_articles');
-    if (savedArticles) articles = JSON.parse(savedArticles);
-    else { articles = ARTICLES_INIT; localStorage.setItem('l2a_articles', JSON.stringify(articles)); }
-    render('championnat');
-    render('coupe');
-    renderCarousel();
-    startCarouselAuto();
-    renderNewsTab();
-    updateNextMatch();
-  }
+    }).catch(e => console.log('Mode hors-ligne'));
+  } catch(e) {}
 }
 
 async function saveToFirebase() {
-  try {
-    data.championnat = dedupeMatches(data.championnat);
-    const championnatRef = ref(db, 'championnat');
-    await set(championnatRef, data.championnat);
-    localStorage.setItem('l2a_data', JSON.stringify(data));
-    return true;
-  } catch (error) {
-    console.error('Erreur sauvegarde:', error);
-    localStorage.setItem('l2a_data', JSON.stringify(data));
-    return false;
-  }
+  try { await set(ref(db, 'data_v10'), data); } catch (e) { console.error('Erreur sauvegarde', e); }
 }
 
 document.getElementById('mainTitle').addEventListener('click', handleTitleClick);
 window.addEventListener('DOMContentLoaded', () => { loadFromFirebase(); });
 
-window.switchTab = switchTab;
-window.openModal = openModal;
-window.closeModal = closeModal;
-window.saveMatch = saveMatch;
-window.editMatch = editMatch;
-window.deleteMatch = deleteMatch;
-window.exportData = exportData;
-window.importData = importData;
-window.renderClassement = renderClassement;
-window.onStadeChange = onStadeChange;
-window.tryLogin = tryLogin;
-window.closeAdminModal = closeAdminModal;
-window.logoutAdmin = logoutAdmin;
-window.handleTitleClick = handleTitleClick;
-window.render = render;
-window.updateNextMatch = updateNextMatch;
-window.switchSubTab = switchSubTab;
+window.switchTab = switchTab; window.switchSubTab = switchSubTab; window.switchSubTabMob = switchSubTabMob;
+window.openModal = openModal; window.closeModal = closeModal; window.openModalMatch = openModalMatch; window.saveMatch = saveMatch; window.deleteItem = deleteItem;
+window.openModalPlayer = openModalPlayer; window.savePlayer = savePlayer;
+window.openModalStaff = openModalStaff; window.saveStaff = saveStaff;
+window.openModalDirigeant = openModalDirigeant; window.saveDirigeant = saveDirigeant;
+window.openModalMob = openModalMob; window.saveMobText = saveMobText;
+window.openModalLive = openModalLive; window.saveLive = saveLive;
+window.tryLogin = tryLogin; window.logoutAdmin = logoutAdmin; window.renderClassement = renderClassement;
 window.openArticleModal = openArticleModal;
-window.closeArticleModal = closeArticleModal;
 </script>
 </body>
 </html>
