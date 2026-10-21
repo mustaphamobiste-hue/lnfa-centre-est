@@ -85,6 +85,10 @@
   .mob-text { font-size: 14px; line-height: 1.6; white-space: pre-wrap; }
   .mob-affiche { width: 100%; border-radius: 8px; margin-bottom: 15px; display: none; }
   .mob-video { width: 100%; aspect-ratio: 16/9; border: none; border-radius: 8px; margin-top: 15px; display: none; }
+  
+  .mob-content-block { margin-bottom: 15px; }
+  .mob-content-block img { width: 100%; border-radius: 8px; margin-bottom: 10px; display: none; }
+  .mob-content-block .caption { font-weight: bold; color: #1a4d2e; margin-bottom: 5px; display: none; }
 
   .club-section { margin-bottom: 20px; }
   .club-title { color: #1a4d2e; font-size: 1.2em; font-weight: bold; margin-bottom: 10px; padding-left: 10px; border-left: 4px solid #c9a961; }
@@ -201,8 +205,8 @@
   
   <div id="mob-avant" class="mob-section">
     <div class="toolbar" id="mob-avant-toolbar" style="display:none;">
-      <button onclick="openModalMob('avant')" class="btn-edit">✏️ Modifier le texte</button>
-      <button onclick="openModalAffiche('avant')" class="btn-edit" style="background:#8e44ad;">🖼️ Changer l'affiche</button>
+      <button onclick="openModalMob('avant')" class="btn-edit">✏️ Modifier le texte/image</button>
+      <button onclick="openModalAffiche('avant')" class="btn-edit" style="background:#8e44ad;">🖼️ Changer l'affiche principale</button>
     </div>
     <div class="mob-card">
       <div class="mob-title">📅 Le match à venir</div>
@@ -211,14 +215,17 @@
     </div>
     <div class="mob-card">
       <div class="mob-title">📝 Infos & Analyse</div>
-      <div id="mob-avant-text" class="mob-text">Chargement...</div>
+      <div class="mob-content-block">
+        <img id="mob-avant-content-img">
+        <div id="mob-avant-text" class="mob-text">Chargement...</div>
+      </div>
     </div>
   </div>
 
   <div id="mob-day" class="mob-section" style="display:none;">
     <div class="toolbar" id="mob-day-toolbar" style="display:none;">
-      <button onclick="openModalMob('day')" class="btn-edit">✏️ Modifier le texte</button>
-      <button onclick="openModalAffiche('day')" class="btn-edit" style="background:#8e44ad;">🖼️ Changer l'affiche</button>
+      <button onclick="openModalMob('day')" class="btn-edit">✏️ Modifier le texte/image</button>
+      <button onclick="openModalAffiche('day')" class="btn-edit" style="background:#8e44ad;">🖼️ Changer l'affiche principale</button>
       <button onclick="openModalLive()" class="btn-live" id="btn-live">🔴 Gérer le Live</button>
     </div>
     <div class="mob-card" style="border: 2px solid #e74c3c; display:none;" id="live-widget">
@@ -233,24 +240,34 @@
     </div>
     <div class="mob-card">
       <div class="mob-title">📝 Compo & Ambiance</div>
-      <div id="mob-day-text" class="mob-text">Chargement...</div>
+      <div class="mob-content-block">
+        <img id="mob-day-content-img">
+        <div id="mob-day-text" class="mob-text">Chargement...</div>
+      </div>
     </div>
   </div>
 
   <div id="mob-apres" class="mob-section" style="display:none;">
     <div class="toolbar" id="mob-apres-toolbar" style="display:none;">
-      <button onclick="openModalMob('apres')" class="btn-edit">✏️ Modifier le texte</button>
-      <button onclick="openModalVideo('apres')" class="btn-edit" style="background:#c0392b;">🎥 Insérer une vidéo</button>
+      <button onclick="openModalMob('apres')" class="btn-edit">✏️ Modifier le texte/image</button>
+      <button onclick="openModalVideo('apres')" class="btn-edit" style="background:#c0392b;">🎥 Insérer une vidéo & texte</button>
     </div>
     <div class="mob-card">
       <div class="mob-title">📊 Dernier résultat</div>
       <div id="mob-apres-auto" style="text-align:center; font-weight:bold; margin-bottom:10px; color:#1a4d2e;"></div>
       <img id="mob-apres-img" class="mob-affiche" src="">
-      <iframe id="mob-apres-video" class="mob-video" allowfullscreen></iframe>
+      
+      <div id="mob-apres-video-container">
+        <div id="mob-apres-video-caption" class="caption"></div>
+        <iframe id="mob-apres-video" class="mob-video" allowfullscreen></iframe>
+      </div>
     </div>
     <div class="mob-card">
       <div class="mob-title">📝 Résumé & Réactions</div>
-      <div id="mob-apres-text" class="mob-text">Chargement...</div>
+      <div class="mob-content-block">
+        <img id="mob-apres-content-img">
+        <div id="mob-apres-text" class="mob-text">Chargement...</div>
+      </div>
     </div>
   </div>
 </div>
@@ -474,17 +491,18 @@
 <div class="modal" id="modalMob">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalMob')">×</span>
-    <h3>📝 Modifier le texte</h3>
+    <h3>📝 Modifier le contenu (Texte + Image)</h3>
     <input type="hidden" id="mobSection">
-    <label>Contenu (texte libre) <textarea id="mobTextInput" rows="10"></textarea></label>
-    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalMob')">Annuler</button><button onclick="saveMobText()">Enregistrer</button></div>
+    <label>Lien de l'image (Optionnel) <input type="url" id="mobImgInput" placeholder="https://i.postimg.cc/..."></label>
+    <label>Texte (Optionnel) <textarea id="mobTextInput" rows="8"></textarea></label>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalMob')">Annuler</button><button onclick="saveMobContent()">Enregistrer</button></div>
   </div>
 </div>
 
 <div class="modal" id="modalAffiche">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalAffiche')">×</span>
-    <h3>🖼️ Insérer une affiche</h3>
+    <h3>🖼️ Changer l'affiche principale</h3>
     <input type="hidden" id="afficheSection">
     <label>Lien de l'image (Postimages) <input type="url" id="afficheUrl"></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalAffiche')">Annuler</button><button onclick="saveAffiche()">Enregistrer</button></div>
@@ -494,9 +512,10 @@
 <div class="modal" id="modalVideo">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalVideo')">×</span>
-    <h3>🎥 Insérer une vidéo YouTube</h3>
+    <h3>🎥 Insérer une vidéo & texte</h3>
     <input type="hidden" id="videoSection">
-    <label>Lien de la vidéo <input type="url" id="videoUrl" placeholder="https://youtu.be/... ou https://youtube.com/shorts/..."></label>
+    <label>Lien de la vidéo YouTube <input type="url" id="videoUrl" placeholder="https://youtu.be/... ou https://youtube.com/shorts/..."></label>
+    <label>Texte sous la vidéo <input type="text" id="videoTexte" placeholder="Ex: Impressions du coach..."></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalVideo')">Annuler</button><button onclick="saveVideo()">Enregistrer</button></div>
   </div>
 </div>
@@ -539,7 +558,6 @@ let currentSubTab = 'tous';
 let currentMobSubTab = 'avant';
 
 const EQUIPES = ["Paradou AC", "IRB Nezla", "NRB Beni Oulbane", "NRB Teleghma", "CA Batna", "US Chaouia", "AS Khroub", "MO Constantine", "USM Annaba", "JS Azazga", "MO Béjaïa", "NC Magra", "JSM Skikda", "MSP Batna", "JSD Jijel", "CR Beni Thour"];
-
 const STADES = ["Stade Abed-Hamdani (El Khroub)", "Stade 19 Mai 1956 (Annaba)", "Stade Klag Abderrahmane (Aïn Fakroun)", "Stade Khabaza Bachir (Teleghma)", "Stade 1er Novembre 1954 (Batna)", "Stade 20 Août 1955 (Skikda)", "Stade 18 Février (Ouargla)", "Stade 10 000 places (Touggourt)", "Stade Tirsatine (Azazga)", "Stade Hammou Boukouffa (Beni Oulbane)", "Stade 20 Août 1955 (Alger)", "Stade des Frères Boucheligue (Magra)", "Stade 1er Novembre 1954 Guendouza (Akbou)", "Stade des Martyrs (Akbou)", "Stade Hocine Rouibah (Jijel)", "Stade Ramdane-Benabdelmalek (Constantine)"];
 
 const LOGOS = {
@@ -744,7 +762,13 @@ function render(section) {
   if (currentSubTab === 'programme') list = list.filter(m => !hasScore(m));
   else if (currentSubTab === 'resultats') list = list.filter(m => hasScore(m));
   
-  list = list.filter(m => (!fj || String(m.journee) === String(fj)) && (!fe || m.dom === fe || m.ext === fe));
+  // CORRECTION DU FILTRE ICI
+  list = list.filter(m => {
+    const matchJ = (!fj || String(m.journee) === String(fj));
+    const matchE = (!fe || m.dom === fe || m.ext === fe);
+    return matchJ && matchE;
+  });
+  
   list = [...list].sort((a,b) => (parseInt(a.journee||0) - parseInt(b.journee||0)) || (a.date||'').localeCompare(b.date||''));
 
   count.textContent = `${list.length} rencontre(s) affichée(s) sur ${data.championnat.length}`;
@@ -803,10 +827,23 @@ function renderMob() {
   document.getElementById('mob-day-auto').innerHTML = nextMatch && nextMatch.date === now.toISOString().split('T')[0] ? formatM(nextMatch) : (lastMatch && lastMatch.date === now.toISOString().split('T')[0] ? formatM(lastMatch) : "Pas de match aujourd'hui.");
   document.getElementById('mob-apres-auto').innerHTML = lastMatch ? `Dernier résultat : ${formatM(lastMatch)}` : "Pas de résultat récent.";
 
-  document.getElementById('mob-avant-text').textContent = data.mob.avant || "Aucune info pour le moment.";
-  document.getElementById('mob-day-text').textContent = data.mob.day || "Aucune info pour le moment.";
-  document.getElementById('mob-apres-text').textContent = data.mob.apres || "Aucune info pour le moment.";
+  // AFFICHAGE TEXTES ET IMAGES CONTENU MOB
+  const setContent = (prefix) => {
+    const imgEl = document.getElementById(`mob-${prefix}-content-img`);
+    const textEl = document.getElementById(`mob-${prefix}-text`);
+    
+    const hasImg = data.mob[prefix] && data.mob[prefix].img;
+    const hasTxt = data.mob[prefix] && data.mob[prefix].txt;
 
+    if (hasImg) { imgEl.src = data.mob[prefix].img; imgEl.style.display = 'block'; }
+    else { imgEl.style.display = 'none'; }
+
+    if (hasTxt) { textEl.textContent = data.mob[prefix].txt; textEl.style.display = 'block'; }
+    else { textEl.textContent = "Aucune info pour le moment."; textEl.style.display = 'block'; }
+  };
+  setContent('avant'); setContent('day'); setContent('apres');
+
+  // AFFICHES PRINCIPALES
   const imgAvant = document.getElementById('mob-avant-img');
   if(data.affiches.avant) { imgAvant.src = data.affiches.avant; imgAvant.style.display = 'block'; } else { imgAvant.style.display = 'none'; }
 
@@ -816,10 +853,11 @@ function renderMob() {
   const imgApres = document.getElementById('mob-apres-img');
   if(data.affiches.apres) { imgApres.src = data.affiches.apres; imgApres.style.display = 'block'; } else { imgApres.style.display = 'none'; }
 
+  // VIDEO APRES MATCH
   const vidApres = document.getElementById('mob-apres-video');
-  if(data.videos.apres) { 
-    // Convertir le lien YouTube en lien embarqué
-    let url = data.videos.apres;
+  const vidCap = document.getElementById('mob-apres-video-caption');
+  if(data.videos.apres && data.videos.apres.url) { 
+    let url = data.videos.apres.url;
     let embedUrl = "";
     if (url.includes("youtube.com/shorts/")) {
        const id = url.split("shorts/")[1].split("?")[0];
@@ -833,8 +871,15 @@ function renderMob() {
     } else { embedUrl = url; }
     vidApres.src = embedUrl; 
     vidApres.style.display = 'block'; 
-  } else { vidApres.style.display = 'none'; }
 
+    if(data.videos.apres.txt) { vidCap.textContent = data.videos.apres.txt; vidCap.style.display = 'block'; }
+    else { vidCap.style.display = 'none'; }
+  } else { 
+    vidApres.style.display = 'none'; 
+    vidCap.style.display = 'none'; 
+  }
+
+  // LIVE
   const liveW = document.getElementById('live-widget');
   if (data.live.statut === 'actif' || data.live.statut === 'termine') {
     liveW.style.display = 'block';
@@ -903,12 +948,16 @@ async function saveNews() {
 function openModalMob(section) {
   if (!isAdmin) return;
   document.getElementById('mobSection').value = section;
-  document.getElementById('mobTextInput').value = data.mob[section] || '';
+  document.getElementById('mobImgInput').value = (data.mob[section] && data.mob[section].img) ? data.mob[section].img : '';
+  document.getElementById('mobTextInput').value = (data.mob[section] && data.mob[section].txt) ? data.mob[section].txt : '';
   openModal('modalMob');
 }
-async function saveMobText() {
+async function saveMobContent() {
   const section = document.getElementById('mobSection').value;
-  data.mob[section] = document.getElementById('mobTextInput').value;
+  data.mob[section] = {
+    img: document.getElementById('mobImgInput').value,
+    txt: document.getElementById('mobTextInput').value
+  };
   await saveToFirebase(); closeModal('modalMob'); renderMob();
 }
 
@@ -927,12 +976,16 @@ async function saveAffiche() {
 function openModalVideo(section) {
   if(!isAdmin) return;
   document.getElementById('videoSection').value = section;
-  document.getElementById('videoUrl').value = data.videos[section] || '';
+  document.getElementById('videoUrl').value = (data.videos[section] && data.videos[section].url) ? data.videos[section].url : '';
+  document.getElementById('videoTexte').value = (data.videos[section] && data.videos[section].txt) ? data.videos[section].txt : '';
   openModal('modalVideo');
 }
 async function saveVideo() {
   const section = document.getElementById('videoSection').value;
-  data.videos[section] = document.getElementById('videoUrl').value;
+  data.videos[section] = {
+    url: document.getElementById('videoUrl').value,
+    txt: document.getElementById('videoTexte').value
+  };
   await saveToFirebase(); closeModal('modalVideo'); renderMob();
 }
 
@@ -1151,7 +1204,7 @@ window.openModal = openModal; window.closeModal = closeModal; window.openModalMa
 window.openModalPlayer = openModalPlayer; window.savePlayer = savePlayer;
 window.openModalStaff = openModalStaff; window.saveStaff = saveStaff;
 window.openModalDirigeant = openModalDirigeant; window.saveDirigeant = saveDirigeant;
-window.openModalMob = openModalMob; window.saveMobText = saveMobText;
+window.openModalMob = openModalMob; window.saveMobContent = saveMobContent;
 window.openModalAffiche = openModalAffiche; window.saveAffiche = saveAffiche;
 window.openModalVideo = openModalVideo; window.saveVideo = saveVideo;
 window.openModalNews = openModalNews; window.saveNews = saveNews;
