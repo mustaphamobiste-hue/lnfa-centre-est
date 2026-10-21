@@ -83,6 +83,8 @@
   .live-score { font-size: 2em; font-weight: bold; text-align: center; color: #e74c3c; margin: 10px 0; }
   .live-update { font-size: 12px; color: #666; text-align: center; font-style: italic; margin-bottom: 10px; }
   .mob-text { font-size: 14px; line-height: 1.6; white-space: pre-wrap; }
+  .mob-affiche { width: 100%; border-radius: 8px; margin-bottom: 15px; display: none; }
+  .mob-video { width: 100%; aspect-ratio: 16/9; border: none; border-radius: 8px; margin-top: 15px; display: none; }
 
   .club-section { margin-bottom: 20px; }
   .club-title { color: #1a4d2e; font-size: 1.2em; font-weight: bold; margin-bottom: 10px; padding-left: 10px; border-left: 4px solid #c9a961; }
@@ -200,10 +202,12 @@
   <div id="mob-avant" class="mob-section">
     <div class="toolbar" id="mob-avant-toolbar" style="display:none;">
       <button onclick="openModalMob('avant')" class="btn-edit">✏️ Modifier le texte</button>
+      <button onclick="openModalAffiche('avant')" class="btn-edit" style="background:#8e44ad;">🖼️ Changer l'affiche</button>
     </div>
     <div class="mob-card">
       <div class="mob-title">📅 Le match à venir</div>
       <div id="mob-avant-auto" style="text-align:center; font-weight:bold; margin-bottom:10px; color:#1a4d2e;"></div>
+      <img id="mob-avant-img" class="mob-affiche" src="">
     </div>
     <div class="mob-card">
       <div class="mob-title">📝 Infos & Analyse</div>
@@ -214,6 +218,7 @@
   <div id="mob-day" class="mob-section" style="display:none;">
     <div class="toolbar" id="mob-day-toolbar" style="display:none;">
       <button onclick="openModalMob('day')" class="btn-edit">✏️ Modifier le texte</button>
+      <button onclick="openModalAffiche('day')" class="btn-edit" style="background:#8e44ad;">🖼️ Changer l'affiche</button>
       <button onclick="openModalLive()" class="btn-live" id="btn-live">🔴 Gérer le Live</button>
     </div>
     <div class="mob-card" style="border: 2px solid #e74c3c; display:none;" id="live-widget">
@@ -224,6 +229,7 @@
     <div class="mob-card">
       <div class="mob-title">🏟️ Le match du jour</div>
       <div id="mob-day-auto" style="text-align:center; font-weight:bold; margin-bottom:10px; color:#1a4d2e;"></div>
+      <img id="mob-day-img" class="mob-affiche" src="">
     </div>
     <div class="mob-card">
       <div class="mob-title">📝 Compo & Ambiance</div>
@@ -234,10 +240,13 @@
   <div id="mob-apres" class="mob-section" style="display:none;">
     <div class="toolbar" id="mob-apres-toolbar" style="display:none;">
       <button onclick="openModalMob('apres')" class="btn-edit">✏️ Modifier le texte</button>
+      <button onclick="openModalVideo('apres')" class="btn-edit" style="background:#c0392b;">🎥 Insérer une vidéo</button>
     </div>
     <div class="mob-card">
       <div class="mob-title">📊 Dernier résultat</div>
       <div id="mob-apres-auto" style="text-align:center; font-weight:bold; margin-bottom:10px; color:#1a4d2e;"></div>
+      <img id="mob-apres-img" class="mob-affiche" src="">
+      <iframe id="mob-apres-video" class="mob-video" allowfullscreen></iframe>
     </div>
     <div class="mob-card">
       <div class="mob-title">📝 Résumé & Réactions</div>
@@ -286,6 +295,9 @@
 
 <!-- ONGLET ACTUALITE -->
 <div id="tab-actualite" class="tab-content">
+  <div class="toolbar" id="news-toolbar" style="display:none;">
+    <button onclick="openModalNews('new')" style="background:#27ae60;">➕ Nouvel Article</button>
+  </div>
   <div id="news-container" style="max-width: 800px; margin: 0 auto;"></div>
 </div>
 
@@ -401,6 +413,19 @@
   </div>
 </div>
 
+<div class="modal" id="modalNewsEdit">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('modalNewsEdit')">×</span>
+    <h3>📰 Article</h3>
+    <input type="hidden" id="editNewsIdx">
+    <label>Titre <input type="text" id="nTitre"></label>
+    <label>Date <input type="date" id="nDate"></label>
+    <label>Lien de l'image <input type="url" id="nImg"></label>
+    <label>Texte de l'article <textarea id="nTexte" rows="10"></textarea></label>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalNewsEdit')">Annuler</button><button onclick="saveNews()">Enregistrer</button></div>
+  </div>
+</div>
+
 <div class="modal" id="modalPlayer">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalPlayer')">×</span>
@@ -456,6 +481,26 @@
   </div>
 </div>
 
+<div class="modal" id="modalAffiche">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('modalAffiche')">×</span>
+    <h3>🖼️ Insérer une affiche</h3>
+    <input type="hidden" id="afficheSection">
+    <label>Lien de l'image (Postimages) <input type="url" id="afficheUrl"></label>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalAffiche')">Annuler</button><button onclick="saveAffiche()">Enregistrer</button></div>
+  </div>
+</div>
+
+<div class="modal" id="modalVideo">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('modalVideo')">×</span>
+    <h3>🎥 Insérer une vidéo YouTube</h3>
+    <input type="hidden" id="videoSection">
+    <label>Lien de la vidéo <input type="url" id="videoUrl" placeholder="https://youtu.be/... ou https://youtube.com/shorts/..."></label>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalVideo')">Annuler</button><button onclick="saveVideo()">Enregistrer</button></div>
+  </div>
+</div>
+
 <div class="modal" id="modalLive">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalLive')">×</span>
@@ -494,6 +539,8 @@ let currentSubTab = 'tous';
 let currentMobSubTab = 'avant';
 
 const EQUIPES = ["Paradou AC", "IRB Nezla", "NRB Beni Oulbane", "NRB Teleghma", "CA Batna", "US Chaouia", "AS Khroub", "MO Constantine", "USM Annaba", "JS Azazga", "MO Béjaïa", "NC Magra", "JSM Skikda", "MSP Batna", "JSD Jijel", "CR Beni Thour"];
+
+const STADES = ["Stade Abed-Hamdani (El Khroub)", "Stade 19 Mai 1956 (Annaba)", "Stade Klag Abderrahmane (Aïn Fakroun)", "Stade Khabaza Bachir (Teleghma)", "Stade 1er Novembre 1954 (Batna)", "Stade 20 Août 1955 (Skikda)", "Stade 18 Février (Ouargla)", "Stade 10 000 places (Touggourt)", "Stade Tirsatine (Azazga)", "Stade Hammou Boukouffa (Beni Oulbane)", "Stade 20 Août 1955 (Alger)", "Stade des Frères Boucheligue (Magra)", "Stade 1er Novembre 1954 Guendouza (Akbou)", "Stade des Martyrs (Akbou)", "Stade Hocine Rouibah (Jijel)", "Stade Ramdane-Benabdelmalek (Constantine)"];
 
 const LOGOS = {
   "Paradou AC": "https://i.postimg.cc/QCDDzw1H/Paradou-AC-logo-officiel.png",
@@ -620,14 +667,16 @@ const PLAYERS_INIT = [
   {num:30, nom:"Aouchiche Mohamed Islem", poste:"Gardien", ddn:"01/12/2006", lieu:"Béjaïa", nat:"Algérienne", taille:"-", pied:"-", prev:"ES Sétif U20", img:"https://i.postimg.cc/RhkmcpMk/Aouchiche-Mohamed-Islem-rejoint-le-MO-Bejaia.jpg"}
 ];
 
-let data = { championnat: [], coupe: [], players: [], staff: [], dirigeants: [], mob: {}, live: {} };
-let articles = [
+const ARTICLES_INIT = [
   {id:"a1", date:"2026-10-13", titre:"COUP DE MASSUE / J5 : MO Béjaïa vs NRB Beni Oulbane se jouera à huis clos", image:"https://i.postimg.cc/NjDfRd1H/MO-Bejaia-vs-NRB-Beni-Oulbane-a-Huis-Clos.jpg", texte:"C'est une bien triste nouvelle qui vient de tomber pour l'ensemble de la famille mobiste. La Ligue Nationale du Football Amateur (LNFA) a officialisé le programme de la 5ᵉ journée de Ligue 2 Amateur (Groupe Centre-Est), confirmant que la rencontre opposant le MO Béjaïa au NRB Beni Oulbane, ce jeudi 15 octobre 2026 à 15 h 00, se disputera à huis clos (sans public) au Stade des Martyrs d'Akbou.\n\nRappel des Informations :\n- Affiche : MO Béjaïa vs NRB Beni Oulbane\n- Compétition : Ligue 2 Amateur (Groupe Centre-Est) – 5ᵉ Journée\n- Date : Jeudi 15 Octobre 2026\n- Coup d'envoi : 15 h 00\n- Lieu : Stade des Martyrs d'Akbou\n- Statut : Huis-Clos"},
   {id:"a2", date:"2026-10-07", titre:"DOMICILIATION DU MOB À AKBOU : Une nouvelle étape officiellement franchie", image:"https://i.postimg.cc/5yqMRPjy/Domiciliation-du-MO-Bejaia-a-Akbou.jpg", texte:"La direction du MO Béjaïa a officiellement exprimé sa reconnaissance à l'ensemble des responsables et institutions ayant contribué à l'aboutissement du dossier permettant au club d'évoluer au Stade des Martyrs d'Akbou.\n\nAu centre de ces remerciements figure M. Mehdi Amine Mohamed, nouveau Secrétaire général de la Wilaya de Béjaïa, dont la direction du MOB souligne la disponibilité, l'implication et les efforts déployés depuis le début des démarches.\n\nSelon la direction du club, son intervention a largement contribué à l'aboutissement de l'accord conclu avec l'Olympique Akbou, ouvrant ainsi la possibilité pour le Mouloudia Olympique Béjaïa de recevoir ses adversaires dans cette enceinte.\n\nLe Stade des Martyrs d'Akbou devient ainsi une solution concrète pour permettre au MOB de recevoir ses adversaires dans de meilleures conditions, notamment avec la possibilité de retrouver son public.\n\nMOB AVANT TOUT\nCRABE UN JOUR, MOB TOUJOURS"},
   {id:"a3", date:"2026-10-01", titre:"MATCH AMICAL DE LUXE : Le MO Béjaïa au test de la JS Kabylie", image:"https://i.postimg.cc/4dYdjTTY/JS-Kabylie-MO-Bejaia-en-amical.jpg", texte:"Face au report de dernière minute de la 3ᵉ journée de Ligue 2 Amateur contre l'IRB Nezla, la direction et le staff technique du MO Béjaïa ont réagi avec rapidité pour maintenir l'équipe dans un rythme de compétition élevé.\n\nCe vendredi 2 octobre 2026 à 17 h 00, les Crabes disputent un test amical de premier plan face à la JS Kabylie sur le terrain annexe du complexe Hocine Aït Ahmed de Tizi Ouzou.\n\nAprès un bilan prometteur de 4 points glanés lors des deux premières journées du championnat, le coach Hamide Lamara profitera de cette opposition de haut niveau pour évaluer le rythme de jeu face à un adversaire de l'élite nationale et tester de nouvelles variantes tactiques.\n\nRepères : JS Kabylie vs MO Béjaïa - Vendredi 02 Octobre 2026 - 17h00 - Stade annexe Hocine Aït Ahmed (Tizi Ouzou) - Match amical."},
   {id:"a4", date:"2026-10-01", titre:"MOB - IRB NEZLA REPORTÉ : Le dossier de domiciliation entre dans une nouvelle phase", image:"https://i.postimg.cc/Hscx6m9z/MO-Bejaia-vs-IRB-Nezla-reporte.jpg", texte:"La Ligue Nationale de Football Amateur vient d'annoncer officiellement le report de la rencontre devant opposer le Mouloudia de Béjaïa à l'ittihad de Nezla, comptant pour la troisième journée du championnat de Ligue 2 Amateur, Groupe Centre-Est.\n\nInitialement programmée le vendredi 2 octobre 2026 à 15h00, la rencontre devait se dérouler au stade du 1er-Novembre 1954 de Guendouza, à Akbou.\n\nLa LNFA indique désormais que cette confrontation est reportée à une date ultérieure. Ce report offre mécaniquement un délai supplémentaire pour clarifier les conditions dans lesquelles le Mouloudia de Béjaïa pourra recevoir ses prochains adversaires.\n\nCe qui est établi : La rencontre MOB - IRB Nezla est reportée. Ce qui reste à déterminer : La nouvelle date, le stade, la jauge, et la situation de la domiciliation."},
   {id:"a5", date:"2026-09-18", titre:"MO BEJAIA : LE HOME KIT 2026/27 DEVOILE", image:"https://i.postimg.cc/TYqSML0c/Nouvelle-tenue-MO-Bejaia-2026-2027.jpg", texte:"Le MO Béjaïa tient désormais sa nouvelle tunique domicile pour la saison 2026-2027. Le club a dévoilé son HOME KIT 2026/27 à travers une série de photographies.\n\nFidèle à l'identité du club, la nouvelle tunique repose sur les deux couleurs historiques du MO Béjaïa : le vert et le noir. Le maillot présente une alternance de bandes verticales vertes et noires, accompagnées de motifs graphiques plus fins.\n\nSur la partie supérieure, on retrouve le blason du MOB, tandis que le logo de l'équipementier prend place sur la poitrine opposée. Au centre du maillot figurent les partenaires commerciaux : Ooredoo, Soummam, Tchin-Lait et Maxipower.\n\nUn maillot change. Les couleurs, elles, restent. VERT ET NOIR, PARCE QUE LE MOB C'EST UNE IDENTITÉ."}
 ];
+
+let data = { championnat: [], coupe: [], players: [], staff: [], dirigeants: [], mob: {}, live: {}, affiches: {}, videos: {}, articles: [] };
+let articles = [];
 
 function handleTitleClick() { clickCount++; if (clickCount >= 5) { clickCount = 0; if (isAdmin) logoutAdmin(); else openModal('modalAdmin'); } setTimeout(() => { clickCount = 0; }, 2000); }
 function tryLogin() {
@@ -637,18 +686,19 @@ function tryLogin() {
     document.getElementById('adminBadge').innerHTML = '<span style="background:#27ae60;color:white;padding:3px 8px;border-radius:12px;font-size:11px;margin-left:8px;">ADMIN</span>';
     document.getElementById('adminPanel').style.display = 'block';
     document.getElementById('btnAddChamp').style.display = 'inline-block';
+    document.getElementById('news-toolbar').style.display = 'flex';
     document.getElementById('club-toolbar').style.display = 'flex';
     document.getElementById('mob-avant-toolbar').style.display = 'flex';
     document.getElementById('mob-day-toolbar').style.display = 'flex';
     document.getElementById('mob-apres-toolbar').style.display = 'flex';
     closeModal('modalAdmin'); alert('✅ Admin connecté');
-    render('championnat'); renderClub(); renderMob();
+    render('championnat'); renderClub(); renderMob(); renderNewsTab();
   } else { alert('❌ Mot de passe incorrect'); }
 }
 function logoutAdmin() {
   isAdmin = false; document.getElementById('adminBadge').innerHTML = ''; document.getElementById('adminPanel').style.display = 'none';
-  ['btnAddChamp', 'club-toolbar', 'mob-avant-toolbar', 'mob-day-toolbar', 'mob-apres-toolbar'].forEach(id => document.getElementById(id).style.display = 'none');
-  render('championnat'); renderClub(); renderMob();
+  ['btnAddChamp', 'news-toolbar', 'club-toolbar', 'mob-avant-toolbar', 'mob-day-toolbar', 'mob-apres-toolbar'].forEach(id => document.getElementById(id).style.display = 'none');
+  render('championnat'); renderClub(); renderMob(); renderNewsTab();
 }
 
 function switchTab(name, el) {
@@ -757,6 +807,34 @@ function renderMob() {
   document.getElementById('mob-day-text').textContent = data.mob.day || "Aucune info pour le moment.";
   document.getElementById('mob-apres-text').textContent = data.mob.apres || "Aucune info pour le moment.";
 
+  const imgAvant = document.getElementById('mob-avant-img');
+  if(data.affiches.avant) { imgAvant.src = data.affiches.avant; imgAvant.style.display = 'block'; } else { imgAvant.style.display = 'none'; }
+
+  const imgDay = document.getElementById('mob-day-img');
+  if(data.affiches.day) { imgDay.src = data.affiches.day; imgDay.style.display = 'block'; } else { imgDay.style.display = 'none'; }
+
+  const imgApres = document.getElementById('mob-apres-img');
+  if(data.affiches.apres) { imgApres.src = data.affiches.apres; imgApres.style.display = 'block'; } else { imgApres.style.display = 'none'; }
+
+  const vidApres = document.getElementById('mob-apres-video');
+  if(data.videos.apres) { 
+    // Convertir le lien YouTube en lien embarqué
+    let url = data.videos.apres;
+    let embedUrl = "";
+    if (url.includes("youtube.com/shorts/")) {
+       const id = url.split("shorts/")[1].split("?")[0];
+       embedUrl = `https://www.youtube.com/embed/${id}`;
+    } else if (url.includes("youtu.be/")) {
+       const id = url.split("youtu.be/")[1].split("?")[0];
+       embedUrl = `https://www.youtube.com/embed/${id}`;
+    } else if (url.includes("youtube.com/watch")) {
+       const id = url.split("v=")[1].split("&")[0];
+       embedUrl = `https://www.youtube.com/embed/${id}`;
+    } else { embedUrl = url; }
+    vidApres.src = embedUrl; 
+    vidApres.style.display = 'block'; 
+  } else { vidApres.style.display = 'none'; }
+
   const liveW = document.getElementById('live-widget');
   if (data.live.statut === 'actif' || data.live.statut === 'termine') {
     liveW.style.display = 'block';
@@ -767,7 +845,7 @@ function renderMob() {
 
 function openModal(id) { document.getElementById(id).classList.add('active'); }
 function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-const STADES = ["Stade Abed-Hamdani (El Khroub)", "Stade 19 Mai 1956 (Annaba)", "Stade Klag Abderrahmane (Aïn Fakroun)", "Stade Khabaza Bachir (Teleghma)", "Stade 1er Novembre 1954 (Batna)", "Stade 20 Août 1955 (Skikda)", "Stade 18 Février (Ouargla)", "Stade 10 000 places (Touggourt)", "Stade Tirsatine (Azazga)", "Stade Hammou Boukouffa (Beni Oulbane)", "Stade 20 Août 1955 (Alger)", "Stade des Frères Boucheligue (Magra)", "Stade 1er Novembre 1954 Guendouza (Akbou)", "Stade des Martyrs (Akbou)", "Stade Hocine Rouibah (Jijel)", "Stade Ramdane-Benabdelmalek (Constantine)"];
+
 function openModalMatch(section, idx) {
   if (!isAdmin) return;
   document.getElementById('editSectionMatch').value = section;
@@ -776,6 +854,7 @@ function openModalMatch(section, idx) {
   document.getElementById('fDom').innerHTML = EQUIPES.map(e=>`<option value="${e}">${e}</option>`).join('');
   document.getElementById('fExt').innerHTML = EQUIPES.map(e=>`<option value="${e}">${e}</option>`).join('');
   document.getElementById('fStade').innerHTML = STADES.map(s=>`<option value="${s}">${s}</option>`).join('');
+  
   if (idx !== undefined) {
     const m = data[section][idx];
     document.getElementById('fJournee').value = m.journee||''; document.getElementById('fDate').value = m.date||''; document.getElementById('fHeure').value = m.heure||'';
@@ -799,6 +878,83 @@ async function saveMatch() {
   await saveToFirebase(); closeModal('modalMatch'); render('championnat');
 }
 
+// --- ARTICLE NEWS ---
+function openModalNews(idx) {
+  if(!isAdmin) return;
+  document.getElementById('editNewsIdx').value = idx === 'new' ? '' : idx;
+  const a = idx !== 'new' ? data.articles[idx] : {titre:'', date:'', image:'', texte:''};
+  document.getElementById('nTitre').value = a.titre; document.getElementById('nDate').value = a.date; document.getElementById('nImg').value = a.image; document.getElementById('nTexte').value = a.texte;
+  openModal('modalNewsEdit');
+}
+async function saveNews() {
+  const idx = document.getElementById('editNewsIdx').value;
+  const a = {
+    id: 'a' + Date.now(),
+    titre: document.getElementById('nTitre').value,
+    date: document.getElementById('nDate').value,
+    image: document.getElementById('nImg').value,
+    texte: document.getElementById('nTexte').value
+  };
+  if(idx === '') data.articles.push(a); else data.articles[parseInt(idx)] = a;
+  await saveToFirebase(); closeModal('modalNewsEdit'); renderNewsTab(); renderCarousel();
+}
+
+// --- MOB TEXTES ET MEDIAS ---
+function openModalMob(section) {
+  if (!isAdmin) return;
+  document.getElementById('mobSection').value = section;
+  document.getElementById('mobTextInput').value = data.mob[section] || '';
+  openModal('modalMob');
+}
+async function saveMobText() {
+  const section = document.getElementById('mobSection').value;
+  data.mob[section] = document.getElementById('mobTextInput').value;
+  await saveToFirebase(); closeModal('modalMob'); renderMob();
+}
+
+function openModalAffiche(section) {
+  if(!isAdmin) return;
+  document.getElementById('afficheSection').value = section;
+  document.getElementById('afficheUrl').value = data.affiches[section] || '';
+  openModal('modalAffiche');
+}
+async function saveAffiche() {
+  const section = document.getElementById('afficheSection').value;
+  data.affiches[section] = document.getElementById('afficheUrl').value;
+  await saveToFirebase(); closeModal('modalAffiche'); renderMob();
+}
+
+function openModalVideo(section) {
+  if(!isAdmin) return;
+  document.getElementById('videoSection').value = section;
+  document.getElementById('videoUrl').value = data.videos[section] || '';
+  openModal('modalVideo');
+}
+async function saveVideo() {
+  const section = document.getElementById('videoSection').value;
+  data.videos[section] = document.getElementById('videoUrl').value;
+  await saveToFirebase(); closeModal('modalVideo'); renderMob();
+}
+
+function openModalLive() {
+  if (!isAdmin) return;
+  document.getElementById('liveStatut').value = data.live.statut || 'inactif';
+  document.getElementById('liveSd').value = data.live.sd || 0;
+  document.getElementById('liveSe').value = data.live.se || 0;
+  document.getElementById('liveTexte').value = data.live.texte || '';
+  openModal('modalLive');
+}
+async function saveLive() {
+  data.live = {
+    statut: document.getElementById('liveStatut').value,
+    sd: document.getElementById('liveSd').value,
+    se: document.getElementById('liveSe').value,
+    texte: document.getElementById('liveTexte').value
+  };
+  await saveToFirebase(); closeModal('modalLive'); renderMob();
+}
+
+// --- CLUB ---
 function openModalPlayer(idx) {
   if (!isAdmin) return;
   document.getElementById('editPlayerIdx').value = idx === 'new' ? '' : idx;
@@ -848,36 +1004,6 @@ async function saveDirigeant() {
   await saveToFirebase(); closeModal('modalDirigeant'); renderClub();
 }
 
-function openModalMob(section) {
-  if (!isAdmin) return;
-  document.getElementById('mobSection').value = section;
-  document.getElementById('mobTextInput').value = data.mob[section] || '';
-  openModal('modalMob');
-}
-async function saveMobText() {
-  const section = document.getElementById('mobSection').value;
-  data.mob[section] = document.getElementById('mobTextInput').value;
-  await saveToFirebase(); closeModal('modalMob'); renderMob();
-}
-
-function openModalLive() {
-  if (!isAdmin) return;
-  document.getElementById('liveStatut').value = data.live.statut || 'inactif';
-  document.getElementById('liveSd').value = data.live.sd || 0;
-  document.getElementById('liveSe').value = data.live.se || 0;
-  document.getElementById('liveTexte').value = data.live.texte || '';
-  openModal('modalLive');
-}
-async function saveLive() {
-  data.live = {
-    statut: document.getElementById('liveStatut').value,
-    sd: document.getElementById('liveSd').value,
-    se: document.getElementById('liveSe').value,
-    texte: document.getElementById('liveTexte').value
-  };
-  await saveToFirebase(); closeModal('modalLive'); renderMob();
-}
-
 async function deleteItem(section, idx) {
   if (confirm('Supprimer cet élément ?')) { data[section].splice(idx,1); await saveToFirebase(); if(section==='championnat') render('championnat'); else renderClub(); }
 }
@@ -904,7 +1030,7 @@ function renderClassement() {
   }).join('');
 }
 
-// --- WIDGETS (Chrono & Carrousel) ---
+// --- WIDGETS ---
 let countdownInterval = null;
 function updateNextMatch() {
   if (!data.championnat || data.championnat.length === 0) return;
@@ -983,8 +1109,11 @@ async function loadFromFirebase() {
   document.getElementById('statusBar').textContent = '⏳ Chargement...';
   
   data.championnat = [...MATCHS_INIT]; data.players = [...PLAYERS_INIT]; data.staff = [...STAFF_INIT]; data.dirigeants = [...DIRIGEANTS_INIT];
-  render('championnat'); renderClub(); renderMob();
-  renderCarousel(); startCarouselAuto(); renderNewsTab(); updateNextMatch();
+  data.articles = [...ARTICLES_INIT];
+  articles = data.articles;
+  
+  render('championnat'); renderClub(); renderMob(); renderNewsTab();
+  renderCarousel(); startCarouselAuto(); updateNextMatch();
   
   document.getElementById('statusBar').className = 'status online';
   document.getElementById('statusBar').textContent = `🟢 Connecté (${data.championnat.length} matchs)`;
@@ -999,7 +1128,12 @@ async function loadFromFirebase() {
         data.dirigeants = fb.dirigeants || [...DIRIGEANTS_INIT];
         data.mob = fb.mob || {};
         data.live = fb.live || {};
-        render('championnat'); renderClub(); renderMob(); renderCarousel(); renderNewsTab(); updateNextMatch();
+        data.affiches = fb.affiches || {};
+        data.videos = fb.videos || {};
+        data.articles = fb.articles || [...ARTICLES_INIT];
+        articles = data.articles;
+        
+        render('championnat'); renderClub(); renderMob(); renderNewsTab(); renderCarousel(); updateNextMatch();
       }
     }).catch(e => console.log('Mode hors-ligne'));
   } catch(e) {}
@@ -1018,6 +1152,9 @@ window.openModalPlayer = openModalPlayer; window.savePlayer = savePlayer;
 window.openModalStaff = openModalStaff; window.saveStaff = saveStaff;
 window.openModalDirigeant = openModalDirigeant; window.saveDirigeant = saveDirigeant;
 window.openModalMob = openModalMob; window.saveMobText = saveMobText;
+window.openModalAffiche = openModalAffiche; window.saveAffiche = saveAffiche;
+window.openModalVideo = openModalVideo; window.saveVideo = saveVideo;
+window.openModalNews = openModalNews; window.saveNews = saveNews;
 window.openModalLive = openModalLive; window.saveLive = saveLive;
 window.tryLogin = tryLogin; window.logoutAdmin = logoutAdmin; window.renderClassement = renderClassement;
 window.openArticleModal = openArticleModal;
