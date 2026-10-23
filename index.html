@@ -6,7 +6,7 @@
 <title>MO Béjaïa - Ligue 2 Amateur 2026-2027</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Arial, sans-serif; background: #f4f6f9; color: #222; padding: 10px; }
+  body { font-family: Arial, sans-serif; background: #f4f6f9; color: #222; padding: 10px; padding-bottom: 80px; } /* Padding bottom pour le bouton flottant */
   h1 { text-align: center; color: #1a4d2e; margin-bottom: 12px; font-size: 1.1em; cursor: pointer; user-select: none; }
   .status { text-align: center; font-size: 12px; margin-bottom: 8px; padding: 6px; border-radius: 6px; font-weight: bold; }
   .status.online { background: #d4edda; color: #155724; }
@@ -125,11 +125,34 @@
   .historique-list li { margin-bottom: 6px; color: #333; line-height: 1.5; font-size: 0.9em; }
   .historique-ultras { background: #fff8e6; border-left: 4px solid #c9a961; padding: 12px; border-radius: 6px; margin: 10px 0; }
 
+  /* BOUTON PARTAGER FLOTTANT */
+  .btn-share-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #2980b9;
+    color: white;
+    border-radius: 50px;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 1000;
+    cursor: pointer;
+    border: 2px solid white;
+    transition: transform 0.2s;
+  }
+  .btn-share-float:hover { transform: scale(1.05); background-color: #3498db; }
+
   @media (max-width: 400px) {
     .next-match-teams { font-size: 1.05em; }
     .cd-box { min-width: 42px; padding: 5px 6px; }
     .cd-num { font-size: 1.2em; }
     .carousel-item { flex: 0 0 85%; }
+    .btn-share-float { padding: 10px 15px; font-size: 14px; }
   }
 </style>
 </head>
@@ -427,6 +450,11 @@
   </div>
 </div>
 
+<!-- BOUTON PARTAGER FLOTTANT -->
+<div class="btn-share-float" onclick="sharePage()">
+  📤 Partager
+</div>
+
 <!-- MODALS -->
 <div class="modal" id="modalMatch">
   <div class="modal-content">
@@ -462,6 +490,10 @@
     <div id="articleDate" style="font-size: 11px; color:#777; margin-bottom: 10px;"></div>
     <img id="articleImg" src="" style="width:100%; border-radius:8px; margin-bottom:15px; display:none;">
     <div id="articleText" class="article-full-text"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modalArticle')">Fermer</button>
+      <button onclick="shareArticle()" style="background:#2980b9;">📤 Partager cet article</button>
+    </div>
   </div>
 </div>
 
@@ -636,6 +668,7 @@ let currentSubTab = 'tous';
 let currentMobSubTab = 'avant';
 let currentNewsSubTab = 'all';
 let currentMediaSubTab = 'images';
+let currentTabName = 'championnat'; // Pour le partage
 
 const EQUIPES = ["Paradou AC", "IRB Nezla", "NRB Beni Oulbane", "NRB Teleghma", "CA Batna", "US Chaouia", "AS Khroub", "MO Constantine", "USM Annaba", "JS Azazga", "MO Béjaïa", "NC Magra", "JSM Skikda", "MSP Batna", "JSD Jijel", "CR Beni Thour"];
 const STADES = ["Stade Abed-Hamdani (El Khroub)", "Stade 19 Mai 1956 (Annaba)", "Stade Klag Abderrahmane (Aïn Fakroun)", "Stade Khabaza Bachir (Teleghma)", "Stade 1er Novembre 1954 (Batna)", "Stade 20 Août 1955 (Skikda)", "Stade 18 Février (Ouargla)", "Stade 10 000 places (Touggourt)", "Stade Tirsatine (Azazga)", "Stade Hammou Boukouffa (Beni Oulbane)", "Stade 20 Août 1955 (Alger)", "Stade des Frères Boucheligue (Magra)", "Stade 1er Novembre 1954 Guendouza (Akbou)", "Stade des Martyrs (Akbou)", "Stade Hocine Rouibah (Jijel)", "Stade Ramdane-Benabdelmalek (Constantine)"];
@@ -803,6 +836,7 @@ let data = {
 };
 
 let articles = [];
+let currentArticleForShare = null; // Pour le partage d'un article spécifique
 
 function handleTitleClick() { clickCount++; if (clickCount >= 5) { clickCount = 0; if (isAdmin) logoutAdmin(); else openModal('modalAdmin'); } setTimeout(() => { clickCount = 0; }, 2000); }
 function tryLogin() {
@@ -817,12 +851,9 @@ function tryLogin() {
     document.getElementById('mob-avant-toolbar').style.display = 'flex';
     document.getElementById('mob-day-toolbar').style.display = 'flex';
     document.getElementById('mob-apres-toolbar').style.display = 'flex';
-    
-    // Médias admin
     document.getElementById('media-toolbar').style.display = 'flex';
     document.getElementById('btnAddAlbum').style.display = currentMediaSubTab === 'images' ? 'inline-block' : 'none';
     document.getElementById('btnAddVideoMedia').style.display = currentMediaSubTab === 'videos' ? 'inline-block' : 'none';
-    
     closeModal('modalAdmin'); alert('✅ Admin connecté');
     render('championnat'); renderClub(); renderMob(); renderNewsTab(); renderMedias();
   } else { alert('❌ Mot de passe incorrect'); }
@@ -833,17 +864,75 @@ function logoutAdmin() {
   render('championnat'); renderClub(); renderMob(); renderNewsTab(); renderMedias();
 }
 
+// --- SYSTÈME DE PARTAGE ---
+function sharePage() {
+  let text = "Découvrez le site des supporters du MO Béjaïa !";
+  if (currentTabName === 'actualite') text = "Lisez les dernières actualités du MO Béjaïa !";
+  if (currentTabName === 'classement') text = "Découvrez le classement de la Ligue 2 Amateur !";
+  if (currentTabName === 'mob') text = "Suivez le MO Béjaïa au quotidien !";
+  if (currentTabName === 'medias') text = "Revivez les matchs du MOB en photos et vidéos !";
+
+  const shareData = {
+    title: 'MO Béjaïa - Ligue 2 Amateur',
+    text: text + ' 🦀 #LaMaisonDesCrabes',
+    url: window.location.href.split('?')[0] + '?tab=' + currentTabName
+  };
+
+  if (navigator.share) {
+    navigator.share(shareData).catch((error) => console.log('Erreur de partage', error));
+  } else {
+    // Fallback pour les ordinateurs
+    prompt("Copiez ce lien pour partager :", shareData.url);
+  }
+}
+
+function shareArticle() {
+  if (!currentArticleForShare) return sharePage();
+  const shareData = {
+    title: currentArticleForShare.titre,
+    text: 'À lire sur #LaMaisonDesCrabes 🦀 : ' + currentArticleForShare.titre,
+    url: window.location.href.split('?')[0] + '?tab=actualite&article=' + currentArticleForShare.id
+  };
+  if (navigator.share) {
+    navigator.share(shareData).catch((error) => console.log('Erreur de partage', error));
+  } else {
+    prompt("Copiez ce lien pour partager cet article :", shareData.url);
+  }
+}
+
+// --- NAVIGATION & URL ---
 function switchTab(name, el) {
+  currentTabName = name;
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('tab-'+name).classList.add('active');
+  
+  // Mise à jour de l'URL sans recharger
+  const newUrl = window.location.pathname + '?tab=' + name;
+  window.history.replaceState({path: newUrl}, '', newUrl);
+
   if (name === 'classement') renderClassement();
   if (name === 'club') renderClub();
   if (name === 'mob') renderMob();
   if (name === 'actualite') renderNewsTab();
   if (name === 'medias') renderMedias();
 }
+
+function checkUrlOnLoad() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const tab = urlParams.get('tab');
+  const articleId = urlParams.get('article');
+
+  if (tab) {
+    const tabEl = Array.from(document.querySelectorAll('.tab')).find(t => t.getAttribute('onclick').includes(tab));
+    if (tabEl) switchTab(tab, tabEl);
+  }
+  if (articleId) {
+    setTimeout(() => openArticleModal(articleId), 500); // Petit délai pour laisser le temps de charger
+  }
+}
+
 function switchSubTab(mode) {
   currentSubTab = mode;
   document.getElementById('subtab-tous').classList.toggle('active', mode === 'tous');
@@ -874,7 +963,6 @@ function switchSubTabMedia(type) {
   document.getElementById('subtab-media-videos').classList.toggle('active', type === 'videos');
   document.getElementById('media-images-container').style.display = type === 'images' ? 'block' : 'none';
   document.getElementById('media-videos-container').style.display = type === 'videos' ? 'block' : 'none';
-  
   if(isAdmin) {
     document.getElementById('btnAddAlbum').style.display = type === 'images' ? 'inline-block' : 'none';
     document.getElementById('btnAddVideoMedia').style.display = type === 'videos' ? 'inline-block' : 'none';
@@ -1323,6 +1411,7 @@ function startCarouselAuto() {
 function openArticleModal(id) {
   const a = articles.find(x => x.id === id);
   if (!a) return;
+  currentArticleForShare = a; // Sauvegarde pour le partage
   document.getElementById('articleTitle').textContent = a.titre;
   document.getElementById('articleDate').textContent = '📅 ' + formatDate(a.date);
   document.getElementById('articleImg').src = a.image;
@@ -1342,6 +1431,7 @@ async function loadFromFirebase() {
   
   render('championnat'); renderClub(); renderMob(); renderNewsTab(); renderMedias();
   renderCarousel(); startCarouselAuto(); updateNextMatch();
+  checkUrlOnLoad(); // <-- Vérifie si un lien direct a été ouvert
   
   document.getElementById('statusBar').className = 'status online';
   document.getElementById('statusBar').textContent = `🟢 Connecté (${data.championnat.length} matchs)`;
@@ -1397,6 +1487,7 @@ window.openModalVideoMedia = openModalVideoMedia; window.saveVideoMedia = saveVi
 window.openModalLive = openModalLive; window.saveLive = saveLive;
 window.tryLogin = tryLogin; window.logoutAdmin = logoutAdmin; window.renderClassement = renderClassement;
 window.openArticleModal = openArticleModal;
+window.sharePage = sharePage; window.shareArticle = shareArticle;
 </script>
 </body>
 </html>
