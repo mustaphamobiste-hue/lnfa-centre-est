@@ -61,8 +61,7 @@
   .cd-num { font-size: 1.4em; font-weight: bold; color: #c9a961; display: block; line-height: 1; }
   .cd-label { font-size: 9px; text-transform: uppercase; opacity: 0.8; letter-spacing: 1px; }
 
-  /* BANDEAU LIVE CLIGNOTANT */
-  .live-banner { background-color: #e74c3c; color: white; text-align: center; padding: 8px; border-radius: 6px; font-weight: bold; margin-bottom: 12px; display: none; animation: flashLive 1s infinite; box-shadow: 0 2px 8px rgba(231, 76, 60, 0.5); }
+  .live-banner { background-color: #e74c3c; color: white; text-align: center; padding: 8px; border-radius: 6px; font-weight: bold; margin-bottom: 12px; display: none; animation: flashLive 1s infinite; box-shadow: 0 2px 8px rgba(231, 76, 60, 0.5); cursor: pointer; }
   @keyframes flashLive { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
   .carousel-container { width: 100%; overflow-x: auto; display: flex; gap: 10px; padding: 10px 0; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
@@ -104,7 +103,6 @@
   .player-card .pc-name { font-weight: bold; font-size: 12px; color: #1a4d2e; line-height: 1.2; margin-bottom: 3px; }
   .player-card .pc-pos { font-size: 10px; color: #666; }
 
-  /* MÉDIAS */
   .album-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.15); text-align: center; position: relative; cursor: pointer; border-bottom: 4px solid #c9a961; padding: 15px; transition: transform 0.2s; }
   .album-card:hover { transform: scale(1.02); }
   .album-card h4 { color: #1a4d2e; margin-bottom: 5px; }
@@ -130,7 +128,6 @@
   .historique-list li { margin-bottom: 6px; color: #333; line-height: 1.5; font-size: 0.9em; }
   .historique-ultras { background: #fff8e6; border-left: 4px solid #c9a961; padding: 12px; border-radius: 6px; margin: 10px 0; }
 
-  /* BOUTON PARTAGER FLOTTANT */
   .btn-share-float {
     position: fixed;
     bottom: 20px;
@@ -167,7 +164,6 @@
 
 <div id="statusBar" class="status loading">⏳ Connexion à Firebase...</div>
 
-<!-- BANDEAU LIVE GLOBAL -->
 <div id="globalLiveBanner" class="live-banner" onclick="switchTab('mob', document.querySelectorAll('.tab')[1])">
   🔴 EN DIRECT : <span id="liveBannerScore">0 - 0</span> | <span id="liveBannerMinute">0'</span> | <span id="liveBannerText"></span>
 </div>
@@ -460,7 +456,6 @@
   </div>
 </div>
 
-<!-- BOUTON PARTAGER FLOTTANT -->
 <div class="btn-share-float" id="btnShareMain" onclick="shareContext()">
   📤 Partager
 </div>
@@ -876,7 +871,6 @@ function logoutAdmin() {
   render('championnat'); renderClub(); renderMob(); renderNewsTab(); renderMedias();
 }
 
-// --- SYSTÈME DE PARTAGE INTELLIGENT ---
 function shareContext() {
   if (document.getElementById('modalArticle').classList.contains('active') && currentArticleForShare) {
     shareArticle();
@@ -920,7 +914,6 @@ function shareArticle() {
   }
 }
 
-// --- NAVIGATION & URL ---
 function switchTab(name, el) {
   currentTabName = name;
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
@@ -1098,7 +1091,6 @@ function renderMob() {
     if(data.videos.apres.txt) { vidCap.textContent = data.videos.apres.txt; vidCap.style.display = 'block'; } else { vidCap.style.display = 'none'; }
   } else { vidApres.style.display = 'none'; vidCap.style.display = 'none'; }
 
-  // GESTION DU LIVE (Dans l'onglet et bandeau global)
   const liveW = document.getElementById('live-widget');
   const globalBanner = document.getElementById('globalLiveBanner');
   
@@ -1107,7 +1099,6 @@ function renderMob() {
     document.getElementById('live-score').textContent = `${data.live.sd || 0} - ${data.live.se || 0}`;
     document.getElementById('live-status').textContent = data.live.texte || (data.live.statut === 'actif' ? 'Match en cours' : 'Match terminé');
 
-    // Bandeau global clignotant
     if(data.live.statut === 'actif') {
       globalBanner.style.display = 'block';
       document.getElementById('liveBannerScore').textContent = `${data.live.sd || 0} - ${data.live.se || 0}`;
@@ -1131,12 +1122,11 @@ function renderNewsTab() {
   if (sorted.length === 0) { container.innerHTML = '<p style="text-align:center; padding:20px; color:#888;">Aucun article pour le moment.</p>'; return; }
   
   container.innerHTML = sorted.map((a, idx) => {
-    // On retrouve l'index original dans data.articles pour l'édition
     const realIdx = data.articles.findIndex(art => art.id === a.id);
     const editBtn = isAdmin ? `<div class="btn-edit-news" onclick="event.stopPropagation(); openModalNews(${realIdx})">✏️</div>` : '';
     return `<div class="news-card" onclick="openArticleModal('${a.id}')">
       ${editBtn}
-      <img src="${a.image}" alt="${a.titre}">
+      <img src="${a.image}" onerror="this.src='https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png'">
       <div class="news-card-body">
         <div class="news-card-title">${a.titre}</div>
         <div class="news-card-date">📅 ${formatDate(a.date)}</div>
@@ -1415,32 +1405,66 @@ let countdownInterval = null;
 function updateNextMatch() {
   if (!data.championnat || data.championnat.length === 0) return;
   const now = new Date();
-  const mobMatches = data.championnat.filter(m => (m.dom === 'MO Béjaïa' || m.ext === 'MO Béjaïa') && !hasScore(m) && m.date);
-  if (mobMatches.length === 0) { document.getElementById('nextMatchBanner').style.display = 'none'; return; }
-  mobMatches.sort((a,b) => (a.date + (a.heure||'15:00')).localeCompare(b.date + (b.heure||'15:00')));
-  let next = mobMatches.find(m => new Date(m.date + 'T' + (m.heure || '15:00')) > now);
-  if (!next) next = mobMatches[mobMatches.length - 1];
-  const matchDate = new Date(next.date + 'T' + (next.heure || '15:00'));
+  
+  // On filtre les matchs du MOB, sans score, et qui ne sont PAS reportés
+  const validMobMatches = data.championnat.filter(m => 
+    (m.dom === 'MO Béjaïa' || m.ext === 'MO Béjaïa') && 
+    !hasScore(m) && 
+    (!m.obs || !m.obs.toLowerCase().includes('report'))
+  );
+
+  if (validMobMatches.length === 0) { document.getElementById('nextMatchBanner').style.display = 'none'; return; }
+
+  // On trie : les matchs avec date d'abord (chronologiquement), puis les matchs sans date (par journée)
+  validMobMatches.sort((a,b) => {
+      if(a.date && b.date) return new Date(a.date + 'T' + (a.heure || '15:00')) - new Date(b.date + 'T' + (b.heure || '15:00'));
+      if(a.date) return -1;
+      if(b.date) return 1;
+      return parseInt(a.journee||0) - parseInt(b.journee||0);
+  });
+  
+  // On cherche le premier match dans le futur (avec une date valide)
+  let next = validMobMatches.find(m => m.date && new Date(m.date + 'T' + (m.heure || '15:00')) > now);
+  
+  // Si on n'a pas trouvé de match futur avec date, on prend le premier match sans date (ex: la J8)
+  if (!next) {
+      next = validMobMatches.find(m => !m.date);
+  }
+
+  // Si on n'a toujours rien (tous les matchs sont joués ou passés), on cache le bandeau
+  if (!next) { document.getElementById('nextMatchBanner').style.display = 'none'; return; }
+
   document.getElementById('nextMatchDom').innerHTML = logoImg(next.dom) + next.dom;
   document.getElementById('nextMatchExt').innerHTML = logoImg(next.ext) + next.ext;
-  const p = next.date.split('-');
-  document.getElementById('nextMatchDate').textContent = '📅 ' + p[2] + '/' + p[1] + '/' + p[0] + ' à ' + (next.heure || '15:00') + (next.stade ? ' • ' + next.stade : '');
-  document.getElementById('nextMatchBanner').style.display = 'block';
-  if (countdownInterval) clearInterval(countdownInterval);
-  function tick() {
-    const diff = matchDate - new Date();
-    if (diff <= 0) { ['cdDays','cdHours','cdMins','cdSecs'].forEach(id => document.getElementById(id).textContent = '0'); return; }
-    const d = Math.floor(diff / 86400000);
-    const h = Math.floor((diff % 86400000) / 3600000);
-    const m = Math.floor((diff % 3600000) / 60000);
-    const s = Math.floor((diff % 60000) / 1000);
-    document.getElementById('cdDays').textContent = d;
-    document.getElementById('cdHours').textContent = String(h).padStart(2,'0');
-    document.getElementById('cdMins').textContent = String(m).padStart(2,'0');
-    document.getElementById('cdSecs').textContent = String(s).padStart(2,'0');
+  
+  if (next.date) {
+      const matchDate = new Date(next.date + 'T' + (next.heure || '15:00'));
+      const p = next.date.split('-');
+      document.getElementById('nextMatchDate').textContent = '📅 ' + p[2] + '/' + p[1] + '/' + p[0] + ' à ' + (next.heure || '15:00') + (next.stade ? ' • ' + next.stade : '');
+      
+      if (countdownInterval) clearInterval(countdownInterval);
+      function tick() {
+        const diff = matchDate - new Date();
+        if (diff <= 0) { ['cdDays','cdHours','cdMins','cdSecs'].forEach(id => document.getElementById(id).textContent = '0'); return; }
+        const d = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        document.getElementById('cdDays').textContent = d;
+        document.getElementById('cdHours').textContent = String(h).padStart(2,'0');
+        document.getElementById('cdMins').textContent = String(m).padStart(2,'0');
+        document.getElementById('cdSecs').textContent = String(s).padStart(2,'0');
+      }
+      tick();
+      countdownInterval = setInterval(tick, 1000);
+  } else {
+      // Si pas de date (ex: J8), on affiche "Date à venir" et on arrête le chrono
+      document.getElementById('nextMatchDate').textContent = '📅 Date à confirmer par la LNFA' + (next.stade ? ' • ' + next.stade : '');
+      ['cdDays','cdHours','cdMins','cdSecs'].forEach(id => document.getElementById(id).textContent = '--');
+      if (countdownInterval) clearInterval(countdownInterval);
   }
-  tick();
-  countdownInterval = setInterval(tick, 1000);
+  
+  document.getElementById('nextMatchBanner').style.display = 'block';
 }
 
 let carouselTimer = null;
@@ -1448,7 +1472,7 @@ function renderCarousel() {
   const container = document.getElementById('homeCarousel');
   if (!container) return;
   const sorted = [...articles].sort((a,b) => b.date.localeCompare(a.date)).slice(0, 5);
-  container.innerHTML = sorted.map(a => `<div class="carousel-item" onclick="openArticleModal('${a.id}')"><img src="${a.image}" alt="${a.titre}"><p>${a.titre}</p></div>`).join('');
+  container.innerHTML = sorted.map(a => `<div class="carousel-item" onclick="openArticleModal('${a.id}')"><img src="${a.image}" onerror="this.src='https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png'"><p>${a.titre}</p></div>`).join('');
 }
 
 function startCarouselAuto() {
