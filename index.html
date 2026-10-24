@@ -6,7 +6,7 @@
 <title>MO Béjaïa - Ligue 2 Amateur 2026-2027</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Arial, sans-serif; background: #f4f6f9; color: #222; padding: 10px; padding-bottom: 80px; } /* Padding bottom pour le bouton flottant */
+  body { font-family: Arial, sans-serif; background: #f4f6f9; color: #222; padding: 10px; padding-bottom: 80px; }
   h1 { text-align: center; color: #1a4d2e; margin-bottom: 12px; font-size: 1.1em; cursor: pointer; user-select: none; }
   .status { text-align: center; font-size: 12px; margin-bottom: 8px; padding: 6px; border-radius: 6px; font-weight: bold; }
   .status.online { background: #d4edda; color: #155724; }
@@ -61,17 +61,22 @@
   .cd-num { font-size: 1.4em; font-weight: bold; color: #c9a961; display: block; line-height: 1; }
   .cd-label { font-size: 9px; text-transform: uppercase; opacity: 0.8; letter-spacing: 1px; }
 
+  /* BANDEAU LIVE CLIGNOTANT */
+  .live-banner { background-color: #e74c3c; color: white; text-align: center; padding: 8px; border-radius: 6px; font-weight: bold; margin-bottom: 12px; display: none; animation: flashLive 1s infinite; box-shadow: 0 2px 8px rgba(231, 76, 60, 0.5); }
+  @keyframes flashLive { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
   .carousel-container { width: 100%; overflow-x: auto; display: flex; gap: 10px; padding: 10px 0; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
   .carousel-item { flex: 0 0 80%; max-width: 300px; scroll-snap-align: start; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); overflow: hidden; cursor: pointer; }
   .carousel-item img { width: 100%; height: 120px; object-fit: cover; }
   .carousel-item p { padding: 8px; font-size: 12px; font-weight: bold; color: #1a4d2e; line-height: 1.2; white-space: normal; }
 
-  .news-card { background: white; border-radius: 8px; overflow: hidden; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; }
+  .news-card { background: white; border-radius: 8px; overflow: hidden; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; position: relative; }
   .news-card img { width: 100%; height: 180px; object-fit: cover; }
   .news-card-body { padding: 15px; }
-  .news-card-title { font-size: 1.1em; font-weight: bold; color: #1a4d2e; margin-bottom: 5px; }
+  .news-card-title { font-size: 1.1em; font-weight: bold; color: #1a4d2e; margin-bottom: 5px; padding-right: 30px; }
   .news-card-date { font-size: 11px; color: #777; margin-bottom: 10px; }
   .news-card-preview { font-size: 13px; color: #444; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .btn-edit-news { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.9); color: #2980b9; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 10; }
   .article-full-text { line-height: 1.6; font-size: 14px; color: #333; white-space: pre-wrap; margin-top: 10px; }
 
   .sub-tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 15px; flex-wrap: wrap; }
@@ -161,6 +166,11 @@
 <h1 id="mainTitle">🦀 MO Béjaïa – Ligue 2 Amateur 2026-2027<span id="adminBadge"></span></h1>
 
 <div id="statusBar" class="status loading">⏳ Connexion à Firebase...</div>
+
+<!-- BANDEAU LIVE GLOBAL -->
+<div id="globalLiveBanner" class="live-banner" onclick="switchTab('mob', document.querySelectorAll('.tab')[1])">
+  🔴 EN DIRECT : <span id="liveBannerScore">0 - 0</span> | <span id="liveBannerMinute">0'</span> | <span id="liveBannerText"></span>
+</div>
 
 <div class="tabs">
   <div class="tab active" onclick="switchTab('championnat', this)">🏆 Championnat</div>
@@ -451,7 +461,7 @@
 </div>
 
 <!-- BOUTON PARTAGER FLOTTANT -->
-<div class="btn-share-float" onclick="sharePage()">
+<div class="btn-share-float" id="btnShareMain" onclick="shareContext()">
   📤 Partager
 </div>
 
@@ -516,7 +526,7 @@
     <span class="modal-close" onclick="closeModal('modalPlayer')">×</span>
     <h3>⚽ Joueur</h3>
     <input type="hidden" id="editPlayerIdx">
-    <label>Numéro <input type="number" id="pNum"></label>
+    <label>N° dossard <input type="number" id="pNum"></label>
     <label>Nom <input type="text" id="pNom"></label>
     <label>Poste <input type="text" id="pPoste"></label>
     <label>Date de naissance <input type="text" id="pDdn" placeholder="Ex: 14/06/1998"></label>
@@ -525,6 +535,7 @@
     <label>Taille / Poids <input type="text" id="pTaille"></label>
     <label>Pied fort <input type="text" id="pPied"></label>
     <label>Club précédent <input type="text" id="pPrev"></label>
+    <label>Fin de contrat <input type="text" id="pFinContrat" placeholder="Ex: Juin 2027"></label>
     <label>Lien Image <input type="url" id="pImg"></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalPlayer')">Annuler</button><button onclick="savePlayer()">Enregistrer</button></div>
   </div>
@@ -639,7 +650,8 @@
       <label style="flex:1;">Score MOB <input type="number" id="liveSd" min="0"></label>
       <label style="flex:1;">Score Adv <input type="number" id="liveSe" min="0"></label>
     </div>
-    <label>Texte (ex: "45' But de Yaya !") <input type="text" id="liveTexte"></label>
+    <label>Minute du match <input type="text" id="liveMinute" placeholder="Ex: 45' ou Mi-temps"></label>
+    <label>Texte / Événement (ex: "But de Yaya !") <input type="text" id="liveTexte"></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalLive')">Annuler</button><button onclick="saveLive()">Mettre à jour</button></div>
   </div>
 </div>
@@ -668,10 +680,11 @@ let currentSubTab = 'tous';
 let currentMobSubTab = 'avant';
 let currentNewsSubTab = 'all';
 let currentMediaSubTab = 'images';
-let currentTabName = 'championnat'; // Pour le partage
+let currentTabName = 'championnat';
+let currentArticleForShare = null;
 
 const EQUIPES = ["Paradou AC", "IRB Nezla", "NRB Beni Oulbane", "NRB Teleghma", "CA Batna", "US Chaouia", "AS Khroub", "MO Constantine", "USM Annaba", "JS Azazga", "MO Béjaïa", "NC Magra", "JSM Skikda", "MSP Batna", "JSD Jijel", "CR Beni Thour"];
-const STADES = ["Stade Abed-Hamdani (El Khroub)", "Stade 19 Mai 1956 (Annaba)", "Stade Klag Abderrahmane (Aïn Fakroun)", "Stade Khabaza Bachir (Teleghma)", "Stade 1er Novembre 1954 (Batna)", "Stade 20 Août 1955 (Skikda)", "Stade 18 Février (Ouargla)", "Stade 10 000 places (Touggourt)", "Stade Tirsatine (Azazga)", "Stade Hammou Boukouffa (Beni Oulbane)", "Stade 20 Août 1955 (Alger)", "Stade des Frères Boucheligue (Magra)", "Stade 1er Novembre 1954 Guendouza (Akbou)", "Stade des Martyrs (Akbou)", "Stade Hocine Rouibah (Jijel)", "Stade Ramdane-Benabdelmalek (Constantine)"];
+const STADES = ["Stade Abed-Hamdani (El Khroub)", "Stade 19 Mai 1956 (Annaba)", "Stade Allag Abderrahmane (Aïn Fakroun)", "Stade Khabaza Bachir (Teleghma)", "Stade 1er Novembre 1954 (Batna)", "Stade 20 Août 1955 (Skikda)", "Stade 18 Février (Ouargla)", "Stade 10 000 places (Touggourt)", "Stade Tirsatine (Azazga)", "Stade Hammou Boukouffa (Beni Oulbane)", "Stade 20 Août 1955 (Alger)", "Stade des Frères Boucheligue (Magra)", "Stade 1er Novembre 1954 Guendouza (Akbou)", "Stade des Martyrs (Akbou)", "Stade Hocine Rouibah (Jijel)", "Stade Ramdane-Benabdelmalek (Constantine)"];
 
 const LOGOS = {
   "Paradou AC": "https://i.postimg.cc/QCDDzw1H/Paradou-AC-logo-officiel.png",
@@ -768,34 +781,34 @@ const DIRIGEANTS_INIT = [
 ];
 
 const PLAYERS_INIT = [
-  {num:7, nom:"Bouakaz Abderrahim", poste:"Milieu", ddn:"02/07/2002", lieu:"Khenchela", nat:"Algérienne", taille:"-", pied:"-", prev:"USM El Harrach", img:"https://i.postimg.cc/d1Xjvpmb/Abderahim-Bouakaz-rejoint-le-MOB.jpg"},
-  {num:4, nom:"Rebiai Hamza", poste:"Défenseur central", ddn:"11/01/1994", lieu:"El Cheria", nat:"Algérienne", taille:"1,79m", pied:"Droitier", prev:"MB Rouissat", img:"https://i.postimg.cc/kXw7ty6V/Rebiai-Hamza-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:5, nom:"Guessoum Kelyan Jean Said", poste:"Défenseur central", ddn:"05/02/1999", lieu:"Alès, France", nat:"Franco-Algérienne", taille:"1,76m", pied:"Droitier", prev:"MC Oran", img:"https://i.postimg.cc/qRjTSsfg/Guessoum-Kelyan-Jean-Said-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:22, nom:"Oukaci Juba", poste:"Milieu central", ddn:"08/07/1996", lieu:"Azazga", nat:"Algérienne", taille:"1,71m", pied:"Gaucher", prev:"JS Saoura", img:"https://i.postimg.cc/ry1nVVzh/Oukaci-Juba-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:24, nom:"Ben Mazouz Mohamed Saïd", poste:"Attaquant", ddn:"22/03/2004", lieu:"Beni Messous", nat:"Algérienne", taille:"1,82m", pied:"Droitier", prev:"ES Sahel", img:"https://i.postimg.cc/PqHNkQcd/Ben-Mazouz-Mohamed-Said-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:27, nom:"Ziane Islem", poste:"Attaquant / Ailier", ddn:"25/10/2006", lieu:"Béjaïa", nat:"Algérienne", taille:"-", pied:"-", prev:"JS Kabylie", img:"https://i.postimg.cc/WzqsZdKW/Ziane-Islem-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:16, nom:"Sami Tlemcani", poste:"Gardien", ddn:"21/07/2004", lieu:"Saint-Maurice, France", nat:"Algérienne", taille:"1,95m", pied:"Droitier", prev:"GS Ilioupoli", img:"https://i.postimg.cc/02dy0wjL/Tlemcani-Sami-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:21, nom:"Yaya Nadjim", poste:"Attaquant / Ailier", ddn:"12/06/2001", lieu:"Timezrit", nat:"Algérienne", taille:"-", pied:"-", prev:"MO Béjaïa", img:"https://i.postimg.cc/gJsnkLhD/Yaya-Nadjim-renouvelle-avec-le-MO-Bejaia-saison-2026-27.jpg"},
-  {num:10, nom:"Yaya Faouzi", poste:"Milieu offensif", ddn:"21/09/1989", lieu:"Timezrit", nat:"Algérienne", taille:"1,74m", pied:"Droitier", prev:"-", img:"https://i.postimg.cc/wxbjfpQ9/Yaya-Faouzi-renouvelle-au-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:15, nom:"Amine Benbelaid", poste:"Milieu offensif", ddn:"25/03/1992", lieu:"Oran", nat:"Algérienne", taille:"-", pied:"-", prev:"WA Tlemcen", img:"https://i.postimg.cc/NMnv4gqz/Benbelaid-Amine-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:29, nom:"Ait Mouloud Rayane Karim", poste:"Attaquant / Ailier", ddn:"30/11/2003", lieu:"Tiaret", nat:"Algérienne", taille:"-", pied:"Droitier", prev:"JSM Tiaret", img:"https://i.postimg.cc/zGvSm5sm/Ait-Mouloud-Rayane-Karim-rejoint-le-MOB.jpg"},
-  {num:18, nom:"Benleguemari Chaouki", poste:"Défenseur central", ddn:"12/04/2000", lieu:"Constantine", nat:"Algérienne", taille:"-", pied:"Droitier", prev:"RC Arbaa", img:"https://i.postimg.cc/vHhpZ9GT/Benleguemari-Chaouki-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:28, nom:"Nacef Tariq", poste:"Milieu relayeur / Défensif", ddn:"28/04/2001", lieu:"Chlef", nat:"Algérienne", taille:"-", pied:"-", prev:"RC Arbaa", img:"https://i.postimg.cc/wBgycSC6/Nacef-Tariq-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:14, nom:"Mohamed Benazza Essedik", poste:"Milieu offensif", ddn:"-", lieu:"-", nat:"Algérienne", taille:"-", pied:"-", prev:"WA Souk Ahras", img:"https://i.postimg.cc/zvB62sDM/Benazza-Mohamed-Essedik-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:6, nom:"Sabri Mohamed Abderrahmane", poste:"Défenseur / Milieu défensif", ddn:"19/11/2005", lieu:"Tizi Ouzou", nat:"Algérienne", taille:"-", pied:"-", prev:"Olympique Akbou", img:"https://i.postimg.cc/Nj3vrHzM/Sabri-Mohamed-Abderrahmane-a-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:12, nom:"Boukebal Zakaria", poste:"Défenseur latéral gauche", ddn:"09/01/2002", lieu:"Sidi Moussa", nat:"Algérienne", taille:"-", pied:"Gaucher", prev:"RC Arbaa", img:"https://i.postimg.cc/TwqcJz2t/Boukebal-Zakaria-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:23, nom:"Akram Akhrib", poste:"Attaquant / Ailier", ddn:"12/02/2005", lieu:"Tizi-Ouzou", nat:"Algérienne", taille:"-", pied:"-", prev:"SS Sidi Aïch", img:"https://i.postimg.cc/kXXdK9Ms/Akhrib-Akram-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:20, nom:"Bounaama Abdessamed", poste:"Arrière gauche", ddn:"26/02/1994", lieu:"El Bayadh", nat:"Algérienne", taille:"-", pied:"Gaucher", prev:"NA Hussein Dey", img:"https://i.postimg.cc/sxWKZMQw/Bounaama-Abdessamad-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:1, nom:"Benmeddah Mohammed Hamza", poste:"Gardien", ddn:"11/11/2003", lieu:"Béni Saf", nat:"Algérienne", taille:"-", pied:"-", prev:"CR Témouchent", img:"https://i.postimg.cc/HLNy75cQ/Benmeddah-Mohammed-Hamza-rejoint-le-MO-Bejaia.jpg"},
-  {num:8, nom:"Zamoum Aimad", poste:"Latéral droit / Ailier", ddn:"02/02/2002", lieu:"Béjaïa", nat:"Algérienne", taille:"-", pied:"Droitier", prev:"JSM Béjaïa", img:"https://i.postimg.cc/x8Xhpjkz/Zamoum-Aimad-rejoint-le-MO-Bejaia-mercato-estival-2026-2027.jpg"},
-  {num:26, nom:"Tamer Nizar", poste:"Attaquant / Meneur", ddn:"31/07/2001", lieu:"Biskra", nat:"Algérienne", taille:"-", pied:"-", prev:"NC Magra", img:"https://i.postimg.cc/tCwZMBcH/Nizar-Tamer-rejoint-le-MO-Bejaia-mercato-estival-2026-2027.jpg"},
-  {num:9, nom:"Bouzid Dadache", poste:"Avant-centre", ddn:"27/09/1993", lieu:"Bordj Bou Arréridj", nat:"Algérienne", taille:"-", pied:"Droitier", prev:"RC Arbaa", img:"https://i.postimg.cc/PqgkGwjT/Dadache-Bouzid-rejoint-le-MO-Bejaia-mercato-estival-2026-2027.jpg"},
-  {num:2, nom:"Djelloul Abbou M'hamed", poste:"Latéral droit", ddn:"28/02/2001", lieu:"Relizane", nat:"Algérienne", taille:"-", pied:"-", prev:"CR Témouchent", img:"https://i.postimg.cc/wTTzKNPM/Djelloul-Abbou-M-hamed-rejoint-le-MO-Bejaia.jpg"},
-  {num:11, nom:"Hammi Waris", poste:"Polyvalent (Ailier / Attaquant)", ddn:"20/11/2004", lieu:"Beni Djellil", nat:"Algérienne", taille:"-", pied:"-", prev:"JSM Béjaïa", img:"https://i.postimg.cc/Kc0VMHqv/Hammi-Waris-rejoint-le-MO-Bejaia.jpg"},
-  {num:13, nom:"Hadded Foued", poste:"Milieu défensif", ddn:"01/11/1990", lieu:"Collo", nat:"Algérienne", taille:"-", pied:"Droitier", prev:"RC Kouba", img:"https://i.postimg.cc/t4QzZdjT/Hadded-Foued-rejoint-le-MO-Bejaia.jpg"},
-  {num:19, nom:"Touil Lahouari", poste:"Attaquant", ddn:"30/07/1991", lieu:"Aïn El Turk", nat:"Algérienne", taille:"1,65m", pied:"-", prev:"GC Mascara", img:"https://i.postimg.cc/wjHvZ3zT/Touil-Lahouari-rejoint-le-MO-Bejaia.jpg"},
-  {num:3, nom:"Ramy Baba", poste:"Attaquant", ddn:"05/04/2006", lieu:"Constantine", nat:"Algérienne", taille:"-", pied:"-", prev:"USM Alger", img:"https://i.postimg.cc/9fd8rL0K/Ramy-Baba.jpg"},
-  {num:30, nom:"Aouchiche Mohamed Islem", poste:"Gardien", ddn:"01/12/2006", lieu:"Béjaïa", nat:"Algérienne", taille:"-", pied:"-", prev:"ES Sétif U20", img:"https://i.postimg.cc/RhkmcpMk/Aouchiche-Mohamed-Islem-rejoint-le-MO-Bejaia.jpg"}
+  {num:7, nom:"Bouakaz Abderrahim", poste:"Milieu", ddn:"02/07/2002", lieu:"Khenchela", nat:"Algérienne", taille:"-", pied:"-", prev:"USM El Harrach", finContrat:"-", img:"https://i.postimg.cc/d1Xjvpmb/Abderahim-Bouakaz-rejoint-le-MOB.jpg"},
+  {num:4, nom:"Rebiai Hamza", poste:"Défenseur central", ddn:"11/01/1994", lieu:"El Cheria", nat:"Algérienne", taille:"1,79m", pied:"Droitier", prev:"MB Rouissat", finContrat:"-", img:"https://i.postimg.cc/kXw7ty6V/Rebiai-Hamza-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:5, nom:"Guessoum Kelyan Jean Said", poste:"Défenseur central", ddn:"05/02/1999", lieu:"Alès, France", nat:"Franco-Algérienne", taille:"1,76m", pied:"Droitier", prev:"MC Oran", finContrat:"-", img:"https://i.postimg.cc/qRjTSsfg/Guessoum-Kelyan-Jean-Said-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:22, nom:"Oukaci Juba", poste:"Milieu central", ddn:"08/07/1996", lieu:"Azazga", nat:"Algérienne", taille:"1,71m", pied:"Gaucher", prev:"JS Saoura", finContrat:"-", img:"https://i.postimg.cc/ry1nVVzh/Oukaci-Juba-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:24, nom:"Ben Mazouz Mohamed Saïd", poste:"Attaquant", ddn:"22/03/2004", lieu:"Beni Messous", nat:"Algérienne", taille:"1,82m", pied:"Droitier", prev:"ES Sahel", finContrat:"-", img:"https://i.postimg.cc/PqHNkQcd/Ben-Mazouz-Mohamed-Said-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:27, nom:"Ziane Islem", poste:"Attaquant / Ailier", ddn:"25/10/2006", lieu:"Béjaïa", nat:"Algérienne", taille:"-", pied:"-", prev:"JS Kabylie", finContrat:"-", img:"https://i.postimg.cc/WzqsZdKW/Ziane-Islem-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:16, nom:"Sami Tlemcani", poste:"Gardien", ddn:"21/07/2004", lieu:"Saint-Maurice, France", nat:"Algérienne", taille:"1,95m", pied:"Droitier", prev:"GS Ilioupoli", finContrat:"-", img:"https://i.postimg.cc/02dy0wjL/Tlemcani-Sami-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:21, nom:"Yaya Nadjim", poste:"Attaquant / Ailier", ddn:"12/06/2001", lieu:"Timezrit", nat:"Algérienne", taille:"-", pied:"-", prev:"MO Béjaïa", finContrat:"-", img:"https://i.postimg.cc/gJsnkLhD/Yaya-Nadjim-renouvelle-avec-le-MO-Bejaia-saison-2026-27.jpg"},
+  {num:10, nom:"Yaya Faouzi", poste:"Milieu offensif", ddn:"21/09/1989", lieu:"Timezrit", nat:"Algérienne", taille:"1,74m", pied:"Droitier", prev:"-", finContrat:"-", img:"https://i.postimg.cc/wxbjfpQ9/Yaya-Faouzi-renouvelle-au-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:15, nom:"Amine Benbelaid", poste:"Milieu offensif", ddn:"25/03/1992", lieu:"Oran", nat:"Algérienne", taille:"-", pied:"-", prev:"WA Tlemcen", finContrat:"-", img:"https://i.postimg.cc/NMnv4gqz/Benbelaid-Amine-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:29, nom:"Ait Mouloud Rayane Karim", poste:"Attaquant / Ailier", ddn:"30/11/2003", lieu:"Tiaret", nat:"Algérienne", taille:"-", pied:"Droitier", prev:"JSM Tiaret", finContrat:"-", img:"https://i.postimg.cc/zGvSm5sm/Ait-Mouloud-Rayane-Karim-rejoint-le-MOB.jpg"},
+  {num:18, nom:"Benleguemari Chaouki", poste:"Défenseur central", ddn:"12/04/2000", lieu:"Constantine", nat:"Algérienne", taille:"-", pied:"Droitier", prev:"RC Arbaa", finContrat:"-", img:"https://i.postimg.cc/vHhpZ9GT/Benleguemari-Chaouki-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:28, nom:"Nacef Tariq", poste:"Milieu relayeur / Défensif", ddn:"28/04/2001", lieu:"Chlef", nat:"Algérienne", taille:"-", pied:"-", prev:"RC Arbaa", finContrat:"-", img:"https://i.postimg.cc/wBgycSC6/Nacef-Tariq-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:14, nom:"Mohamed Benazza Essedik", poste:"Milieu offensif", ddn:"-", lieu:"-", nat:"Algérienne", taille:"-", pied:"-", prev:"WA Souk Ahras", finContrat:"-", img:"https://i.postimg.cc/zvB62sDM/Benazza-Mohamed-Essedik-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:6, nom:"Sabri Mohamed Abderrahmane", poste:"Défenseur / Milieu défensif", ddn:"19/11/2005", lieu:"Tizi Ouzou", nat:"Algérienne", taille:"-", pied:"-", prev:"Olympique Akbou", finContrat:"-", img:"https://i.postimg.cc/Nj3vrHzM/Sabri-Mohamed-Abderrahmane-a-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:12, nom:"Boukebal Zakaria", poste:"Défenseur latéral gauche", ddn:"09/01/2002", lieu:"Sidi Moussa", nat:"Algérienne", taille:"-", pied:"Gaucher", prev:"RC Arbaa", finContrat:"-", img:"https://i.postimg.cc/TwqcJz2t/Boukebal-Zakaria-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:23, nom:"Akram Akhrib", poste:"Attaquant / Ailier", ddn:"12/02/2005", lieu:"Tizi-Ouzou", nat:"Algérienne", taille:"-", pied:"-", prev:"SS Sidi Aïch", finContrat:"-", img:"https://i.postimg.cc/kXXdK9Ms/Akhrib-Akram-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:20, nom:"Bounaama Abdessamed", poste:"Arrière gauche", ddn:"26/02/1994", lieu:"El Bayadh", nat:"Algérienne", taille:"-", pied:"Gaucher", prev:"NA Hussein Dey", finContrat:"-", img:"https://i.postimg.cc/sxWKZMQw/Bounaama-Abdessamad-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
+  {num:1, nom:"Benmeddah Mohammed Hamza", poste:"Gardien", ddn:"11/11/2003", lieu:"Béni Saf", nat:"Algérienne", taille:"-", pied:"-", prev:"CR Témouchent", finContrat:"-", img:"https://i.postimg.cc/HLNy75cQ/Benmeddah-Mohammed-Hamza-rejoint-le-MO-Bejaia.jpg"},
+  {num:8, nom:"Zamoum Aimad", poste:"Latéral droit / Ailier", ddn:"02/02/2002", lieu:"Béjaïa", nat:"Algérienne", taille:"-", pied:"Droitier", prev:"JSM Béjaïa", finContrat:"-", img:"https://i.postimg.cc/x8Xhpjkz/Zamoum-Aimad-rejoint-le-MO-Bejaia-mercato-estival-2026-2027.jpg"},
+  {num:26, nom:"Tamer Nizar", poste:"Attaquant / Meneur", ddn:"31/07/2001", lieu:"Biskra", nat:"Algérienne", taille:"-", pied:"-", prev:"NC Magra", finContrat:"-", img:"https://i.postimg.cc/tCwZMBcH/Nizar-Tamer-rejoint-le-MO-Bejaia-mercato-estival-2026-2027.jpg"},
+  {num:9, nom:"Bouzid Dadache", poste:"Avant-centre", ddn:"27/09/1993", lieu:"Bordj Bou Arréridj", nat:"Algérienne", taille:"-", pied:"Droitier", prev:"RC Arbaa", finContrat:"-", img:"https://i.postimg.cc/PqgkGwjT/Dadache-Bouzid-rejoint-le-MO-Bejaia-mercato-estival-2026-2027.jpg"},
+  {num:2, nom:"Djelloul Abbou M'hamed", poste:"Latéral droit", ddn:"28/02/2001", lieu:"Relizane", nat:"Algérienne", taille:"-", pied:"-", prev:"CR Témouchent", finContrat:"-", img:"https://i.postimg.cc/wTTzKNPM/Djelloul-Abbou-M-hamed-rejoint-le-MO-Bejaia.jpg"},
+  {num:11, nom:"Hammi Waris", poste:"Polyvalent (Ailier / Attaquant)", ddn:"20/11/2004", lieu:"Beni Djellil", nat:"Algérienne", taille:"-", pied:"-", prev:"JSM Béjaïa", finContrat:"-", img:"https://i.postimg.cc/Kc0VMHqv/Hammi-Waris-rejoint-le-MO-Bejaia.jpg"},
+  {num:13, nom:"Hadded Foued", poste:"Milieu défensif", ddn:"01/11/1990", lieu:"Collo", nat:"Algérienne", taille:"-", pied:"Droitier", prev:"RC Kouba", finContrat:"-", img:"https://i.postimg.cc/t4QzZdjT/Hadded-Foued-rejoint-le-MO-Bejaia.jpg"},
+  {num:19, nom:"Touil Lahouari", poste:"Attaquant", ddn:"30/07/1991", lieu:"Aïn El Turk", nat:"Algérienne", taille:"1,65m", pied:"-", prev:"GC Mascara", finContrat:"-", img:"https://i.postimg.cc/wjHvZ3zT/Touil-Lahouari-rejoint-le-MO-Bejaia.jpg"},
+  {num:3, nom:"Ramy Baba", poste:"Attaquant", ddn:"05/04/2006", lieu:"Constantine", nat:"Algérienne", taille:"-", pied:"-", prev:"USM Alger", finContrat:"-", img:"https://i.postimg.cc/9fd8rL0K/Ramy-Baba.jpg"},
+  {num:30, nom:"Aouchiche Mohamed Islem", poste:"Gardien", ddn:"01/12/2006", lieu:"Béjaïa", nat:"Algérienne", taille:"-", pied:"-", prev:"ES Sétif U20", finContrat:"-", img:"https://i.postimg.cc/RhkmcpMk/Aouchiche-Mohamed-Islem-rejoint-le-MO-Bejaia.jpg"}
 ];
 
 const ARTICLES_INIT = [
@@ -836,7 +849,6 @@ let data = {
 };
 
 let articles = [];
-let currentArticleForShare = null; // Pour le partage d'un article spécifique
 
 function handleTitleClick() { clickCount++; if (clickCount >= 5) { clickCount = 0; if (isAdmin) logoutAdmin(); else openModal('modalAdmin'); } setTimeout(() => { clickCount = 0; }, 2000); }
 function tryLogin() {
@@ -864,13 +876,22 @@ function logoutAdmin() {
   render('championnat'); renderClub(); renderMob(); renderNewsTab(); renderMedias();
 }
 
-// --- SYSTÈME DE PARTAGE ---
+// --- SYSTÈME DE PARTAGE INTELLIGENT ---
+function shareContext() {
+  if (document.getElementById('modalArticle').classList.contains('active') && currentArticleForShare) {
+    shareArticle();
+  } else {
+    sharePage();
+  }
+}
+
 function sharePage() {
   let text = "Découvrez le site des supporters du MO Béjaïa !";
   if (currentTabName === 'actualite') text = "Lisez les dernières actualités du MO Béjaïa !";
   if (currentTabName === 'classement') text = "Découvrez le classement de la Ligue 2 Amateur !";
   if (currentTabName === 'mob') text = "Suivez le MO Béjaïa au quotidien !";
   if (currentTabName === 'medias') text = "Revivez les matchs du MOB en photos et vidéos !";
+  if (currentTabName === 'championnat') text = "Suivez les matchs du MO Béjaïa !";
 
   const shareData = {
     title: 'MO Béjaïa - Ligue 2 Amateur',
@@ -881,7 +902,6 @@ function sharePage() {
   if (navigator.share) {
     navigator.share(shareData).catch((error) => console.log('Erreur de partage', error));
   } else {
-    // Fallback pour les ordinateurs
     prompt("Copiez ce lien pour partager :", shareData.url);
   }
 }
@@ -908,7 +928,6 @@ function switchTab(name, el) {
   el.classList.add('active');
   document.getElementById('tab-'+name).classList.add('active');
   
-  // Mise à jour de l'URL sans recharger
   const newUrl = window.location.pathname + '?tab=' + name;
   window.history.replaceState({path: newUrl}, '', newUrl);
 
@@ -929,7 +948,7 @@ function checkUrlOnLoad() {
     if (tabEl) switchTab(tab, tabEl);
   }
   if (articleId) {
-    setTimeout(() => openArticleModal(articleId), 500); // Petit délai pour laisser le temps de charger
+    setTimeout(() => openArticleModal(articleId), 500); 
   }
 }
 
@@ -1079,12 +1098,28 @@ function renderMob() {
     if(data.videos.apres.txt) { vidCap.textContent = data.videos.apres.txt; vidCap.style.display = 'block'; } else { vidCap.style.display = 'none'; }
   } else { vidApres.style.display = 'none'; vidCap.style.display = 'none'; }
 
+  // GESTION DU LIVE (Dans l'onglet et bandeau global)
   const liveW = document.getElementById('live-widget');
-  if (data.live.statut === 'actif' || data.live.statut === 'termine') {
+  const globalBanner = document.getElementById('globalLiveBanner');
+  
+  if (data.live && (data.live.statut === 'actif' || data.live.statut === 'termine')) {
     liveW.style.display = 'block';
     document.getElementById('live-score').textContent = `${data.live.sd || 0} - ${data.live.se || 0}`;
     document.getElementById('live-status').textContent = data.live.texte || (data.live.statut === 'actif' ? 'Match en cours' : 'Match terminé');
-  } else { liveW.style.display = 'none'; }
+
+    // Bandeau global clignotant
+    if(data.live.statut === 'actif') {
+      globalBanner.style.display = 'block';
+      document.getElementById('liveBannerScore').textContent = `${data.live.sd || 0} - ${data.live.se || 0}`;
+      document.getElementById('liveBannerMinute').textContent = data.live.minute || '';
+      document.getElementById('liveBannerText').textContent = data.live.texte || 'Match en cours';
+    } else {
+      globalBanner.style.display = 'none';
+    }
+  } else { 
+    liveW.style.display = 'none'; 
+    globalBanner.style.display = 'none';
+  }
 }
 
 function renderNewsTab() {
@@ -1094,7 +1129,21 @@ function renderNewsTab() {
   if (currentNewsSubTab !== 'all') sorted = sorted.filter(a => a.cat === currentNewsSubTab);
   
   if (sorted.length === 0) { container.innerHTML = '<p style="text-align:center; padding:20px; color:#888;">Aucun article pour le moment.</p>'; return; }
-  container.innerHTML = sorted.map(a => `<div class="news-card" onclick="openArticleModal('${a.id}')"><img src="${a.image}" alt="${a.titre}"><div class="news-card-body"><div class="news-card-title">${a.titre}</div><div class="news-card-date">📅 ${formatDate(a.date)}</div><div class="news-card-preview">${a.texte}</div></div></div>`).join('');
+  
+  container.innerHTML = sorted.map((a, idx) => {
+    // On retrouve l'index original dans data.articles pour l'édition
+    const realIdx = data.articles.findIndex(art => art.id === a.id);
+    const editBtn = isAdmin ? `<div class="btn-edit-news" onclick="event.stopPropagation(); openModalNews(${realIdx})">✏️</div>` : '';
+    return `<div class="news-card" onclick="openArticleModal('${a.id}')">
+      ${editBtn}
+      <img src="${a.image}" alt="${a.titre}">
+      <div class="news-card-body">
+        <div class="news-card-title">${a.titre}</div>
+        <div class="news-card-date">📅 ${formatDate(a.date)}</div>
+        <div class="news-card-preview">${a.texte}</div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 function renderMedias() {
@@ -1270,14 +1319,21 @@ async function saveVideo() {
 
 function openModalLive() {
   if (!isAdmin) return;
-  document.getElementById('liveStatut').value = data.live.statut || 'inactif';
-  document.getElementById('liveSd').value = data.live.sd || 0;
-  document.getElementById('liveSe').value = data.live.se || 0;
-  document.getElementById('liveTexte').value = data.live.texte || '';
+  document.getElementById('liveStatut').value = (data.live && data.live.statut) ? data.live.statut : 'inactif';
+  document.getElementById('liveSd').value = (data.live && data.live.sd) ? data.live.sd : 0;
+  document.getElementById('liveSe').value = (data.live && data.live.se) ? data.live.se : 0;
+  document.getElementById('liveMinute').value = (data.live && data.live.minute) ? data.live.minute : '';
+  document.getElementById('liveTexte').value = (data.live && data.live.texte) ? data.live.texte : '';
   openModal('modalLive');
 }
 async function saveLive() {
-  data.live = { statut: document.getElementById('liveStatut').value, sd: document.getElementById('liveSd').value, se: document.getElementById('liveSe').value, texte: document.getElementById('liveTexte').value };
+  data.live = { 
+    statut: document.getElementById('liveStatut').value, 
+    sd: document.getElementById('liveSd').value, 
+    se: document.getElementById('liveSe').value, 
+    minute: document.getElementById('liveMinute').value, 
+    texte: document.getElementById('liveTexte').value 
+  };
   await saveToFirebase(); closeModal('modalLive'); renderMob();
 }
 
@@ -1285,15 +1341,16 @@ async function saveLive() {
 function openModalPlayer(idx) {
   if (!isAdmin) return;
   document.getElementById('editPlayerIdx').value = idx === 'new' ? '' : idx;
-  const p = idx !== 'new' ? data.players[idx] : {num:'', nom:'', poste:'', ddn:'', lieu:'', nat:'', taille:'', pied:'', prev:'', img:''};
+  const p = idx !== 'new' ? data.players[idx] : {num:'', nom:'', poste:'', ddn:'', lieu:'', nat:'', taille:'', pied:'', prev:'', finContrat:'', img:''};
   document.getElementById('pNum').value = p.num; document.getElementById('pNom').value = p.nom; document.getElementById('pPoste').value = p.poste;
   document.getElementById('pDdn').value = p.ddn; document.getElementById('pLieu').value = p.lieu; document.getElementById('pNat').value = p.nat;
-  document.getElementById('pTaille').value = p.taille; document.getElementById('pPied').value = p.pied; document.getElementById('pPrev').value = p.prev; document.getElementById('pImg').value = p.img;
+  document.getElementById('pTaille').value = p.taille; document.getElementById('pPied').value = p.pied; document.getElementById('pPrev').value = p.prev; 
+  document.getElementById('pFinContrat').value = p.finContrat || ''; document.getElementById('pImg').value = p.img;
   openModal('modalPlayer');
 }
 async function savePlayer() {
   const idx = document.getElementById('editPlayerIdx').value;
-  const p = { num: parseInt(document.getElementById('pNum').value), nom: document.getElementById('pNom').value, poste: document.getElementById('pPoste').value, ddn: document.getElementById('pDdn').value, lieu: document.getElementById('pLieu').value, nat: document.getElementById('pNat').value, taille: document.getElementById('pTaille').value, pied: document.getElementById('pPied').value, prev: document.getElementById('pPrev').value, img: document.getElementById('pImg').value };
+  const p = { num: parseInt(document.getElementById('pNum').value), nom: document.getElementById('pNom').value, poste: document.getElementById('pPoste').value, ddn: document.getElementById('pDdn').value, lieu: document.getElementById('pLieu').value, nat: document.getElementById('pNat').value, taille: document.getElementById('pTaille').value, pied: document.getElementById('pPied').value, prev: document.getElementById('pPrev').value, finContrat: document.getElementById('pFinContrat').value, img: document.getElementById('pImg').value };
   if (idx === '') data.players.push(p); else data.players[parseInt(idx)] = p;
   await saveToFirebase(); closeModal('modalPlayer'); renderClub();
 }
@@ -1411,7 +1468,7 @@ function startCarouselAuto() {
 function openArticleModal(id) {
   const a = articles.find(x => x.id === id);
   if (!a) return;
-  currentArticleForShare = a; // Sauvegarde pour le partage
+  currentArticleForShare = a; 
   document.getElementById('articleTitle').textContent = a.titre;
   document.getElementById('articleDate').textContent = '📅 ' + formatDate(a.date);
   document.getElementById('articleImg').src = a.image;
@@ -1419,7 +1476,7 @@ function openArticleModal(id) {
   document.getElementById('articleText').textContent = a.texte;
   document.getElementById('modalArticle').classList.add('active');
 }
-function closeArticleModal() { document.getElementById('modalArticle').classList.remove('active'); }
+function closeArticleModal() { document.getElementById('modalArticle').classList.remove('active'); currentArticleForShare = null; }
 
 // 🔥 FIREBASE CORRIGÉ POUR NE PLUS BLOQUER L'ÉCRAN 🔥
 async function loadFromFirebase() {
@@ -1431,7 +1488,7 @@ async function loadFromFirebase() {
   
   render('championnat'); renderClub(); renderMob(); renderNewsTab(); renderMedias();
   renderCarousel(); startCarouselAuto(); updateNextMatch();
-  checkUrlOnLoad(); // <-- Vérifie si un lien direct a été ouvert
+  checkUrlOnLoad(); 
   
   document.getElementById('statusBar').className = 'status online';
   document.getElementById('statusBar').textContent = `🟢 Connecté (${data.championnat.length} matchs)`;
@@ -1464,7 +1521,6 @@ async function saveToFirebase() {
 
 document.getElementById('mainTitle').addEventListener('click', handleTitleClick);
 
-// LE FIX EST ICI : On lance le chargement instantanément
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', loadFromFirebase);
 } else {
@@ -1487,7 +1543,7 @@ window.openModalVideoMedia = openModalVideoMedia; window.saveVideoMedia = saveVi
 window.openModalLive = openModalLive; window.saveLive = saveLive;
 window.tryLogin = tryLogin; window.logoutAdmin = logoutAdmin; window.renderClassement = renderClassement;
 window.openArticleModal = openArticleModal;
-window.sharePage = sharePage; window.shareArticle = shareArticle;
+window.shareContext = shareContext; window.shareArticle = shareArticle;
 </script>
 </body>
 </html>
