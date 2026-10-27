@@ -134,6 +134,20 @@
   .video-thumb { width: 100%; aspect-ratio: 9/16; object-fit: cover; border-radius: 6px; cursor: pointer; background: #000; }
   .btn-del-video { position: absolute; top: 5px; right: 5px; background: rgba(192, 57, 43, 0.9); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; z-index: 2; }
 
+  /* STATS & VOTES */
+  .vote-card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+  .vote-title { font-size: 1.1em; font-weight: bold; color: #1a4d2e; margin-bottom: 10px; text-align: center; }
+  .vote-option { display: block; width: 100%; text-align: left; padding: 10px; margin-bottom: 8px; border: 1px solid #ccc; border-radius: 6px; background: #f9f9f9; cursor: pointer; transition: background 0.2s; font-weight: bold; color: #333;}
+  .vote-option:hover { background: #e0f2e9; }
+  .vote-option.selected { background: #1a4d2e; color: white; border-color: #1a4d2e; }
+  .vote-bar-container { margin-top: 10px; }
+  .vote-bar-label { display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; margin-bottom: 3px; }
+  .vote-bar-bg { width: 100%; height: 10px; background: #e0e0e0; border-radius: 5px; overflow: hidden; }
+  .vote-bar-fill { height: 100%; background: #c9a961; border-radius: 5px; transition: width 1s; }
+  .stats-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+  .stats-table th, .stats-table td { padding: 10px; border-bottom: 1px solid #eee; text-align: left; font-size: 13px;}
+  .stats-table th { background: #1a4d2e; color: white; }
+
   .historique-container { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); max-width: 900px; margin: 0 auto; }
   .historique-header { text-align: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 2px solid #c9a961; }
   .historique-logo { max-width: 180px; margin: 0 auto 15px; display: block; }
@@ -154,6 +168,12 @@
   .btn-share-float { position: fixed; bottom: 20px; right: 20px; background-color: #2980b9; color: white; border-radius: 50px; padding: 12px 20px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 8px; z-index: 1000; cursor: pointer; border: 2px solid white; transition: transform 0.2s; }
   .btn-share-float:hover { transform: scale(1.05); background-color: #3498db; }
 
+  /* BOUTON VISITES */
+  .visit-badge { position: fixed; bottom: 20px; left: 20px; background-color: #2c3e50; color: white; border-radius: 50px; padding: 8px 15px; font-size: 13px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 1000; border: 2px solid white; display: flex; align-items: center; gap: 5px; }
+
+  /* FIX BOUTON PARTAGER QUI CACHE LE RESTE */
+  .modal.active ~ .btn-share-float { display: none !important; }
+
   .label-with-btn { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-size: 12px; color: #555; }
   .label-with-btn select { flex: 1; margin-right: 5px; }
   .label-with-btn button { margin: 0; padding: 5px 8px; }
@@ -163,7 +183,8 @@
     .cd-box { min-width: 42px; padding: 5px 6px; }
     .cd-num { font-size: 1.2em; }
     .carousel-item { flex: 0 0 85%; }
-    .btn-share-float { padding: 10px 15px; font-size: 14px; }
+    .btn-share-float { padding: 10px 15px; font-size: 14px; bottom: 15px; right: 15px;}
+    .visit-badge { padding: 6px 10px; font-size: 11px; bottom: 15px; left: 15px;}
   }
 </style>
 </head>
@@ -174,14 +195,14 @@
 <div id="statusBar" class="status loading">⏳ Connexion à Firebase...</div>
 
 <!-- BANDEAU LIVE -->
-<div id="globalLiveBanner" class="live-banner" onclick="switchTab('mob', document.querySelectorAll('.tab')[1])">
-</div>
+<div id="globalLiveBanner" class="live-banner" onclick="switchTab('mob', document.querySelectorAll('.tab')[1])"></div>
 
 <div class="tabs">
   <div class="tab active" onclick="switchTab('championnat', this)">🏆 Championnat</div>
   <div class="tab" onclick="switchTab('mob', this)">🦀 MOB</div>
   <div class="tab" onclick="switchTab('club', this)">👥 Club</div>
-  <div class="tab" onclick="switchTab('classement', this)">📊 Classement</div>
+  <div class="tab" onclick="switchTab('stats', this)">📊 Stats</div>
+  <div class="tab" onclick="switchTab('classement', this)">🏅 Classement</div>
   <div class="tab" onclick="switchTab('actualite', this)">📰 Actualité</div>
   <div class="tab" onclick="switchTab('medias', this)">📸 Médias</div>
   <div class="tab" onclick="switchTab('historique', this)">📜 Historique</div>
@@ -359,6 +380,43 @@
   </div>
 </div>
 
+<!-- ONGLET STATS & VOTES -->
+<div id="tab-stats" class="tab-content">
+  <div class="sub-tabs">
+    <div class="sub-tab active" id="subtab-stats-vote" onclick="switchSubTabStats('vote')">⭐ Homme du Match</div>
+    <div class="sub-tab" id="subtab-stats-buteurs" onclick="switchSubTabStats('buteurs')">⚽ Buteurs</div>
+    <div class="sub-tab" id="subtab-stats-cartons" onclick="switchSubTabStats('cartons')">🟨 Cartons</div>
+  </div>
+
+  <div class="toolbar" id="stats-toolbar" style="display:none;">
+    <button id="btnAddVote" onclick="openModalCreateVote()" style="background:#27ae60; display:none;">➕ Créer un Vote</button>
+    <button id="btnAddStat" onclick="openModalAddStat('buteur')" style="background:#2980b9; display:none;">➕ Ajouter un Buteur</button>
+    <button id="btnAddCarton" onclick="openModalAddStat('carton')" style="background:#c0392b; display:none;">➕ Ajouter un Carton</button>
+    <button id="btnResetVote" onclick="resetVote()" style="background:#888; display:none;">🔄 Clôturer le Vote</button>
+  </div>
+
+  <!-- Sous-onglet Vote -->
+  <div id="stats-vote" class="stats-section">
+    <div id="voteContainer"></div>
+  </div>
+
+  <!-- Sous-onglet Buteurs -->
+  <div id="stats-buteurs" class="stats-section" style="display:none;">
+    <table class="stats-table">
+      <thead><tr><th>Pos</th><th>Joueur</th><th>Buts</th></tr></thead>
+      <tbody id="tbody-buteurs"></tbody>
+    </table>
+  </div>
+
+  <!-- Sous-onglet Cartons -->
+  <div id="stats-cartons" class="stats-section" style="display:none;">
+    <table class="stats-table">
+      <thead><tr><th>Joueur</th><th>🟨 Jaunes</th><th>🟥 Rouges</th></tr></thead>
+      <tbody id="tbody-cartons"></tbody>
+    </table>
+  </div>
+</div>
+
 <!-- ONGLET CLASSEMENT -->
 <div id="tab-classement" class="tab-content">
   <div class="classement-filters" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 12px;">
@@ -481,9 +539,9 @@
   </div>
 </div>
 
-<div class="btn-share-float" id="btnShareMain" onclick="shareContext()">
-  📤 Partager
-</div>
+<!-- BOUTON PARTAGER ET COMPTEUR -->
+<div class="btn-share-float" id="btnShareMain" onclick="shareContext()">📤 Partager</div>
+<div class="visit-badge" id="visitCounter">👁️ -- visites</div>
 
 <!-- MODALS -->
 <div class="modal" id="modalMatch">
@@ -494,22 +552,13 @@
     <label>Journée <input type="number" id="fJournee" min="1" max="30"></label>
     <label>Date <input type="date" id="fDate"></label>
     <label>Heure <input type="time" id="fHeure"></label>
-    <div class="label-with-btn">
-      <span>Domicile</span>
-      <button class="btn-small" onclick="addNewEquipe('dom')">+ Nouvelle</button>
-    </div>
+    <div class="label-with-btn"><span>Domicile</span><button class="btn-small" onclick="addNewEquipe('dom')">+ Nouvelle</button></div>
     <select id="fDom"></select>
-    <div class="label-with-btn">
-      <span>Extérieur</span>
-      <button class="btn-small" onclick="addNewEquipe('ext')">+ Nouvelle</button>
-    </div>
+    <div class="label-with-btn"><span>Extérieur</span><button class="btn-small" onclick="addNewEquipe('ext')">+ Nouvelle</button></div>
     <select id="fExt"></select>
     <label>Score domicile <input type="number" id="fSd" min="0"></label>
     <label>Score extérieur <input type="number" id="fSe" min="0"></label>
-    <div class="label-with-btn">
-      <span>Stade</span>
-      <button class="btn-small" onclick="addNewStade()">+ Nouveau</button>
-    </div>
+    <div class="label-with-btn"><span>Stade</span><button class="btn-small" onclick="addNewStade()">+ Nouveau</button></div>
     <select id="fStade"></select>
     <label>Observations <input type="text" id="fObs"></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalMatch')">Annuler</button><button onclick="saveMatch()">Enregistrer</button></div>
@@ -532,10 +581,7 @@
     <div id="articleDate" style="font-size: 11px; color:#777; margin-bottom: 10px;"></div>
     <img id="articleImg" src="" style="width:100%; border-radius:8px; margin-bottom:15px; display:none;">
     <div id="articleText" class="article-full-text"></div>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal('modalArticle')">Fermer</button>
-      <button onclick="shareArticle()" style="background:#2980b9;">📤 Partager cet article</button>
-    </div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalArticle')">Fermer</button><button onclick="shareArticle()" style="background:#2980b9;">📤 Partager cet article</button></div>
   </div>
 </div>
 
@@ -553,7 +599,6 @@
   </div>
 </div>
 
-<!-- MODAL FDM -->
 <div class="modal" id="modalFDMEdit">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalFDMEdit')">×</span>
@@ -574,14 +619,10 @@
     <div id="fdmViewDate" style="font-size: 11px; color:#777; margin-bottom: 10px;"></div>
     <img id="fdmViewImg" src="" style="width:100%; border-radius:8px; margin-bottom:15px; display:none;">
     <div id="fdmViewText" class="article-full-text"></div>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal('modalFDMView')">Fermer</button>
-      <button onclick="shareFdm()" style="background:#2980b9;">📤 Partager</button>
-    </div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalFDMView')">Fermer</button><button onclick="shareFdm()" style="background:#2980b9;">📤 Partager</button></div>
   </div>
 </div>
 
-<!-- MODAL BREVE -->
 <div class="modal" id="modalBreveEdit">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalBreveEdit')">×</span>
@@ -602,10 +643,34 @@
     <div id="breveViewDate" style="font-size: 11px; color:#777; margin-bottom: 10px;"></div>
     <img id="breveViewImg" src="" style="width:100%; border-radius:8px; margin-bottom:15px; display:none;">
     <div id="breveViewText" class="article-full-text"></div>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal('modalBreveView')">Fermer</button>
-      <button onclick="shareBreve()" style="background:#2980b9;">📤 Partager</button>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalBreveView')">Fermer</button><button onclick="shareBreve()" style="background:#2980b9;">📤 Partager</button></div>
+  </div>
+</div>
+
+<!-- MODALS STATS/VOTES -->
+<div class="modal" id="modalCreateVote">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('modalCreateVote')">×</span>
+    <h3>⭐ Créer un Vote Homme du Match</h3>
+    <label>Nom du match (ex: J7 - MOB vs PAC) <input type="text" id="voteMatchName"></label>
+    <label>Candidats (séparés par des virgules, max 5) <input type="text" id="voteCandidates" placeholder="Ex: Yaya Faouzi, Rebiai, Tlemcani"></label>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalCreateVote')">Annuler</button><button onclick="saveNewVote()">Lancer le vote</button></div>
+  </div>
+</div>
+
+<div class="modal" id="modalAddStat">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('modalAddStat')">×</span>
+    <h3 id="modalStatTitle">Ajouter</h3>
+    <input type="hidden" id="statType">
+    <label>Nom du joueur <input type="text" id="statPlayerName"></label>
+    <div id="statGoalFields">
+      <label>Nombre de buts <input type="number" id="statGoals" value="1" min="1"></label>
     </div>
+    <div id="statCartonFields" style="display:none;">
+      <label>Type de carton <select id="statCartonType"><option value="jaune">Jaune</option><option value="rouge">Rouge</option></select></label>
+    </div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalAddStat')">Annuler</button><button onclick="saveStat()">Enregistrer</button></div>
   </div>
 </div>
 
@@ -687,7 +752,6 @@
   </div>
 </div>
 
-<!-- MODALS MEDIAS -->
 <div class="modal" id="modalAlbum">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalAlbum')">×</span>
@@ -753,7 +817,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, set, get, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDr_pGZnYTSDXGbQprDuvMFeWnuinxRpH8",
@@ -775,6 +839,7 @@ let currentSubTab = 'tous';
 let currentMobSubTab = 'avant';
 let currentNewsSubTab = 'all';
 let currentMediaSubTab = 'images';
+let currentStatsSubTab = 'vote';
 let currentTabName = 'championnat';
 let currentArticleForShare = null;
 let currentFdmForShare = null;
@@ -802,7 +867,6 @@ const LOGOS = {
   "CR Beni Thour": "https://i.postimg.cc/k4Ks4hZQ/CR-Beni-Thour-logo-officiel.png"
 };
 
-// --- NOUVELLES DONNÉES PRE-REMPLIES ---
 const FDM_INIT = [
   {
     id: "fdm1",
@@ -976,6 +1040,7 @@ const ARTICLES_INIT = [
 
 let data = { 
   championnat: [], coupe: [], players: [], staff: [], dirigeants: [], mob: {}, live: {}, affiches: {}, videos: {}, articles: [], equipes: [], stades: [], fdm: [], breves: [],
+  stats: { activeVote: null, buteurs: {}, cartons: {} },
   medias: { 
     albums: [
       {
@@ -1005,6 +1070,28 @@ let data = {
 
 let articles = [];
 
+// --- GESTION DU COMPTEUR DE VISITES ---
+async function trackVisit() {
+    try {
+        const visitRef = ref(db, 'visits');
+        await runTransaction(visitRef, (currentData) => {
+            if (currentData === null) {
+                return { count: 1 };
+            } else {
+                return { count: currentData.count + 1 };
+            }
+        });
+        
+        const snapshot = await get(visitRef);
+        if (snapshot.exists()) {
+            document.getElementById('visitCounter').innerHTML = `👁️ ${snapshot.val().count} visites`;
+        }
+    } catch (e) {
+        console.log("Erreur compteur visite", e);
+        document.getElementById('visitCounter').style.display = 'none';
+    }
+}
+
 // Fonction pour formater le texte (liens hashtags)
 function formatText(text) {
     if(!text) return "";
@@ -1028,16 +1115,29 @@ function tryLogin() {
     document.getElementById('mob-day-toolbar').style.display = 'flex';
     document.getElementById('mob-apres-toolbar').style.display = 'flex';
     document.getElementById('media-toolbar').style.display = 'flex';
+    document.getElementById('stats-toolbar').style.display = 'flex';
     document.getElementById('btnAddAlbum').style.display = currentMediaSubTab === 'images' ? 'inline-block' : 'none';
     document.getElementById('btnAddVideoMedia').style.display = currentMediaSubTab === 'videos' ? 'inline-block' : 'none';
+    updateStatsAdminButtons();
     closeModal('modalAdmin'); alert('✅ Admin connecté');
-    render('championnat'); renderClub(); renderMob(); renderNewsTab(); renderMedias(); renderFdM(); renderBreves();
+    renderAll();
   } else { alert('❌ Mot de passe incorrect'); }
 }
 function logoutAdmin() {
   isAdmin = false; document.getElementById('adminBadge').innerHTML = ''; document.getElementById('adminPanel').style.display = 'none';
-  ['btnAddChamp', 'btnAddFdm', 'news-toolbar', 'media-toolbar', 'club-toolbar', 'mob-avant-toolbar', 'mob-day-toolbar', 'mob-apres-toolbar'].forEach(id => document.getElementById(id).style.display = 'none');
-  render('championnat'); renderClub(); renderMob(); renderNewsTab(); renderMedias(); renderFdM(); renderBreves();
+  ['btnAddChamp', 'btnAddFdm', 'news-toolbar', 'media-toolbar', 'club-toolbar', 'mob-avant-toolbar', 'mob-day-toolbar', 'mob-apres-toolbar', 'stats-toolbar'].forEach(id => document.getElementById(id).style.display = 'none');
+  renderAll();
+}
+
+function updateStatsAdminButtons() {
+    document.getElementById('btnAddVote').style.display = (currentStatsSubTab === 'vote' && !data.stats.activeVote) ? 'inline-block' : 'none';
+    document.getElementById('btnResetVote').style.display = (currentStatsSubTab === 'vote' && data.stats.activeVote) ? 'inline-block' : 'none';
+    document.getElementById('btnAddStat').style.display = (currentStatsSubTab === 'buteurs') ? 'inline-block' : 'none';
+    document.getElementById('btnAddCarton').style.display = (currentStatsSubTab === 'cartons') ? 'inline-block' : 'none';
+}
+
+function renderAll() {
+    render('championnat'); renderClub(); renderMob(); renderNewsTab(); renderMedias(); renderFdM(); renderBreves(); renderStats(); updateNextMatch();
 }
 
 function shareContext() {
@@ -1064,11 +1164,13 @@ function switchTab(name, el) {
   if (name === 'mob') renderMob();
   if (name === 'actualite') renderNewsTab();
   if (name === 'medias') renderMedias();
+  if (name === 'stats') renderStats();
 }
 function switchSubTab(mode) { currentSubTab = mode; document.getElementById('subtab-tous').classList.toggle('active', mode === 'tous'); document.getElementById('subtab-programme').classList.toggle('active', mode === 'programme'); document.getElementById('subtab-resultats').classList.toggle('active', mode === 'resultats'); render('championnat'); }
 function switchSubTabMob(mode) { currentMobSubTab = mode; document.getElementById('subtab-mob-avant').classList.toggle('active', mode === 'avant'); document.getElementById('subtab-mob-day').classList.toggle('active', mode === 'day'); document.getElementById('subtab-mob-apres').classList.toggle('active', mode === 'apres'); document.getElementById('mob-avant').style.display = mode === 'avant' ? 'block' : 'none'; document.getElementById('mob-day').style.display = mode === 'day' ? 'block' : 'none'; document.getElementById('mob-apres').style.display = mode === 'apres' ? 'block' : 'none'; renderMob(); }
 function switchSubTabNews(cat) { currentNewsSubTab = cat; document.getElementById('subtab-news-all').classList.toggle('active', cat === 'all'); document.getElementById('subtab-news-portraits').classList.toggle('active', cat === 'portraits'); document.getElementById('subtab-news-jeunes').classList.toggle('active', cat === 'jeunes'); renderNewsTab(); }
 function switchSubTabMedia(type) { currentMediaSubTab = type; document.getElementById('subtab-media-images').classList.toggle('active', type === 'images'); document.getElementById('subtab-media-videos').classList.toggle('active', type === 'videos'); document.getElementById('media-images-container').style.display = type === 'images' ? 'block' : 'none'; document.getElementById('media-videos-container').style.display = type === 'videos' ? 'block' : 'none'; if(isAdmin) { document.getElementById('btnAddAlbum').style.display = type === 'images' ? 'inline-block' : 'none'; document.getElementById('btnAddVideoMedia').style.display = type === 'videos' ? 'inline-block' : 'none'; } renderMedias(); }
+function switchSubTabStats(type) { currentStatsSubTab = type; document.getElementById('subtab-stats-vote').classList.toggle('active', type === 'vote'); document.getElementById('subtab-stats-buteurs').classList.toggle('active', type === 'buteurs'); document.getElementById('subtab-stats-cartons').classList.toggle('active', type === 'cartons'); document.getElementById('stats-vote').style.display = type === 'vote' ? 'block' : 'none'; document.getElementById('stats-buteurs').style.display = type === 'buteurs' ? 'block' : 'none'; document.getElementById('stats-cartons').style.display = type === 'cartons' ? 'block' : 'none'; if(isAdmin) updateStatsAdminButtons(); renderStats(); }
 
 function formatDate(d) { if (!d) return ''; const p = d.split('-'); return p.length===3 ? p[2]+'/'+p[1]+'/'+p[0] : d; }
 function logoImg(equipe) { const url = LOGOS[equipe]; return url ? `<img src="${url}" class="logo-mini" alt="${equipe}">` : ''; }
@@ -1146,6 +1248,137 @@ function renderMob() {
   } else { liveW.style.display = 'none'; globalBanner.style.display = 'none'; }
 }
 
+function renderStats() {
+    if(currentStatsSubTab === 'vote') {
+        const container = document.getElementById('voteContainer');
+        if(!data.stats.activeVote) {
+            container.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">Aucun vote en cours pour le moment.</p>';
+            return;
+        }
+        const v = data.stats.activeVote;
+        const totalVotes = Object.values(v.votes || {}).reduce((a,b)=>a+b, 0);
+        const hasVoted = localStorage.getItem('voted_' + v.id);
+        
+        let html = `<div class="vote-card">
+            <div class="vote-title">⭐ Homme du Match : ${v.matchName}</div>`;
+            
+        if(hasVoted) {
+            html += `<p style="text-align:center; color:#27ae60; font-weight:bold; margin-bottom:15px;">✅ Vous avez déjà voté !</p>`;
+            html += `<div class="vote-bar-container">`;
+            v.candidates.forEach(c => {
+                const count = v.votes[c] || 0;
+                const pct = totalVotes > 0 ? Math.round((count / totalVotes) * 100) : 0;
+                html += `<div style="margin-bottom:10px;">
+                    <div class="vote-bar-label"><span>${c}</span><span>${pct}% (${count})</span></div>
+                    <div class="vote-bar-bg"><div class="vote-bar-fill" style="width:${pct}%"></div></div>
+                </div>`;
+            });
+            html += `</div>`;
+        } else {
+            v.candidates.forEach(c => {
+                html += `<button class="vote-option" onclick="submitVote('${c}')">${c}</button>`;
+            });
+        }
+        html += `</div>`;
+        container.innerHTML = html;
+        
+        if(isAdmin) {
+            document.getElementById('btnResetVote').style.display = 'inline-block';
+            document.getElementById('btnAddVote').style.display = 'none';
+        }
+    }
+    else if(currentStatsSubTab === 'buteurs') {
+        const tbody = document.getElementById('tbody-buteurs');
+        const buteurs = Object.entries(data.stats.buteurs || {}).sort((a,b) => b[1] - a[1]);
+        if(buteurs.length === 0) { tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#888;">Aucun buteur enregistré.</td></tr>'; return; }
+        tbody.innerHTML = buteurs.map((b, i) => `<tr><td><b>${i+1}</b></td><td>${b[0]}</td><td><b>${b[1]}</b></td></tr>`).join('');
+    }
+    else if(currentStatsSubTab === 'cartons') {
+        const tbody = document.getElementById('tbody-cartons');
+        const cartons = Object.entries(data.stats.cartons || {}).sort((a,b) => (b[1].rouge*10 + b[1].jaune) - (a[1].rouge*10 + a[1].jaune));
+        if(cartons.length === 0) { tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#888;">Aucun carton enregistré.</td></tr>'; return; }
+        tbody.innerHTML = cartons.map(c => `<tr><td>${c[0]}</td><td>${c[1].jaune || 0}</td><td>${c[1].rouge || 0}</td></tr>`).join('');
+    }
+}
+
+async function submitVote(playerName) {
+    if(!data.stats.activeVote) return;
+    const v = data.stats.activeVote;
+    if(localStorage.getItem('voted_' + v.id)) return;
+    
+    if(!v.votes) v.votes = {};
+    v.votes[playerName] = (v.votes[playerName] || 0) + 1;
+    localStorage.setItem('voted_' + v.id, 'true');
+    
+    await saveToFirebase();
+    renderStats();
+}
+async function resetVote() {
+    if(confirm('Clôturer ce vote et afficher les résultats finaux ?')) {
+        // Optionnel : on pourrait archiver les votes. Ici on le supprime.
+        if(data.stats.activeVote) {
+            data.stats.activeVote = null;
+            await saveToFirebase();
+            renderStats();
+            updateStatsAdminButtons();
+        }
+    }
+}
+function openModalCreateVote() {
+    document.getElementById('voteMatchName').value = '';
+    document.getElementById('voteCandidates').value = '';
+    openModal('modalCreateVote');
+}
+async function saveNewVote() {
+    const matchName = document.getElementById('voteMatchName').value;
+    const candidatesRaw = document.getElementById('voteCandidates').value;
+    if(!matchName || !candidatesRaw) return alert('Veuillez remplir tous les champs');
+    
+    const candidates = candidatesRaw.split(',').map(c => c.trim()).filter(c => c);
+    if(candidates.length === 0) return alert('Ajoutez au moins un candidat');
+    
+    data.stats.activeVote = { id: 'v'+Date.now(), matchName, candidates, votes: {} };
+    await saveToFirebase();
+    closeModal('modalCreateVote');
+    renderStats();
+}
+function openModalAddStat(type) {
+    document.getElementById('statType').value = type;
+    document.getElementById('statPlayerName').value = '';
+    document.getElementById('statGoals').value = 1;
+    document.getElementById('statCartonType').value = 'jaune';
+    
+    if(type === 'buteur') {
+        document.getElementById('modalStatTitle').textContent = 'Ajouter un Buteur';
+        document.getElementById('statGoalFields').style.display = 'block';
+        document.getElementById('statCartonFields').style.display = 'none';
+    } else {
+        document.getElementById('modalStatTitle').textContent = 'Ajouter un Carton';
+        document.getElementById('statGoalFields').style.display = 'none';
+        document.getElementById('statCartonFields').style.display = 'block';
+    }
+    openModal('modalAddStat');
+}
+async function saveStat() {
+    const type = document.getElementById('statType').value;
+    const player = document.getElementById('statPlayerName').value.trim();
+    if(!player) return alert('Entrez le nom du joueur');
+    
+    if(type === 'buteur') {
+        const goals = parseInt(document.getElementById('statGoals').value) || 1;
+        if(!data.stats.buteurs) data.stats.buteurs = {};
+        data.stats.buteurs[player] = (data.stats.buteurs[player] || 0) + goals;
+    } else {
+        const cartonType = document.getElementById('statCartonType').value;
+        if(!data.stats.cartons) data.stats.cartons = {};
+        if(!data.stats.cartons[player]) data.stats.cartons[player] = { jaune: 0, rouge: 0 };
+        data.stats.cartons[player][cartonType]++;
+    }
+    await saveToFirebase();
+    closeModal('modalAddStat');
+    renderStats();
+}
+
 function renderNewsTab() {
   const container = document.getElementById('news-container');
   let sorted = [...articles].sort((a,b) => b.date.localeCompare(a.date));
@@ -1192,7 +1425,7 @@ function renderFdM() {
             <div><h4>${f.titre}</h4><p>${formatDate(f.date)} ${editBtn} ${delBtn}</p></div>
         </div>`;
     }).join('');
-    startFdmAutoScroll(); // Lance l'animation ici
+    startFdmAutoScroll();
 }
 
 let fdmTimer = null;
@@ -1200,26 +1433,20 @@ function startFdmAutoScroll() {
     const container = document.getElementById('fdmContainer');
     if (!container) return;
     if (fdmTimer) clearInterval(fdmTimer);
-    
-    // Pause le défilement au survol/toucher
     container.addEventListener('mouseenter', () => clearInterval(fdmTimer));
     container.addEventListener('touchstart', () => clearInterval(fdmTimer));
     container.addEventListener('mouseleave', startFdmAutoScrollTimer);
     container.addEventListener('touchend', startFdmAutoScrollTimer);
-
     startFdmAutoScrollTimer();
 }
 function startFdmAutoScrollTimer() {
     const container = document.getElementById('fdmContainer');
     if (fdmTimer) clearInterval(fdmTimer);
     fdmTimer = setInterval(() => {
-        if (container.scrollHeight <= container.clientHeight) return; // Rien à défiler
+        if (container.scrollHeight <= container.clientHeight) return;
         const maxScroll = container.scrollHeight - container.clientHeight;
-        if (container.scrollTop >= maxScroll - 5) {
-            container.scrollTo({ top: 0, behavior: 'smooth' }); // Retour en haut
-        } else {
-            container.scrollBy({ top: 80, behavior: 'smooth' }); // Descend de 80px
-        }
+        if (container.scrollTop >= maxScroll - 5) { container.scrollTo({ top: 0, behavior: 'smooth' }); } 
+        else { container.scrollBy({ top: 80, behavior: 'smooth' }); }
     }, 3000);
 }
 
@@ -1274,7 +1501,7 @@ async function saveMatch() {
   const idx = document.getElementById('editIndexMatch').value;
   const m = { journee: document.getElementById('fJournee').value, date: document.getElementById('fDate').value, heure: document.getElementById('fHeure').value, dom: document.getElementById('fDom').value, ext: document.getElementById('fExt').value, sd: document.getElementById('fSd').value, se: document.getElementById('fSe').value, stade: document.getElementById('fStade').value, obs: document.getElementById('fObs').value.trim() };
   if (idx === '') data[section].push(m); else data[section][idx] = m;
-  await saveToFirebase(); closeModal('modalMatch'); render('championnat');
+  await saveToFirebase(); closeModal('modalMatch'); render('championnat'); updateNextMatch();
 }
 
 // --- ACTUALITES ---
@@ -1439,18 +1666,22 @@ async function loadFromFirebase() {
   document.getElementById('statusBar').textContent = '⏳ Chargement...';
   data.championnat = [...MATCHS_INIT]; data.players = [...PLAYERS_INIT]; data.staff = [...STAFF_INIT]; data.dirigeants = [...DIRIGEANTS_INIT]; data.articles = [...ARTICLES_INIT]; data.fdm = [...FDM_INIT]; data.breves = [...BREVES_INIT]; data.equipes = [...EQUIPES]; data.stades = [...STADES];
   articles = data.articles;
-  render('championnat'); renderClub(); renderMob(); renderNewsTab(); renderMedias(); renderFdM(); renderBreves(); renderCarousel(); startCarouselAuto(); updateNextMatch();
+  renderAll();
   document.getElementById('statusBar').className = 'status online';
   document.getElementById('statusBar').textContent = `🟢 Connecté (${data.championnat.length} matchs)`;
+  
+  trackVisit(); // Lance le compteur de visites
+
   try {
     get(ref(db, 'data_v10')).then((snap) => {
       if (snap.exists()) {
         const fb = snap.val();
         data.championnat = fb.championnat || [...MATCHS_INIT]; data.players = fb.players || [...PLAYERS_INIT]; data.staff = fb.staff || [...STAFF_INIT]; data.dirigeants = fb.dirigeants || [...DIRIGEANTS_INIT]; data.mob = fb.mob || {}; data.live = fb.live || {}; data.affiches = fb.affiches || {}; data.videos = fb.videos || {}; data.articles = fb.articles || [...ARTICLES_INIT]; data.medias = fb.medias || data.medias; data.fdm = fb.fdm || [...FDM_INIT]; data.breves = fb.breves || [...BREVES_INIT];
+        data.stats = fb.stats || { activeVote: null, buteurs: {}, cartons: {} };
         if(fb.equipes) { data.equipes = fb.equipes; EQUIPES = data.equipes; }
         if(fb.stades) { data.stades = fb.stades; STADES = data.stades; }
         articles = data.articles;
-        render('championnat'); renderClub(); renderMob(); renderNewsTab(); renderCarousel(); renderMedias(); renderFdM(); renderBreves(); updateNextMatch();
+        renderAll();
         document.getElementById('statusBar').textContent = `🟢 Connecté (${data.championnat.length} matchs)`;
       }
     }).catch(e => console.log('Mode hors-ligne'));
@@ -1464,6 +1695,7 @@ if (document.readyState === 'loading') { document.addEventListener('DOMContentLo
 
 window.switchTab = switchTab; window.switchSubTab = switchSubTab; window.switchSubTabMob = switchSubTabMob;
 window.switchSubTabNews = switchSubTabNews; window.switchSubTabMedia = switchSubTabMedia;
+window.switchSubTabStats = switchSubTabStats;
 window.openModal = openModal; window.closeModal = closeModal; window.openModalMatch = openModalMatch; window.saveMatch = saveMatch; window.deleteItem = deleteItem;
 window.openModalPlayer = openModalPlayer; window.savePlayer = savePlayer;
 window.openModalStaff = openModalStaff; window.saveStaff = saveStaff;
@@ -1484,6 +1716,7 @@ window.openArticleModal = openArticleModal;
 window.shareContext = shareContext; window.shareArticle = shareArticle; window.shareFdm = shareFdm; window.shareBreve = shareBreve;
 window.openModalFDM = openModalFDM; window.saveFDM = saveFDM; window.deleteFDM = deleteFDM; window.openFDMView = openFDMView;
 window.openModalBreveView = openModalBreveView;
+window.submitVote = submitVote; window.resetVote = resetVote; window.openModalCreateVote = openModalCreateVote; window.saveNewVote = saveNewVote; window.openModalAddStat = openModalAddStat; window.saveStat = saveStat;
 </script>
 </body>
 </html>
