@@ -121,10 +121,13 @@
   .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
   .player-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.15); cursor: pointer; text-align: center; position: relative; border-bottom: 4px solid #1a4d2e; }
   .player-card img { width: 100%; height: 150px; object-fit: cover; object-position: top; background: #e0e0e0; }
-  .player-card .pc-num { position: absolute; top: 5px; left: 5px; background: #c9a961; color: #1a4d2e; font-weight: bold; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; border: 2px solid white; }
+  .player-card .pc-num { position: absolute; top: 5px; left: 5px; background: #c9a961; color: #1a4d2e; font-weight: bold; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; border: 2px solid white; z-index: 2; }
   .player-card .pc-info { padding: 8px; }
   .player-card .pc-name { font-weight: bold; font-size: 12px; color: #1a4d2e; line-height: 1.2; margin-bottom: 3px; }
   .player-card .pc-pos { font-size: 10px; color: #666; }
+  
+  /* Bandeau "A quitté le club" */
+  .badge-left { position: absolute; top: 10px; right: -30px; background: #c0392b; color: white; font-size: 9px; font-weight: bold; padding: 4px 30px; transform: rotate(45deg); box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 1; pointer-events: none; }
 
   .album-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.15); text-align: center; position: relative; cursor: pointer; border-bottom: 4px solid #c9a961; padding: 15px; transition: transform 0.2s; }
   .album-card:hover { transform: scale(1.02); }
@@ -187,6 +190,11 @@
   .label-with-btn select { flex: 1; margin-right: 5px; }
   .label-with-btn button { margin: 0; padding: 5px 8px; }
 
+  /* AMÉLIORATION CLASSEMENT MOBILE */
+  .classement-table th, .classement-table td { padding: 4px 2px; font-size: 11px; text-align: center; }
+  .classement-table th:nth-child(2), .classement-table td:nth-child(2) { text-align: left; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+  .classement-table .logo-mini { width: 18px; height: 18px; margin-right: 2px; }
+
   @media (max-width: 400px) {
     .next-match-teams { font-size: 1.05em; }
     .cd-box { min-width: 42px; padding: 5px 6px; }
@@ -194,6 +202,7 @@
     .carousel-item { flex: 0 0 85%; }
     .btn-share-float { padding: 10px 15px; font-size: 14px; bottom: 15px; right: 15px;}
     .visit-badge { padding: 6px 10px; font-size: 11px; bottom: 15px; left: 15px;}
+    .classement-table th, .classement-table td { padding: 3px 1px; font-size: 10px; }
   }
 </style>
 </head>
@@ -258,7 +267,7 @@
     <div class="fdm-container" id="fdmContainer"></div>
   </div>
   <div>
-    <div style="font-size: 12px; font-weight: bold; color: #1a4d2e; margin-bottom: 5px; padding-left: 5px;">⭐ Homme du Match</div>
+    <div style="font-size: 12px; font-weight: bold; color: #1a4d2e; margin-bottom: 5px; padding-left: 5px;">⭐ Votez pour l'Homme du Match</div>
     <div class="home-vote-widget" id="homeVoteContainer">
         <p style="font-size:11px; color:#888;">Chargement...</p>
     </div>
@@ -439,7 +448,7 @@
     <select id="selectJourneeClassement" onchange="renderClassement()"><option value="all">Général (toutes journées)</option></select>
   </div>
   <div class="table-wrap">
-    <table class="classement-table" style="min-width: 100%; font-size: 11px;">
+    <table class="classement-table" style="min-width: 100%;">
       <thead><tr><th>Pos</th><th>Équipe</th><th>J</th><th>G</th><th>N</th><th>P</th><th>BP</th><th>BC</th><th>Diff</th><th>Pts</th></tr></thead>
       <tbody id="tbody-classement"></tbody>
     </table>
@@ -482,12 +491,23 @@
 
 <!-- ONGLET HISTORIQUE -->
 <div id="tab-historique" class="tab-content">
-  <div class="historique-container">
+  <div class="toolbar" id="historique-toolbar" style="display:none; margin-bottom: 15px;">
+    <button onclick="openModalHisto('new')" style="background:#27ae60;">➕ Ajouter une section</button>
+  </div>
+  
+  <div class="historique-container" id="historique-content">
+    <!-- Le contenu sera généré dynamiquement par le JS, ou reste statique si vous préférez -->
+    <!-- Ici on garde la structure statique actuelle pour ne rien perdre, on ajoutera juste des boutons d'édition -->
+    
     <div class="historique-header">
       <img src="https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png" alt="Logo MO Béjaïa" class="historique-logo">
       <div class="historique-title">MO Béjaïa : Identité, Histoire et Passion des Crabes</div>
       <div class="historique-subtitle">Le Mouloudia Olympique de Béjaïa, bien plus qu'un simple club de football</div>
     </div>
+
+    <!-- Section dynamique ajoutée par l'admin -->
+    <div id="historique-dynamic-sections"></div>
+
     <div class="historique-section">
       <div class="historique-section-title">📋 Fiche d'identité</div>
       <div class="historique-fiche">
@@ -723,6 +743,9 @@
     <label>Club précédent <input type="text" id="pPrev"></label>
     <label>Fin de contrat <input type="text" id="pFinContrat" placeholder="Ex: Juin 2027"></label>
     <label>Lien Image <input type="url" id="pImg"></label>
+    <hr style="margin:10px 0;">
+    <label>A quitté le club le (Optionnel) <input type="date" id="pDepartDate"></label>
+    <label>Motif du départ <input type="text" id="pDepartMotif" placeholder="Ex: Fin de contrat, Transfert..."></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalPlayer')">Annuler</button><button onclick="savePlayer()">Enregistrer</button></div>
   </div>
 </div>
@@ -737,6 +760,9 @@
     <label>Date/Lieu de naissance <input type="text" id="sDdn"></label>
     <label>Diplôme / Infos <input type="text" id="sInfos"></label>
     <label>Lien Image <input type="url" id="sImg"></label>
+    <hr style="margin:10px 0;">
+    <label>A quitté le club le (Optionnel) <input type="date" id="sDepartDate"></label>
+    <label>Motif du départ <input type="text" id="sDepartMotif" placeholder="Ex: Fin de contrat, Mutation..."></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalStaff')">Annuler</button><button onclick="saveStaff()">Enregistrer</button></div>
   </div>
 </div>
@@ -749,7 +775,23 @@
     <label>Nom <input type="text" id="dNom"></label>
     <label>Fonction <input type="text" id="dFonction"></label>
     <label>Lien Image <input type="url" id="dImg"></label>
+    <hr style="margin:10px 0;">
+    <label>A quitté le club le (Optionnel) <input type="date" id="dDepartDate"></label>
+    <label>Motif du départ <input type="text" id="dDepartMotif" placeholder="Ex: Démission, Fin de mandat..."></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalDirigeant')">Annuler</button><button onclick="saveDirigeant()">Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- MODAL HISTORIQUE (NOUVEAU) -->
+<div class="modal" id="modalHisto">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('modalHisto')">×</span>
+    <h3>📜 Section Historique</h3>
+    <input type="hidden" id="editHistoIdx">
+    <label>Titre de la section <input type="text" id="hTitre" placeholder="Ex: Les années 80"></label>
+    <label>Texte de la section <textarea id="hTexte" rows="8"></textarea></label>
+    <label>Lien Image (Optionnel) <input type="url" id="hImg"></label>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalHisto')">Annuler</button><button onclick="saveHisto()">Enregistrer</button></div>
   </div>
 </div>
 
@@ -1044,6 +1086,7 @@ const ARTICLES_INIT = [
 let data = { 
   championnat: [], coupe: [], players: [], staff: [], dirigeants: [], mob: {}, live: {}, affiches: {}, videos: {}, articles: [], equipes: [], stades: [], fdm: [], breves: [],
   stats: { activeVote: null, buteurs: {}, cartons: {} },
+  historique_custom: [], // Nouveau: pour les sections ajoutées par l'admin
   medias: { 
     albums: [
       {
@@ -1072,7 +1115,6 @@ let articles = [];
 // Fonction utilitaire pour récupérer la photo d'un joueur par son nom
 function getPlayerImg(playerName) {
     if(!data.players) return "https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png";
-    // Recherche approximative (si le nom saisi dans les stats est un bout du nom complet)
     const p = data.players.find(x => x.nom.toLowerCase().includes(playerName.toLowerCase()));
     return p && p.img ? p.img : "https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png";
 }
@@ -1100,7 +1142,7 @@ function tryLogin() {
     isAdmin = true;
     document.getElementById('adminBadge').innerHTML = '<span style="background:#27ae60;color:white;padding:3px 8px;border-radius:12px;font-size:11px;margin-left:8px;">ADMIN</span>';
     document.getElementById('adminPanel').style.display = 'block';
-    document.getElementById('visitCounter').style.display = 'flex'; // Afficher compteur
+    document.getElementById('visitCounter').style.display = 'flex';
     document.getElementById('btnAddChamp').style.display = 'inline-block';
     document.getElementById('btnAddFdm').style.display = 'block';
     document.getElementById('news-toolbar').style.display = 'flex';
@@ -1110,6 +1152,7 @@ function tryLogin() {
     document.getElementById('mob-apres-toolbar').style.display = 'flex';
     document.getElementById('media-toolbar').style.display = 'flex';
     document.getElementById('stats-toolbar').style.display = 'flex';
+    document.getElementById('historique-toolbar').style.display = 'flex';
     document.getElementById('btnAddAlbum').style.display = currentMediaSubTab === 'images' ? 'inline-block' : 'none';
     document.getElementById('btnAddVideoMedia').style.display = currentMediaSubTab === 'videos' ? 'inline-block' : 'none';
     updateStatsAdminButtons();
@@ -1119,8 +1162,8 @@ function tryLogin() {
 }
 function logoutAdmin() {
   isAdmin = false; document.getElementById('adminBadge').innerHTML = ''; document.getElementById('adminPanel').style.display = 'none';
-  document.getElementById('visitCounter').style.display = 'none'; // Cacher compteur
-  ['btnAddChamp', 'btnAddFdm', 'news-toolbar', 'media-toolbar', 'club-toolbar', 'mob-avant-toolbar', 'mob-day-toolbar', 'mob-apres-toolbar', 'stats-toolbar'].forEach(id => document.getElementById(id).style.display = 'none');
+  document.getElementById('visitCounter').style.display = 'none';
+  ['btnAddChamp', 'btnAddFdm', 'news-toolbar', 'media-toolbar', 'club-toolbar', 'mob-avant-toolbar', 'mob-day-toolbar', 'mob-apres-toolbar', 'stats-toolbar', 'historique-toolbar'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display = 'none'; });
   renderAll();
 }
 
@@ -1133,7 +1176,7 @@ function updateStatsAdminButtons() {
 }
 
 function renderAll() {
-    render('championnat'); renderClub(); renderMob(); renderNewsTab(); renderMedias(); renderFdM(); renderBreves(); renderStats(); updateNextMatch(); renderHomeVoteWidget();
+    render('championnat'); renderClub(); renderMob(); renderNewsTab(); renderMedias(); renderFdM(); renderBreves(); renderStats(); updateNextMatch(); renderHomeVoteWidget(); renderCarousel(); renderHistoriqueDynamic();
 }
 
 function shareContext() {
@@ -1161,6 +1204,7 @@ function switchTab(name, el) {
   if (name === 'actualite') renderNewsTab();
   if (name === 'medias') renderMedias();
   if (name === 'stats') renderStats();
+  if (name === 'historique') renderHistoriqueDynamic();
 }
 function switchSubTab(mode) { currentSubTab = mode; document.getElementById('subtab-tous').classList.toggle('active', mode === 'tous'); document.getElementById('subtab-programme').classList.toggle('active', mode === 'programme'); document.getElementById('subtab-resultats').classList.toggle('active', mode === 'resultats'); render('championnat'); }
 function switchSubTabMob(mode) { currentMobSubTab = mode; document.getElementById('subtab-mob-avant').classList.toggle('active', mode === 'avant'); document.getElementById('subtab-mob-day').classList.toggle('active', mode === 'day'); document.getElementById('subtab-mob-apres').classList.toggle('active', mode === 'apres'); document.getElementById('mob-avant').style.display = mode === 'avant' ? 'block' : 'none'; document.getElementById('mob-day').style.display = mode === 'day' ? 'block' : 'none'; document.getElementById('mob-apres').style.display = mode === 'apres' ? 'block' : 'none'; renderMob(); }
@@ -1198,9 +1242,21 @@ function render(section) {
 }
 
 function renderClub() {
-  document.getElementById('grid-staff').innerHTML = data.staff.map((s, i) => `<div class="player-card" onclick="openModalStaff(${i})"><img src="${s.img || 'https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png'}"><div class="pc-info"><div class="pc-name">${s.nom}</div><div class="pc-pos">${s.fonction}</div></div></div>`).join('');
-  document.getElementById('grid-players').innerHTML = data.players.sort((a,b)=>a.num - b.num).map((p, i) => `<div class="player-card" onclick="openModalPlayer(${i})"><div class="pc-num">${p.num}</div><img src="${p.img || 'https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png'}"><div class="pc-info"><div class="pc-name">${p.nom}</div><div class="pc-pos">${p.poste}</div></div></div>`).join('');
-  document.getElementById('grid-dirigeants').innerHTML = data.dirigeants.map((d, i) => `<div class="player-card" onclick="openModalDirigeant(${i})"><img src="${d.img || 'https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png'}"><div class="pc-info"><div class="pc-name">${d.nom}</div><div class="pc-pos">${d.fonction}</div></div></div>`).join('');
+  document.getElementById('grid-staff').innerHTML = data.staff.map((s, i) => {
+    const badge = s.departDate ? `<div class="badge-left">A QUITTÉ LE CLUB</div>` : '';
+    return `<div class="player-card" onclick="openModalStaff(${i})">${badge}<img src="${s.img || 'https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png'}"><div class="pc-info"><div class="pc-name">${s.nom}</div><div class="pc-pos">${s.fonction}</div></div></div>`;
+  }).join('');
+
+  document.getElementById('grid-players').innerHTML = data.players.sort((a,b)=>a.num - b.num).map((p, i) => {
+    const realIdx = data.players.findIndex(pl => pl.num === p.num && pl.nom === p.nom);
+    const badge = p.departDate ? `<div class="badge-left">A QUITTÉ LE CLUB</div>` : '';
+    return `<div class="player-card" onclick="openModalPlayer(${realIdx})">${badge}<div class="pc-num">${p.num}</div><img src="${p.img || 'https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png'}"><div class="pc-info"><div class="pc-name">${p.nom}</div><div class="pc-pos">${p.poste}</div></div></div>`;
+  }).join('');
+
+  document.getElementById('grid-dirigeants').innerHTML = data.dirigeants.map((d, i) => {
+    const badge = d.departDate ? `<div class="badge-left">A QUITTÉ LE CLUB</div>` : '';
+    return `<div class="player-card" onclick="openModalDirigeant(${i})">${badge}<img src="${d.img || 'https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png'}"><div class="pc-info"><div class="pc-name">${d.nom}</div><div class="pc-pos">${d.fonction}</div></div></div>`;
+  }).join('');
 }
 
 function renderMob() {
@@ -1256,7 +1312,7 @@ function renderStats() {
         const hasVoted = localStorage.getItem('voted_' + v.id);
         
         let html = `<div class="vote-card">
-            <div class="vote-title">⭐ Homme du Match : ${v.matchName}</div>`;
+            <div class="vote-title">⭐ Votez pour l'Homme du Match : ${v.matchName}</div>`;
             
         if(hasVoted) {
             html += `<p style="text-align:center; color:#27ae60; font-weight:bold; margin-bottom:15px;">✅ Vous avez déjà voté !</p>`;
@@ -1376,7 +1432,10 @@ function openModalManageVote() {
     container.innerHTML = data.stats.activeVote.candidates.map(c => `
         <div style="display:flex; justify-content:space-between; align-items:center; background:#f9f9f9; padding:8px; margin-bottom:5px; border-radius:5px; border:1px solid #ddd;">
             <span>${c}</span>
-            <button onclick="removeCandidate('${c}')" class="btn-small btn-del">🗑️</button>
+            <div>
+                <button onclick="editCandidate('${c}')" class="btn-small btn-edit">✏️</button>
+                <button onclick="removeCandidate('${c}')" class="btn-small btn-del">🗑️</button>
+            </div>
         </div>
     `).join('');
     document.getElementById('newCandidateName').value = '';
@@ -1389,7 +1448,7 @@ async function addCandidateToVote() {
     
     data.stats.activeVote.candidates.push(newName);
     await saveToFirebase();
-    openModalManageVote(); // Rafraîchit la liste
+    openModalManageVote();
     renderStats();
     renderHomeVoteWidget();
 }
@@ -1398,6 +1457,24 @@ async function removeCandidate(name) {
     if(confirm('Supprimer ce candidat ? Ses votes seront perdus.')) {
         data.stats.activeVote.candidates = data.stats.activeVote.candidates.filter(c => c !== name);
         if(data.stats.activeVote.votes) delete data.stats.activeVote.votes[name];
+        await saveToFirebase();
+        openModalManageVote();
+        renderStats();
+        renderHomeVoteWidget();
+    }
+}
+async function editCandidate(oldName) {
+    if(!data.stats.activeVote) return;
+    const newName = prompt("Modifier le nom du candidat :", oldName);
+    if(newName && newName.trim() !== '' && newName.trim() !== oldName) {
+        if(data.stats.activeVote.candidates.includes(newName.trim())) return alert("Ce nom existe déjà.");
+        const idx = data.stats.activeVote.candidates.indexOf(oldName);
+        data.stats.activeVote.candidates[idx] = newName.trim();
+        // Transférer les votes
+        if(data.stats.activeVote.votes && data.stats.activeVote.votes[oldName]) {
+            data.stats.activeVote.votes[newName.trim()] = data.stats.activeVote.votes[oldName];
+            delete data.stats.activeVote.votes[oldName];
+        }
         await saveToFirebase();
         openModalManageVote();
         renderStats();
@@ -1663,6 +1740,46 @@ async function deleteVideoMedia(idx) { if(confirm('Supprimer cette vidéo ?')) {
 function openVideoModal(url, title) { document.getElementById('videoModalTitle').textContent = title; document.getElementById('videoModalIframe').src = url; openModal('modalVideoPlayer'); }
 function closeVideoModal() { document.getElementById('videoModalIframe').src = ''; closeModal('modalVideoPlayer'); }
 
+// --- HISTORIQUE (NOUVEAU) ---
+function renderHistoriqueDynamic() {
+    const container = document.getElementById('historique-dynamic-sections');
+    if(!container) return;
+    if(!data.historique_custom) data.historique_custom = [];
+    container.innerHTML = data.historique_custom.map((h, i) => `
+        <div class="historique-section">
+            <div class="historique-section-title">${h.titre}</div>
+            <div class="historique-text">${h.texte}</div>
+            ${h.img ? `<img src="${h.img}" class="historique-image">` : ''}
+            ${isAdmin ? `<div style="text-align:right; margin-top:5px;"><button class="btn-small btn-edit" onclick="openModalHisto(${i})">✏️ Modifier</button> <button class="btn-small btn-del" onclick="deleteHisto(${i})">🗑️ Supprimer</button></div>` : ''}
+        </div>
+    `).join('');
+}
+function openModalHisto(idx) {
+    if(!isAdmin) return;
+    document.getElementById('editHistoIdx').value = idx === 'new' ? '' : idx;
+    const h = idx !== 'new' ? data.historique_custom[idx] : {titre:'', texte:'', img:''};
+    document.getElementById('hTitre').value = h.titre;
+    document.getElementById('hTexte').value = h.texte;
+    document.getElementById('hImg').value = h.img || '';
+    openModal('modalHisto');
+}
+async function saveHisto() {
+    const idx = document.getElementById('editHistoIdx').value;
+    const h = { titre: document.getElementById('hTitre').value, texte: document.getElementById('hTexte').value, img: document.getElementById('hImg').value };
+    if(!data.historique_custom) data.historique_custom = [];
+    if(idx === '') data.historique_custom.push(h); else data.historique_custom[parseInt(idx)] = h;
+    await saveToFirebase();
+    closeModal('modalHisto');
+    renderHistoriqueDynamic();
+}
+async function deleteHisto(idx) {
+    if(confirm('Supprimer cette section ?')) {
+        data.historique_custom.splice(idx, 1);
+        await saveToFirebase();
+        renderHistoriqueDynamic();
+    }
+}
+
 // --- MOB ---
 function openModalMob(section) { if (!isAdmin) return; document.getElementById('mobSection').value = section; document.getElementById('mobImgInput').value = (data.mob[section] && data.mob[section].img) ? data.mob[section].img : ''; document.getElementById('mobTextInput').value = (data.mob[section] && data.mob[section].txt) ? data.mob[section].txt : ''; openModal('modalMob'); }
 async function saveMobContent() { const section = document.getElementById('mobSection').value; data.mob[section] = { img: document.getElementById('mobImgInput').value, txt: document.getElementById('mobTextInput').value }; await saveToFirebase(); closeModal('modalMob'); renderMob(); }
@@ -1674,12 +1791,12 @@ function openModalLive() { if (!isAdmin) return; document.getElementById('liveSt
 async function saveLive() { data.live = { statut: document.getElementById('liveStatut').value, sd: document.getElementById('liveSd').value, se: document.getElementById('liveSe').value, texte: document.getElementById('liveTexte').value }; await saveToFirebase(); closeModal('modalLive'); renderMob(); }
 
 // --- CLUB ---
-function openModalPlayer(idx) { if (!isAdmin) return; document.getElementById('editPlayerIdx').value = idx === 'new' ? '' : idx; const p = idx !== 'new' ? data.players[idx] : {num:'', nom:'', poste:'', ddn:'', lieu:'', nat:'', taille:'', pied:'', prev:'', finContrat:'', img:''}; document.getElementById('pNum').value = p.num; document.getElementById('pNom').value = p.nom; document.getElementById('pPoste').value = p.poste; document.getElementById('pDdn').value = p.ddn; document.getElementById('pLieu').value = p.lieu; document.getElementById('pNat').value = p.nat; document.getElementById('pTaille').value = p.taille; document.getElementById('pPied').value = p.pied; document.getElementById('pPrev').value = p.prev; document.getElementById('pFinContrat').value = p.finContrat || ''; document.getElementById('pImg').value = p.img; openModal('modalPlayer'); }
-async function savePlayer() { const idx = document.getElementById('editPlayerIdx').value; const p = { num: parseInt(document.getElementById('pNum').value), nom: document.getElementById('pNom').value, poste: document.getElementById('pPoste').value, ddn: document.getElementById('pDdn').value, lieu: document.getElementById('pLieu').value, nat: document.getElementById('pNat').value, taille: document.getElementById('pTaille').value, pied: document.getElementById('pPied').value, prev: document.getElementById('pPrev').value, finContrat: document.getElementById('pFinContrat').value, img: document.getElementById('pImg').value }; if (idx === '') data.players.push(p); else data.players[parseInt(idx)] = p; await saveToFirebase(); closeModal('modalPlayer'); renderClub(); }
-function openModalStaff(idx) { if (!isAdmin) return; document.getElementById('editStaffIdx').value = idx === 'new' ? '' : idx; const s = idx !== 'new' ? data.staff[idx] : {nom:'', fonction:'', ddn:'', infos:'', img:''}; document.getElementById('sNom').value = s.nom; document.getElementById('sFonction').value = s.fonction; document.getElementById('sDdn').value = s.ddn; document.getElementById('sInfos').value = s.infos; document.getElementById('sImg').value = s.img; openModal('modalStaff'); }
-async function saveStaff() { const idx = document.getElementById('editStaffIdx').value; const s = { nom: document.getElementById('sNom').value, fonction: document.getElementById('sFonction').value, ddn: document.getElementById('sDdn').value, infos: document.getElementById('sInfos').value, img: document.getElementById('sImg').value }; if (idx === '') data.staff.push(s); else data.staff[parseInt(idx)] = s; await saveToFirebase(); closeModal('modalStaff'); renderClub(); }
-function openModalDirigeant(idx) { if (!isAdmin) return; document.getElementById('editDirIdx').value = idx === 'new' ? '' : idx; const d = idx !== 'new' ? data.dirigeants[idx] : {nom:'', fonction:'', img:''}; document.getElementById('dNom').value = d.nom; document.getElementById('dFonction').value = d.fonction; document.getElementById('dImg').value = d.img; openModal('modalDirigeant'); }
-async function saveDirigeant() { const idx = document.getElementById('editDirIdx').value; const d = { nom: document.getElementById('dNom').value, fonction: document.getElementById('dFonction').value, img: document.getElementById('dImg').value }; if (idx === '') data.dirigeants.push(d); else data.dirigeants[parseInt(idx)] = d; await saveToFirebase(); closeModal('modalDirigeant'); renderClub(); }
+function openModalPlayer(idx) { if (!isAdmin) return; document.getElementById('editPlayerIdx').value = idx === 'new' ? '' : idx; const p = idx !== 'new' ? data.players[idx] : {num:'', nom:'', poste:'', ddn:'', lieu:'', nat:'', taille:'', pied:'', prev:'', finContrat:'', img:'', departDate:'', departMotif:''}; document.getElementById('pNum').value = p.num; document.getElementById('pNom').value = p.nom; document.getElementById('pPoste').value = p.poste; document.getElementById('pDdn').value = p.ddn; document.getElementById('pLieu').value = p.lieu; document.getElementById('pNat').value = p.nat; document.getElementById('pTaille').value = p.taille; document.getElementById('pPied').value = p.pied; document.getElementById('pPrev').value = p.prev; document.getElementById('pFinContrat').value = p.finContrat || ''; document.getElementById('pImg').value = p.img; document.getElementById('pDepartDate').value = p.departDate || ''; document.getElementById('pDepartMotif').value = p.departMotif || ''; openModal('modalPlayer'); }
+async function savePlayer() { const idx = document.getElementById('editPlayerIdx').value; const p = { num: parseInt(document.getElementById('pNum').value), nom: document.getElementById('pNom').value, poste: document.getElementById('pPoste').value, ddn: document.getElementById('pDdn').value, lieu: document.getElementById('pLieu').value, nat: document.getElementById('pNat').value, taille: document.getElementById('pTaille').value, pied: document.getElementById('pPied').value, prev: document.getElementById('pPrev').value, finContrat: document.getElementById('pFinContrat').value, img: document.getElementById('pImg').value, departDate: document.getElementById('pDepartDate').value, departMotif: document.getElementById('pDepartMotif').value }; if (idx === '') data.players.push(p); else data.players[parseInt(idx)] = p; await saveToFirebase(); closeModal('modalPlayer'); renderClub(); }
+function openModalStaff(idx) { if (!isAdmin) return; document.getElementById('editStaffIdx').value = idx === 'new' ? '' : idx; const s = idx !== 'new' ? data.staff[idx] : {nom:'', fonction:'', ddn:'', infos:'', img:'', departDate:'', departMotif:''}; document.getElementById('sNom').value = s.nom; document.getElementById('sFonction').value = s.fonction; document.getElementById('sDdn').value = s.ddn; document.getElementById('sInfos').value = s.infos; document.getElementById('sImg').value = s.img; document.getElementById('sDepartDate').value = s.departDate || ''; document.getElementById('sDepartMotif').value = s.departMotif || ''; openModal('modalStaff'); }
+async function saveStaff() { const idx = document.getElementById('editStaffIdx').value; const s = { nom: document.getElementById('sNom').value, fonction: document.getElementById('sFonction').value, ddn: document.getElementById('sDdn').value, infos: document.getElementById('sInfos').value, img: document.getElementById('sImg').value, departDate: document.getElementById('sDepartDate').value, departMotif: document.getElementById('sDepartMotif').value }; if (idx === '') data.staff.push(s); else data.staff[parseInt(idx)] = s; await saveToFirebase(); closeModal('modalStaff'); renderClub(); }
+function openModalDirigeant(idx) { if (!isAdmin) return; document.getElementById('editDirIdx').value = idx === 'new' ? '' : idx; const d = idx !== 'new' ? data.dirigeants[idx] : {nom:'', fonction:'', img:'', departDate:'', departMotif:''}; document.getElementById('dNom').value = d.nom; document.getElementById('dFonction').value = d.fonction; document.getElementById('dImg').value = d.img; document.getElementById('dDepartDate').value = d.departDate || ''; document.getElementById('dDepartMotif').value = d.departMotif || ''; openModal('modalDirigeant'); }
+async function saveDirigeant() { const idx = document.getElementById('editDirIdx').value; const d = { nom: document.getElementById('dNom').value, fonction: document.getElementById('dFonction').value, img: document.getElementById('dImg').value, departDate: document.getElementById('dDepartDate').value, departMotif: document.getElementById('dDepartMotif').value }; if (idx === '') data.dirigeants.push(d); else data.dirigeants[parseInt(idx)] = d; await saveToFirebase(); closeModal('modalDirigeant'); renderClub(); }
 async function deleteItem(section, idx) { if (confirm('Supprimer cet élément ?')) { data[section].splice(idx,1); await saveToFirebase(); if(section==='championnat') render('championnat'); else renderClub(); } }
 
 function renderClassement() {
@@ -1749,8 +1866,11 @@ async function loadFromFirebase() {
   
   data.championnat = [...MATCHS_INIT]; data.players = [...PLAYERS_INIT]; data.staff = [...STAFF_INIT]; data.dirigeants = [...DIRIGEANTS_INIT]; data.articles = [...ARTICLES_INIT]; data.fdm = [...FDM_INIT]; data.breves = [...BREVES_INIT]; data.equipes = [...EQUIPES]; data.stades = [...STADES];
   articles = data.articles;
-  renderAll();
   
+  // Afficher immédiatement les données locales (dont le carrousel)
+  renderAll(); 
+  startCarouselAuto(); // Correction : Lancer le défilement automatique
+
   trackVisit(); // Compteur de visites
 
   try {
@@ -1759,6 +1879,7 @@ async function loadFromFirebase() {
         const fb = snap.val();
         data.championnat = fb.championnat || [...MATCHS_INIT]; data.players = fb.players || [...PLAYERS_INIT]; data.staff = fb.staff || [...STAFF_INIT]; data.dirigeants = fb.dirigeants || [...DIRIGEANTS_INIT]; data.mob = fb.mob || {}; data.live = fb.live || {}; data.affiches = fb.affiches || {}; data.videos = fb.videos || {}; data.articles = fb.articles || [...ARTICLES_INIT]; data.medias = fb.medias || data.medias; data.fdm = fb.fdm || [...FDM_INIT]; data.breves = fb.breves || [...BREVES_INIT];
         data.stats = fb.stats || { activeVote: null, buteurs: {}, cartons: {} };
+        data.historique_custom = fb.historique_custom || []; // Charger l'historique personnalisé
         if(fb.equipes) { data.equipes = fb.equipes; EQUIPES = data.equipes; }
         if(fb.stades) { data.stades = fb.stades; STADES = data.stades; }
         articles = data.articles;
@@ -1809,8 +1930,9 @@ window.openModalFDM = openModalFDM; window.saveFDM = saveFDM; window.deleteFDM =
 window.openModalAllBreves = openModalAllBreves;
 window.openModalBreveView = openModalBreveView;
 window.submitVote = submitVote; window.resetVote = resetVote; window.openModalCreateVote = openModalCreateVote; window.saveNewVote = saveNewVote; 
-window.openModalManageVote = openModalManageVote; window.addCandidateToVote = addCandidateToVote; window.removeCandidate = removeCandidate;
+window.openModalManageVote = openModalManageVote; window.addCandidateToVote = addCandidateToVote; window.removeCandidate = removeCandidate; window.editCandidate = editCandidate;
 window.openModalAddStat = openModalAddStat; window.saveStat = saveStat; window.deleteStat = deleteStat;
+window.openModalHisto = openModalHisto; window.saveHisto = saveHisto; window.deleteHisto = deleteHisto;
 </script>
 </body>
 </html>
