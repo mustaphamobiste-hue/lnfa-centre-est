@@ -69,7 +69,6 @@
   .ticker-content { display: inline-block; white-space: nowrap; padding-left: 100%; animation: ticker 35s linear infinite; font-size: 13px; font-weight: bold; padding-top: 2px;}
   @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
 
-  /* HOME WIDGETS (3 COLONNES SUR GRAND ECRAN) */
   .home-widgets { display: flex; flex-direction: column; gap: 15px; margin-bottom: 15px; }
   @media (min-width: 900px) { 
       .home-widgets { display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: start; } 
@@ -87,7 +86,6 @@
   .fdm-item h4 { font-size: 12px; color: #1a4d2e; margin-bottom: 4px; }
   .fdm-item p { font-size: 10px; color: #666; }
 
-  /* MINI WIDGET VOTE ACCUEIL */
   .home-vote-widget { background: white; border-radius: 8px; padding: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); text-align: center; }
   .home-vote-widget h4 { color: #1a4d2e; font-size: 13px; margin-bottom: 10px; }
   .home-vote-option { display: block; width: 100%; text-align: center; padding: 8px; margin-bottom: 5px; border: 1px solid #ccc; border-radius: 6px; background: #f9f9f9; cursor: pointer; font-weight: bold; font-size: 12px; color: #333;}
@@ -126,7 +124,6 @@
   .player-card .pc-name { font-weight: bold; font-size: 12px; color: #1a4d2e; line-height: 1.2; margin-bottom: 3px; }
   .player-card .pc-pos { font-size: 10px; color: #666; }
   
-  /* Bandeau "A quitté le club" */
   .badge-left { position: absolute; top: 10px; right: -30px; background: #c0392b; color: white; font-size: 9px; font-weight: bold; padding: 4px 30px; transform: rotate(45deg); box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 1; pointer-events: none; }
 
   .album-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.15); text-align: center; position: relative; cursor: pointer; border-bottom: 4px solid #c9a961; padding: 15px; transition: transform 0.2s; }
@@ -146,7 +143,6 @@
   .video-thumb { width: 100%; aspect-ratio: 9/16; object-fit: cover; border-radius: 6px; cursor: pointer; background: #000; }
   .btn-del-video { position: absolute; top: 5px; right: 5px; background: rgba(192, 57, 43, 0.9); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; z-index: 2; }
 
-  /* STATS & VOTES */
   .vote-card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
   .vote-title { font-size: 1.1em; font-weight: bold; color: #1a4d2e; margin-bottom: 10px; text-align: center; }
   .vote-option { display: block; width: 100%; text-align: left; padding: 10px; margin-bottom: 8px; border: 1px solid #ccc; border-radius: 6px; background: #f9f9f9; cursor: pointer; transition: background 0.2s; font-weight: bold; color: #333;}
@@ -181,7 +177,6 @@
   .btn-share-float { position: fixed; bottom: 20px; right: 20px; background-color: #2980b9; color: white; border-radius: 50px; padding: 12px 20px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 8px; z-index: 1000; cursor: pointer; border: 2px solid white; transition: transform 0.2s; }
   .btn-share-float:hover { transform: scale(1.05); background-color: #3498db; }
 
-  /* COMPTEUR VISITES (CACHÉ PAR DÉFAUT) */
   .visit-badge { position: fixed; bottom: 20px; left: 20px; background-color: #2c3e50; color: white; border-radius: 50px; padding: 8px 15px; font-size: 13px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 1000; border: 2px solid white; display: none; align-items: center; gap: 5px; }
 
   .modal.active ~ .btn-share-float { display: none !important; }
@@ -190,7 +185,6 @@
   .label-with-btn select { flex: 1; margin-right: 5px; }
   .label-with-btn button { margin: 0; padding: 5px 8px; }
 
-  /* AMÉLIORATION CLASSEMENT MOBILE */
   .classement-table th, .classement-table td { padding: 4px 2px; font-size: 11px; text-align: center; }
   .classement-table th:nth-child(2), .classement-table td:nth-child(2) { text-align: left; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
   .classement-table .logo-mini { width: 18px; height: 18px; margin-right: 2px; }
@@ -253,7 +247,6 @@
   <div class="ticker-content" id="tickerContent">Chargement des infos...</div>
 </div>
 
-<!-- HOME WIDGETS (ACTUS + FDM + VOTE) -->
 <div class="home-widgets">
   <div>
     <div style="font-size: 12px; font-weight: bold; color: #1a4d2e; margin-bottom: 5px; padding-left: 5px;">📰 Dernières Actualités</div>
@@ -274,20 +267,20 @@
   </div>
 </div>
 
-<!-- ONGLET CHAMPIONNAT -->
 <div id="tab-championnat" class="tab-content active">
   <div class="sub-tabs">
     <div class="sub-tab active" id="subtab-tous" onclick="switchSubTab('tous')">📋 Tous</div>
     <div class="sub-tab" id="subtab-programme" onclick="switchSubTab('programme')">📅 Programme</div>
     <div class="sub-tab" id="subtab-resultats" onclick="switchSubTab('resultats')">📊 Résultats</div>
+    <div class="sub-tab" id="subtab-coupe" onclick="switchSubTab('coupe')">🏆 Coupe d'Algérie</div>
   </div>
   <div class="toolbar">
-    <button onclick="openModalMatch('championnat')" id="btnAddChamp" style="display:none;">➕ Ajouter</button>
-    <button onclick="exportData('championnat')">💾 Exporter</button>
+    <button onclick="openModalMatch(currentSubTab === 'coupe' ? 'coupe' : 'championnat')" id="btnAddChamp" style="display:none;">➕ Ajouter</button>
+    <button onclick="exportData(currentSubTab === 'coupe' ? 'coupe' : 'championnat')">💾 Exporter</button>
     <button onclick="document.getElementById('importChampionnat').click()">📂 Importer</button>
-    <input type="file" id="importChampionnat" accept=".json" style="display:none" onchange="importData(event,'championnat')">
+    <input type="file" id="importChampionnat" accept=".json" style="display:none" onchange="importData(event, currentSubTab === 'coupe' ? 'coupe' : 'championnat')">
   </div>
-  <div class="toolbar">
+  <div class="toolbar" id="filtersChampionnat">
     <select id="filterJournee" onchange="render('championnat')"><option value="">Toutes les journées</option></select>
     <select id="filterEquipe" onchange="render('championnat')"><option value="">Toutes les équipes</option></select>
     <button onclick="render('championnat')" style="background:#2980b9;">🔍 Filtrer</button>
@@ -295,13 +288,12 @@
   <div class="count" id="countChampionnat"></div>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>J</th><th>Date</th><th>Heure</th><th>Domicile</th><th>Score</th><th>Extérieur</th><th>Stade</th><th>Obs.</th><th>Actions</th></tr></thead>
+      <thead><tr><th>J/Tour</th><th>Date</th><th>Heure</th><th>Domicile</th><th>Score</th><th>Extérieur</th><th>Stade</th><th>Obs.</th><th>Actions</th></tr></thead>
       <tbody id="tbody-championnat"></tbody>
     </table>
   </div>
 </div>
 
-<!-- ONGLET MOB -->
 <div id="tab-mob" class="tab-content">
   <div class="sub-tabs">
     <div class="sub-tab active" id="subtab-mob-avant" onclick="switchSubTabMob('avant')">⏳ Avant-match</div>
@@ -378,7 +370,6 @@
   </div>
 </div>
 
-<!-- ONGLET CLUB -->
 <div id="tab-club" class="tab-content">
   <div class="toolbar" id="club-toolbar" style="display:none;">
     <button onclick="openModalPlayer('new')">➕ Ajouter Joueur</button>
@@ -402,7 +393,6 @@
   </div>
 </div>
 
-<!-- ONGLET STATS & VOTES -->
 <div id="tab-stats" class="tab-content">
   <div class="sub-tabs">
     <div class="sub-tab active" id="subtab-stats-vote" onclick="switchSubTabStats('vote')">⭐ Homme du Match</div>
@@ -419,12 +409,10 @@
     <button id="btnAddCarton" onclick="openModalAddStat('carton')" style="background:#c0392b; display:none;">➕ Ajouter un Carton</button>
   </div>
 
-  <!-- Sous-onglet Vote -->
   <div id="stats-vote" class="stats-section">
     <div id="voteContainer"></div>
   </div>
 
-  <!-- Sous-onglet Buteurs -->
   <div id="stats-buteurs" class="stats-section" style="display:none;">
     <table class="stats-table">
       <thead><tr><th>Pos</th><th>Joueur</th><th>Buts</th><th>Actions</th></tr></thead>
@@ -432,7 +420,6 @@
     </table>
   </div>
 
-  <!-- Sous-onglet Cartons -->
   <div id="stats-cartons" class="stats-section" style="display:none;">
     <table class="stats-table">
       <thead><tr><th>Joueur</th><th>🟨 Jaunes</th><th>🟥 Rouges</th><th>Actions</th></tr></thead>
@@ -441,7 +428,6 @@
   </div>
 </div>
 
-<!-- ONGLET CLASSEMENT -->
 <div id="tab-classement" class="tab-content">
   <div class="classement-filters" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 12px;">
     <label style="font-size:13px;">Classement après : </label>
@@ -455,7 +441,6 @@
   </div>
 </div>
 
-<!-- ONGLET ACTUALITE -->
 <div id="tab-actualite" class="tab-content">
   <div class="sub-tabs">
     <div class="sub-tab active" id="subtab-news-all" onclick="switchSubTabNews('all')">📰 Toutes les actus</div>
@@ -468,7 +453,6 @@
   <div id="news-container" style="max-width: 800px; margin: 0 auto;"></div>
 </div>
 
-<!-- ONGLET MEDIAS -->
 <div id="tab-medias" class="tab-content">
   <div class="sub-tabs">
     <div class="sub-tab active" id="subtab-media-images" onclick="switchSubTabMedia('images')">🖼️ Images</div>
@@ -489,23 +473,18 @@
   </div>
 </div>
 
-<!-- ONGLET HISTORIQUE -->
 <div id="tab-historique" class="tab-content">
   <div class="toolbar" id="historique-toolbar" style="display:none; margin-bottom: 15px;">
     <button onclick="openModalHisto('new')" style="background:#27ae60;">➕ Ajouter une section</button>
   </div>
   
   <div class="historique-container" id="historique-content">
-    <!-- Le contenu sera généré dynamiquement par le JS, ou reste statique si vous préférez -->
-    <!-- Ici on garde la structure statique actuelle pour ne rien perdre, on ajoutera juste des boutons d'édition -->
-    
     <div class="historique-header">
       <img src="https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png" alt="Logo MO Béjaïa" class="historique-logo">
       <div class="historique-title">MO Béjaïa : Identité, Histoire et Passion des Crabes</div>
       <div class="historique-subtitle">Le Mouloudia Olympique de Béjaïa, bien plus qu'un simple club de football</div>
     </div>
 
-    <!-- Section dynamique ajoutée par l'admin -->
     <div id="historique-dynamic-sections"></div>
 
     <div class="historique-section">
@@ -577,13 +556,12 @@
 <div class="btn-share-float" id="btnShareMain" onclick="shareContext()">📤 Partager</div>
 <div class="visit-badge" id="visitCounter">👁️ -- visites</div>
 
-<!-- MODALS -->
 <div class="modal" id="modalMatch">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalMatch')">×</span>
     <h3 id="modalTitleMatch">Ajouter un Match</h3>
     <input type="hidden" id="editSectionMatch"><input type="hidden" id="editIndexMatch">
-    <label>Journée <input type="number" id="fJournee" min="1" max="30"></label>
+    <label>Journée / Tour <input type="text" id="fJournee" placeholder="Ex: 1 ou 32es de finale"></label>
     <label>Date <input type="date" id="fDate"></label>
     <label>Heure <input type="time" id="fHeure"></label>
     <div class="label-with-btn"><span>Domicile</span><button class="btn-small" onclick="addNewEquipe('dom')">+ Nouvelle</button></div>
@@ -657,7 +635,6 @@
   </div>
 </div>
 
-<!-- MODAL TOUTES LES BREVES -->
 <div class="modal" id="modalAllBreves">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalAllBreves')">×</span>
@@ -690,7 +667,6 @@
   </div>
 </div>
 
-<!-- MODALS STATS/VOTES -->
 <div class="modal" id="modalCreateVote">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalCreateVote')">×</span>
@@ -782,7 +758,6 @@
   </div>
 </div>
 
-<!-- MODAL HISTORIQUE (NOUVEAU) -->
 <div class="modal" id="modalHisto">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalHisto')">×</span>
@@ -947,24 +922,11 @@ const FDM_INIT = [
     id: "fdm1", titre: "J1 : MO Béjaïa 0-0 MO Constantine", date: "2026-09-18",
     image: "https://i.postimg.cc/HLQTLC6d/Feuille-de-match-MO-Bejaia-0-0-MO-Constantine-J1-le-18-septembre-2026.png",
     texte: "FICHE TECHNIQUE DE LA RENCONTRE\n\n​Lieu : Stade 1er Novembre Guendouza\n​Compétition : Ligue 2 Amateur (Groupe Centre-Est) – 1ère Journée\n​Date & Heure : Vendredi 18 septembre 2026 à 16 h 00\n​Conditions : Match disputé à huis clos\n​Résultat : MO Béjaïa 0 – 0 MO Constantine\n​Corps Arbitral : Abdennour Khalfallah (Principal), Elmoundhir Oudina (A1), Abderezak Ali Chikouche (A2)\n​Délégué du match : Massinissa Merakchi\n​Cartons Jaunes :\n​MO Béjaïa : Hamza Rebiai (24’), Rayane Karim Ait Mouloud (45’), Amine Benbelaid (75’), M'hamed Djelloul Abbou (81’)\n​MO Constantine : Islam Zermane (9’), Mostefa Boussif (21’), Mohammed Mihoubi (27’), Youcef Elhouari (85’)\n\n​🟢⚫️ MO BÉJAÏA (Entraîneur : Hamide Lamara)\n​Titulaires : 16. Sami Tlemcani (G) – 18. Chaouki Benleguemari, 4. Hamza Rebiai, 2. M'hamed Djelloul Abbou, 8. Zakaria Boukebal – 22. Juba Oukaci, 15. Amine Benbelaid (85’ 11. Waris Hammi), 10. Faouzi Yaya (C) – 26. Nizar Tamer (75’ 8. Aimad Zamoum), 24. Mohamed Said Ben Mazouz (65’ 9. Bouzid Dadache), 29. Rayane Karim Ait Mouloud (65’ 21. Nadjim Yaya).\n​Remplaçants non utilisés : 1. Mohammed Hamza Benmeddah (G), 6. Mohamed Abderrahmane Sabri, 20. Abdessamed Bounaama, 5. Kelyan Jean Said Gessoum, 28. Tariq Nacef.\n\n​🔵⚪️ MO CONSTANTINE (Entraîneur : Yacine Manaa)\n​Titulaires : Soufiane Abed (G) – 17. Nadjm Eddine Nemer Ziad, 3. Islam Zermane, 4. Ouail Bensahli (65’ 5. Abderrezak Bitam), 12. Mostefa Boussif – 10. Mohamed Heriat, 27. Ahmed Boudiaf (83’ 13. Idris Bouti), 25. Abderraouf Arib (65’ 20. Youcef Elhouari) – 6. Mohammed Mihoubi, 7. Zakaria Hadj Khelouf (76’ 8. Mehdi Bouriouche), 11. Chakib Maizou (76’ 23. Aimen Harez).\n​Remplaçants non utilisés : 19. Abdelmalek Douifi, 24. Moncef Remita, 21. Nail Lalaoua, 30. Hamza Bousseder.\n\n#LaMaisonDesCrabes ​#LNFA #Ligue2Amateur #GroupeCentreEst #J1 #MOBMOC #MOBéjaïa #MOConstantine #HuisClos #LesCrabes #MOBEJAIAINFOS #MOB_BEJAIAI_COM #FootballAlgérien"
-  },
-  {
-    id: "fdm2", titre: "J2 : CR Beni Thour 1-3 MO Béjaïa", date: "2026-09-26",
-    image: "https://i.postimg.cc/qgVjrLT3/Feuille-de-match-CR-Beni-Thour-1-3-MO-Bejaia-2026-2027.jpg",
-    texte: "FICHE TECHNIQUE DE LA RENCONTRE\n\n​Lieu : Stade 18 Février, Ouargla\n​Compétition : Ligue 2 Amateur (Groupe Centre-Est) – 2ème Journée\n​Date & Heure : Samedi 26 septembre 2026 à 16 h 00\n​Résultat : CR Beni Thour 1 – 3 MO Béjaïa\n​Corps Arbitral : Sid Ahmed Lelouchi (Principal), Kadhafi Badache (A1), Slimane Haddal (A2)\n​Délégué du match : Djaber Kasmiouri\n​Buts : CR Beni Thour : Naoufel Righi (64’). MO Béjaïa : Mohamed Said Ben Mazouz (18’), Nizar Tamer (22’ - Reprise de volée), Abderrahim Bouakaz (79’)\n​Avertissements : CR Beni Thour : Billal Amiri (45’), Mohamed Tayeb Lachheb (53’). MO Béjaïa : Chaouki Benleguemari (36’), Mohamed Said Ben Mazouz (56’)\n\n​🟢⚫️ MO BÉJAÏA (Entraîneur : Hamide Lamara)\n​Titulaires : 16. Sami Tlemcani (G) – 2. M'hamed Djelloul Abbou (68’ 5. Kelyan Jean Said Gessoum), 4. Hamza Rebiai, 8. Zakaria Boukebal (86’ 20. Abdessamed Bounaama), 10. Faouzi Yaya (C), 15. Amine Benbelaid (72’ Abderrahim Bouakaz), 18. Chaouki Benleguemari, 22. Juba Oukaci, 21. Nadjim Yaya (68’ 8. Aimad Zamoum), 24. Mohamed Said Ben Mazouz (72’ 9. Bouzid Dadache), 26. Nizar Tamer.\n​Remplaçants non utilisés : 1. Mohammed Hamza Benmeddah (G), 11. Waris Hammi, 19. Elhouari Touil, 29. Rayane Karim Ait Mouloud.\n\n​ CR BENI THOUR (Entraîneur : Mostafa Aggoun)\n​Titulaires : Billal Amiri (G) – 22. Kheir Eddine Ali Haimoud, 6. Mohamed Tayeb Lachheb, 19. Salah Eddine Arif, 20. Ali Abdeladim Mehazem, 10. Hatem Dakhia, 28. Harrouz Farouk, 18. Hocine Touahir (75’ 25. Ibrahim Belas), 8. Naoufel Righi, 11. Zine Eddine Sayah Dhirar (45’ 9. Fateh Dekhmouche), 7. Riad Wael Rahmoun (90’ 17. Muhammad Al Amin Mihi).\n​Remplaçants non utilisés : 3. Mohamed Mebrouk Zouaoui, 16. Abdelghani Hamel, 23. Youcef Zerguine, 15. Zakaria Tlili, 26. Mohamed Ayoub Bendaoud, 27. Kamil Mohaned Yahi.\n\n#LaMaisonDesCrabes ​#LNFA #Ligue2Amateur #GroupeCentreEst #J2 #CRBTMOB #MOBejaia #CRBeniThour #VictoireDePrestige #LesCrabes #MOBEJAIAINFOS #MOB_BEJAIAI_COM #FootballAlgérien"
-  },
-  {
-    id: "fdm3", titre: "J4 : JS Azazga 2-1 MO Béjaïa", date: "2026-10-10",
-    image: "https://i.postimg.cc/fLHR12Yr/feuilles-de-match-JS-Azazga-2-1-MO-Bejaia-2026-2027.jpg",
-    texte: "FICHE TECHNIQUE DE LA RENCONTRE\n\n​Lieu : Stade Tirsatine, Azazga\n​Compétition : Ligue 2 Amateur (Groupe Centre-Est) – 4ème Journée\n​Date & Heure : Samedi 10 octobre 2026 à 15 h 00\n​Résultat : JS Azazga 2 – 1 MO Béjaïa\n​Corps Arbitral : Anès Azrine (Principal), Mohamed Reda Klikha (A1), Abdelkader Slimani (A2)\n​Délégué du match : Ahmed Bentarazi\n​Buts : JS Azazga : Zidane Mebarakou (39’), Lounas Messaoudi (44’). MO Béjaïa : Chaouki Benleguemari (58’)\n​Avertissements : JS Azazga : Massinissa Benamara (85’). MO Béjaïa : Foued Hadded (77’)\n\n​🟢⚫️ MO BÉJAÏA (Entraîneur : Hamide Lamara)\n​Titulaires : 16. Sami Tlemcani (G) – 4. Hamza Rebiai, 5. Kelyan Jean Said Gessoum (75’ 2. M'hamed Djelloul Abbou), 8. Zakaria Boukebal (77’ 19. Elhouari Touil), 10. Faouzi Yaya (C), 15. Amine Benbelaid (25’ 2. Foued Hadded), 18. Chaouki Benleguemari, 22. Juba Oukaci, 21. Nadjim Yaya, 24. Mohamed Said Ben Mazouz (75’ 9. Bouzid Dadache), 26. Nizar Tamer (76’ 29. Rayane Karim Ait Mouloud).\n​Remplaçants non utilisés : 1. Mohammed Hamza Benmeddah (G), 20. Abdessamed Bounaama, 8. Aimad Zamoum, 29. Abderrahim Bouakaz.\n\n​🔴⚫️ JS AZAZGA (Entraîneur : Ahmed Fergane)\n​Titulaires : Yacine Lebsir (G) – 4. Kousseila Temericht (85’ Hakim Alouache), 5. Mebarakou Zidane, 20. Arab Ben-Mahrez, 25. Nabil Khellaf, 6. Wassim Hama (69’ 18. Malik Kessi), 8. Yanis Taib, 10. Billal Hamzaoui (76’ 23. Kamel Nechem), 7. Amayas Bibi, 15. Lounas Messaoudi (69’ 11. Massinissa Benamara), 17. Achour Boussaid (85’ 26. Abdelmoumen Mebarki).\n​Remplaçants non utilisés : 9. Oussama Mokhtari, 16. Bachir Ouagued, 24. Amine Belkaid, 21. Nassim Dahoumane.\n\n#LaMaisonDesCrabes ​#LNFA #Ligue2Amateur #GroupeCentreEst #J4 #JSAZAMOB #MOBejaia #JSAzazga #LesCrabes #MOBEJAIAINFOS #MOB_BEJAIAI_COM #FootballAlgérien"
   }
 ];
 
 const BREVES_INIT = [
-  { id: "b1", titre: "Décès de Aymene Chahmat : la JSM Skikda en deuil", date: "2026-10-09", image: "https://i.postimg.cc/vZ29bkPG/Deces-de-Aymene-Chahmat.webp", texte: "Béjaïa le 09/10/2026 à 14 H 28\n\nDécès de Aymene Chahmat : la JSM Skikda en deuil\n​Le football algérien est en deuil après le décès du défenseur de la JSM Skikda, Aymene Chahmat, à l’âge de 26 ans, des suites d’une maladie.\nCette disparition tragique touche profondément sa famille, ses proches, ses coéquipiers ainsi que l’ensemble de la famille de la JSM Skikda.\n\nParadou AC vs JSM Skikda reporté\n​À la suite de ce deuil, il a été décidé de reporter à une date ultérieure la rencontre entre le Paradou AC et la JSM Skikda, initialement programmée pour le compte de la 4ᵉ journée du championnat de Ligue 2 amateur.\nEn hommage à la mémoire du défunt, toutes les autres rencontres de la 4ᵉ journée de Ligue 2 amateur débuteront par une minute de silence.\n« Aujourd’hui, le football algérien se recueille. Au-delà des résultats et de la compétition, c’est toute une famille sportive qui partage la douleur de la JSM Skikda. »\n\nMessage de condoléances\n​Nous présentons nos condoléances les plus sincères et notre profonde compassion à la famille de Aymene Chahmat, à ses proches, à ses coéquipiers, aux dirigeants et à tous les supporters de la JSM Skikda.\nInna lillahi wa inna ilayhi rajioun.\nQu’Allah lui accorde Sa vaste miséricorde, l’accueille dans Son paradis et apporte patience ainsi que réconfort à tous ses proches.\n\n#LaMaisonDesCrabes #AymenChehmat #JSMSkikda #Condoleances #AllahYerhamou #InnaLillahiWaInnaIlayhiRajioun" },
-  { id: "b2", titre: "CONDOLÉANCES : Farid Messaoudi", date: "2026-10-05", image: "https://i.postimg.cc/XvwVQyBB/Condoleances-Farid-Messaoudi.webp", texte: "Bejaia le 05/10/2026\n\nCONDOLÉANCES\nC’est avec une immense tristesse que nous avons appris le décès de notre frère et fidèle supporter du MO Béjaïa, Farid Messaoudi.\nEn cette douloureuse circonstance, nous adressons nos sincères condoléances à sa famille, à ses proches, ainsi qu’à tous ceux qui l’ont connu et apprécié.\nQue Dieu Tout-Puissant lui accorde Sa Miséricorde, l’accueille dans Son vaste Paradis et donne à sa famille force et patience pour surmonter cette terrible épreuve.\n\n​ إنا لله وإنا إليه راجعون\nAkirhem Rebi a Farid Agma. Repose en paix, frère. \nLa levée du corps se fera depuis son domicile à Dar Nacer, et l’enterrement aura lieu aujourd’hui au nouveau cimetière de Bois Sacré, après la prière d’El Asr.\n\n#faridmessaoudi \nQue ce message accompagne sa famille et ses proches dans cette douloureuse épreuve.\n\n#LaMaisonDesCrabes #MessaoudiFarid" },
-  { id: "b3", titre: "Hommage à Adrar Akli, ancien président", date: "2026-07-06", image: "https://i.postimg.cc/Bbkw6KrX/Deces-Akli-Adrar-ancien-president-de-la-SSPA-MO-Bejaia.jpg", texte: "Bejaia le 06/07/2026 à 10 H 22\n\n« Hommage à un homme de cœur et de football »,\nC’est avec une immense tristesse que nous avons appris le décès de Monsieur Adrar Akli, ancien président de la SSPA MO Béjaïa.\nHomme simple, humble et profondément respectueux, il a marqué tous ceux qui l’ont côtoyé par son amour sincère du football et son attachement indéfectible au MOB.\nSon souvenir restera gravé dans la mémoire des supporters et de la grande famille du Mouloudia Olympique de Béjaïa.\nNous présentons nos condoléances les plus émues à sa famille, à ses proches et à tous ceux qui l’ont aimé. Que Dieu l’accueille en Son vaste paradis.\n\n#LaMaisonDesCrabes #AdrarAkli #PrésidentMOB" },
-  { id: "b4", titre: "Anniversaire : 10 ans des Ultras Free Men 16", date: "2026-06-19", image: "https://i.postimg.cc/q7HVw9Z6/Anniversaire-ultras-free-men-16-du-MO-Bejaia.webp", texte: "Bejaia le 19/06/2026 à 21 H 25\n\nAnniversaire \nDix ans de douleur, dix ans de gloire. Le rideau vert s’ouvre, la tribune s’embrase.\nDix ans de ferveur, dix ans de tribune, dix ans de fidélité sans faille! Aujourd’hui, le MO Béjaïa et son groupe mythique Ultras Free Men 16 célèbrent une décennie d’existence, de passion et de soutien inconditionnel.19/06/2016 - 19/06/2026 : une ligne de vie qui raconte l’histoire d’une génération de supporters, toujours debout, toujours fiers, toujours présents.\n\nLeur devise résonne comme un cri de cœur : « In pain before glory»  souffrir pour mieux goûter la victoire. Ce jubilé n’est pas seulement une date, c’est un symbole : celui d’une identité tribune qui a marqué le football et porté haut les couleurs vert et noir du MOB. \n\n#LaMaisonDesCrabes #Ufm16 #mob #bejaia #supporter #vertetnoir" }
+  { id: "b1", titre: "Décès de Aymene Chahmat : la JSM Skikda en deuil", date: "2026-10-09", image: "https://i.postimg.cc/vZ29bkPG/Deces-de-Aymene-Chahmat.webp", texte: "Béjaïa le 09/10/2026 à 14 H 28\n\nDécès de Aymene Chahmat : la JSM Skikda en deuil\n​Le football algérien est en deuil après le décès du défenseur de la JSM Skikda, Aymene Chahmat, à l’âge de 26 ans, des suites d’une maladie.\nCette disparition tragique touche profondément sa famille, ses proches, ses coéquipiers ainsi que l’ensemble de la famille de la JSM Skikda.\n\nParadou AC vs JSM Skikda reporté\n​À la suite de ce deuil, il a été décidé de reporter à une date ultérieure la rencontre entre le Paradou AC et la JSM Skikda, initialement programmée pour le compte de la 4ᵉ journée du championnat de Ligue 2 amateur.\nEn hommage à la mémoire du défunt, toutes les autres rencontres de la 4ᵉ journée de Ligue 2 amateur débuteront par une minute de silence.\n« Aujourd’hui, le football algérien se recueille. Au-delà des résultats et de la compétition, c’est toute une famille sportive qui partage la douleur de la JSM Skikda. »\n\nMessage de condoléances\n​Nous présentons nos condoléances les plus sincères et notre profonde compassion à la famille de Aymene Chahmat, à ses proches, à ses coéquipiers, aux dirigeants et à tous les supporters de la JSM Skikda.\nInna lillahi wa inna ilayhi rajioun.\nQu’Allah lui accorde Sa vaste miséricorde, l’accueille dans Son paradis et apporte patience ainsi que réconfort à tous ses proches.\n\n#LaMaisonDesCrabes #AymenChehmat #JSMSkikda #Condoleances #AllahYerhamou #InnaLillahiWaInnaIlayhiRajioun" }
 ];
 
 const MATCHS_INIT = [
@@ -991,131 +953,43 @@ const MATCHS_INIT = [
   {journee:"3", date:"2026-10-02", heure:"15:00", dom:"MO Constantine", ext:"CR Beni Thour", sd:"2", se:"1", stade:"", obs:""},
   {journee:"3", date:"2026-10-02", heure:"15:00", dom:"US Chaouia", ext:"AS Khroub", sd:"0", se:"0", stade:"", obs:""},
   {journee:"3", date:"2026-10-03", heure:"15:00", dom:"JSM Skikda", ext:"NRB Beni Oulbane", sd:"1", se:"0", stade:"", obs:""},
-  {journee:"3", date:"2026-10-03", heure:"15:00", dom:"JSD Jijel", ext:"JS Azazga", sd:"0", se:"0", stade:"", obs:""},
-  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"USM Annaba", ext:"US Chaouia", sd:"3", se:"0", stade:"", obs:""},
-  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"IRB Nezla", ext:"MO Constantine", sd:"2", se:"2", stade:"", obs:""},
-  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"MSP Batna", ext:"CR Beni Thour", sd:"2", se:"1", stade:"", obs:""},
-  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"NRB Beni Oulbane", ext:"JSD Jijel", sd:"2", se:"0", stade:"", obs:""},
-  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"Paradou AC", ext:"JSM Skikda", sd:"", se:"", stade:"", obs:"Reporté"},
-  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"NC Magra", ext:"CA Batna", sd:"0", se:"0", stade:"", obs:""},
-  {journee:"4", date:"2026-10-09", heure:"15:00", dom:"AS Khroub", ext:"NRB Teleghma", sd:"2", se:"2", stade:"", obs:""},
-  {journee:"4", date:"2026-10-10", heure:"15:00", dom:"JS Azazga", ext:"MO Béjaïa", sd:"2", se:"1", stade:"", obs:""},
-  {journee:"5", date:"2026-10-13", heure:"15:00", dom:"US Chaouia", ext:"Paradou AC", sd:"1", se:"0", stade:"", obs:""},
-  {journee:"5", date:"2026-10-13", heure:"15:00", dom:"NRB Teleghma", ext:"USM Annaba", sd:"2", se:"1", stade:"", obs:""},
-  {journee:"5", date:"2026-10-13", heure:"15:00", dom:"CA Batna", ext:"AS Khroub", sd:"1", se:"0", stade:"", obs:""},
-  {journee:"5", date:"2026-10-13", heure:"15:00", dom:"CR Beni Thour", ext:"IRB Nezla", sd:"2", se:"1", stade:"", obs:""},
-  {journee:"5", date:"2026-10-13", heure:"15:00", dom:"JSM Skikda", ext:"NC Magra", sd:"2", se:"1", stade:"", obs:""},
-  {journee:"5", date:"2026-10-13", heure:"15:00", dom:"JSD Jijel", ext:"MSP Batna", sd:"1", se:"2", stade:"", obs:""},
-  {journee:"5", date:"2026-10-14", heure:"15:00", dom:"MO Constantine", ext:"JS Azazga", sd:"1", se:"0", stade:"", obs:""},
-  {journee:"5", date:"2026-10-15", heure:"15:00", dom:"MO Béjaïa", ext:"NRB Beni Oulbane", sd:"2", se:"0", stade:"Stade des Martyrs (Akbou)", obs:"Huis-Clos"},
-  {journee:"6", date:"2026-10-17", heure:"15:00", dom:"USM Annaba", ext:"CA Batna", sd:"0", se:"0", stade:"", obs:""},
-  {journee:"6", date:"2026-10-17", heure:"15:00", dom:"US Chaouia", ext:"NRB Teleghma", sd:"1", se:"0", stade:"", obs:""},
-  {journee:"6", date:"2026-10-17", heure:"15:00", dom:"Paradou AC", ext:"JSD Jijel", sd:"2", se:"0", stade:"", obs:"Huis-Clos"},
-  {journee:"6", date:"2026-10-17", heure:"15:00", dom:"NC Magra", ext:"IRB Nezla", sd:"1", se:"0", stade:"", obs:""},
-  {journee:"6", date:"2026-10-18", heure:"15:00", dom:"AS Khroub", ext:"JSM Skikda", sd:"2", se:"1", stade:"", obs:""},
-  {journee:"6", date:"2026-10-19", heure:"15:00", dom:"MSP Batna", ext:"MO Béjaïa", sd:"1", se:"0", stade:"Stade 1er Novembre 1954 (Batna)", obs:""},
-  {journee:"6", date:"2026-10-19", heure:"15:00", dom:"JS Azazga", ext:"CR Beni Thour", sd:"", se:"", stade:"", obs:""},
-  {journee:"6", date:"2026-10-19", heure:"15:00", dom:"NRB Beni Oulbane", ext:"MO Constantine", sd:"", se:"", stade:"", obs:""},
-  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"IRB Nezla", ext:"JS Azazga", sd:"", se:"", stade:"", obs:""},
-  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"NRB Teleghma", ext:"NRB Beni Oulbane", sd:"", se:"", stade:"", obs:""},
-  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"CA Batna", ext:"US Chaouia", sd:"", se:"", stade:"", obs:""},
-  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"CR Beni Thour", ext:"USM Annaba", sd:"", se:"", stade:"", obs:""},
-  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"JSM Skikda", ext:"MSP Batna", sd:"", se:"", stade:"", obs:""},
-  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"JSD Jijel", ext:"NC Magra", sd:"", se:"", stade:"", obs:""},
-  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"MO Constantine", ext:"AS Khroub", sd:"", se:"", stade:"", obs:""},
-  {journee:"7", date:"2026-10-24", heure:"15:00", dom:"MO Béjaïa", ext:"Paradou AC", sd:"", se:"", stade:"Stade des Martyrs (Akbou)", obs:""},
-  {journee:"8", date:"", heure:"", dom:"AS Khroub", ext:"MO Béjaïa", sd:"", se:"", stade:"Stade Abed-Hamdani (El Khroub)", obs:"Date à confirmer"},
-  {journee:"9", date:"", heure:"", dom:"MO Béjaïa", ext:"CR Beni Thour", sd:"", se:"", stade:"Stade des Martyrs (Akbou)", obs:"Date à confirmer"}
+  {journee:"3", date:"2026-10-03", heure:"15:00", dom:"JSD Jijel", ext:"JS Azazga", sd:"0", se:"0", stade:"", obs:""}
 ];
 
 const STAFF_INIT = [
-  { nom: "Hamide Aït-Ahmed Lamara", fonction: "Entraîneur principal", ddn: "14/06/1974 (Charleville-Mézières)", infos: "Licence UEFA Pro", img: "https://i.postimg.cc/MZd2ppjW/Hamide-Lamara-Ait-Ahmed-entraineur-MO-Bejaia-saison-2026-2027.jpg" },
-  { nom: "Mourad Tairi", fonction: "Entraîneur des gardiens", ddn: "08/03/1974 (Aokas)", infos: "", img: "https://i.postimg.cc/L5sW1jZj/Mourad-Tairi-entraineur-des-gardiens-MO-Bejaia-saison-2026-2027.png" },
-  { nom: "Abdelkader Djafri", fonction: "Préparateur physique", ddn: "06/07/1984 (Tighennif)", infos: "", img: "https://i.postimg.cc/vB0qbDSd/Abdelkader-Djafri-preparateur-physique-MO-Bejaia-saison-2026-2027.png" }
+  { nom: "Hamide Aït-Ahmed Lamara", fonction: "Entraîneur principal", ddn: "14/06/1974 (Charleville-Mézières)", infos: "Licence UEFA Pro", img: "https://i.postimg.cc/MZd2ppjW/Hamide-Lamara-Ait-Ahmed-entraineur-MO-Bejaia-saison-2026-2027.jpg" }
 ];
 
 const DIRIGEANTS_INIT = [
-  { nom: "Hachemi Belameri", fonction: "Président", img: "https://i.postimg.cc/Gm9Zd8DK/Hachemi-Belameri-President-du-MO-Bejaia.jpg" },
-  { nom: "Tarik Hamoum", fonction: "Coordinateur technique", img: "https://i.postimg.cc/GpGgmkmK/Tarik-Hammoum-coordinateur-technique.jpg" },
-  { nom: "Baila Mahrez", fonction: "Président des jeunes catégories", img: "https://i.postimg.cc/nzn2Vg5b/Baila-Mahrez-President-des-jeunes-categories-du-MOB.jpg" },
-  { nom: "Rachid Aït Idir", fonction: "Membre", img: "" },
-  { nom: "Fouad Larab", fonction: "Membre", img: "" },
-  { nom: "Abdelaziz Maouche", fonction: "Membre", img: "" },
-  { nom: "Sofiane Idirene", fonction: "Membre", img: "" }
+  { nom: "Hachemi Belameri", fonction: "Président", img: "https://i.postimg.cc/Gm9Zd8DK/Hachemi-Belameri-President-du-MO-Bejaia.jpg" }
 ];
 
 const PLAYERS_INIT = [
-  {num:7, nom:"Bouakaz Abderrahim", poste:"Milieu", ddn:"02/07/2002", lieu:"Khenchela", nat:"Algérienne", taille:"-", pied:"-", prev:"USM El Harrach", finContrat:"-", img:"https://i.postimg.cc/d1Xjvpmb/Abderahim-Bouakaz-rejoint-le-MOB.jpg"},
-  {num:4, nom:"Rebiai Hamza", poste:"Défenseur central", ddn:"11/01/1994", lieu:"El Cheria", nat:"Algérienne", taille:"1,79m", pied:"Droitier", prev:"MB Rouissat", finContrat:"-", img:"https://i.postimg.cc/kXw7ty6V/Rebiai-Hamza-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:5, nom:"Guessoum Kelyan Jean Said", poste:"Défenseur central", ddn:"05/02/1999", lieu:"Alès, France", nat:"Franco-Algérienne", taille:"1,76m", pied:"Droitier", prev:"MC Oran", finContrat:"-", img:"https://i.postimg.cc/qRjTSsfg/Guessoum-Kelyan-Jean-Said-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:22, nom:"Oukaci Juba", poste:"Milieu central", ddn:"08/07/1996", lieu:"Azazga", nat:"Algérienne", taille:"1,71m", pied:"Gaucher", prev:"JS Saoura", finContrat:"-", img:"https://i.postimg.cc/ry1nVVzh/Oukaci-Juba-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:24, nom:"Ben Mazouz Mohamed Saïd", poste:"Attaquant", ddn:"22/03/2004", lieu:"Beni Messous", nat:"Algérienne", taille:"1,82m", pied:"Droitier", prev:"ES Sahel", finContrat:"-", img:"https://i.postimg.cc/PqHNkQcd/Ben-Mazouz-Mohamed-Said-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:27, nom:"Ziane Islem", poste:"Attaquant / Ailier", ddn:"25/10/2006", lieu:"Béjaïa", nat:"Algérienne", taille:"-", pied:"-", prev:"JS Kabylie", finContrat:"-", img:"https://i.postimg.cc/WzqsZdKW/Ziane-Islem-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:16, nom:"Sami Tlemcani", poste:"Gardien", ddn:"21/07/2004", lieu:"Saint-Maurice, France", nat:"Algérienne", taille:"1,95m", pied:"Droitier", prev:"GS Ilioupoli", finContrat:"-", img:"https://i.postimg.cc/02dy0wjL/Tlemcani-Sami-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:21, nom:"Yaya Nadjim", poste:"Attaquant / Ailier", ddn:"12/06/2001", lieu:"Timezrit", nat:"Algérienne", taille:"-", pied:"-", prev:"MO Béjaïa", finContrat:"-", img:"https://i.postimg.cc/gJsnkLhD/Yaya-Nadjim-renouvelle-avec-le-MO-Bejaia-saison-2026-27.jpg"},
-  {num:10, nom:"Yaya Faouzi", poste:"Milieu offensif", ddn:"21/09/1989", lieu:"Timezrit", nat:"Algérienne", taille:"1,74m", pied:"Droitier", prev:"-", finContrat:"-", img:"https://i.postimg.cc/wxbjfpQ9/Yaya-Faouzi-renouvelle-au-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:15, nom:"Amine Benbelaid", poste:"Milieu offensif", ddn:"25/03/1992", lieu:"Oran", nat:"Algérienne", taille:"-", pied:"-", prev:"WA Tlemcen", finContrat:"-", img:"https://i.postimg.cc/NMnv4gqz/Benbelaid-Amine-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:29, nom:"Ait Mouloud Rayane Karim", poste:"Attaquant / Ailier", ddn:"30/11/2003", lieu:"Tiaret", nat:"Algérienne", taille:"-", pied:"Droitier", prev:"JSM Tiaret", finContrat:"-", img:"https://i.postimg.cc/zGvSm5sm/Ait-Mouloud-Rayane-Karim-rejoint-le-MOB.jpg"},
-  {num:18, nom:"Benleguemari Chaouki", poste:"Défenseur central", ddn:"12/04/2000", lieu:"Constantine", nat:"Algérienne", taille:"-", pied:"Droitier", prev:"RC Arbaa", finContrat:"-", img:"https://i.postimg.cc/vHhpZ9GT/Benleguemari-Chaouki-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:28, nom:"Nacef Tariq", poste:"Milieu relayeur / Défensif", ddn:"28/04/2001", lieu:"Chlef", nat:"Algérienne", taille:"-", pied:"-", prev:"RC Arbaa", finContrat:"-", img:"https://i.postimg.cc/wBgycSC6/Nacef-Tariq-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:14, nom:"Mohamed Benazza Essedik", poste:"Milieu offensif", ddn:"-", lieu:"-", nat:"Algérienne", taille:"-", pied:"-", prev:"WA Souk Ahras", finContrat:"-", img:"https://i.postimg.cc/zvB62sDM/Benazza-Mohamed-Essedik-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:6, nom:"Sabri Mohamed Abderrahmane", poste:"Défenseur / Milieu défensif", ddn:"19/11/2005", lieu:"Tizi Ouzou", nat:"Algérienne", taille:"-", pied:"-", prev:"Olympique Akbou", finContrat:"-", img:"https://i.postimg.cc/Nj3vrHzM/Sabri-Mohamed-Abderrahmane-a-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:12, nom:"Boukebal Zakaria", poste:"Défenseur latéral gauche", ddn:"09/01/2002", lieu:"Sidi Moussa", nat:"Algérienne", taille:"-", pied:"Gaucher", prev:"RC Arbaa", finContrat:"-", img:"https://i.postimg.cc/TwqcJz2t/Boukebal-Zakaria-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:23, nom:"Akram Akhrib", poste:"Attaquant / Ailier", ddn:"12/02/2005", lieu:"Tizi-Ouzou", nat:"Algérienne", taille:"-", pied:"-", prev:"SS Sidi Aïch", finContrat:"-", img:"https://i.postimg.cc/kXXdK9Ms/Akhrib-Akram-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:20, nom:"Bounaama Abdessamed", poste:"Arrière gauche", ddn:"26/02/1994", lieu:"El Bayadh", nat:"Algérienne", taille:"-", pied:"Gaucher", prev:"NA Hussein Dey", finContrat:"-", img:"https://i.postimg.cc/sxWKZMQw/Bounaama-Abdessamad-rejoint-le-MO-Bejaia-saison-2026-2027.jpg"},
-  {num:1, nom:"Benmeddah Mohammed Hamza", poste:"Gardien", ddn:"11/11/2003", lieu:"Béni Saf", nat:"Algérienne", taille:"-", pied:"-", prev:"CR Témouchent", finContrat:"-", img:"https://i.postimg.cc/HLNy75cQ/Benmeddah-Mohammed-Hamza-rejoint-le-MO-Bejaia.jpg"},
-  {num:8, nom:"Zamoum Aimad", poste:"Latéral droit / Ailier", ddn:"02/02/2002", lieu:"Béjaïa", nat:"Algérienne", taille:"-", pied:"Droitier", prev:"JSM Béjaïa", finContrat:"-", img:"https://i.postimg.cc/x8Xhpjkz/Zamoum-Aimad-rejoint-le-MO-Bejaia-mercato-estival-2026-2027.jpg"},
-  {num:26, nom:"Tamer Nizar", poste:"Attaquant / Meneur", ddn:"31/07/2001", lieu:"Biskra", nat:"Algérienne", taille:"-", pied:"-", prev:"NC Magra", finContrat:"-", img:"https://i.postimg.cc/tCwZMBcH/Nizar-Tamer-rejoint-le-MO-Bejaia-mercato-estival-2026-2027.jpg"},
-  {num:9, nom:"Bouzid Dadache", poste:"Avant-centre", ddn:"27/09/1993", lieu:"Bordj Bou Arréridj", nat:"Algérienne", taille:"-", pied:"Droitier", prev:"RC Arbaa", finContrat:"-", img:"https://i.postimg.cc/PqgkGwjT/Dadache-Bouzid-rejoint-le-MO-Bejaia-mercato-estival-2026-2027.jpg"},
   {num:2, nom:"Djelloul Abbou M'hamed", poste:"Latéral droit", ddn:"28/02/2001", lieu:"Relizane", nat:"Algérienne", taille:"-", pied:"-", prev:"CR Témouchent", finContrat:"-", img:"https://i.postimg.cc/wTTzKNPM/Djelloul-Abbou-M-hamed-rejoint-le-MO-Bejaia.jpg"},
-  {num:11, nom:"Hammi Waris", poste:"Polyvalent (Ailier / Attaquant)", ddn:"20/11/2004", lieu:"Beni Djellil", nat:"Algérienne", taille:"-", pied:"-", prev:"JSM Béjaïa", finContrat:"-", img:"https://i.postimg.cc/Kc0VMHqv/Hammi-Waris-rejoint-le-MO-Bejaia.jpg"},
-  {num:13, nom:"Hadded Foued", poste:"Milieu défensif", ddn:"01/11/1990", lieu:"Collo", nat:"Algérienne", taille:"-", pied:"Droitier", prev:"RC Kouba", finContrat:"-", img:"https://i.postimg.cc/t4QzZdjT/Hadded-Foued-rejoint-le-MO-Bejaia.jpg"},
-  {num:19, nom:"Touil Lahouari", poste:"Attaquant", ddn:"30/07/1991", lieu:"Aïn El Turk", nat:"Algérienne", taille:"1,65m", pied:"-", prev:"GC Mascara", finContrat:"-", img:"https://i.postimg.cc/wjHvZ3zT/Touil-Lahouari-rejoint-le-MO-Bejaia.jpg"},
-  {num:3, nom:"Ramy Baba", poste:"Attaquant", ddn:"05/04/2006", lieu:"Constantine", nat:"Algérienne", taille:"-", pied:"-", prev:"USM Alger", finContrat:"-", img:"https://i.postimg.cc/9fd8rL0K/Ramy-Baba.jpg"},
-  {num:30, nom:"Aouchiche Mohamed Islem", poste:"Gardien", ddn:"01/12/2006", lieu:"Béjaïa", nat:"Algérienne", taille:"-", pied:"-", prev:"ES Sétif U20", finContrat:"-", img:"https://i.postimg.cc/RhkmcpMk/Aouchiche-Mohamed-Islem-rejoint-le-MO-Bejaia.jpg"}
+  {num:10, nom:"Yaya Faouzi", poste:"Milieu offensif", ddn:"21/09/1989", lieu:"Timezrit", nat:"Algérienne", taille:"1,74m", pied:"Droitier", prev:"-", finContrat:"-", img:"https://i.postimg.cc/wxbjfpQ9/Yaya-Faouzi-renouvelle-au-MO-Bejaia-saison-2026-2027.jpg"}
 ];
 
 const ARTICLES_INIT = [
-  {id:"a1", cat:"all", date:"2026-10-13", titre:"COUP DE MASSUE / J5 : MO Béjaïa vs NRB Beni Oulbane se jouera à huis clos", image:"https://i.postimg.cc/NjDfRd1H/MO-Bejaia-vs-NRB-Beni-Oulbane-a-Huis-Clos.jpg", texte:"C'est une bien triste nouvelle qui vient de tomber pour l'ensemble de la famille mobiste. La Ligue Nationale du Football Amateur (LNFA) a officialisé le programme de la 5ᵉ journée de Ligue 2 Amateur (Groupe Centre-Est), confirmant que la rencontre opposant le MO Béjaïa au NRB Beni Oulbane, ce jeudi 15 octobre 2026 à 15 h 00, se disputera à huis clos (sans public) au Stade des Martyrs d'Akbou.\n\nRappel des Informations :\n- Affiche : MO Béjaïa vs NRB Beni Oulbane\n- Compétition : Ligue 2 Amateur (Groupe Centre-Est) – 5ᵉ Journée\n- Date : Jeudi 15 Octobre 2026\n- Coup d'envoi : 15 h 00\n- Lieu : Stade des Martyrs d'Akbou\n- Statut : Huis-Clos"},
-  {id:"a2", cat:"all", date:"2026-10-07", titre:"DOMICILIATION DU MOB À AKBOU : Une nouvelle étape officiellement franchie", image:"https://i.postimg.cc/5yqMRPjy/Domiciliation-du-MO-Bejaia-a-Akbou.jpg", texte:"La direction du MO Béjaïa a officiellement exprimé sa reconnaissance à l'ensemble des responsables et institutions ayant contribué à l'aboutissement du dossier permettant au club d'évoluer au Stade des Martyrs d'Akbou.\n\nAu centre de ces remerciements figure M. Mehdi Amine Mohamed, nouveau Secrétaire général de la Wilaya de Béjaïa, dont la direction du MOB souligne la disponibilité, l'implication et les efforts déployés depuis le début des démarches.\n\nSelon la direction du club, son intervention a largement contribué à l'aboutissement de l'accord conclu avec l'Olympique Akbou, ouvrant ainsi la possibilité pour le Mouloudia Olympique Béjaïa de recevoir ses adversaires dans cette enceinte.\n\nLe Stade des Martyrs d'Akbou devient ainsi une solution concrète pour permettre au MOB de recevoir ses adversaires dans de meilleures conditions, notamment avec la possibilité de retrouver son public.\n\nMOB AVANT TOUT\nCRABE UN JOUR, MOB TOUJOURS"},
-  {id:"a3", cat:"all", date:"2026-10-01", titre:"MATCH AMICAL DE LUXE : Le MO Béjaïa au test de la JS Kabylie", image:"https://i.postimg.cc/4dYdjTTY/JS-Kabylie-MO-Bejaia-en-amical.jpg", texte:"Face au report de dernière minute de la 3ᵉ journée de Ligue 2 Amateur contre l'IRB Nezla, la direction et le staff technique du MO Béjaïa ont réagi avec rapidité pour maintenir l'équipe dans un rythme de compétition élevé.\n\nCe vendredi 2 octobre 2026 à 17 h 00, les Crabes disputent un test amical de premier plan face à la JS Kabylie sur le terrain annexe du complexe Hocine Aït Ahmed de Tizi Ouzou.\n\nAprès un bilan prometteur de 4 points glanés lors des deux premières journées du championnat, le coach Hamide Lamara profitera de cette opposition de haut niveau pour évaluer le rythme de jeu face à un adversaire de l'élite nationale et tester de nouvelles variantes tactiques.\n\nRepères : JS Kabylie vs MO Béjaïa - Vendredi 02 Octobre 2026 - 17h00 - Stade annexe Hocine Aït Ahmed (Tizi Ouzou) - Match amical."},
-  {id:"a4", cat:"all", date:"2026-10-01", titre:"MOB - IRB NEZLA REPORTÉ : Le dossier de domiciliation entre dans une nouvelle phase", image:"https://i.postimg.cc/Hscx6m9z/MO-Bejaia-vs-IRB-Nezla-reporte.jpg", texte:"La Ligue Nationale de Football Amateur vient d'annoncer officiellement le report de la rencontre devant opposer le Mouloudia de Béjaïa à l'ittihad de Nezla, comptant pour la troisième journée du championnat de Ligue 2 Amateur, Groupe Centre-Est.\n\nInitialement programmée le vendredi 2 octobre 2026 à 15h00, la rencontre devait se dérouler au stade du 1er-Novembre 1954 de Guendouza, à Akbou.\n\nLa LNFA indique désormais que cette confrontation est reportée à une date ultérieure. Ce report offre mécaniquement un délai supplémentaire pour clarifier les conditions dans lesquelles le Mouloudia de Béjaïa pourra recevoir ses prochains adversaires.\n\nCe qui est établi : La rencontre MOB - IRB Nezla est reportée. Ce qui reste à déterminer : La nouvelle date, le stade, la jauge, et la situation de la domiciliation."},
-  {id:"a5", cat:"all", date:"2026-09-18", titre:"MO BEJAIA : LE HOME KIT 2026/27 DEVOILE", image:"https://i.postimg.cc/TYqSML0c/Nouvelle-tenue-MO-Bejaia-2026-2027.jpg", texte:"Le MO Béjaïa tient désormais sa nouvelle tunique domicile pour la saison 2026-2027. Le club a dévoilé son HOME KIT 2026/27 à travers une série de photographies.\n\nFidèle à l'identité du club, la nouvelle tunique repose sur les deux couleurs historiques du MO Béjaïa : le vert et le noir. Le maillot présente une alternance de bandes verticales vertes et noires, accompagnées de motifs graphiques plus fins.\n\nSur la partie supérieure, on retrouve le blason du MOB, tandis que le logo de l'équipementier prend place sur la poitrine opposée. Au centre du maillot figurent les partenaires commerciaux : Ooredoo, Soummam, Tchin-Lait et Maxipower.\n\nUn maillot change. Les couleurs, elles, restent. VERT ET NOIR, PARCE QUE LE MOB C'EST UNE IDENTITÉ."}
+  {id:"a1", cat:"all", date:"2026-10-13", titre:"COUP DE MASSUE / J5 : MO Béjaïa vs NRB Beni Oulbane se jouera à huis clos", image:"https://i.postimg.cc/NjDfRd1H/MO-Bejaia-vs-NRB-Beni-Oulbane-a-Huis-Clos.jpg", texte:"C'est une bien triste nouvelle qui vient de tomber pour l'ensemble de la famille mobiste. La Ligue Nationale du Football Amateur (LNFA) a officialisé le programme de la 5ᵉ journée de Ligue 2 Amateur (Groupe Centre-Est), confirmant que la rencontre opposant le MO Béjaïa au NRB Beni Oulbane, ce jeudi 15 octobre 2026 à 15 h 00, se disputera à huis clos (sans public) au Stade des Martyrs d'Akbou.\n\nRappel des Informations :\n- Affiche : MO Béjaïa vs NRB Beni Oulbane\n- Compétition : Ligue 2 Amateur (Groupe Centre-Est) – 5ᵉ Journée\n- Date : Jeudi 15 Octobre 2026\n- Coup d'envoi : 15 h 00\n- Lieu : Stade des Martyrs d'Akbou\n- Statut : Huis-Clos"}
 ];
 
 let data = { 
   championnat: [], coupe: [], players: [], staff: [], dirigeants: [], mob: {}, live: {}, affiches: {}, videos: {}, articles: [], equipes: [], stades: [], fdm: [], breves: [],
   stats: { activeVote: null, buteurs: {}, cartons: {} },
-  historique_custom: [], // Nouveau: pour les sections ajoutées par l'admin
-  medias: { 
-    albums: [
-      {
-        id: 'al1', titre: 'MO Bejaia 0-0 MO Constantine', date: '2026-09-18',
-        photos: [
-          "https://i.postimg.cc/cLvWWHxk/OUKACI-JUBA-MO-Bejaia-0-0-MO-Constantine-1et-journee-18-septembre-2026.jpg",
-          "https://i.postimg.cc/hjr6TW4Z/Benleguemari-Chaouki-MO-Bejaia-0-0-MO-Constantine-1er-journee-18-septembre-2026.jpg",
-          "https://i.postimg.cc/TY8N13Jt/Hamide-Lamara-MO-Bejaia-0-0-MO-Constantine-1er-journee-18-septembre-2026.jpg",
-          "https://i.postimg.cc/JhdPLrnV/Boukebal-Zakaria-MO-Bejaia-0-0-MO-Constantine-1er-journee-18-septembre-2026.jpg",
-          "https://i.postimg.cc/15ZMPY9n/Equipe-du-MO-Constantine-MO-Bejaia-0-0-MO-Constantine-18-septembre-2026.jpg",
-          "https://i.postimg.cc/T1vjdpv0/Equipe-du-MO-Bejaia-MO-Bejaia-0-0-MO-Constantine-1er-journee-18-septembre-2026.jpg",
-          "https://i.postimg.cc/WbXZK9z5/Les-arbitres-et-les-deux-capitaines-MO-Bejaia-0-0-MO-Constantine-1er-journee-18-septembre-2026.jpg",
-          "https://i.postimg.cc/SRmX18hp/Yaya-Faouzi-en-Cie-avec-des-joueurs-du-MOC-MO-Bejaia-0-0-MO-Constantine-1er-journee-18-septembre-2.jpg",
-          "https://i.postimg.cc/fR1Vn1Nm/Oukaci-Juba-Rebiai-Hamza-MO-Bejaia-0-0-MO-Constantine-1er-journee-18-septembre-2026.jpg",
-          "https://i.postimg.cc/rp6wYW1H/Hamide-Lamara-MO-Bejaia-0-0-MO-Constantine-1er-journee-18-septembre-2026.jpg",
-          "https://i.postimg.cc/kG5JtyC8/Ait-Mouloud-Rayane-Karim-MO-Bejaia-0-0-MO-Constantine-1er-journee-18-septembre-2026.jpg"
-        ]
-      }
-    ], 
-    videos: [ { id: 'v1', titre: 'Le ratage de Ben Mazouz', url: 'https://youtu.be/JGxf58nrSQY?si=14pjsov6ExR3c_6h' } ] 
-  } 
+  historique_custom: [],
+  medias: { albums: [], videos: [] } 
 };
 
 let articles = [];
 
-// Fonction utilitaire pour récupérer la photo d'un joueur par son nom
+function escapeQuotes(str) {
+    return str.replace(/'/g, "\\'");
+}
+
 function getPlayerImg(playerName) {
     if(!data.players) return "https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png";
-    const p = data.players.find(x => x.nom.toLowerCase().includes(playerName.toLowerCase()));
+    const cleanName = playerName.replace(/'/g, "").toLowerCase();
+    const p = data.players.find(x => x.nom.replace(/'/g, "").toLowerCase().includes(cleanName) || cleanName.includes(x.nom.replace(/'/g, "").toLowerCase()));
     return p && p.img ? p.img : "https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png";
 }
 
@@ -1136,6 +1010,7 @@ function formatText(text) {
 }
 
 function handleTitleClick() { clickCount++; if (clickCount >= 5) { clickCount = 0; if (isAdmin) logoutAdmin(); else openModal('modalAdmin'); } setTimeout(() => { clickCount = 0; }, 2000); }
+
 function tryLogin() {
   const pwd = (document.getElementById('adminPwd').value || '').trim();
   if (pwd === ADMIN_PASSWORD || pwd.toLowerCase() === 'bejaia#2026!mob') {
@@ -1206,7 +1081,26 @@ function switchTab(name, el) {
   if (name === 'stats') renderStats();
   if (name === 'historique') renderHistoriqueDynamic();
 }
-function switchSubTab(mode) { currentSubTab = mode; document.getElementById('subtab-tous').classList.toggle('active', mode === 'tous'); document.getElementById('subtab-programme').classList.toggle('active', mode === 'programme'); document.getElementById('subtab-resultats').classList.toggle('active', mode === 'resultats'); render('championnat'); }
+function switchSubTab(mode) { 
+  currentSubTab = mode; 
+  document.getElementById('subtab-tous').classList.toggle('active', mode === 'tous'); 
+  document.getElementById('subtab-programme').classList.toggle('active', mode === 'programme'); 
+  document.getElementById('subtab-resultats').classList.toggle('active', mode === 'resultats'); 
+  document.getElementById('subtab-coupe').classList.toggle('active', mode === 'coupe'); 
+  
+  const filters = document.getElementById('filtersChampionnat');
+  const tableHeaders = document.querySelector('#tab-championnat table thead tr th:first-child');
+  
+  if(mode === 'coupe') {
+      filters.style.display = 'none';
+      tableHeaders.textContent = 'Tour';
+      document.getElementById('countChampionnat').textContent = '';
+  } else {
+      filters.style.display = 'flex';
+      tableHeaders.textContent = 'J';
+  }
+  render('championnat'); 
+}
 function switchSubTabMob(mode) { currentMobSubTab = mode; document.getElementById('subtab-mob-avant').classList.toggle('active', mode === 'avant'); document.getElementById('subtab-mob-day').classList.toggle('active', mode === 'day'); document.getElementById('subtab-mob-apres').classList.toggle('active', mode === 'apres'); document.getElementById('mob-avant').style.display = mode === 'avant' ? 'block' : 'none'; document.getElementById('mob-day').style.display = mode === 'day' ? 'block' : 'none'; document.getElementById('mob-apres').style.display = mode === 'apres' ? 'block' : 'none'; renderMob(); }
 function switchSubTabNews(cat) { currentNewsSubTab = cat; document.getElementById('subtab-news-all').classList.toggle('active', cat === 'all'); document.getElementById('subtab-news-portraits').classList.toggle('active', cat === 'portraits'); document.getElementById('subtab-news-jeunes').classList.toggle('active', cat === 'jeunes'); renderNewsTab(); }
 function switchSubTabMedia(type) { currentMediaSubTab = type; document.getElementById('subtab-media-images').classList.toggle('active', type === 'images'); document.getElementById('subtab-media-videos').classList.toggle('active', type === 'videos'); document.getElementById('media-images-container').style.display = type === 'images' ? 'block' : 'none'; document.getElementById('media-videos-container').style.display = type === 'videos' ? 'block' : 'none'; if(isAdmin) { document.getElementById('btnAddAlbum').style.display = type === 'images' ? 'inline-block' : 'none'; document.getElementById('btnAddVideoMedia').style.display = type === 'videos' ? 'inline-block' : 'none'; } renderMedias(); }
@@ -1220,21 +1114,35 @@ function render(section) {
   if (section !== 'championnat') return;
   const tbody = document.getElementById('tbody-championnat');
   const count = document.getElementById('countChampionnat');
-  let list = data.championnat;
-  const fj = document.getElementById('filterJournee').value;
-  const fe = document.getElementById('filterEquipe').value;
+  let list = currentSubTab === 'coupe' ? data.coupe : data.championnat;
+  
   if (currentSubTab === 'programme') list = list.filter(m => !hasScore(m));
   else if (currentSubTab === 'resultats') list = list.filter(m => hasScore(m));
-  list = list.filter(m => { const matchJ = (!fj || String(m.journee) === String(fj)); const matchE = (!fe || m.dom === fe || m.ext === fe); return matchJ && matchE; });
-  list = [...list].sort((a,b) => (parseInt(a.journee||0) - parseInt(b.journee||0)) || (a.date||'').localeCompare(b.date||''));
-  count.textContent = `${list.length} rencontre(s) affichée(s) sur ${data.championnat.length}`;
+  
+  if(currentSubTab !== 'coupe') {
+      const fj = document.getElementById('filterJournee').value;
+      const fe = document.getElementById('filterEquipe').value;
+      list = list.filter(m => { const matchJ = (!fj || String(m.journee) === String(fj)); const matchE = (!fe || m.dom === fe || m.ext === fe); return matchJ && matchE; });
+  }
+  
+  if(currentSubTab !== 'coupe') {
+      list = [...list].sort((a,b) => (parseInt(a.journee||0) - parseInt(b.journee||0)) || (a.date||'').localeCompare(b.date||''));
+      count.textContent = `${list.length} rencontre(s) affichée(s) sur ${data.championnat.length}`;
+  } else {
+      list = [...list].sort((a,b) => (a.date||'').localeCompare(b.date||''));
+  }
+  
   if (list.length === 0) { tbody.innerHTML = '<tr><td colspan="9" class="empty">Aucune rencontre.</td></tr>'; return; }
+  
   tbody.innerHTML = list.map((m) => {
-    const realIdx = data.championnat.indexOf(m);
+    const isCoupe = currentSubTab === 'coupe';
+    const arr = isCoupe ? data.coupe : data.championnat;
+    const realIdx = arr.indexOf(m);
     const score = hasScore(m) ? `<span class="score">${m.sd} - ${m.se}</span>` : '<span style="color:#999">— vs —</span>';
-    const adminButtons = isAdmin ? `<button class="btn-small btn-edit" onclick="openModalMatch('championnat',${realIdx})">✏️</button><button class="btn-small btn-del" onclick="deleteItem('championnat',${realIdx})">🗑️</button>` : '';
-    return `<tr><td><b>J${m.journee||''}</b></td><td>${formatDate(m.date)}</td><td>${m.heure||''}</td><td>${logoImg(m.dom)}${m.dom}</td><td>${score}</td><td>${logoImg(m.ext)}${m.ext}</td><td>${m.stade||''}</td><td class="obs ${m.obs?'':'obs-empty'}">${m.obs||'—'}</td><td>${adminButtons}</td></tr>`;
+    const adminButtons = isAdmin ? `<button class="btn-small btn-edit" onclick="openModalMatch('${isCoupe ? 'coupe' : 'championnat'}',${realIdx})">✏️</button><button class="btn-small btn-del" onclick="deleteItem('${isCoupe ? 'coupe' : 'championnat'}',${realIdx})">🗑️</button>` : '';
+    return `<tr><td><b>${isCoupe ? (m.journee||'') : 'J'+(m.journee||'')}</b></td><td>${formatDate(m.date)}</td><td>${m.heure||''}</td><td>${logoImg(m.dom)}${m.dom}</td><td>${score}</td><td>${logoImg(m.ext)}${m.ext}</td><td>${m.stade||''}</td><td class="obs ${m.obs?'':'obs-empty'}">${m.obs||'—'}</td><td>${adminButtons}</td></tr>`;
   }).join('');
+  
   const journees = [...new Set(data.championnat.map(m => parseInt(m.journee)).filter(Boolean))].sort((a,b)=>a-b);
   document.getElementById('filterJournee').innerHTML = '<option value="">Toutes les journées</option>' + journees.map(j=>`<option value="${j}">J${j}</option>`).join('');
   document.getElementById('filterEquipe').innerHTML = '<option value="">Toutes les équipes</option>' + EQUIPES.map(e=>`<option value="${e}">${e}</option>`).join('');
@@ -1328,7 +1236,7 @@ function renderStats() {
             html += `</div>`;
         } else {
             v.candidates.forEach(c => {
-                html += `<button class="vote-option" onclick="submitVote('${c}')">${c}</button>`;
+                html += `<button class="vote-option" onclick="submitVote('${escapeQuotes(c)}')">${c}</button>`;
             });
         }
         html += `</div>`;
@@ -1342,7 +1250,7 @@ function renderStats() {
         if(buteurs.length === 0) { tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#888;">Aucun buteur enregistré.</td></tr>'; return; }
         tbody.innerHTML = buteurs.map((b, i) => {
             const img = getPlayerImg(b[0]);
-            const adminBtns = isAdmin ? `<button class="btn-small btn-edit" onclick="openModalAddStat('buteur')">➕</button><button class="btn-small btn-del" onclick="deleteStat('buteur','${b[0]}')">🗑️</button>` : '';
+            const adminBtns = isAdmin ? `<button class="btn-small btn-edit" onclick="openModalAddStat('buteur')">➕</button><button class="btn-small btn-del" onclick="deleteStat('buteur','${escapeQuotes(b[0])}')">🗑️</button>` : '';
             return `<tr><td><b>${i+1}</b></td><td><img src="${img}" class="stats-img" onerror="this.src='https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png'"> ${b[0]}</td><td><b>${b[1]}</b></td><td>${adminBtns}</td></tr>`;
         }).join('');
     }
@@ -1352,7 +1260,7 @@ function renderStats() {
         if(cartons.length === 0) { tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#888;">Aucun carton enregistré.</td></tr>'; return; }
         tbody.innerHTML = cartons.map(c => {
             const img = getPlayerImg(c[0]);
-            const adminBtns = isAdmin ? `<button class="btn-small btn-edit" onclick="openModalAddStat('carton')">➕</button><button class="btn-small btn-del" onclick="deleteStat('carton','${c[0]}')">🗑️</button>` : '';
+            const adminBtns = isAdmin ? `<button class="btn-small btn-edit" onclick="openModalAddStat('carton')">➕</button><button class="btn-small btn-del" onclick="deleteStat('carton','${escapeQuotes(c[0])}')">🗑️</button>` : '';
             return `<tr><td><img src="${img}" class="stats-img" onerror="this.src='https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png'"> ${c[0]}</td><td>${c[1].jaune || 0}</td><td>${c[1].rouge || 0}</td><td>${adminBtns}</td></tr>`;
         }).join('');
     }
@@ -1376,7 +1284,7 @@ function renderHomeVoteWidget() {
         html += `<div style="font-size:10px; color:#666; margin-top:5px;">Voir les résultats complets dans l'onglet Stats</div>`;
     } else {
         v.candidates.slice(0, 3).forEach(c => {
-            html += `<button class="home-vote-option" onclick="submitVote('${c}')">${c}</button>`;
+            html += `<button class="home-vote-option" onclick="submitVote('${escapeQuotes(c)}')">${c}</button>`;
         });
         if(v.candidates.length > 3) html += `<div style="font-size:10px; color:#888;">+ d'autres dans l'onglet Stats</div>`;
     }
@@ -1429,12 +1337,12 @@ async function saveNewVote() {
 function openModalManageVote() {
     if(!data.stats.activeVote) return;
     const container = document.getElementById('manageVoteList');
-    container.innerHTML = data.stats.activeVote.candidates.map(c => `
+    container.innerHTML = data.stats.activeVote.candidates.map((c, i) => `
         <div style="display:flex; justify-content:space-between; align-items:center; background:#f9f9f9; padding:8px; margin-bottom:5px; border-radius:5px; border:1px solid #ddd;">
             <span>${c}</span>
             <div>
-                <button onclick="editCandidate('${c}')" class="btn-small btn-edit">✏️</button>
-                <button onclick="removeCandidate('${c}')" class="btn-small btn-del">🗑️</button>
+                <button onclick="editCandidate(${i})" class="btn-small btn-edit">✏️</button>
+                <button onclick="removeCandidateByIndex(${i})" class="btn-small btn-del">🗑️</button>
             </div>
         </div>
     `).join('');
@@ -1452,10 +1360,11 @@ async function addCandidateToVote() {
     renderStats();
     renderHomeVoteWidget();
 }
-async function removeCandidate(name) {
+async function removeCandidateByIndex(idx) {
     if(!data.stats.activeVote) return;
+    const name = data.stats.activeVote.candidates[idx];
     if(confirm('Supprimer ce candidat ? Ses votes seront perdus.')) {
-        data.stats.activeVote.candidates = data.stats.activeVote.candidates.filter(c => c !== name);
+        data.stats.activeVote.candidates.splice(idx, 1);
         if(data.stats.activeVote.votes) delete data.stats.activeVote.votes[name];
         await saveToFirebase();
         openModalManageVote();
@@ -1463,14 +1372,13 @@ async function removeCandidate(name) {
         renderHomeVoteWidget();
     }
 }
-async function editCandidate(oldName) {
+async function editCandidate(idx) {
     if(!data.stats.activeVote) return;
+    const oldName = data.stats.activeVote.candidates[idx];
     const newName = prompt("Modifier le nom du candidat :", oldName);
     if(newName && newName.trim() !== '' && newName.trim() !== oldName) {
         if(data.stats.activeVote.candidates.includes(newName.trim())) return alert("Ce nom existe déjà.");
-        const idx = data.stats.activeVote.candidates.indexOf(oldName);
         data.stats.activeVote.candidates[idx] = newName.trim();
-        // Transférer les votes
         if(data.stats.activeVote.votes && data.stats.activeVote.votes[oldName]) {
             data.stats.activeVote.votes[newName.trim()] = data.stats.activeVote.votes[oldName];
             delete data.stats.activeVote.votes[oldName];
@@ -1652,7 +1560,6 @@ async function saveMatch() {
   await saveToFirebase(); closeModal('modalMatch'); render('championnat'); updateNextMatch();
 }
 
-// --- ACTUALITES ---
 function openModalNews(idx) {
   if(!isAdmin) return;
   document.getElementById('editNewsIdx').value = idx === 'new' ? '' : idx;
@@ -1669,7 +1576,6 @@ async function saveNews() {
   await saveToFirebase(); closeModal('modalNewsEdit'); renderNewsTab(); renderCarousel();
 }
 
-// --- FDM ---
 function openModalFDM(idx) {
   if(!isAdmin) return;
   document.getElementById('editFdmIdx').value = idx === 'new' ? '' : idx;
@@ -1699,7 +1605,6 @@ function openFDMView(id) {
   openModal('modalFDMView');
 }
 
-// --- BREVES ---
 function openModalAllBreves() {
     if(!data.breves || data.breves.length === 0) return;
     const sorted = [...data.breves].sort((a,b) => b.date.localeCompare(a.date));
@@ -1726,7 +1631,6 @@ function openModalBreveView(id) {
     openModal('modalBreveView');
 }
 
-// --- MEDIAS ---
 function openModalAlbum() { if(!isAdmin) return; document.getElementById('albumTitre').value = ''; document.getElementById('albumDate').value = new Date().toISOString().split('T')[0]; openModal('modalAlbum'); }
 async function saveAlbum() { const a = { id: 'al'+Date.now(), titre: document.getElementById('albumTitre').value, date: document.getElementById('albumDate').value, photos: [] }; if(!data.medias.albums) data.medias.albums = []; data.medias.albums.push(a); await saveToFirebase(); closeModal('modalAlbum'); renderMedias(); }
 function openAlbumView(idx) { const a = data.medias.albums[idx]; document.getElementById('albumViewTitle').textContent = `📸 ${a.titre}`; document.getElementById('albumViewGrid').innerHTML = a.photos.map((p, pIdx) => `<div class="photo-wrapper">${isAdmin ? `<button class="btn-del-photo" onclick="deletePhoto(${idx}, ${pIdx})">🗑️</button>` : ''}<img src="${p}" onclick="window.open('${p}','_blank')"></div>`).join(''); document.getElementById('albumViewToolbar').style.display = isAdmin ? 'block' : 'none'; document.getElementById('photoAlbumId').value = idx; openModal('modalAlbumView'); }
@@ -1740,7 +1644,6 @@ async function deleteVideoMedia(idx) { if(confirm('Supprimer cette vidéo ?')) {
 function openVideoModal(url, title) { document.getElementById('videoModalTitle').textContent = title; document.getElementById('videoModalIframe').src = url; openModal('modalVideoPlayer'); }
 function closeVideoModal() { document.getElementById('videoModalIframe').src = ''; closeModal('modalVideoPlayer'); }
 
-// --- HISTORIQUE (NOUVEAU) ---
 function renderHistoriqueDynamic() {
     const container = document.getElementById('historique-dynamic-sections');
     if(!container) return;
@@ -1780,7 +1683,6 @@ async function deleteHisto(idx) {
     }
 }
 
-// --- MOB ---
 function openModalMob(section) { if (!isAdmin) return; document.getElementById('mobSection').value = section; document.getElementById('mobImgInput').value = (data.mob[section] && data.mob[section].img) ? data.mob[section].img : ''; document.getElementById('mobTextInput').value = (data.mob[section] && data.mob[section].txt) ? data.mob[section].txt : ''; openModal('modalMob'); }
 async function saveMobContent() { const section = document.getElementById('mobSection').value; data.mob[section] = { img: document.getElementById('mobImgInput').value, txt: document.getElementById('mobTextInput').value }; await saveToFirebase(); closeModal('modalMob'); renderMob(); }
 function openModalAffiche(section) { if(!isAdmin) return; document.getElementById('afficheSection').value = section; document.getElementById('afficheUrl').value = data.affiches[section] || ''; openModal('modalAffiche'); }
@@ -1790,14 +1692,13 @@ async function saveVideo() { const section = document.getElementById('videoSecti
 function openModalLive() { if (!isAdmin) return; document.getElementById('liveStatut').value = (data.live && data.live.statut) ? data.live.statut : 'inactif'; document.getElementById('liveSd').value = (data.live && data.live.sd) ? data.live.sd : 0; document.getElementById('liveSe').value = (data.live && data.live.se) ? data.live.se : 0; document.getElementById('liveTexte').value = (data.live && data.live.texte) ? data.live.texte : ''; openModal('modalLive'); }
 async function saveLive() { data.live = { statut: document.getElementById('liveStatut').value, sd: document.getElementById('liveSd').value, se: document.getElementById('liveSe').value, texte: document.getElementById('liveTexte').value }; await saveToFirebase(); closeModal('modalLive'); renderMob(); }
 
-// --- CLUB ---
 function openModalPlayer(idx) { if (!isAdmin) return; document.getElementById('editPlayerIdx').value = idx === 'new' ? '' : idx; const p = idx !== 'new' ? data.players[idx] : {num:'', nom:'', poste:'', ddn:'', lieu:'', nat:'', taille:'', pied:'', prev:'', finContrat:'', img:'', departDate:'', departMotif:''}; document.getElementById('pNum').value = p.num; document.getElementById('pNom').value = p.nom; document.getElementById('pPoste').value = p.poste; document.getElementById('pDdn').value = p.ddn; document.getElementById('pLieu').value = p.lieu; document.getElementById('pNat').value = p.nat; document.getElementById('pTaille').value = p.taille; document.getElementById('pPied').value = p.pied; document.getElementById('pPrev').value = p.prev; document.getElementById('pFinContrat').value = p.finContrat || ''; document.getElementById('pImg').value = p.img; document.getElementById('pDepartDate').value = p.departDate || ''; document.getElementById('pDepartMotif').value = p.departMotif || ''; openModal('modalPlayer'); }
 async function savePlayer() { const idx = document.getElementById('editPlayerIdx').value; const p = { num: parseInt(document.getElementById('pNum').value), nom: document.getElementById('pNom').value, poste: document.getElementById('pPoste').value, ddn: document.getElementById('pDdn').value, lieu: document.getElementById('pLieu').value, nat: document.getElementById('pNat').value, taille: document.getElementById('pTaille').value, pied: document.getElementById('pPied').value, prev: document.getElementById('pPrev').value, finContrat: document.getElementById('pFinContrat').value, img: document.getElementById('pImg').value, departDate: document.getElementById('pDepartDate').value, departMotif: document.getElementById('pDepartMotif').value }; if (idx === '') data.players.push(p); else data.players[parseInt(idx)] = p; await saveToFirebase(); closeModal('modalPlayer'); renderClub(); }
 function openModalStaff(idx) { if (!isAdmin) return; document.getElementById('editStaffIdx').value = idx === 'new' ? '' : idx; const s = idx !== 'new' ? data.staff[idx] : {nom:'', fonction:'', ddn:'', infos:'', img:'', departDate:'', departMotif:''}; document.getElementById('sNom').value = s.nom; document.getElementById('sFonction').value = s.fonction; document.getElementById('sDdn').value = s.ddn; document.getElementById('sInfos').value = s.infos; document.getElementById('sImg').value = s.img; document.getElementById('sDepartDate').value = s.departDate || ''; document.getElementById('sDepartMotif').value = s.departMotif || ''; openModal('modalStaff'); }
 async function saveStaff() { const idx = document.getElementById('editStaffIdx').value; const s = { nom: document.getElementById('sNom').value, fonction: document.getElementById('sFonction').value, ddn: document.getElementById('sDdn').value, infos: document.getElementById('sInfos').value, img: document.getElementById('sImg').value, departDate: document.getElementById('sDepartDate').value, departMotif: document.getElementById('sDepartMotif').value }; if (idx === '') data.staff.push(s); else data.staff[parseInt(idx)] = s; await saveToFirebase(); closeModal('modalStaff'); renderClub(); }
 function openModalDirigeant(idx) { if (!isAdmin) return; document.getElementById('editDirIdx').value = idx === 'new' ? '' : idx; const d = idx !== 'new' ? data.dirigeants[idx] : {nom:'', fonction:'', img:'', departDate:'', departMotif:''}; document.getElementById('dNom').value = d.nom; document.getElementById('dFonction').value = d.fonction; document.getElementById('dImg').value = d.img; document.getElementById('dDepartDate').value = d.departDate || ''; document.getElementById('dDepartMotif').value = d.departMotif || ''; openModal('modalDirigeant'); }
 async function saveDirigeant() { const idx = document.getElementById('editDirIdx').value; const d = { nom: document.getElementById('dNom').value, fonction: document.getElementById('dFonction').value, img: document.getElementById('dImg').value, departDate: document.getElementById('dDepartDate').value, departMotif: document.getElementById('dDepartMotif').value }; if (idx === '') data.dirigeants.push(d); else data.dirigeants[parseInt(idx)] = d; await saveToFirebase(); closeModal('modalDirigeant'); renderClub(); }
-async function deleteItem(section, idx) { if (confirm('Supprimer cet élément ?')) { data[section].splice(idx,1); await saveToFirebase(); if(section==='championnat') render('championnat'); else renderClub(); } }
+async function deleteItem(section, idx) { if (confirm('Supprimer cet élément ?')) { data[section].splice(idx,1); await saveToFirebase(); if(section==='championnat' || section==='coupe') render('championnat'); else renderClub(); } }
 
 function renderClassement() {
   const jMax = document.getElementById('selectJourneeClassement').value;
@@ -1867,24 +1768,25 @@ async function loadFromFirebase() {
   data.championnat = [...MATCHS_INIT]; data.players = [...PLAYERS_INIT]; data.staff = [...STAFF_INIT]; data.dirigeants = [...DIRIGEANTS_INIT]; data.articles = [...ARTICLES_INIT]; data.fdm = [...FDM_INIT]; data.breves = [...BREVES_INIT]; data.equipes = [...EQUIPES]; data.stades = [...STADES];
   articles = data.articles;
   
-  // Afficher immédiatement les données locales (dont le carrousel)
   renderAll(); 
-  startCarouselAuto(); // Correction : Lancer le défilement automatique
+  startCarouselAuto();
 
-  trackVisit(); // Compteur de visites
+  trackVisit(); 
 
   try {
     get(ref(db, 'data_v10')).then((snap) => {
       if (snap.exists()) {
         const fb = snap.val();
-        data.championnat = fb.championnat || [...MATCHS_INIT]; data.players = fb.players || [...PLAYERS_INIT]; data.staff = fb.staff || [...STAFF_INIT]; data.dirigeants = fb.dirigeants || [...DIRIGEANTS_INIT]; data.mob = fb.mob || {}; data.live = fb.live || {}; data.affiches = fb.affiches || {}; data.videos = fb.videos || {}; data.articles = fb.articles || [...ARTICLES_INIT]; data.medias = fb.medias || data.medias; data.fdm = fb.fdm || [...FDM_INIT]; data.breves = fb.breves || [...BREVES_INIT];
+        data.championnat = fb.championnat || [...MATCHS_INIT]; 
+        data.coupe = fb.coupe || [];
+        data.players = fb.players || [...PLAYERS_INIT]; data.staff = fb.staff || [...STAFF_INIT]; data.dirigeants = fb.dirigeants || [...DIRIGEANTS_INIT]; data.mob = fb.mob || {}; data.live = fb.live || {}; data.affiches = fb.affiches || {}; data.videos = fb.videos || {}; data.articles = fb.articles || [...ARTICLES_INIT]; data.medias = fb.medias || data.medias; data.fdm = fb.fdm || [...FDM_INIT]; data.breves = fb.breves || [...BREVES_INIT];
         data.stats = fb.stats || { activeVote: null, buteurs: {}, cartons: {} };
-        data.historique_custom = fb.historique_custom || []; // Charger l'historique personnalisé
+        data.historique_custom = fb.historique_custom || []; 
         if(fb.equipes) { data.equipes = fb.equipes; EQUIPES = data.equipes; }
         if(fb.stades) { data.stades = fb.stades; STADES = data.stades; }
         articles = data.articles;
         
-        renderAll(); // Met à jour l'affichage avec les vraies données
+        renderAll();
         
         document.getElementById('statusBar').className = 'status online';
         document.getElementById('statusBar').textContent = `🟢 Connecté (${data.championnat.length} matchs)`;
@@ -1930,7 +1832,7 @@ window.openModalFDM = openModalFDM; window.saveFDM = saveFDM; window.deleteFDM =
 window.openModalAllBreves = openModalAllBreves;
 window.openModalBreveView = openModalBreveView;
 window.submitVote = submitVote; window.resetVote = resetVote; window.openModalCreateVote = openModalCreateVote; window.saveNewVote = saveNewVote; 
-window.openModalManageVote = openModalManageVote; window.addCandidateToVote = addCandidateToVote; window.removeCandidate = removeCandidate; window.editCandidate = editCandidate;
+window.openModalManageVote = openModalManageVote; window.addCandidateToVote = addCandidateToVote; window.removeCandidateByIndex = removeCandidateByIndex; window.editCandidate = editCandidate;
 window.openModalAddStat = openModalAddStat; window.saveStat = saveStat; window.deleteStat = deleteStat;
 window.openModalHisto = openModalHisto; window.saveHisto = saveHisto; window.deleteHisto = deleteHisto;
 </script>
