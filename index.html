@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MO Béjaïa - Ligue 2 Amateur 2026-2027</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: Arial, sans-serif; background: #f4f6f9; color: #222; padding: 10px; padding-bottom: 80px; }
@@ -27,7 +26,6 @@
   .btn-del { background: #c0392b; }
   .btn-live { background: #e74c3c; animation: pulse 1.5s infinite; }
   @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
-  
   .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; background: white; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
   table { width: 100%; border-collapse: collapse; min-width: 800px; }
   th, td { padding: 8px; text-align: left; border-bottom: 1px solid #eee; font-size: 12px; white-space: nowrap; }
@@ -37,7 +35,6 @@
   .obs { color: #c0392b; font-style: italic; }
   .obs-empty { color: #999; }
   .empty { text-align: center; padding: 30px; color: #888; }
-  
   .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 100; padding: 10px; }
   .modal.active { display: flex; }
   .modal-content { background: white; padding: 20px; border-radius: 10px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; position: relative; }
@@ -64,10 +61,10 @@
   .cd-num { font-size: 1.4em; font-weight: bold; color: #c9a961; display: block; line-height: 1; }
   .cd-label { font-size: 9px; text-transform: uppercase; opacity: 0.8; letter-spacing: 1px; }
 
-  .live-banner { background-color: #1a4d2e; color: white; text-align: center; padding: 8px; border-radius: 6px; font-weight: bold; margin-bottom: 12px; display: none; animation: flashLive 2s infinite; box-shadow: 0 2px 8px rgba(26, 77, 46, 0.5); cursor: pointer; white-space: pre-wrap; font-size: 13px; border: 1px solid #c9a961;}
-  @keyframes flashLive { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+  .live-banner { background-color: #e74c3c; color: white; text-align: center; padding: 8px; border-radius: 6px; font-weight: bold; margin-bottom: 12px; display: none; animation: flashLive 1s infinite; box-shadow: 0 2px 8px rgba(231, 76, 60, 0.5); cursor: pointer; white-space: pre-wrap; font-size: 13px;}
+  @keyframes flashLive { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
-  .ticker-container { width: 100%; background: #1a4d2e; color: white; padding: 8px 0; overflow: hidden; border-radius: 6px; margin-bottom: 15px; position: relative; cursor: pointer; }
+  .ticker-container { width: 100%; background: #1a4d2e; color: white; padding: 8px 0; overflow: hidden; border-radius: 6px; margin-bottom: 12px; position: relative; cursor: pointer; }
   .ticker-title { position: absolute; left: 0; top: 0; bottom: 0; background: #c9a961; color: #1a4d2e; padding: 0 10px; font-weight: bold; font-size: 12px; display: flex; align-items: center; z-index: 2; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}
   .ticker-content { display: inline-block; white-space: nowrap; padding-left: 100%; animation: ticker 35s linear infinite; font-size: 13px; font-weight: bold; padding-top: 2px;}
   @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
@@ -110,7 +107,7 @@
 
   .mob-card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
   .mob-title { color: #1a4d2e; font-size: 1.1em; font-weight: bold; margin-bottom: 10px; border-bottom: 2px solid #c9a961; padding-bottom: 5px; }
-  .live-score { font-size: 2em; font-weight: bold; text-align: center; color: #1a4d2e; margin: 10px 0; }
+  .live-score { font-size: 2em; font-weight: bold; text-align: center; color: #e74c3c; margin: 10px 0; }
   .mob-text { font-size: 14px; line-height: 1.6; white-space: pre-wrap; }
   .mob-affiche { width: 100%; border-radius: 8px; margin-bottom: 15px; display: none; }
   .mob-video { width: 100%; aspect-ratio: 16/9; border: none; border-radius: 8px; margin-top: 15px; display: none; }
@@ -127,7 +124,7 @@
   .player-card .pc-name { font-weight: bold; font-size: 12px; color: #1a4d2e; line-height: 1.2; margin-bottom: 3px; }
   .player-card .pc-pos { font-size: 10px; color: #666; }
   
-  .badge-left { position: absolute; top: 10px; right: -30px; background: #1a4d2e; color: white; font-size: 9px; font-weight: bold; padding: 4px 30px; transform: rotate(45deg); box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 1; pointer-events: none; }
+  .badge-left { position: absolute; top: 10px; right: -30px; background: #c0392b; color: white; font-size: 9px; font-weight: bold; padding: 4px 30px; transform: rotate(45deg); box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 1; pointer-events: none; }
 
   .album-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.15); text-align: center; position: relative; cursor: pointer; border-bottom: 4px solid #c9a961; padding: 15px; transition: transform 0.2s; }
   .album-card:hover { transform: scale(1.02); }
@@ -138,13 +135,13 @@
   .photo-wrapper { position: relative; }
   .photo-wrapper img { width: 100%; height: 100px; object-fit: cover; border-radius: 6px; cursor: pointer; transition: transform 0.2s; }
   .photo-wrapper img:hover { transform: scale(1.05); }
-  .btn-del-photo { position: absolute; top: 2px; right: 2px; background: rgba(26, 77, 46, 0.9); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+  .btn-del-photo { position: absolute; top: 2px; right: 2px; background: rgba(192, 57, 43, 0.9); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; }
 
   .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; }
   .video-item { background: white; padding: 10px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); text-align: center; position: relative; }
   .video-item h5 { font-size: 12px; color: #1a4d2e; margin-bottom: 8px; height: 30px; overflow: hidden; }
   .video-thumb { width: 100%; aspect-ratio: 9/16; object-fit: cover; border-radius: 6px; cursor: pointer; background: #000; }
-  .btn-del-video { position: absolute; top: 5px; right: 5px; background: rgba(26, 77, 46, 0.9); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; z-index: 2; }
+  .btn-del-video { position: absolute; top: 5px; right: 5px; background: rgba(192, 57, 43, 0.9); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; z-index: 2; }
 
   .vote-card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
   .vote-title { font-size: 1.1em; font-weight: bold; color: #1a4d2e; margin-bottom: 10px; text-align: center; }
@@ -192,24 +189,6 @@
   .classement-table th:nth-child(2), .classement-table td:nth-child(2) { text-align: left; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
   .classement-table .logo-mini { width: 18px; height: 18px; margin-right: 2px; }
 
-  /* NOUVELLE INTERFACE CHAMPIONNAT (V19 FINALE) */
-  .champ-dashboard { display: flex; flex-direction: column; gap: 15px; margin-top: 15px; }
-  .dash-card { background: white; border-radius: 10px; padding: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: none; }
-  .dash-card.active { display: block; }
-  .dash-title { font-size: 13px; font-weight: bold; color: #1a4d2e; margin-bottom: 10px; text-align: center; border-bottom: 2px solid #c9a961; padding-bottom: 5px; }
-  .dash-match-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #eee; font-size: 11px; }
-  .dash-match-row:last-child { border-bottom: none; }
-  .dash-match-team { display: flex; align-items: center; gap: 3px; width: 40%; }
-  .dash-match-team.right { justify-content: flex-end; text-align: right; }
-  .dash-match-score { font-weight: bold; color: #1a4d2e; background: #e0f2e9; padding: 2px 4px; border-radius: 4px; font-size: 11px; }
-  
-  .classement-download-wrap { position: relative; background: #f9f9f9; padding: 5px; border-radius: 8px; border: 1px dashed #ccc; }
-  .watermark-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-30deg); display: flex; flex-direction: column; align-items: center; pointer-events: none; white-space: nowrap; z-index: 0; opacity: 0.1; }
-  .classement-mini-table { width: 100%; border-collapse: collapse; font-size: 9px; position: relative; z-index: 1; table-layout: fixed; }
-  .classement-mini-table th, .classement-mini-table td { padding: 2px 1px; text-align: center; border-bottom: 1px solid #ddd; }
-  .classement-mini-table th { background: #1a4d2e; color: white; }
-  .classement-mini-table td:nth-child(2) { text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
   @media (max-width: 400px) {
     .next-match-teams { font-size: 1.05em; }
     .cd-box { min-width: 42px; padding: 5px 6px; }
@@ -227,6 +206,8 @@
 
 <div id="statusBar" class="status loading">⏳ Chargement des données...</div>
 
+<div id="globalLiveBanner" class="live-banner" onclick="switchTab('mob', document.querySelectorAll('.tab')[1])"></div>
+
 <div class="tabs">
   <div class="tab active" onclick="switchTab('championnat', this)">🏆 Championnat</div>
   <div class="tab" onclick="switchTab('mob', this)">🦀 MOB</div>
@@ -236,13 +217,6 @@
   <div class="tab" onclick="switchTab('actualite', this)">📰 Actualité</div>
   <div class="tab" onclick="switchTab('medias', this)">📸 Médias</div>
   <div class="tab" onclick="switchTab('historique', this)">📜 Historique</div>
-</div>
-
-<div id="globalLiveBanner" class="live-banner" onclick="switchTab('mob', document.querySelectorAll('.tab')[1])"></div>
-
-<div class="ticker-container" onclick="openModalAllBreves()">
-  <div class="ticker-title">📢 BRÈVES INFOS</div>
-  <div class="ticker-content" id="tickerContent">Chargement des infos...</div>
 </div>
 
 <div id="adminPanel" class="admin-panel" style="display:none; background:#f0e6ff; border:2px solid #8e44ad; border-radius:8px; padding:10px; margin-bottom:12px;">
@@ -268,6 +242,11 @@
   </div>
 </div>
 
+<div class="ticker-container" onclick="openModalAllBreves()">
+  <div class="ticker-title">📢 BRÈVES INFOS</div>
+  <div class="ticker-content" id="tickerContent">Chargement des infos...</div>
+</div>
+
 <div class="home-widgets">
   <div>
     <div style="font-size: 12px; font-weight: bold; color: #1a4d2e; margin-bottom: 5px; padding-left: 5px;">📰 Dernières Actualités</div>
@@ -291,69 +270,27 @@
 <div id="tab-championnat" class="tab-content active">
   <div class="sub-tabs">
     <div class="sub-tab active" id="subtab-tous" onclick="switchSubTab('tous')">📋 Tous</div>
+    <div class="sub-tab" id="subtab-programme" onclick="switchSubTab('programme')">📅 Programme</div>
+    <div class="sub-tab" id="subtab-resultats" onclick="switchSubTab('resultats')">📊 Résultats</div>
     <div class="sub-tab" id="subtab-coupe" onclick="switchSubTab('coupe')">🏆 Coupe d'Algérie</div>
   </div>
-  
-  <div id="champ-visitor-view" style="display:none;">
-    <div class="toolbar">
-      <select id="selectJourneeVisiteur" onchange="renderVisitorChamp()" style="padding:10px; font-weight:bold; font-size:14px; color:#1a4d2e; border:2px solid #1a4d2e; width:100%; max-width:300px;"></select>
-    </div>
-    
-    <!-- Boutons de sélection visiteur -->
-    <div class="toolbar" style="margin-bottom:15px;">
-      <button onclick="switchVisitorView('results')" id="btn-vis-results" style="background:#2980b9; border-radius:20px;">📊 Résultats</button>
-      <button onclick="switchVisitorView('classement')" id="btn-vis-classement" style="background:#ccc; color:#333; border-radius:20px;">🏅 Classement</button>
-      <button onclick="switchVisitorView('programme')" id="btn-vis-programme" style="background:#ccc; color:#333; border-radius:20px;">📅 Programme</button>
-    </div>
-
-    <div class="champ-dashboard">
-      <!-- Bloc Résultats -->
-      <div class="dash-card active" id="dash-view-results">
-        <div class="dash-title">⚽ Résultats de la journée</div>
-        <div id="dash-results"></div>
-      </div>
-      
-      <!-- Bloc Classement -->
-      <div class="dash-card" id="dash-view-classement">
-        <div class="dash-title">🏅 Classement (16 équipes)</div>
-        <button onclick="downloadClassement()" style="width:100%; margin-bottom:10px; background:#2980b9; font-size:11px;">📥 Télécharger</button>
-        <div class="classement-download-wrap" id="classementCaptureZone">
-          <div class="watermark-text">
-             <img src="https://i.postimg.cc/ZnBzdk0j/Logo-mustaphamobiste.png" style="width:80px;">
-             <span style="font-size:12px; margin-top:5px; color:#1a4d2e;">@mustaphamobiste • 1954</span>
-          </div>
-          <table class="classement-mini-table">
-            <thead><tr><th>#</th><th>Équipe</th><th>J</th><th>Pts</th></tr></thead>
-            <tbody id="dash-classement"></tbody>
-          </table>
-        </div>
-      </div>
-      
-      <!-- Bloc Programme -->
-      <div class="dash-card" id="dash-view-programme">
-        <div class="dash-title">📅 Programme à venir</div>
-        <div id="dash-next-match"></div>
-      </div>
-    </div>
+  <div class="toolbar">
+    <button onclick="openModalMatch(currentSubTab === 'coupe' ? 'coupe' : 'championnat')" id="btnAddChamp" style="display:none;">➕ Ajouter</button>
+    <button onclick="exportData(currentSubTab === 'coupe' ? 'coupe' : 'championnat')">💾 Exporter</button>
+    <button onclick="document.getElementById('importChampionnat').click()">📂 Importer</button>
+    <input type="file" id="importChampionnat" accept=".json" style="display:none" onchange="importData(event, currentSubTab === 'coupe' ? 'coupe' : 'championnat')">
   </div>
-
-  <div id="champ-admin-view" style="display:none;">
-    <div class="toolbar">
-      <button onclick="openModalMatch(currentSubTab === 'coupe' ? 'coupe' : 'championnat')" style="display:inline-block; background:#27ae60;">➕ Ajouter un match</button>
-      <button onclick="exportData(currentSubTab === 'coupe' ? 'coupe' : 'championnat')">💾 Exporter</button>
-    </div>
-    <div class="toolbar">
-      <select id="filterJournee" onchange="render('championnat')"><option value="">Toutes les journées</option></select>
-      <select id="filterEquipe" onchange="render('championnat')"><option value="">Toutes les équipes</option></select>
-      <button onclick="render('championnat')" style="background:#2980b9;">🔍 Filtrer</button>
-    </div>
-    <div class="count" id="countChampionnat"></div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>J/Tour</th><th>Date</th><th>Heure</th><th>Domicile</th><th>Score</th><th>Extérieur</th><th>Stade</th><th>Obs.</th><th>Actions</th></tr></thead>
-        <tbody id="tbody-championnat"></tbody>
-      </table>
-    </div>
+  <div class="toolbar" id="filtersChampionnat">
+    <select id="filterJournee" onchange="render('championnat')"><option value="">Toutes les journées</option></select>
+    <select id="filterEquipe" onchange="render('championnat')"><option value="">Toutes les équipes</option></select>
+    <button onclick="render('championnat')" style="background:#2980b9;">🔍 Filtrer</button>
+  </div>
+  <div class="count" id="countChampionnat"></div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>J/Tour</th><th>Date</th><th>Heure</th><th>Domicile</th><th>Score</th><th>Extérieur</th><th>Stade</th><th>Obs.</th><th>Actions</th></tr></thead>
+      <tbody id="tbody-championnat"></tbody>
+    </table>
   </div>
 </div>
 
@@ -389,8 +326,8 @@
       <button onclick="openModalAffiche('day')" class="btn-edit" style="background:#8e44ad;">🖼️ Changer l'affiche</button>
       <button onclick="openModalLive()" class="btn-live" id="btn-live">🔴 Gérer le Live</button>
     </div>
-    <div class="mob-card" style="border: 2px solid #1a4d2e; display:none;" id="live-widget">
-      <div class="mob-title" style="color:#1a4d2e; border-color:#1a4d2e;">🔴 Live</div>
+    <div class="mob-card" style="border: 2px solid #e74c3c; display:none;" id="live-widget">
+      <div class="mob-title" style="color:#e74c3c; border-color:#e74c3c;">🔴 Live</div>
       <div class="live-score" id="live-score">0 - 0</div>
       <div class="live-update" id="live-status">Match en cours</div>
     </div>
@@ -619,7 +556,6 @@
 <div class="btn-share-float" id="btnShareMain" onclick="shareContext()">📤 Partager</div>
 <div class="visit-badge" id="visitCounter">👁️ -- visites</div>
 
-<!-- MODALS -->
 <div class="modal" id="modalMatch">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalMatch')">×</span>
@@ -869,11 +805,10 @@
 <div class="modal" id="modalAlbum">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalAlbum')">×</span>
-    <h3 id="modalAlbumTitle">🖼️ Créer un Album</h3>
-    <input type="hidden" id="editAlbumIdx">
+    <h3>🖼️ Créer un Album</h3>
     <label>Titre de l'album <input type="text" id="albumTitre" placeholder="Ex: J6 - MSP Batna 1-0 MOB"></label>
     <label>Date <input type="date" id="albumDate"></label>
-    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalAlbum')">Annuler</button><button onclick="saveAlbum()">Enregistrer</button></div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalAlbum')">Annuler</button><button onclick="saveAlbum()">Créer</button></div>
   </div>
 </div>
 
@@ -893,7 +828,6 @@
     <h3 id="albumViewTitle"></h3>
     <div class="toolbar" id="albumViewToolbar" style="display:none;">
       <button onclick="openModalAddPhoto()" style="background:#27ae60;">➕ Ajouter une photo</button>
-      <button onclick="openModalAlbum(parseInt(document.getElementById('photoAlbumId').value))" style="background:#2980b9;">✏️ Modifier l'album</button>
     </div>
     <div class="album-photos-grid" id="albumViewGrid"></div>
   </div>
@@ -902,11 +836,10 @@
 <div class="modal" id="modalVideoMedia">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalVideoMedia')">×</span>
-    <h3 id="modalVideoTitle">🎥 Ajouter une Vidéo</h3>
-    <input type="hidden" id="editVideoIdx">
+    <h3>🎥 Ajouter une Vidéo</h3>
     <label>Titre <input type="text" id="vmTitre" placeholder="Ex: Résumé J6"></label>
     <label>Lien YouTube <input type="url" id="vmUrl" placeholder="https://youtu.be/..."></label>
-    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalVideoMedia')">Annuler</button><button onclick="saveVideoMedia()">Enregistrer</button></div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalVideoMedia')">Annuler</button><button onclick="saveVideoMedia()">Ajouter</button></div>
   </div>
 </div>
 
@@ -961,8 +894,6 @@ let currentTabName = 'championnat';
 let currentArticleForShare = null;
 let currentFdmForShare = null;
 let currentBreveForShare = null;
-let selectedJourneeVisiteur = 'all';
-let currentVisitorView = 'results';
 
 let EQUIPES = ["Paradou AC", "IRB Nezla", "NRB Beni Oulbane", "NRB Teleghma", "CA Batna", "US Chaouia", "AS Khroub", "MO Constantine", "USM Annaba", "JS Azazga", "MO Béjaïa", "NC Magra", "JSM Skikda", "MSP Batna", "JSD Jijel", "CR Beni Thour"];
 let STADES = ["Stade Abed-Hamdani (El Khroub)", "Stade 19 Mai 1956 (Annaba)", "Stade Allag Abderrahmane (Aïn Fakroun)", "Stade Khabaza Bachir (Teleghma)", "Stade 1er Novembre 1954 (Batna)", "Stade 20 Août 1955 (Skikda)", "Stade 18 Février (Ouargla)", "Stade 10 000 places (Touggourt)", "Stade Tirsatine (Azazga)", "Stade Hammou Boukouffa (Beni Oulbane)", "Stade 20 Août 1955 (Alger)", "Stade des Frères Boucheligue (Magra)", "Stade 1er Novembre 1954 Guendouza (Akbou)", "Stade des Martyrs (Akbou)", "Stade Hocine Rouibah (Jijel)", "Stade Ramdane-Benabdelmalek (Constantine)", "Stade Zerdani Hassouna (Oum El Bouaghi)"];
@@ -1087,6 +1018,7 @@ function tryLogin() {
     document.getElementById('adminBadge').innerHTML = '<span style="background:#27ae60;color:white;padding:3px 8px;border-radius:12px;font-size:11px;margin-left:8px;">ADMIN</span>';
     document.getElementById('adminPanel').style.display = 'block';
     document.getElementById('visitCounter').style.display = 'flex';
+    document.getElementById('btnAddChamp').style.display = 'inline-block';
     document.getElementById('btnAddFdm').style.display = 'block';
     document.getElementById('news-toolbar').style.display = 'flex';
     document.getElementById('club-toolbar').style.display = 'flex';
@@ -1106,7 +1038,7 @@ function tryLogin() {
 function logoutAdmin() {
   isAdmin = false; document.getElementById('adminBadge').innerHTML = ''; document.getElementById('adminPanel').style.display = 'none';
   document.getElementById('visitCounter').style.display = 'none';
-  ['btnAddFdm', 'news-toolbar', 'media-toolbar', 'club-toolbar', 'mob-avant-toolbar', 'mob-day-toolbar', 'mob-apres-toolbar', 'stats-toolbar', 'historique-toolbar'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display = 'none'; });
+  ['btnAddChamp', 'btnAddFdm', 'news-toolbar', 'media-toolbar', 'club-toolbar', 'mob-avant-toolbar', 'mob-day-toolbar', 'mob-apres-toolbar', 'stats-toolbar', 'historique-toolbar'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display = 'none'; });
   renderAll();
 }
 
@@ -1119,7 +1051,7 @@ function updateStatsAdminButtons() {
 }
 
 function renderAll() {
-    render('championnat'); renderClub(); renderMob(); renderNewsTab(); renderMedias(); renderFdM(); renderBreves(); renderStats(); updateNextMatch(); renderHomeVoteWidget(); renderCarousel(); renderHistoriqueDynamic(); renderVisitorChamp();
+    render('championnat'); renderClub(); renderMob(); renderNewsTab(); renderMedias(); renderFdM(); renderBreves(); renderStats(); updateNextMatch(); renderHomeVoteWidget(); renderCarousel(); renderHistoriqueDynamic();
 }
 
 function shareContext() {
@@ -1152,8 +1084,21 @@ function switchTab(name, el) {
 function switchSubTab(mode) { 
   currentSubTab = mode; 
   document.getElementById('subtab-tous').classList.toggle('active', mode === 'tous'); 
+  document.getElementById('subtab-programme').classList.toggle('active', mode === 'programme'); 
+  document.getElementById('subtab-resultats').classList.toggle('active', mode === 'resultats'); 
   document.getElementById('subtab-coupe').classList.toggle('active', mode === 'coupe'); 
-  renderVisitorChamp(); 
+  
+  const filters = document.getElementById('filtersChampionnat');
+  const tableHeaders = document.querySelector('#tab-championnat table thead tr th:first-child');
+  
+  if(mode === 'coupe') {
+      filters.style.display = 'none';
+      tableHeaders.textContent = 'Tour';
+      document.getElementById('countChampionnat').textContent = '';
+  } else {
+      filters.style.display = 'flex';
+      tableHeaders.textContent = 'J';
+  }
   render('championnat'); 
 }
 function switchSubTabMob(mode) { currentMobSubTab = mode; document.getElementById('subtab-mob-avant').classList.toggle('active', mode === 'avant'); document.getElementById('subtab-mob-day').classList.toggle('active', mode === 'day'); document.getElementById('subtab-mob-apres').classList.toggle('active', mode === 'apres'); document.getElementById('mob-avant').style.display = mode === 'avant' ? 'block' : 'none'; document.getElementById('mob-day').style.display = mode === 'day' ? 'block' : 'none'; document.getElementById('mob-apres').style.display = mode === 'apres' ? 'block' : 'none'; renderMob(); }
@@ -1164,160 +1109,6 @@ function switchSubTabStats(type) { currentStatsSubTab = type; document.getElemen
 function formatDate(d) { if (!d) return ''; const p = d.split('-'); return p.length===3 ? p[2]+'/'+p[1]+'/'+p[0] : d; }
 function logoImg(equipe) { const url = LOGOS[equipe]; return url ? `<img src="${url}" class="logo-mini" alt="${equipe}">` : ''; }
 function hasScore(m) { const sd=m.sd, se=m.se; return (sd!==undefined && sd!==null && sd!=='' && !isNaN(parseInt(sd)) && se!==undefined && se!==null && se!=='' && !isNaN(parseInt(se))); }
-
-// NOUVELLE FONCTION POUR L'AFFICHAGE VISITEUR CHAMPIONNAT (V19 FINALE)
-function switchVisitorView(view) {
-    currentVisitorView = view;
-    document.getElementById('dash-view-results').classList.remove('active');
-    document.getElementById('dash-view-classement').classList.remove('active');
-    document.getElementById('dash-view-programme').classList.remove('active');
-    
-    document.getElementById('dash-view-' + view).classList.add('active');
-    
-    const btnRes = document.getElementById('btn-vis-results');
-    const btnClass = document.getElementById('btn-vis-classement');
-    const btnProg = document.getElementById('btn-vis-programme');
-    
-    [btnRes, btnClass, btnProg].forEach(btn => { btn.style.background = '#ccc'; btn.style.color = '#333'; });
-    
-    if(view === 'results') { btnRes.style.background = '#2980b9'; btnRes.style.color = 'white'; }
-    else if(view === 'classement') { btnClass.style.background = '#2980b9'; btnClass.style.color = 'white'; }
-    else if(view === 'programme') { btnProg.style.background = '#2980b9'; btnProg.style.color = 'white'; }
-}
-
-function renderVisitorChamp() {
-    if(isAdmin) {
-        document.getElementById('champ-visitor-view').style.display = 'none';
-        document.getElementById('champ-admin-view').style.display = 'block';
-    } else {
-        document.getElementById('champ-visitor-view').style.display = 'block';
-        document.getElementById('champ-admin-view').style.display = 'none';
-        
-        const select = document.getElementById('selectJourneeVisiteur');
-        const journees = [...new Set(data.championnat.map(m => parseInt(m.journee)).filter(Boolean))].sort((a,b)=>a-b);
-        
-        let optionsHtml = '';
-        if(currentSubTab === 'coupe') {
-            optionsHtml = '<option value="all">Tous les matchs de Coupe</option>';
-        } else {
-            journees.forEach(j => { optionsHtml += `<option value="${j}">Journée ${j}</option>`; });
-        }
-        
-        if(select.innerHTML !== optionsHtml) {
-            select.innerHTML = optionsHtml;
-            if(currentSubTab === 'coupe') select.value = 'all';
-            else if(journees.includes(parseInt(selectedJourneeVisiteur))) select.value = selectedJourneeVisiteur;
-            else {
-                // Trouver la dernière journée avec un résultat (ou la plus haute)
-                let lastPlayed = journees[0];
-                for(let j of journees) {
-                    if(data.championnat.some(m => String(m.journee) === String(j) && hasScore(m))) lastPlayed = j;
-                }
-                select.value = lastPlayed || (journees.length > 0 ? journees[journees.length - 1] : 'all');
-                selectedJourneeVisiteur = select.value;
-            }
-        }
-        
-        const selVal = select.value;
-        
-        // 1. Résultats
-        let resultsHtml = '';
-        let matchesToShow = [];
-        if(currentSubTab === 'coupe') {
-            matchesToShow = data.coupe || [];
-        } else {
-            matchesToShow = data.championnat.filter(m => String(m.journee) === selVal);
-        }
-        
-        if(matchesToShow.length === 0) {
-            resultsHtml = '<p style="text-align:center; color:#888; font-size:12px;">Aucun match pour cette journée.</p>';
-        } else {
-            matchesToShow.forEach(m => {
-                const score = hasScore(m) ? `<span class="dash-match-score">${m.sd} - ${m.se}</span>` : '<span style="font-size:10px; color:#888;">vs</span>';
-                resultsHtml += `<div class="dash-match-row">
-                    <div class="dash-match-team">${logoImg(m.dom)} <span>${m.dom}</span></div>
-                    ${score}
-                    <div class="dash-match-team right"><span>${m.ext}</span> ${logoImg(m.ext)}</div>
-                </div>`;
-            });
-        }
-        document.getElementById('dash-results').innerHTML = resultsHtml;
-        
-        // 2. Classement
-        renderMiniClassement();
-        
-        // 3. Programme
-        let nextHtml = '';
-        let nextJournee = 1;
-        if (selVal !== 'all' && currentSubTab !== 'coupe') nextJournee = parseInt(selVal) + 1;
-        
-        let nextMatches = data.championnat.filter(m => String(m.journee) === String(nextJournee));
-        if(nextMatches.length === 0 && journees.length > 0) {
-            nextJournee = journees[journees.length - 1];
-            nextMatches = data.championnat.filter(m => String(m.journee) === String(nextJournee));
-        }
-        
-        if(nextMatches.length > 0) {
-            nextHtml = `<div style="font-size:10px; font-weight:bold; color:#1a4d2e; margin-bottom:5px; text-align:center;">Journée ${nextJournee}</div>`;
-            nextMatches.forEach(m => {
-                nextHtml += `<div class="dash-match-row">
-                    <div class="dash-match-team">${logoImg(m.dom)} <span>${m.dom}</span></div>
-                    <span style="font-size:9px; color:#888;">${m.date ? formatDate(m.date).substring(0,5) : '?'}</span>
-                    <div class="dash-match-team right"><span>${m.ext}</span> ${logoImg(m.ext)}</div>
-                </div>`;
-            });
-        } else {
-            nextHtml = '<p style="text-align:center; color:#888; font-size:12px;">Programme à venir.</p>';
-        }
-        document.getElementById('dash-next-match').innerHTML = nextHtml;
-    }
-}
-
-function renderMiniClassement() {
-    const stats = {}; EQUIPES.forEach(e => stats[e] = { j:0, g:0, n:0, p:0, bp:0, bc:0, pts:0 });
-    data.championnat.forEach(m => { 
-        if (!hasScore(m)) return; 
-        const sd = parseInt(m.sd), se = parseInt(m.se); 
-        if (isNaN(sd) || isNaN(se) || !stats[m.dom] || !stats[m.ext]) return; 
-        stats[m.dom].j++; stats[m.ext].j++; stats[m.dom].bp += sd; stats[m.dom].bc += se; stats[m.ext].bp += se; stats[m.ext].bc += sd; 
-        if (sd > se) { stats[m.dom].g++; stats[m.dom].pts+=3; stats[m.ext].p++; } 
-        else if (sd < se) { stats[m.ext].g++; stats[m.ext].pts+=3; stats[m.dom].p++; } 
-        else { stats[m.dom].n++; stats[m.dom].pts++; stats[m.ext].n++; stats[m.ext].pts++; } 
-    });
-    const classement = EQUIPES.map(e => ({ equipe: e, ...stats[e], diff: stats[e].bp - stats[e].bc })).sort((a,b) => (b.pts-a.pts) || (b.diff-a.diff) || (b.bp-a.bp) || a.equipe.localeCompare(b.equipe));
-    
-    let html = '';
-    classement.forEach((c, idx) => {
-        let style = c.equipe === 'MO Béjaïa' ? 'background:#e0f2e9; font-weight:bold;' : '';
-        html += `<tr style="${style}"><td>${idx + 1}</td><td>${c.equipe}</td><td>${c.j}</td><td><b>${c.pts}</b></td></tr>`;
-    });
-    document.getElementById('dash-classement').innerHTML = html;
-}
-
-function downloadClassement() {
-    const zone = document.getElementById('classementCaptureZone');
-    // Rendre visible temporairement tout le tableau pour la capture
-    const originalMaxHeight = zone.style.maxHeight;
-    const originalOverflow = zone.style.overflowY;
-    zone.style.maxHeight = 'none';
-    zone.style.overflowY = 'visible';
-
-    html2canvas(zone, { scale: 2, backgroundColor: "#ffffff" }).then(canvas => {
-        // Rétablir les styles
-        zone.style.maxHeight = originalMaxHeight;
-        zone.style.overflowY = originalOverflow;
-        
-        const link = document.createElement('a');
-        link.download = 'Classement_MOB_Ligue2.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-    }).catch(err => {
-        // Rétablir en cas d'erreur
-        zone.style.maxHeight = originalMaxHeight;
-        zone.style.overflowY = originalOverflow;
-        alert("Erreur lors de la génération de l'image.");
-    });
-}
 
 function render(section) {
   if (section !== 'championnat') return;
@@ -1459,7 +1250,7 @@ function renderStats() {
         if(buteurs.length === 0) { tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#888;">Aucun buteur enregistré.</td></tr>'; return; }
         tbody.innerHTML = buteurs.map((b, i) => {
             const img = getPlayerImg(b[0]);
-            const adminBtns = isAdmin ? `<button class="btn-small btn-edit" onclick="editStat('buteur','${escapeQuotes(b[0])}')">✏️</button><button class="btn-small btn-del" onclick="deleteStat('buteur','${escapeQuotes(b[0])}')">🗑️</button>` : '';
+            const adminBtns = isAdmin ? `<button class="btn-small btn-edit" onclick="openModalAddStat('buteur')">➕</button><button class="btn-small btn-del" onclick="deleteStat('buteur','${escapeQuotes(b[0])}')">🗑️</button>` : '';
             return `<tr><td><b>${i+1}</b></td><td><img src="${img}" class="stats-img" onerror="this.src='https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png'"> ${b[0]}</td><td><b>${b[1]}</b></td><td>${adminBtns}</td></tr>`;
         }).join('');
     }
@@ -1469,7 +1260,7 @@ function renderStats() {
         if(cartons.length === 0) { tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#888;">Aucun carton enregistré.</td></tr>'; return; }
         tbody.innerHTML = cartons.map(c => {
             const img = getPlayerImg(c[0]);
-            const adminBtns = isAdmin ? `<button class="btn-small btn-edit" onclick="editStat('carton','${escapeQuotes(c[0])}')">✏️</button><button class="btn-small btn-del" onclick="deleteStat('carton','${escapeQuotes(c[0])}')">🗑️</button>` : '';
+            const adminBtns = isAdmin ? `<button class="btn-small btn-edit" onclick="openModalAddStat('carton')">➕</button><button class="btn-small btn-del" onclick="deleteStat('carton','${escapeQuotes(c[0])}')">🗑️</button>` : '';
             return `<tr><td><img src="${img}" class="stats-img" onerror="this.src='https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png'"> ${c[0]}</td><td>${c[1].jaune || 0}</td><td>${c[1].rouge || 0}</td><td>${adminBtns}</td></tr>`;
         }).join('');
     }
@@ -1643,29 +1434,6 @@ async function deleteStat(type, playerName) {
         renderStats();
     }
 }
-async function editStat(type, playerName) {
-    if(type === 'buteur') {
-        const oldGoals = data.stats.buteurs[playerName];
-        const newGoals = prompt("Modifier le nombre de buts de " + playerName, oldGoals);
-        if(newGoals !== null && !isNaN(parseInt(newGoals))) {
-            data.stats.buteurs[playerName] = parseInt(newGoals);
-            await saveToFirebase();
-            renderStats();
-        }
-    } else if(type === 'carton') {
-        const oldJaune = data.stats.cartons[playerName].jaune || 0;
-        const oldRouge = data.stats.cartons[playerName].rouge || 0;
-        const newJaune = prompt("Modifier le nombre de cartons JAUNES de " + playerName, oldJaune);
-        if(newJaune !== null && !isNaN(parseInt(newJaune))) {
-            const newRouge = prompt("Modifier le nombre de cartons ROUGES de " + playerName, oldRouge);
-            if(newRouge !== null && !isNaN(parseInt(newRouge))) {
-                data.stats.cartons[playerName] = { jaune: parseInt(newJaune), rouge: parseInt(newRouge) };
-                await saveToFirebase();
-                renderStats();
-            }
-        }
-    }
-}
 
 function renderNewsTab() {
   const container = document.getElementById('news-container');
@@ -1684,14 +1452,7 @@ function renderMedias() {
   if (currentMediaSubTab === 'images') {
     if (!data.medias.albums || data.medias.albums.length === 0) { gridAlbums.innerHTML = '<p style="text-align:center; width:100%; color:#888;">Aucun album photo.</p>'; } 
     else {
-      gridAlbums.innerHTML = data.medias.albums.map((a, i) => `
-        <div class="album-card" onclick="openAlbumView(${i})">
-            ${isAdmin ? `<div style="position:absolute; top:5px; right:5px; display:flex; gap:2px;">
-                <button onclick="event.stopPropagation(); openModalAlbum(${i})" style="background:#2980b9; color:white; border:none; padding:5px; border-radius:4px;">✏️</button>
-                <button onclick="event.stopPropagation(); deleteAlbum(${i})" style="background:#c0392b; color:white; border:none; padding:5px; border-radius:4px;">🗑️</button>
-            </div>` : ''}
-            <h4>📸 ${a.titre}</h4><p>${formatDate(a.date)}<br>${a.photos.length} photo(s)</p>
-        </div>`).join('');
+      gridAlbums.innerHTML = data.medias.albums.map((a, i) => `<div class="album-card" onclick="openAlbumView(${i})">${isAdmin ? `<div class="btn-edit-news" onclick="event.stopPropagation(); deleteAlbum(${i})" style="background:#c0392b; color:white;">🗑️</div>` : ''}<h4>📸 ${a.titre}</h4><p>${formatDate(a.date)}<br>${a.photos.length} photo(s)</p></div>`).join('');
     }
   } else {
     if (!data.medias.videos || data.medias.videos.length === 0) { gridVideos.innerHTML = '<p style="text-align:center; color:#888;">Aucune vidéo.</p>'; } 
@@ -1701,13 +1462,7 @@ function renderMedias() {
         if (v.url.includes("youtube.com/shorts/")) { const id = v.url.split("shorts/")[1].split("?")[0]; embedUrl = `https://www.youtube.com/embed/${id}`; thumbUrl = `https://img.youtube.com/vi/${id}/0.jpg`; } 
         else if (v.url.includes("youtu.be/")) { const id = v.url.split("youtu.be/")[1].split("?")[0]; embedUrl = `https://www.youtube.com/embed/${id}`; thumbUrl = `https://img.youtube.com/vi/${id}/0.jpg`; } 
         else if (v.url.includes("youtube.com/watch")) { const id = v.url.split("v=")[1].split("&")[0]; embedUrl = `https://www.youtube.com/embed/${id}`; thumbUrl = `https://img.youtube.com/vi/${id}/0.jpg`; }
-        return `<div class="video-item">
-            ${isAdmin ? `<div style="position:absolute; top:5px; right:5px; display:flex; gap:2px; z-index:10;">
-                <button onclick="openModalVideoMedia(${i})" style="background:#2980b9; color:white; border:none; padding:5px; border-radius:4px;">✏️</button>
-                <button onclick="deleteVideoMedia(${i})" style="background:#c0392b; color:white; border:none; padding:5px; border-radius:4px;">🗑️</button>
-            </div>` : ''}
-            <h5>${v.titre}</h5><div onclick="openVideoModal('${embedUrl}', '${v.titre}')"><img src="${thumbUrl}" class="video-thumb" alt="${v.titre}"></div>
-        </div>`;
+        return `<div class="video-item">${isAdmin ? `<button class="btn-del-video" onclick="deleteVideoMedia(${i})">🗑️</button>` : ''}<h5>${v.titre}</h5><div onclick="openVideoModal('${embedUrl}', '${v.titre}')"><img src="${thumbUrl}" class="video-thumb" alt="${v.titre}"></div></div>`;
       }).join('');
     }
   }
@@ -1720,7 +1475,7 @@ function renderFdM() {
     container.innerHTML = sorted.map((f, i) => {
         const realIdx = data.fdm.findIndex(item => item.id === f.id);
         const editBtn = isAdmin ? `<button class="btn-small" onclick="event.stopPropagation(); openModalFDM(${realIdx})" style="background:#2980b9; padding:2px 5px; font-size:10px;">✏️</button>` : '';
-        const delBtn = isAdmin ? `<button class="btn-small" onclick="event.stopPropagation(); deleteFDM(${realIdx})" style="background:#1a4d2e; padding:2px 5px; font-size:10px;">🗑️</button>` : '';
+        const delBtn = isAdmin ? `<button class="btn-small" onclick="event.stopPropagation(); deleteFDM(${realIdx})" style="background:#c0392b; padding:2px 5px; font-size:10px;">🗑️</button>` : '';
         return `<div class="fdm-item" onclick="openFDMView('${f.id}')">
             <img src="${f.image}" onerror="this.src='https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png'">
             <div><h4>${f.titre}</h4><p>${formatDate(f.date)} ${editBtn} ${delBtn}</p></div>
@@ -1802,7 +1557,7 @@ async function saveMatch() {
   const idx = document.getElementById('editIndexMatch').value;
   const m = { journee: document.getElementById('fJournee').value, date: document.getElementById('fDate').value, heure: document.getElementById('fHeure').value, dom: document.getElementById('fDom').value, ext: document.getElementById('fExt').value, sd: document.getElementById('fSd').value, se: document.getElementById('fSe').value, stade: document.getElementById('fStade').value, obs: document.getElementById('fObs').value.trim() };
   if (idx === '') data[section].push(m); else data[section][idx] = m;
-  await saveToFirebase(); closeModal('modalMatch'); render('championnat'); updateNextMatch(); renderVisitorChamp();
+  await saveToFirebase(); closeModal('modalMatch'); render('championnat'); updateNextMatch();
 }
 
 function openModalNews(idx) {
@@ -1876,69 +1631,15 @@ function openModalBreveView(id) {
     openModal('modalBreveView');
 }
 
-function openModalAlbum(idx) { 
-    if(!isAdmin) return; 
-    document.getElementById('editAlbumIdx').value = idx === undefined ? '' : idx;
-    if (idx !== undefined) {
-        const a = data.medias.albums[idx];
-        document.getElementById('modalAlbumTitle').textContent = '✏️ Modifier l\'Album';
-        document.getElementById('albumTitre').value = a.titre; 
-        document.getElementById('albumDate').value = a.date;
-    } else {
-        document.getElementById('modalAlbumTitle').textContent = '🖼️ Créer un Album';
-        document.getElementById('albumTitre').value = ''; 
-        document.getElementById('albumDate').value = new Date().toISOString().split('T')[0]; 
-    }
-    openModal('modalAlbum'); 
-}
-async function saveAlbum() { 
-    const idx = document.getElementById('editAlbumIdx').value;
-    if (idx === '') {
-        const a = { id: 'al'+Date.now(), titre: document.getElementById('albumTitre').value, date: document.getElementById('albumDate').value, photos: [] }; 
-        if(!data.medias.albums) data.medias.albums = []; 
-        data.medias.albums.push(a); 
-    } else {
-        data.medias.albums[parseInt(idx)].titre = document.getElementById('albumTitre').value;
-        data.medias.albums[parseInt(idx)].date = document.getElementById('albumDate').value;
-    }
-    await saveToFirebase(); 
-    closeModal('modalAlbum'); 
-    renderMedias(); 
-    if (idx !== '') openAlbumView(parseInt(idx));
-}
+function openModalAlbum() { if(!isAdmin) return; document.getElementById('albumTitre').value = ''; document.getElementById('albumDate').value = new Date().toISOString().split('T')[0]; openModal('modalAlbum'); }
+async function saveAlbum() { const a = { id: 'al'+Date.now(), titre: document.getElementById('albumTitre').value, date: document.getElementById('albumDate').value, photos: [] }; if(!data.medias.albums) data.medias.albums = []; data.medias.albums.push(a); await saveToFirebase(); closeModal('modalAlbum'); renderMedias(); }
 function openAlbumView(idx) { const a = data.medias.albums[idx]; document.getElementById('albumViewTitle').textContent = `📸 ${a.titre}`; document.getElementById('albumViewGrid').innerHTML = a.photos.map((p, pIdx) => `<div class="photo-wrapper">${isAdmin ? `<button class="btn-del-photo" onclick="deletePhoto(${idx}, ${pIdx})">🗑️</button>` : ''}<img src="${p}" onclick="window.open('${p}','_blank')"></div>`).join(''); document.getElementById('albumViewToolbar').style.display = isAdmin ? 'block' : 'none'; document.getElementById('photoAlbumId').value = idx; openModal('modalAlbumView'); }
 function openModalAddPhoto() { document.getElementById('photoUrl').value = ''; openModal('modalAddPhoto'); }
 async function savePhoto() { const idx = document.getElementById('photoAlbumId').value; const url = document.getElementById('photoUrl').value; if(url) { data.medias.albums[idx].photos.push(url); await saveToFirebase(); closeModal('modalAddPhoto'); openAlbumView(idx); renderMedias(); } }
 async function deleteAlbum(idx) { if(confirm('Supprimer tout cet album ?')) { data.medias.albums.splice(idx, 1); await saveToFirebase(); renderMedias(); } }
 async function deletePhoto(albumIdx, photoIdx) { if(confirm('Supprimer cette photo ?')) { data.medias.albums[albumIdx].photos.splice(photoIdx, 1); await saveToFirebase(); openAlbumView(albumIdx); renderMedias(); } }
-function openModalVideoMedia(idx) { 
-    document.getElementById('editVideoIdx').value = idx === undefined ? '' : idx;
-    if (idx !== undefined) {
-        const v = data.medias.videos[idx];
-        document.getElementById('modalVideoTitle').textContent = '✏️ Modifier la Vidéo';
-        document.getElementById('vmTitre').value = v.titre;
-        document.getElementById('vmUrl').value = v.url;
-    } else {
-        document.getElementById('modalVideoTitle').textContent = '🎥 Ajouter une Vidéo';
-        document.getElementById('vmTitre').value = ''; 
-        document.getElementById('vmUrl').value = ''; 
-    }
-    openModal('modalVideoMedia'); 
-}
-async function saveVideoMedia() { 
-    const idx = document.getElementById('editVideoIdx').value;
-    if (idx === '') {
-        const v = { id: 'vid'+Date.now(), titre: document.getElementById('vmTitre').value, url: document.getElementById('vmUrl').value }; 
-        if(!data.medias.videos) data.medias.videos = []; 
-        data.medias.videos.push(v); 
-    } else {
-        data.medias.videos[parseInt(idx)].titre = document.getElementById('vmTitre').value;
-        data.medias.videos[parseInt(idx)].url = document.getElementById('vmUrl').value;
-    }
-    await saveToFirebase(); 
-    closeModal('modalVideoMedia'); 
-    renderMedias(); 
-}
+function openModalVideoMedia() { document.getElementById('vmTitre').value = ''; document.getElementById('vmUrl').value = ''; openModal('modalVideoMedia'); }
+async function saveVideoMedia() { const v = { id: 'vid'+Date.now(), titre: document.getElementById('vmTitre').value, url: document.getElementById('vmUrl').value }; if(!data.medias.videos) data.medias.videos = []; data.medias.videos.push(v); await saveToFirebase(); closeModal('modalVideoMedia'); renderMedias(); }
 async function deleteVideoMedia(idx) { if(confirm('Supprimer cette vidéo ?')) { data.medias.videos.splice(idx, 1); await saveToFirebase(); renderMedias(); } }
 function openVideoModal(url, title) { document.getElementById('videoModalTitle').textContent = title; document.getElementById('videoModalIframe').src = url; openModal('modalVideoPlayer'); }
 function closeVideoModal() { document.getElementById('videoModalIframe').src = ''; closeModal('modalVideoPlayer'); }
@@ -1997,7 +1698,7 @@ function openModalStaff(idx) { if (!isAdmin) return; document.getElementById('ed
 async function saveStaff() { const idx = document.getElementById('editStaffIdx').value; const s = { nom: document.getElementById('sNom').value, fonction: document.getElementById('sFonction').value, ddn: document.getElementById('sDdn').value, infos: document.getElementById('sInfos').value, img: document.getElementById('sImg').value, departDate: document.getElementById('sDepartDate').value, departMotif: document.getElementById('sDepartMotif').value }; if (idx === '') data.staff.push(s); else data.staff[parseInt(idx)] = s; await saveToFirebase(); closeModal('modalStaff'); renderClub(); }
 function openModalDirigeant(idx) { if (!isAdmin) return; document.getElementById('editDirIdx').value = idx === 'new' ? '' : idx; const d = idx !== 'new' ? data.dirigeants[idx] : {nom:'', fonction:'', img:'', departDate:'', departMotif:''}; document.getElementById('dNom').value = d.nom; document.getElementById('dFonction').value = d.fonction; document.getElementById('dImg').value = d.img; document.getElementById('dDepartDate').value = d.departDate || ''; document.getElementById('dDepartMotif').value = d.departMotif || ''; openModal('modalDirigeant'); }
 async function saveDirigeant() { const idx = document.getElementById('editDirIdx').value; const d = { nom: document.getElementById('dNom').value, fonction: document.getElementById('dFonction').value, img: document.getElementById('dImg').value, departDate: document.getElementById('dDepartDate').value, departMotif: document.getElementById('dDepartMotif').value }; if (idx === '') data.dirigeants.push(d); else data.dirigeants[parseInt(idx)] = d; await saveToFirebase(); closeModal('modalDirigeant'); renderClub(); }
-async function deleteItem(section, idx) { if (confirm('Supprimer cet élément ?')) { data[section].splice(idx,1); await saveToFirebase(); if(section==='championnat' || section==='coupe') { render('championnat'); renderVisitorChamp(); } else renderClub(); } }
+async function deleteItem(section, idx) { if (confirm('Supprimer cet élément ?')) { data[section].splice(idx,1); await saveToFirebase(); if(section==='championnat' || section==='coupe') render('championnat'); else renderClub(); } }
 
 function renderClassement() {
   const jMax = document.getElementById('selectJourneeClassement').value;
@@ -2106,12 +1807,6 @@ async function saveToFirebase() { try { await set(ref(db, 'data_v10'), data); } 
 document.getElementById('mainTitle').addEventListener('click', handleTitleClick);
 if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', loadFromFirebase); } else { loadFromFirebase(); }
 
-// Écouteur pour le menu déroulant visiteur
-document.getElementById('selectJourneeVisiteur').addEventListener('change', (e) => {
-    selectedJourneeVisiteur = e.target.value;
-    renderVisitorChamp();
-});
-
 window.switchTab = switchTab; window.switchSubTab = switchSubTab; window.switchSubTabMob = switchSubTabMob;
 window.switchSubTabNews = switchSubTabNews; window.switchSubTabMedia = switchSubTabMedia;
 window.switchSubTabStats = switchSubTabStats;
@@ -2138,10 +1833,8 @@ window.openModalAllBreves = openModalAllBreves;
 window.openModalBreveView = openModalBreveView;
 window.submitVote = submitVote; window.resetVote = resetVote; window.openModalCreateVote = openModalCreateVote; window.saveNewVote = saveNewVote; 
 window.openModalManageVote = openModalManageVote; window.addCandidateToVote = addCandidateToVote; window.removeCandidateByIndex = removeCandidateByIndex; window.editCandidate = editCandidate;
-window.openModalAddStat = openModalAddStat; window.saveStat = saveStat; window.deleteStat = deleteStat; window.editStat = editStat;
+window.openModalAddStat = openModalAddStat; window.saveStat = saveStat; window.deleteStat = deleteStat;
 window.openModalHisto = openModalHisto; window.saveHisto = saveHisto; window.deleteHisto = deleteHisto;
-window.downloadClassement = downloadClassement;
-window.switchVisitorView = switchVisitorView;
 </script>
 </body>
 </html>
