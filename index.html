@@ -1836,39 +1836,7 @@ window.openModalManageVote = openModalManageVote; window.addCandidateToVote = ad
 window.openModalAddStat = openModalAddStat; window.saveStat = saveStat; window.deleteStat = deleteStat;
 window.openModalHisto = openModalHisto; window.saveHisto = saveHisto; window.deleteHisto = deleteHisto;
 </script>
-      <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-      import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-      import { getDatabase, ref, set, get, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
-      // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyDr_pGZnYTSDXGbQprDuvMFeWnuinxRpH8",
-  authDomain: "lnfa-centre-est.firebaseapp.com",
-  databaseURL: "https://lnfa-centre-est-default-rtdb.firebaseio.com",
-  projectId: "lnfa-centre-est",
-  storageBucket: "lnfa-centre-est.firebasestorage.app",
-  messagingSenderId: "638227294907",
-  appId: "1:638227294907:web:694f8c2e597954f59e579e"
-};
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
-      const database = getDatabase(app);
-
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          console.log("Utilisateur connecté :", user.email);
-        } else {
-          console.log("Accès restreint. Veuillez vous connecter.");
-        }
-      });
-    </script>
-
 </body>
 </html>
+
+
