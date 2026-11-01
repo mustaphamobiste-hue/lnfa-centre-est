@@ -19,7 +19,7 @@
   .tab-content.active { display: block; }
   .toolbar { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 12px; }
   button, select, input, textarea { padding: 8px 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 13px; font-family: inherit; }
-  button { background: #1a4d2e; color: white; cursor: pointer; border: none; }
+  button { background: #1a4d2e; color: white; cursor: pointer; border: none; font-weight: bold; }
   button:hover { background: #2d7a4a; }
   .btn-small { padding: 5px 8px; font-size: 12px; margin: 1px; }
   .btn-edit { background: #2980b9; }
@@ -36,7 +36,6 @@
   .obs-empty { color: #999; }
   .empty { text-align: center; padding: 25px; color: #888; }
   
-  /* Modale avec priorité d'affichage au-dessus de tous les éléments flottants */
   .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); justify-content: center; align-items: center; z-index: 3000; padding: 10px; }
   .modal.active { display: flex; }
   .modal-content { background: white; padding: 20px; border-radius: 10px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; position: relative; }
@@ -62,7 +61,6 @@
   .cd-num { font-size: 1.4em; font-weight: bold; color: #c9a961; display: block; line-height: 1; }
   .cd-label { font-size: 9px; text-transform: uppercase; opacity: 0.8; letter-spacing: 1px; }
 
-  /* Bandeau Live : Vert clair pastel MOB */
   .live-banner { 
     background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); 
     color: #1a4d2e; 
@@ -80,8 +78,8 @@
     font-size: 13px;
   }
   @keyframes pulseLiveGreen { 
-    0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 3px 10px rgba(46, 125, 50, 0.25); } 
-    50% { opacity: 0.88; transform: scale(1.008); box-shadow: 0 4px 14px rgba(46, 125, 50, 0.4); } 
+    0%, 100% { opacity: 1; transform: scale(1); } 
+    50% { opacity: 0.88; transform: scale(1.008); } 
   }
 
   .ticker-container { width: 100%; background: #1a4d2e; color: white; padding: 8px 0; overflow: hidden; border-radius: 6px; margin-bottom: 12px; position: relative; cursor: pointer; }
@@ -92,22 +90,79 @@
   .home-widgets { display: flex; flex-direction: column; gap: 15px; margin-bottom: 15px; }
   @media (min-width: 900px) { .home-widgets { display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: start; } }
   
-  .carousel-container { width: 100%; overflow-x: auto; display: flex; gap: 10px; padding: 10px 0; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
-  .carousel-item { flex: 0 0 85%; max-width: 300px; scroll-snap-align: start; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); overflow: hidden; cursor: pointer; }
-  .carousel-item img { width: 100%; height: 160px; object-fit: contain; background: #f0f0f0; }
-  .carousel-item p { padding: 8px; font-size: 12px; font-weight: bold; color: #1a4d2e; line-height: 1.2; white-space: normal; }
+  /* CARROUSEL SUR PLACE (FADE) */
+  .news-fade-container {
+    position: relative;
+    width: 100%;
+    height: 235px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    overflow: hidden;
+    border-left: 4px solid #1a4d2e;
+  }
+  .news-fade-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    background: white;
+  }
+  .news-fade-slide.active { opacity: 1; visibility: visible; }
+  .news-fade-slide img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    object-position: center;
+    background: #f0f0f0;
+  }
+  .news-fade-body { padding: 8px 10px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .news-fade-meta { font-size: 10px; color: #888; font-weight: bold; margin-bottom: 2px; }
+  .news-fade-title {
+    font-size: 12px;
+    font-weight: bold;
+    color: #1a4d2e;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .news-fade-dots { position: absolute; bottom: 6px; right: 8px; display: flex; gap: 4px; z-index: 5; }
+  .news-fade-dot { width: 6px; height: 6px; border-radius: 50%; background: #ccc; transition: background 0.3s; }
+  .news-fade-dot.active { background: #1a4d2e; transform: scale(1.2); }
 
-  .fdm-container { display: flex; flex-direction: column; gap: 10px; max-height: 250px; overflow-y: auto; padding-right: 5px; scroll-behavior: smooth; }
+  .fdm-container { display: flex; flex-direction: column; gap: 10px; max-height: 235px; overflow-y: auto; padding-right: 5px; scroll-behavior: smooth; }
   .fdm-item { display: flex; gap: 10px; background: white; border-radius: 8px; padding: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer; align-items: center; }
   .fdm-item img { width: 70px; height: 70px; object-fit: cover; border-radius: 6px; }
   .fdm-item div { flex: 1; }
   .fdm-item h4 { font-size: 12px; color: #1a4d2e; margin-bottom: 4px; }
   .fdm-item p { font-size: 10px; color: #666; }
 
-  .home-vote-widget { background: white; border-radius: 8px; padding: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); text-align: center; }
-  .home-vote-widget h4 { color: #1a4d2e; font-size: 13px; margin-bottom: 10px; }
-  .home-vote-option { display: block; width: 100%; text-align: center; padding: 8px; margin-bottom: 5px; border: 1px solid #ccc; border-radius: 6px; background: #f9f9f9; cursor: pointer; font-weight: bold; font-size: 12px; color: #333;}
-  .home-vote-option:hover { background: #e0f2e9; }
+  /* VOTE HOMME DU MATCH (AVEC PHOTOS) */
+  .home-vote-widget { background: white; border-radius: 8px; padding: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); text-align: center; }
+  .vote-player-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 6px 10px;
+    margin-bottom: 6px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fdfdfd;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 12px;
+    color: #333;
+    transition: background 0.2s;
+  }
+  .vote-player-btn:hover { background: #e0f2e9; }
+  .vote-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #1a4d2e; background: #eee; flex-shrink: 0; }
 
   .news-card { background: white; border-radius: 8px; overflow: hidden; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; position: relative; }
   .news-card img { width: 100%; height: 180px; object-fit: cover; }
@@ -145,80 +200,48 @@
   .player-card .pc-info { padding: 8px; }
   .player-card .pc-name { font-weight: bold; font-size: 12px; color: #1a4d2e; line-height: 1.2; margin-bottom: 3px; }
   .player-card .pc-pos { font-size: 10px; color: #666; }
-  .badge-left { position: absolute; top: 10px; right: -30px; background: #c0392b; color: white; font-size: 9px; font-weight: bold; padding: 4px 30px; transform: rotate(45deg); box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 1; pointer-events: none; }
 
-  .album-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.15); text-align: center; position: relative; cursor: pointer; border-bottom: 4px solid #c9a961; padding: 15px; }
-  .album-card h4 { color: #1a4d2e; margin-bottom: 5px; }
-  .album-card p { font-size: 12px; color: #666; }
-  .album-photos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 15px; }
-  .photo-wrapper { position: relative; }
-  .photo-wrapper img { width: 100%; height: 100px; object-fit: cover; border-radius: 6px; cursor: pointer; }
-  .btn-del-photo { position: absolute; top: 2px; right: 2px; background: rgba(192, 57, 43, 0.9); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; }
-
-  .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; }
-  .video-item { background: white; padding: 10px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); text-align: center; position: relative; }
-  .video-item h5 { font-size: 12px; color: #1a4d2e; margin-bottom: 8px; height: 30px; overflow: hidden; }
-  .video-thumb { width: 100%; aspect-ratio: 9/16; object-fit: cover; border-radius: 6px; cursor: pointer; background: #000; }
-  .btn-del-video { position: absolute; top: 5px; right: 5px; background: rgba(192, 57, 43, 0.9); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; z-index: 2; }
-
-  .vote-card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-  .vote-title { font-size: 1.1em; font-weight: bold; color: #1a4d2e; margin-bottom: 10px; text-align: center; }
-  .vote-option { display: block; width: 100%; text-align: left; padding: 10px; margin-bottom: 8px; border: 1px solid #ccc; border-radius: 6px; background: #f9f9f9; cursor: pointer; font-weight: bold; color: #333;}
-  .vote-option:hover { background: #e0f2e9; }
-  .vote-bar-label { display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; margin-bottom: 3px; }
-  .vote-bar-bg { width: 100%; height: 10px; background: #e0e0e0; border-radius: 5px; overflow: hidden; }
-  .vote-bar-fill { height: 100%; background: #c9a961; border-radius: 5px; }
+  .vote-bar-label { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: bold; margin-bottom: 4px; }
+  .vote-bar-bg { width: 100%; height: 10px; background: #e0e0e0; border-radius: 5px; overflow: hidden; margin-bottom: 10px; }
+  .vote-bar-fill { height: 100%; background: #1a4d2e; border-radius: 5px; transition: width 0.8s; }
   
   .stats-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
   .stats-table th, .stats-table td { padding: 10px; border-bottom: 1px solid #eee; text-align: left; font-size: 13px; vertical-align: middle;}
   .stats-table th { background: #1a4d2e; color: white; }
-  .stats-img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; margin-right: 10px; background: #ddd; vertical-align: middle; }
 
   .historique-container { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); max-width: 900px; margin: 0 auto; }
   .historique-header { text-align: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 2px solid #c9a961; }
-  .historique-logo { max-width: 180px; margin: 0 auto 15px; display: block; }
-  .historique-title { color: #1a4d2e; font-size: 1.4em; font-weight: bold; margin-bottom: 8px; line-height: 1.3; }
+  .historique-logo { max-width: 140px; margin: 0 auto 15px; display: block; }
+  .historique-title { color: #1a4d2e; font-size: 1.4em; font-weight: bold; margin-bottom: 8px; }
   .historique-subtitle { color: #666; font-style: italic; font-size: 0.95em; }
-  .historique-section { margin-bottom: 30px; }
-  .historique-section-title { color: #1a4d2e; font-size: 1.15em; font-weight: bold; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid #c9a961; }
-  .historique-text { color: #333; line-height: 1.7; font-size: 0.95em; text-align: justify; margin-bottom: 12px; }
-  .historique-image { width: 100%; border-radius: 8px; margin: 12px 0; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
-  .historique-image-caption { text-align: center; font-size: 0.8em; color: #777; font-style: italic; margin-top: -8px; margin-bottom: 15px; }
+  .historique-section { margin-bottom: 25px; }
+  .historique-section-title { color: #1a4d2e; font-size: 1.15em; font-weight: bold; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #c9a961; }
+  .historique-text { color: #333; line-height: 1.7; font-size: 0.95em; text-align: justify; margin-bottom: 10px; }
   .historique-fiche { background: #f0f8f4; border-left: 4px solid #1a4d2e; padding: 15px; border-radius: 6px; margin: 15px 0; }
-  .historique-fiche-item { display: flex; margin-bottom: 8px; font-size: 0.9em; }
+  .historique-fiche-item { display: flex; margin-bottom: 6px; font-size: 0.9em; }
   .historique-fiche-label { font-weight: bold; color: #1a4d2e; min-width: 140px; }
-  .historique-list { padding-left: 20px; margin: 12px 0; }
-  .historique-list li { margin-bottom: 6px; color: #333; line-height: 1.5; font-size: 0.9em; }
+  .historique-list { padding-left: 20px; margin: 10px 0; }
+  .historique-list li { margin-bottom: 5px; color: #333; line-height: 1.5; font-size: 0.9em; }
+  .historique-ultras { background: #fff8e6; border-left: 4px solid #c9a961; padding: 12px; border-radius: 6px; margin: 10px 0; }
 
-  /* Bouton Partager flottant */
   .btn-share-float { position: fixed; bottom: 20px; right: 20px; background-color: #2980b9; color: white; border-radius: 50px; padding: 12px 20px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 8px; z-index: 1000; cursor: pointer; border: 2px solid white; }
   .visit-badge { position: fixed; bottom: 20px; left: 20px; background-color: #2c3e50; color: white; border-radius: 50px; padding: 8px 15px; font-size: 13px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 1000; border: 2px solid white; display: none; align-items: center; gap: 5px; }
 
-  .label-with-btn { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-size: 12px; color: #555; }
-  .label-with-btn select { flex: 1; margin-right: 5px; }
   .classement-table th, .classement-table td { padding: 5px 3px; font-size: 11px; text-align: center; }
   .classement-table th:nth-child(2), .classement-table td:nth-child(2) { text-align: left; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
   .classement-table .logo-mini { width: 18px; height: 18px; margin-right: 3px; }
-
-  @media (max-width: 400px) {
-    .btn-rencontre-nav { min-width: 45%; font-size: 11px; padding: 8px 4px; }
-    .next-match-teams { font-size: 1.05em; }
-    .cd-box { min-width: 42px; padding: 5px 6px; }
-    .cd-num { font-size: 1.2em; }
-    .classement-table th, .classement-table td { padding: 3px 1px; font-size: 10px; }
-  }
 </style>
 </head>
 <body>
 
 <h1 id="mainTitle">🦀 MO Béjaïa – Ligue 2 Amateur 2026-2027<span id="adminBadge"></span></h1>
 
-<div id="statusBar" class="status loading">⏳ Chargement des données...</div>
+<div id="statusBar" class="status loading">⏳ Connexion en direct...</div>
 
-<!-- Bandeau Live Général (Vert Pastel MOB) -->
+<!-- Bandeau Live Général -->
 <div id="globalLiveBanner" class="live-banner" onclick="switchTab('mob', document.querySelectorAll('.tab')[0])"></div>
 
-<!-- Onglets Principaux : "Rencontres" est l'onglet actif par défaut -->
+<!-- Onglets Principaux -->
 <div class="tabs">
   <div class="tab" onclick="switchTab('mob', this)">🦀 MOB</div>
   <div class="tab active" onclick="switchTab('rencontres', this)">🏆 Rencontres</div>
@@ -229,10 +252,10 @@
   <div class="tab" onclick="switchTab('historique', this)">📜 Historique</div>
 </div>
 
-<!-- Panneau Admin avec affichage direct du compteur de visites -->
+<!-- Panneau Admin avec compteur de visites -->
 <div id="adminPanel" class="admin-panel" style="display:none; background:#f0e6ff; border:2px solid #8e44ad; border-radius:8px; padding:12px 15px; margin-bottom:15px;">
   <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-    <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+    <div style="display:flex; align-items:center; gap:10px;">
       <strong style="color:#8e44ad; font-size:14px;">🔐 Mode Admin activé</strong>
       <span id="adminVisitBadge" style="background:#2c3e50; color:white; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:bold;">👁️ ...</span>
     </div>
@@ -240,6 +263,7 @@
   </div>
 </div>
 
+<!-- Prochain Match -->
 <div id="nextMatchBanner" class="next-match" style="display:none;">
   <div class="next-match-title">⚡ Prochain match ⚡</div>
   <div class="next-match-teams" id="nextMatchTeams">
@@ -262,10 +286,13 @@
 </div>
 
 <div class="home-widgets">
+  <!-- 1. ACTUALITÉS SUR PLACE EN FONDU -->
   <div>
     <div style="font-size: 12px; font-weight: bold; color: #1a4d2e; margin-bottom: 5px; padding-left: 5px;">📰 Dernières Actualités</div>
-    <div class="carousel-container" id="homeCarousel"></div>
+    <div class="news-fade-container" id="homeCarousel"></div>
   </div>
+
+  <!-- 2. FEUILLES DE MATCH -->
   <div>
     <div style="font-size: 12px; font-weight: bold; color: #1a4d2e; margin-bottom: 5px; padding-left: 5px; display:flex; justify-content:space-between;">
       <span>📋 Feuilles de Match</span>
@@ -273,15 +300,17 @@
     </div>
     <div class="fdm-container" id="fdmContainer"></div>
   </div>
+
+  <!-- 3. VOTE HOMME DU MATCH (AVEC PHOTOS) -->
   <div>
     <div style="font-size: 12px; font-weight: bold; color: #1a4d2e; margin-bottom: 5px; padding-left: 5px;">⭐ Votez pour l'Homme du Match</div>
     <div class="home-vote-widget" id="homeVoteContainer">
-        <p style="font-size:11px; color:#888;">Chargement...</p>
+      <p style="font-size:11px; color:#888;">Chargement du vote...</p>
     </div>
   </div>
 </div>
 
-<!-- ONGLET MOB AVEC LIVE RÉINSTALLÉ -->
+<!-- ONGLET MOB -->
 <div id="tab-mob" class="tab-content">
   <div class="sub-tabs">
     <div class="sub-tab active" id="subtab-mob-avant" onclick="switchSubTabMob('avant')">⏳ Avant-match</div>
@@ -315,7 +344,6 @@
       <button onclick="openModalLive()" class="btn-live" id="btn-live">🟢 Gérer le Live</button>
     </div>
 
-    <!-- Widget Live Match Day avec Vert MOB et noms des équipes -->
     <div class="mob-card" style="border: 2px solid #2e7d32; display:none; background:#f4fbf6;" id="live-widget">
       <div class="mob-title" style="color:#1a4d2e; border-color:#2e7d32; display:flex; justify-content:space-between; align-items:center;">
         <span>🟢 DIRECT DU MATCH</span>
@@ -364,7 +392,7 @@
   </div>
 </div>
 
-<!-- ONGLET RENCONTRES (ACTIF PAR DÉFAUT) -->
+<!-- ONGLET RENCONTRES (PAR DÉFAUT) -->
 <div id="tab-rencontres" class="tab-content active">
   <div class="rencontres-nav">
     <div class="btn-rencontre-nav active" id="btnNavProg" onclick="switchRencontreNav('programme')">📅 Programmes</div>
@@ -380,7 +408,6 @@
     <input type="file" id="importChampFile" accept=".json" style="display:none" onchange="importData(event, currentRencontreView === 'coupe' ? 'coupe' : 'championnat')">
   </div>
 
-  <!-- 1. Programmes -->
   <div id="view-programme" class="rencontre-view">
     <div class="toolbar" style="align-items:center;">
       <label style="font-weight:bold; font-size:13px;">Journée : </label>
@@ -394,7 +421,6 @@
     </div>
   </div>
 
-  <!-- 2. Résultats -->
   <div id="view-resultats" class="rencontre-view" style="display:none;">
     <div class="toolbar" style="align-items:center;">
       <label style="font-weight:bold; font-size:13px;">Journée : </label>
@@ -408,7 +434,6 @@
     </div>
   </div>
 
-  <!-- 3. Classement -->
   <div id="view-classement" class="rencontre-view" style="display:none;">
     <div class="toolbar" style="align-items:center;">
       <label style="font-weight:bold; font-size:13px;">Classement après : </label>
@@ -422,7 +447,6 @@
     </div>
   </div>
 
-  <!-- 4. Coupe d'Algérie -->
   <div id="view-coupe" class="rencontre-view" style="display:none;">
     <div style="text-align:center; margin-bottom:12px;">
       <h3 style="color:#1a4d2e; font-size:14px;">🦀 Parcours du MO Béjaïa en Coupe d'Algérie</h3>
@@ -457,7 +481,7 @@
   </div>
 </div>
 
-<!-- ONGLET STATS -->
+<!-- ONGLET STATS (AVEC HOMME DU MATCH & PHOTOS) -->
 <div id="tab-stats" class="tab-content">
   <div class="sub-tabs">
     <div class="sub-tab active" id="subtab-stats-vote" onclick="switchSubTabStats('vote')">⭐ Homme du Match</div>
@@ -474,19 +498,19 @@
   <div id="stats-vote" class="stats-section"><div id="voteContainer"></div></div>
   <div id="stats-buteurs" class="stats-section" style="display:none;">
     <table class="stats-table">
-      <thead><tr><th>Pos</th><th>Joueur</th><th>Buts</th><th>Actions</th></tr></thead>
+      <thead><tr><th>Pos</th><th>Joueur</th><th>Buts</th><th class="col-actions" style="display:none;">Actions</th></tr></thead>
       <tbody id="tbody-buteurs"></tbody>
     </table>
   </div>
   <div id="stats-cartons" class="stats-section" style="display:none;">
     <table class="stats-table">
-      <thead><tr><th>Joueur</th><th>🟨 Jaunes</th><th>🟥 Rouges</th><th>Actions</th></tr></thead>
+      <thead><tr><th>Joueur</th><th>🟨 Jaunes</th><th>🟥 Rouges</th><th class="col-actions" style="display:none;">Actions</th></tr></thead>
       <tbody id="tbody-cartons"></tbody>
     </table>
   </div>
 </div>
 
-<!-- ONGLET ACTUALITE -->
+<!-- ONGLET ACTUALITÉ -->
 <div id="tab-actualite" class="tab-content">
   <div class="sub-tabs">
     <div class="sub-tab active" id="subtab-news-all" onclick="switchSubTabNews('all')">📰 Toutes les actus</div>
@@ -499,7 +523,7 @@
   <div id="news-container" style="max-width: 800px; margin: 0 auto;"></div>
 </div>
 
-<!-- ONGLET MEDIAS -->
+<!-- ONGLET MÉDIAS -->
 <div id="tab-medias" class="tab-content">
   <div class="sub-tabs">
     <div class="sub-tab active" id="subtab-media-images" onclick="switchSubTabMedia('images')">🖼️ Images</div>
@@ -517,7 +541,7 @@
   </div>
 </div>
 
-<!-- ONGLET HISTORIQUE -->
+<!-- ONGLET HISTORIQUE COMPLET RESTAURÉ -->
 <div id="tab-historique" class="tab-content">
   <div class="toolbar" id="historique-toolbar" style="display:none; margin-bottom: 15px;">
     <button onclick="openModalHisto('new')" style="background:#27ae60;">➕ Ajouter une section</button>
@@ -525,11 +549,13 @@
   
   <div class="historique-container" id="historique-content">
     <div class="historique-header">
-      <img src="https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png" alt="Logo MO Béjaïa" class="historique-logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png" alt="Logo MO Béjaïa" class="historique-logo">
       <div class="historique-title">MO Béjaïa : Identité, Histoire et Passion des Crabes</div>
       <div class="historique-subtitle">Le Mouloudia Olympique de Béjaïa, bien plus qu'un simple club de football</div>
     </div>
+
     <div id="historique-dynamic-sections"></div>
+
     <div class="historique-section">
       <div class="historique-section-title">📋 Fiche d'identité</div>
       <div class="historique-fiche">
@@ -541,52 +567,92 @@
         <div class="historique-fiche-item"><div class="historique-fiche-label">Championnat actuel :</div><div>Ligue 2 Amateur (Groupe Centre-Est) 2026/2027</div></div>
       </div>
     </div>
+
+    <div class="historique-section">
+      <div class="historique-section-title">📅 La naissance et le sacrifice (1954-1962)</div>
+      <div class="historique-text">La trajectoire du MOB est intimement liée à l'histoire de l'Algérie. Le 5 juillet 1954, le récépissé de déclaration est officiellement déposé par M. Abdelhafid Tamzali, marquant la naissance administrative du club.</div>
+    </div>
+
+    <div class="historique-section">
+      <div class="historique-section-title">👥 Les présidents du MO Béjaïa depuis la création</div>
+      <ul class="historique-list">
+        <li>Tamzali Abdelhafid • Yousfi Loucif • Hadahoum Salah • Belhocine Hocine • Mendil Boualem • Dali Ahmed • Zaouche Salah • Benalouche Salah • Kasri Allaoua • Tighidet Ahcen • Ferdjoukh Abdelkader • Maître Yanat • Ladjouz • Oulmou Mohamed • Tikheroubine Mohamed • Berri Larbi • Allouache Larbi • Hamouche Yahia • Bannai Zahir • Rezki Mustapha • Leklak Norredine • Bouchaara • Maouche Nacer • Bouchebah Mustapha • Adrar Akli • Attia Zahir • Ikhlef Boubekeur • Hassisen Farid • Boudiab Rezki • Benai Arab • Boukhiba Djamel</li>
+      </ul>
+    </div>
+
+    <div class="historique-section">
+      <div class="historique-section-title">🗺️ Le parcours du MOB à travers les divisions</div>
+      <div class="historique-text">Un voyage héroïque marqué par des périodes de transition et une reconstruction progressive :</div>
+      <ul class="historique-list">
+        <li><b>1962 - 1963 :</b> Reprise post-indépendance dans la division Nationale de Constantine.</li>
+        <li><b>1977 - 1990 :</b> Fusion sous l'appellation du MBB (Mechâal Baladiat Béjaïa), oscillant entre la D2 et la D3.</li>
+        <li><b>1994 - 2001 :</b> Stabilisation de la structure en Division 3 (Région Est).</li>
+        <li><b>2012 - 2013 :</b> Accession historique en Ligue 1 Professionnelle.</li>
+      </ul>
+    </div>
+
+    <div class="historique-section">
+      <div class="historique-section-title">🏆 L'âge d'or national (2013-2015)</div>
+      <div class="historique-text">L'exercice 2014/2015 restera gravé dans les mémoires des supporters mobistes :</div>
+      <ul class="historique-list">
+        <li>🏆 <b>Vainqueur de la Coupe d'Algérie 2015 :</b> Victoire 1-0 face au RC Arbaâ au stade Mustapha Tchaker de Blida. Premier trophée majeur de l'histoire du club !</li>
+        <li>🥈 <b>Vice-Champion d'Algérie 2014/2015 :</b> Qualification historique en Ligue des Champions de la CAF.</li>
+      </ul>
+    </div>
+
+    <div class="historique-section">
+      <div class="historique-section-title">🌍 L'épopée africaine (2016)</div>
+      <div class="historique-text">Propulsé sur la scène continentale, le MOB réalise l'exploit d'atteindre la <b>Finale de la Coupe de la Confédération (CAF)</b> en novembre 2016 face au TP Mazembe. Une aventure inoubliable gravée dans le cœur des Crabes.</div>
+    </div>
+
+    <div class="historique-section">
+      <div class="historique-section-title">🥁 Le 12ème Homme : Les groupes de supporters</div>
+      <div class="historique-text">L'âme du MO Béjaïa réside dans la ferveur exceptionnelle de son public :</div>
+      <div class="historique-ultras"><b>🔥 Ultras Granchio (UG) :</b> Fondé en 2009 au Couvert B.</div>
+      <div class="historique-ultras"><b>👑 Ultras Saldae Kings (USK) :</b> Fondé en 2011 au Couvert A.</div>
+      <div class="historique-ultras"><b>🦅 Ultras Free Men 16 (UFM16) :</b> Fondé en 2016 à la tribune Adrar N Tizi.</div>
+      <div class="historique-ultras"><b>💀 Ultra Mobiste (UM) :</b> Né de la fusion des Pirate Boys, Banda Berberista et KOP 12.</div>
+    </div>
   </div>
 </div>
 
-<!-- Boutons flottants -->
 <div class="btn-share-float" id="btnShareMain" onclick="shareContext()">📤 Partager</div>
 <div class="visit-badge" id="visitCounter">👁️ -- visites</div>
 
-<!-- MODALE DU LIVE RÉINSTALLÉE ET AMÉLIORÉE -->
+<!-- MODALES DU SITE -->
 <div class="modal" id="modalLive">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalLive')">×</span>
     <h3>🟢 Gérer le Live de la Rencontre</h3>
-    <label>Statut du Live <select id="liveStatut"><option value="inactif">Inactif (Masquer le direct)</option><option value="actif">Match en cours (Actif) 🟢</option><option value="termine">Match terminé</option></select></label>
-    
+    <label>Statut <select id="liveStatut"><option value="inactif">Inactif</option><option value="actif">Match en direct 🟢</option><option value="termine">Terminé</option></select></label>
     <div style="display:flex; gap:10px; margin-top:8px;">
-      <label style="flex:1;">Équipe Domicile <input type="text" id="liveDom" placeholder="Ex: MO Béjaïa"></label>
-      <label style="flex:1;">Équipe Extérieure <input type="text" id="liveExt" placeholder="Ex: MO Constantine"></label>
+      <label style="flex:1;">Équipe Domicile <input type="text" id="liveDom" value="MO Béjaïa"></label>
+      <label style="flex:1;">Équipe Extérieure <input type="text" id="liveExt"></label>
     </div>
-
     <div style="display:flex; gap:10px; margin-top:8px;">
       <label style="flex:1;">Score Domicile <input type="number" id="liveSd" min="0" value="0"></label>
       <label style="flex:1;">Score Extérieur <input type="number" id="liveSe" min="0" value="0"></label>
     </div>
-    
-    <label>Déroulement / Faits de jeu (Minute & Buteurs...) <textarea id="liveTexte" rows="4" placeholder="Ex: 45' But de Faouzi Yaya !&#10;72' Occasion pour le MOB"></textarea></label>
+    <label>Faits de jeu / Buteurs <textarea id="liveTexte" rows="3"></textarea></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalLive')">Annuler</button><button onclick="saveLive()">Mettre à jour & Diffuser</button></div>
   </div>
 </div>
 
-<!-- AUTRES MODALES -->
 <div class="modal" id="modalMatch">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalMatch')">×</span>
-    <h3 id="modalTitleMatch">Ajouter un Match</h3>
+    <h3 id="modalTitleMatch">Match</h3>
     <input type="hidden" id="editSectionMatch"><input type="hidden" id="editIndexMatch">
-    <label>Journée / Tour <input type="text" id="fJournee" placeholder="Ex: 1 ou 32es de finale"></label>
+    <label>Journée / Tour <input type="text" id="fJournee"></label>
     <label>Date <input type="date" id="fDate"></label>
     <label>Heure <input type="time" id="fHeure"></label>
-    <div class="label-with-btn"><span>Domicile</span><button class="btn-small" onclick="addNewEquipe('dom')">+ Nouvelle</button></div>
-    <select id="fDom"></select>
-    <div class="label-with-btn"><span>Extérieur</span><button class="btn-small" onclick="addNewEquipe('ext')">+ Nouvelle</button></div>
-    <select id="fExt"></select>
-    <label>Score domicile <input type="number" id="fSd" min="0"></label>
-    <label>Score extérieur <input type="number" id="fSe" min="0"></label>
-    <div class="label-with-btn"><span>Stade</span><button class="btn-small" onclick="addNewStade()">+ Nouveau</button></div>
-    <select id="fStade"></select>
+    <label>Domicile <select id="fDom"></select></label>
+    <label>Extérieur <select id="fExt"></select></label>
+    <div style="display:flex; gap:10px;">
+      <label style="flex:1;">Score Domicile <input type="number" id="fSd" min="0"></label>
+      <label style="flex:1;">Score Extérieur <input type="number" id="fSe" min="0"></label>
+    </div>
+    <label>Stade <select id="fStade"></select></label>
     <label>Observations <input type="text" id="fObs"></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalMatch')">Annuler</button><button onclick="saveMatch()">Enregistrer</button></div>
   </div>
@@ -595,7 +661,7 @@
 <div class="modal" id="modalAdmin">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalAdmin')">×</span>
-    <h3>🔐 Accès Admin</h3>
+    <h3>🔐 Accès Administrateur</h3>
     <label>Mot de passe <input type="password" id="adminPwd" onkeypress="if(event.key==='Enter') tryLogin()"></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalAdmin')">Annuler</button><button onclick="tryLogin()">Connexion</button></div>
   </div>
@@ -605,10 +671,10 @@
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalArticle')">×</span>
     <h3 id="articleTitle"></h3>
-    <div id="articleDate" style="font-size: 11px; color:#777; margin-bottom: 10px;"></div>
-    <img id="articleImg" src="" style="width:100%; border-radius:8px; margin-bottom:15px; display:none;">
+    <div id="articleDate" style="font-size:11px; color:#777; margin-bottom:8px;"></div>
+    <img id="articleImg" src="" style="width:100%; border-radius:8px; margin-bottom:10px; display:none;">
     <div id="articleText" class="article-full-text"></div>
-    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalArticle')">Fermer</button><button onclick="shareArticle()" style="background:#2980b9;">📤 Partager</button></div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalArticle')">Fermer</button></div>
   </div>
 </div>
 
@@ -617,87 +683,12 @@
     <span class="modal-close" onclick="closeModal('modalNewsEdit')">×</span>
     <h3>📰 Article</h3>
     <input type="hidden" id="editNewsIdx">
-    <label>Catégorie <select id="nCat"><option value="all">Actualité Générale</option><option value="portraits">Portrait</option><option value="jeunes">Jeunes & École</option></select></label>
+    <label>Catégorie <select id="nCat"><option value="all">Actualité Générale</option><option value="portraits">Portrait</option><option value="jeunes">Jeunes</option></select></label>
     <label>Titre <input type="text" id="nTitre"></label>
     <label>Date <input type="date" id="nDate"></label>
-    <label>Lien de l'image <input type="url" id="nImg"></label>
-    <label>Texte de l'article <textarea id="nTexte" rows="10"></textarea></label>
+    <label>Lien Image <input type="url" id="nImg"></label>
+    <label>Contenu <textarea id="nTexte" rows="8"></textarea></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalNewsEdit')">Annuler</button><button onclick="saveNews()">Enregistrer</button></div>
-  </div>
-</div>
-
-<div class="modal" id="modalFDMEdit">
-  <div class="modal-content">
-    <span class="modal-close" onclick="closeModal('modalFDMEdit')">×</span>
-    <h3>📋 Feuille de Match</h3>
-    <input type="hidden" id="editFdmIdx">
-    <label>Titre <input type="text" id="fdmTitre" placeholder="Ex: J1 - MOB 0-0 MOC"></label>
-    <label>Date <input type="date" id="fdmDate"></label>
-    <label>Lien de l'image (FdM) <input type="url" id="fdmImg"></label>
-    <label>Texte (Fiche technique) <textarea id="fdmTexte" rows="12"></textarea></label>
-    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalFDMEdit')">Annuler</button><button onclick="saveFDM()">Enregistrer</button></div>
-  </div>
-</div>
-
-<div class="modal" id="modalFDMView">
-  <div class="modal-content">
-    <span class="modal-close" onclick="closeModal('modalFDMView')">×</span>
-    <h3 id="fdmViewTitle"></h3>
-    <div id="fdmViewDate" style="font-size: 11px; color:#777; margin-bottom: 10px;"></div>
-    <img id="fdmViewImg" src="" style="width:100%; border-radius:8px; margin-bottom:15px; display:none;">
-    <div id="fdmViewText" class="article-full-text"></div>
-    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalFDMView')">Fermer</button><button onclick="shareFdm()" style="background:#2980b9;">📤 Partager</button></div>
-  </div>
-</div>
-
-<div class="modal" id="modalAllBreves">
-  <div class="modal-content">
-    <span class="modal-close" onclick="closeModal('modalAllBreves')">×</span>
-    <h3>📢 Toutes les brèves infos</h3>
-    <div id="allBrevesList" style="max-height: 60vh; overflow-y: auto;"></div>
-  </div>
-</div>
-
-<div class="modal" id="modalBreveView">
-  <div class="modal-content">
-    <span class="modal-close" onclick="closeModal('modalBreveView')">×</span>
-    <h3 id="breveViewTitle"></h3>
-    <div id="breveViewDate" style="font-size: 11px; color:#777; margin-bottom: 10px;"></div>
-    <img id="breveViewImg" src="" style="width:100%; border-radius:8px; margin-bottom:15px; display:none;">
-    <div id="breveViewText" class="article-full-text"></div>
-    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalBreveView')">Fermer</button><button onclick="shareBreve()" style="background:#2980b9;">📤 Partager</button></div>
-  </div>
-</div>
-
-<div class="modal" id="modalCreateVote">
-  <div class="modal-content">
-    <span class="modal-close" onclick="closeModal('modalCreateVote')">×</span>
-    <h3>⭐ Créer un Vote Homme du Match</h3>
-    <label>Nom du match (ex: J7 - MOB vs PAC) <input type="text" id="voteMatchName"></label>
-    <label>Candidats (séparés par des virgules, max 5) <input type="text" id="voteCandidates" placeholder="Ex: Yaya Faouzi, Rebiai, Tlemcani"></label>
-    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalCreateVote')">Annuler</button><button onclick="saveNewVote()">Lancer le vote</button></div>
-  </div>
-</div>
-
-<div class="modal" id="modalManageVote">
-  <div class="modal-content">
-    <span class="modal-close" onclick="closeModal('modalManageVote')">×</span>
-    <h3>⚙️ Gérer les candidats</h3>
-    <div id="manageVoteList" style="margin-bottom:15px;"></div>
-    <label>Ajouter un joueur <div style="display:flex; gap:5px;"><input type="text" id="newCandidateName" placeholder="Nom du joueur"><button onclick="addCandidateToVote()" class="btn-small" style="background:#27ae60;">+</button></div></label>
-    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalManageVote')">Fermer</button></div>
-  </div>
-</div>
-
-<div class="modal" id="modalAddStat">
-  <div class="modal-content">
-    <span class="modal-close" onclick="closeModal('modalAddStat')">×</span>
-    <h3 id="modalStatTitle">Ajouter</h3>
-    <input type="hidden" id="statType">
-    <label>Nom du joueur <input type="text" id="statPlayerName"></label>
-    <div id="statGoalFields"><label>Nombre de buts <input type="number" id="statGoals" value="1" min="1"></label></div>
-    <div id="statCartonFields" style="display:none;"><label>Type de carton <select id="statCartonType"><option value="jaune">Jaune</option><option value="rouge">Rouge</option></select></label></div>
-    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalAddStat')">Annuler</button><button onclick="saveStat()">Enregistrer</button></div>
   </div>
 </div>
 
@@ -706,20 +697,12 @@
     <span class="modal-close" onclick="closeModal('modalPlayer')">×</span>
     <h3>⚽ Joueur</h3>
     <input type="hidden" id="editPlayerIdx">
-    <label>N° dossard <input type="number" id="pNum"></label>
-    <label>Nom <input type="text" id="pNom"></label>
+    <div style="display:flex; gap:10px;">
+      <label style="width:70px;">N° <input type="number" id="pNum"></label>
+      <label style="flex:1;">Nom complet <input type="text" id="pNom"></label>
+    </div>
     <label>Poste <input type="text" id="pPoste"></label>
-    <label>Date de naissance <input type="text" id="pDdn" placeholder="Ex: 14/06/1998"></label>
-    <label>Lieu de naissance <input type="text" id="pLieu"></label>
-    <label>Nationalité <input type="text" id="pNat"></label>
-    <label>Taille / Poids <input type="text" id="pTaille"></label>
-    <label>Pied fort <input type="text" id="pPied"></label>
-    <label>Club précédent <input type="text" id="pPrev"></label>
-    <label>Fin de contrat <input type="text" id="pFinContrat" placeholder="Ex: Juin 2027"></label>
-    <label>Lien Image <input type="url" id="pImg"></label>
-    <hr style="margin:10px 0;">
-    <label>A quitté le club le (Optionnel) <input type="date" id="pDepartDate"></label>
-    <label>Motif du départ <input type="text" id="pDepartMotif" placeholder="Ex: Fin de contrat, Transfert..."></label>
+    <label>Photo (URL) <input type="url" id="pImg"></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalPlayer')">Annuler</button><button onclick="savePlayer()">Enregistrer</button></div>
   </div>
 </div>
@@ -727,16 +710,11 @@
 <div class="modal" id="modalStaff">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalStaff')">×</span>
-    <h3>🛡️ Membre du Staff</h3>
+    <h3>🛡️ Staff</h3>
     <input type="hidden" id="editStaffIdx">
     <label>Nom <input type="text" id="sNom"></label>
     <label>Fonction <input type="text" id="sFonction"></label>
-    <label>Date/Lieu de naissance <input type="text" id="sDdn"></label>
-    <label>Diplôme / Infos <input type="text" id="sInfos"></label>
-    <label>Lien Image <input type="url" id="sImg"></label>
-    <hr style="margin:10px 0;">
-    <label>A quitté le club le (Optionnel) <input type="date" id="sDepartDate"></label>
-    <label>Motif du départ <input type="text" id="sDepartMotif"></label>
+    <label>Photo (URL) <input type="url" id="sImg"></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalStaff')">Annuler</button><button onclick="saveStaff()">Enregistrer</button></div>
   </div>
 </div>
@@ -748,11 +726,76 @@
     <input type="hidden" id="editDirIdx">
     <label>Nom <input type="text" id="dNom"></label>
     <label>Fonction <input type="text" id="dFonction"></label>
-    <label>Lien Image <input type="url" id="dImg"></label>
-    <hr style="margin:10px 0;">
-    <label>A quitté le club le (Optionnel) <input type="date" id="dDepartDate"></label>
-    <label>Motif du départ <input type="text" id="dDepartMotif"></label>
+    <label>Photo (URL) <input type="url" id="dImg"></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalDirigeant')">Annuler</button><button onclick="saveDirigeant()">Enregistrer</button></div>
+  </div>
+</div>
+
+<div class="modal" id="modalCreateVote">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('modalCreateVote')">×</span>
+    <h3>⭐ Lancer le Vote Homme du Match</h3>
+    <label>Titre de la rencontre <input type="text" id="voteMatchName" placeholder="Ex: AS Khroub 0-1 MO Béjaïa"></label>
+    <label>Joueurs candidats (séparés par des virgules) <input type="text" id="voteCandidates" placeholder="Ex: Faouzi Yaya, Ben Mazouz Mohamed Saïd, Hamza Rebiai"></label>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalCreateVote')">Annuler</button><button onclick="saveNewVote()">Lancer le vote</button></div>
+  </div>
+</div>
+
+<div class="modal" id="modalManageVote">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('modalManageVote')">×</span>
+    <h3>⚙️ Gérer les candidats</h3>
+    <div id="manageVoteList" style="margin-bottom:12px;"></div>
+    <label>Ajouter un joueur :</label>
+    <div style="display:flex; gap:6px; margin-top:4px;">
+      <input type="text" id="newCandidateName" placeholder="Nom du joueur">
+      <button onclick="addCandidateToVote()">+</button>
+    </div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalManageVote')">Fermer</button></div>
+  </div>
+</div>
+
+<div class="modal" id="modalAddStat">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('modalAddStat')">×</span>
+    <h3 id="modalStatTitle">Ajouter une statistique</h3>
+    <input type="hidden" id="statType">
+    <label>Nom du joueur <input type="text" id="statPlayerName"></label>
+    <div id="statGoalFields"><label>Nombre de buts <input type="number" id="statGoals" value="1" min="1"></label></div>
+    <div id="statCartonFields" style="display:none;"><label>Type de carton <select id="statCartonType"><option value="jaune">Carton Jaune</option><option value="rouge">Carton Rouge</option></select></label></div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalAddStat')">Annuler</button><button onclick="saveStat()">Enregistrer</button></div>
+  </div>
+</div>
+
+<div class="modal" id="modalFDMEdit">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('modalFDMEdit')">×</span>
+    <h3>📋 Feuille de Match</h3>
+    <input type="hidden" id="editFdmIdx">
+    <label>Titre <input type="text" id="fdmTitre" placeholder="Ex: J1 - MOB 0-0 MOC"></label>
+    <label>Date <input type="date" id="fdmDate"></label>
+    <label>Lien Image <input type="url" id="fdmImg"></label>
+    <label>Fiche technique <textarea id="fdmTexte" rows="10"></textarea></label>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalFDMEdit')">Annuler</button><button onclick="saveFDM()">Enregistrer</button></div>
+  </div>
+</div>
+
+<div class="modal" id="modalFDMView">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('modalFDMView')">×</span>
+    <h3 id="fdmViewTitle"></h3>
+    <div id="fdmViewDate" style="font-size:11px; color:#777; margin-bottom:8px;"></div>
+    <img id="fdmViewImg" src="" style="width:100%; border-radius:8px; margin-bottom:10px; display:none;">
+    <div id="fdmViewText" class="article-full-text"></div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalFDMView')">Fermer</button></div>
+  </div>
+</div>
+
+<div class="modal" id="modalAllBreves">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('modalAllBreves')">×</span>
+    <h3>📢 Toutes les brèves</h3>
+    <div id="allBrevesList" style="max-height:60vh; overflow-y:auto;"></div>
   </div>
 </div>
 
@@ -761,9 +804,9 @@
     <span class="modal-close" onclick="closeModal('modalHisto')">×</span>
     <h3>📜 Section Historique</h3>
     <input type="hidden" id="editHistoIdx">
-    <label>Titre de la section <input type="text" id="hTitre" placeholder="Ex: Les années 80"></label>
-    <label>Texte de la section <textarea id="hTexte" rows="8"></textarea></label>
-    <label>Lien Image (Optionnel) <input type="url" id="hImg"></label>
+    <label>Titre <input type="text" id="hTitre"></label>
+    <label>Texte <textarea id="hTexte" rows="6"></textarea></label>
+    <label>Photo (URL) <input type="url" id="hImg"></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalHisto')">Annuler</button><button onclick="saveHisto()">Enregistrer</button></div>
   </div>
 </div>
@@ -771,10 +814,10 @@
 <div class="modal" id="modalMob">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalMob')">×</span>
-    <h3>📝 Modifier le contenu (Texte + Image)</h3>
+    <h3>📝 Modifier section MOB</h3>
     <input type="hidden" id="mobSection">
-    <label>Lien de l'image (Optionnel) <input type="url" id="mobImgInput" placeholder="https://i.postimg.cc/..."></label>
-    <label>Texte (Optionnel) <textarea id="mobTextInput" rows="8"></textarea></label>
+    <label>Image (URL) <input type="url" id="mobImgInput"></label>
+    <label>Texte <textarea id="mobTextInput" rows="6"></textarea></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalMob')">Annuler</button><button onclick="saveMobContent()">Enregistrer</button></div>
   </div>
 </div>
@@ -782,9 +825,9 @@
 <div class="modal" id="modalAffiche">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalAffiche')">×</span>
-    <h3>🖼️ Changer l'affiche principale</h3>
+    <h3>🖼️ Changer l'affiche</h3>
     <input type="hidden" id="afficheSection">
-    <label>Lien de l'image (Postimages) <input type="url" id="afficheUrl"></label>
+    <label>Lien Image (URL) <input type="url" id="afficheUrl"></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalAffiche')">Annuler</button><button onclick="saveAffiche()">Enregistrer</button></div>
   </div>
 </div>
@@ -792,10 +835,10 @@
 <div class="modal" id="modalVideo">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalVideo')">×</span>
-    <h3>🎥 Insérer une vidéo & texte</h3>
+    <h3>🎥 Vidéo YouTube</h3>
     <input type="hidden" id="videoSection">
     <label>Lien YouTube <input type="url" id="videoUrl"></label>
-    <label>Texte sous la vidéo <input type="text" id="videoTexte"></label>
+    <label>Légende <input type="text" id="videoTexte"></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalVideo')">Annuler</button><button onclick="saveVideo()">Enregistrer</button></div>
   </div>
 </div>
@@ -803,49 +846,20 @@
 <div class="modal" id="modalAlbum">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalAlbum')">×</span>
-    <h3>🖼️ Créer un Album</h3>
-    <label>Titre de l'album <input type="text" id="albumTitre" placeholder="Ex: J6 - MSP Batna 1-0 MOB"></label>
+    <h3>📸 Nouvel Album</h3>
+    <label>Titre <input type="text" id="albumTitre"></label>
     <label>Date <input type="date" id="albumDate"></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalAlbum')">Annuler</button><button onclick="saveAlbum()">Créer</button></div>
-  </div>
-</div>
-
-<div class="modal" id="modalAddPhoto">
-  <div class="modal-content">
-    <span class="modal-close" onclick="closeModal('modalAddPhoto')">×</span>
-    <h3>📸 Ajouter une photo à l'album</h3>
-    <input type="hidden" id="photoAlbumId">
-    <label>Lien de l'image (Postimages) <input type="url" id="photoUrl"></label>
-    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalAddPhoto')">Annuler</button><button onclick="savePhoto()">Ajouter</button></div>
-  </div>
-</div>
-
-<div class="modal" id="modalAlbumView">
-  <div class="modal-content" style="max-width: 800px;">
-    <span class="modal-close" onclick="closeModal('modalAlbumView')">×</span>
-    <h3 id="albumViewTitle"></h3>
-    <div class="toolbar" id="albumViewToolbar" style="display:none;">
-      <button onclick="openModalAddPhoto()" style="background:#27ae60;">➕ Ajouter une photo</button>
-    </div>
-    <div class="album-photos-grid" id="albumViewGrid"></div>
   </div>
 </div>
 
 <div class="modal" id="modalVideoMedia">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalVideoMedia')">×</span>
-    <h3>🎥 Ajouter une Vidéo</h3>
-    <label>Titre <input type="text" id="vmTitre" placeholder="Ex: Résumé J6"></label>
-    <label>Lien YouTube <input type="url" id="vmUrl" placeholder="https://youtu.be/..."></label>
+    <h3>🎥 Ajouter Vidéo</h3>
+    <label>Titre <input type="text" id="vmTitre"></label>
+    <label>Lien YouTube <input type="url" id="vmUrl"></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalVideoMedia')">Annuler</button><button onclick="saveVideoMedia()">Ajouter</button></div>
-  </div>
-</div>
-
-<div class="modal" id="modalVideoPlayer">
-  <div class="modal-content" style="padding:0; background:black; max-width:800px;">
-    <span class="modal-close" style="color:white; z-index:10;" onclick="closeVideoModal()">×</span>
-    <h3 id="videoModalTitle" style="color:white; padding:10px; font-size:14px; text-align:center;"></h3>
-    <iframe id="videoModalIframe" style="width:100%; aspect-ratio:16/9; border:none;" allowfullscreen></iframe>
   </div>
 </div>
 
@@ -873,7 +887,6 @@ let currentMobSubTab = 'avant';
 let currentNewsSubTab = 'all';
 let currentMediaSubTab = 'images';
 let currentStatsSubTab = 'vote';
-// Onglet actif par défaut : "rencontres"
 let currentTabName = 'rencontres';
 let currentRencontreView = 'programme';
 
@@ -885,114 +898,149 @@ let EQUIPES = ["Paradou AC", "IRB Nezla", "NRB Beni Oulbane", "NRB Teleghma", "C
 let STADES = ["Stade Abed-Hamdani (El Khroub)", "Stade 19 Mai 1956 (Annaba)", "Stade Allag Abderrahmane (Aïn Fakroun)", "Stade Khabaza Bachir (Teleghma)", "Stade 1er Novembre 1954 (Batna)", "Stade 20 Août 1955 (Skikda)", "Stade 18 Février (Ouargla)", "Stade 10 000 places (Touggourt)", "Stade Tirsatine (Azazga)", "Stade Hammou Boukouffa (Beni Oulbane)", "Stade 20 Août 1955 (Alger)", "Stade des Frères Boucheligue (Magra)", "Stade 1er Novembre 1954 Guendouza (Akbou)", "Stade des Martyrs (Akbou)", "Stade Hocine Rouibah (Jijel)", "Stade Ramdane-Benabdelmalek (Constantine)", "Stade Zerdani Hassouna (Oum El Bouaghi)"];
 
 const LOGOS = {
-  "Paradou AC": "https://i.postimg.cc/QCDDzw1H/Paradou-AC-logo-officiel.png",
-  "IRB Nezla": "https://i.postimg.cc/YqncNhn1/IRB-NEZLA-LOGO-OFFICIEL.jpg",
-  "NRB Beni Oulbane": "https://i.postimg.cc/kX5z57J6/NRB-Beni-Oulbane-logo-officiel.png",
-  "NRB Teleghma": "https://i.postimg.cc/brV6n2yN/NRB-Teleghma-logo-officiel.jpg",
-  "CA Batna": "https://i.postimg.cc/qqFLqVwT/CA-Batna-logo-officiel.png",
-  "US Chaouia": "https://i.postimg.cc/D0RrFQf2/US-Chaouia-logo-officiel.png",
-  "AS Khroub": "https://i.postimg.cc/MGt1XJKf/AS-Khroub-logo-officiel.png",
-  "MO Constantine": "https://i.postimg.cc/CKMmcNRk/MO-Constantine-logo-officiel.png",
-  "USM Annaba": "https://i.postimg.cc/jStXjXQc/USM-Annaba-logo-officiel.png",
-  "JS Azazga": "https://i.postimg.cc/15Z0WHd7/JS-Azazga-logo-officiel.png",
-  "MO Béjaïa": "https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png",
-  "NC Magra": "https://i.postimg.cc/nz38drVf/NC-Magra-logo-officiel.png",
-  "JSM Skikda": "https://i.postimg.cc/6q8PYh10/JSM-Skikda-logo-officiel.png",
-  "MSP Batna": "https://i.postimg.cc/R0Vxww93/MSP-Batna-logo-officiel.png",
-  "JSD Jijel": "https://i.postimg.cc/hP9kw2tV/JSD-Jijel-logo-logo-officiel.png",
-  "CR Beni Thour": "https://i.postimg.cc/k4Ks4hZQ/CR-Beni-Thour-logo-officiel.png"
+  "Paradou AC": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Paradou_AC.png",
+  "IRB Nezla": "https://upload.wikimedia.org/wikipedia/fr/1/1d/IRB_Nezla.png",
+  "NRB Beni Oulbane": "https://img.a.transfermarkt.technology/wappen/head/128331.png",
+  "NRB Teleghma": "https://img.a.transfermarkt.technology/wappen/head/64134.png",
+  "CA Batna": "https://upload.wikimedia.org/wikipedia/fr/f/fa/CA_Batna_logo.png",
+  "US Chaouia": "https://upload.wikimedia.org/wikipedia/fr/9/99/US_Chaouia_logo.png",
+  "AS Khroub": "https://upload.wikimedia.org/wikipedia/fr/4/4d/ASKhroub.png",
+  "MO Constantine": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Logo_du_MOC.png",
+  "USM Annaba": "https://upload.wikimedia.org/wikipedia/fr/7/73/USM_Annaba_logo.png",
+  "JS Azazga": "https://upload.wikimedia.org/wikipedia/fr/9/95/Logo_JS_Azazga.png",
+  "MO Béjaïa": "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png",
+  "NC Magra": "https://upload.wikimedia.org/wikipedia/fr/5/5e/NC_Magra_logo.png",
+  "JSM Skikda": "https://upload.wikimedia.org/wikipedia/commons/4/48/JSMSkikdaofficiallogo.png",
+  "MSP Batna": "https://upload.wikimedia.org/wikipedia/fr/a/a8/MSP_Batna_logo.png",
+  "JSD Jijel": "https://upload.wikimedia.org/wikipedia/fr/4/43/JSD_Jijel_logo.png",
+  "CR Beni Thour": "https://upload.wikimedia.org/wikipedia/fr/8/86/CR_Beni_Thour_logo.png"
 };
 
-const FDM_INIT = [{ id: "fdm1", titre: "J1 : MO Béjaïa 0-0 MO Constantine", date: "2026-09-18", image: "https://i.postimg.cc/HLQTLC6d/Feuille-de-match-MO-Bejaia-0-0-MO-Constantine-J1-le-18-septembre-2026.png", texte: "FICHE TECHNIQUE DE LA RENCONTRE\n\nLieu : Stade 1er Novembre Guendouza\nCompétition : Ligue 2 Amateur – 1ère Journée\nDate : Vendredi 18 septembre 2026\nRésultat : MO Béjaïa 0 – 0 MO Constantine\n\n#LaMaisonDesCrabes" }];
-const BREVES_INIT = [{ id: "b1", titre: "Décès de Aymene Chahmat : la JSM Skikda en deuil", date: "2026-10-09", image: "https://i.postimg.cc/vZ29bkPG/Deces-de-Aymene-Chahmat.webp", texte: "Le football algérien est en deuil après le décès de Aymene Chahmat.\n#LaMaisonDesCrabes" }];
-const MATCHS_INIT = [
-  {journee:"1", date:"2026-09-18", heure:"16:00", dom:"AS Khroub", ext:"Paradou AC", sd:"0", se:"0", stade:"Stade Abed-Hamdani (El Khroub)", obs:""},
-  {journee:"1", date:"2026-09-18", heure:"16:00", dom:"USM Annaba", ext:"NC Magra", sd:"3", se:"0", stade:"Stade 19 Mai 1956 (Annaba)", obs:""},
-  {journee:"1", date:"2026-09-18", heure:"16:00", dom:"US Chaouia", ext:"NRB Beni Oulbane", sd:"1", se:"1", stade:"", obs:""},
-  {journee:"1", date:"2026-09-18", heure:"16:00", dom:"NRB Teleghma", ext:"MSP Batna", sd:"1", se:"1", stade:"Stade Khabaza Bachir (Teleghma)", obs:""},
-  {journee:"1", date:"2026-09-18", heure:"16:00", dom:"CA Batna", ext:"JS Azazga", sd:"2", se:"2", stade:"Stade 1er Novembre 1954 (Batna)", obs:""},
-  {journee:"1", date:"2026-09-18", heure:"16:00", dom:"JSM Skikda", ext:"IRB Nezla", sd:"2", se:"0", stade:"Stade 20 Août 1955 (Skikda)", obs:""},
-  {journee:"1", date:"2026-09-18", heure:"16:00", dom:"MO Béjaïa", ext:"MO Constantine", sd:"0", se:"0", stade:"Stade des Martyrs (Akbou)", obs:""},
-  {journee:"2", date:"2026-09-26", heure:"16:00", dom:"CR Beni Thour", ext:"MO Béjaïa", sd:"1", se:"3", stade:"", obs:""},
-  {journee:"2", date:"2026-09-26", heure:"16:00", dom:"IRB Nezla", ext:"JSD Jijel", sd:"1", se:"0", stade:"", obs:""},
-  {journee:"2", date:"2026-09-26", heure:"16:00", dom:"NRB Beni Oulbane", ext:"CA Batna", sd:"1", se:"0", stade:"", obs:""},
-  {journee:"2", date:"2026-09-26", heure:"16:00", dom:"Paradou AC", ext:"NRB Teleghma", sd:"2", se:"1", stade:"", obs:""},
-  {journee:"2", date:"2026-09-26", heure:"16:00", dom:"NC Magra", ext:"US Chaouia", sd:"1", se:"0", stade:"", obs:""},
-  {journee:"2", date:"2026-09-26", heure:"16:00", dom:"MSP Batna", ext:"MO Constantine", sd:"0", se:"0", stade:"", obs:""},
-  {journee:"3", date:"2026-10-02", heure:"15:00", dom:"USM Annaba", ext:"Paradou AC", sd:"2", se:"1", stade:"", obs:""},
-  {journee:"3", date:"2026-10-02", heure:"15:00", dom:"NRB Teleghma", ext:"NC Magra", sd:"1", se:"2", stade:"", obs:""},
-  {journee:"3", date:"2026-10-02", heure:"15:00", dom:"CA Batna", ext:"MSP Batna", sd:"0", se:"1", stade:"", obs:""},
-  {journee:"3", date:"2026-10-02", heure:"15:00", dom:"MO Constantine", ext:"CR Beni Thour", sd:"2", se:"1", stade:"", obs:""},
-  {journee:"3", date:"2026-10-02", heure:"15:00", dom:"US Chaouia", ext:"AS Khroub", sd:"0", se:"0", stade:"", obs:""},
-  {journee:"3", date:"2026-10-03", heure:"15:00", dom:"JSM Skikda", ext:"NRB Beni Oulbane", sd:"1", se:"0", stade:"", obs:""},
-  {journee:"3", date:"2026-10-03", heure:"15:00", dom:"JSD Jijel", ext:"JS Azazga", sd:"0", se:"0", stade:"", obs:""}
+const FDM_INIT = [
+  { id: "fdm1", titre: "J1 : MO Béjaïa 0-0 MO Constantine", date: "2026-09-18", image: "https://i.postimg.cc/HLQTLC6d/Feuille-de-match-MO-Bejaia-0-0-MO-Constantine-J1-le-18-septembre-2026.png", texte: "Lieu : Stade 1er Novembre Guendouza\nRésultat : MO Béjaïa 0 – 0 MO Constantine\n#LaMaisonDesCrabes" }
 ];
 
-const STAFF_INIT = [{ nom: "Hamide Aït-Ahmed Lamara", fonction: "Entraîneur principal", ddn: "14/06/1974", infos: "Licence UEFA Pro", img: "https://i.postimg.cc/MZd2ppjW/Hamide-Lamara-Ait-Ahmed-entraineur-MO-Bejaia-saison-2026-2027.jpg" }];
-const DIRIGEANTS_INIT = [{ nom: "Hachemi Belameri", fonction: "Président", img: "https://i.postimg.cc/Gm9Zd8DK/Hachemi-Belameri-President-du-MO-Bejaia.jpg" }];
+const BREVES_INIT = [
+  { id: "b1", titre: "Décès de Aymene Chahmat : la JSM Skikda en deuil", date: "2026-10-09", image: "https://i.postimg.cc/vZ29bkPG/Deces-de-Aymene-Chahmat.webp", texte: "Le football algérien est en deuil après le décès de Aymene Chahmat.\n#LaMaisonDesCrabes" }
+];
+
+const ARTICLES_INIT = [
+  { id: "a1", cat: "all", date: "2026-10-13", titre: "COUP DE MASSUE / J5 : MO Béjaïa vs NRB Beni Oulbane à huis clos", image: "https://i.postimg.cc/NjDfRd1H/MO-Bejaia-vs-NRB-Beni-Oulbane-a-Huis-Clos.jpg", texte: "La rencontre opposant le MO Béjaïa au NRB Beni Oulbane se disputera à huis clos au Stade des Martyrs d'Akbou.\n#LaMaisonDesCrabes" }
+];
+
 const PLAYERS_INIT = [
-  {num:2, nom:"Djelloul Abbou M'hamed", poste:"Latéral droit", ddn:"28/02/2001", lieu:"Relizane", nat:"Algérienne", taille:"-", pied:"-", prev:"CR Témouchent", finContrat:"-", img:"https://i.postimg.cc/wTTzKNPM/Djelloul-Abbou-M-hamed-rejoint-le-MO-Bejaia.jpg"},
-  {num:10, nom:"Yaya Faouzi", poste:"Milieu offensif", ddn:"21/09/1989", lieu:"Timezrit", nat:"Algérienne", taille:"1,74m", pied:"Droitier", prev:"-", finContrat:"-", img:"https://i.postimg.cc/wxbjfpQ9/Yaya-Faouzi-renouvelle-au-MO-Bejaia-saison-2026-2027.jpg"}
+  { num: 10, nom: "Faouzi Yaya", poste: "Milieu offensif", img: "https://i.postimg.cc/wxbjfpQ9/Yaya-Faouzi-renouvelle-au-MO-Bejaia-saison-2026-2027.jpg" },
+  { num: 24, nom: "Ben Mazouz Mohamed Saïd", poste: "Attaquant", img: "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png" },
+  { num: 4, nom: "Hamza Rebiai", poste: "Défenseur central", img: "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png" },
+  { num: 16, nom: "Sami Tlemcani", poste: "Gardien de but", img: "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png" },
+  { num: 2, nom: "Djelloul Abbou M'hamed", poste: "Latéral droit", img: "https://i.postimg.cc/wTTzKNPM/Djelloul-Abbou-M-hamed-rejoint-le-MO-Bejaia.jpg" }
 ];
-const ARTICLES_INIT = [{id:"a1", cat:"all", date:"2026-10-13", titre:"COUP DE MASSUE / J5 : MO Béjaïa vs NRB Beni Oulbane à huis clos", image:"https://i.postimg.cc/NjDfRd1H/MO-Bejaia-vs-NRB-Beni-Oulbane-a-Huis-Clos.jpg", texte:"La rencontre opposant le MO Béjaïa au NRB Beni Oulbane se disputera à huis clos.\n#LaMaisonDesCrabes"}];
 
-let data = { championnat: [], coupe: [], players: [], staff: [], dirigeants: [], mob: {}, live: { statut: 'inactif', dom: 'MO Béjaïa', ext: '', sd: 0, se: 0, texte: '' }, affiches: {}, videos: {}, articles: [], equipes: [], stades: [], fdm: [], breves: [], stats: { activeVote: null, buteurs: {}, cartons: {} }, historique_custom: [], medias: { albums: [], videos: [] } };
-let articles = [];
+const STAFF_INIT = [
+  { nom: "Hamide Aït-Ahmed Lamara", fonction: "Entraîneur principal", ddn: "14/06/1974", infos: "Licence UEFA Pro", img: "https://i.postimg.cc/MZd2ppjW/Hamide-Lamara-Ait-Ahmed-entraineur-MO-Bejaia-saison-2026-2027.jpg" }
+];
+
+const DIRIGEANTS_INIT = [
+  { nom: "Hachemi Belameri", fonction: "Président", img: "https://i.postimg.cc/Gm9Zd8DK/Hachemi-Belameri-President-du-MO-Bejaia.jpg" }
+];
+
+let data = {
+  championnat: [],
+  coupe: [],
+  players: [...PLAYERS_INIT],
+  staff: [...STAFF_INIT],
+  dirigeants: [...DIRIGEANTS_INIT],
+  mob: {},
+  live: { statut: 'actif', dom: 'AS Khroub', ext: 'MO Béjaïa', sd: 0, se: 1, texte: "80' But : Ben Mazouz Mohamed Saïd" },
+  affiches: {},
+  videos: {},
+  articles: [...ARTICLES_INIT],
+  equipes: EQUIPES,
+  stades: STADES,
+  fdm: [...FDM_INIT],
+  breves: [...BREVES_INIT],
+  stats: {
+    activeVote: {
+      id: "v1",
+      matchName: "AS Khroub 0-1 MO Béjaïa",
+      candidates: ["Faouzi Yaya", "Ben Mazouz Mohamed Saïd", "Hamza Rebiai", "Sami Tlemcani"],
+      votes: {}
+    },
+    buteurs: { "Ben Mazouz Mohamed Saïd": 2, "Faouzi Yaya": 1 },
+    cartons: { "Hamza Rebiai": { jaune: 1, rouge: 0 } }
+  },
+  historique_custom: [],
+  medias: { albums: [], videos: [] }
+};
+
+let articles = [...ARTICLES_INIT];
 
 function escapeQuotes(str) { return str ? str.replace(/'/g, "\\'") : ""; }
 
 function getPlayerImg(playerName) {
-  if(!data.players) return "https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png";
-  const clean = playerName.replace(/'/g, "").toLowerCase();
-  const p = data.players.find(x => x.nom.replace(/'/g, "").toLowerCase().includes(clean) || clean.includes(x.nom.replace(/'/g, "").toLowerCase()));
-  return p && p.img ? p.img : "https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png";
+  if (!playerName) return "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png";
+  const clean = playerName.replace(/'/g, "").toLowerCase().trim();
+  const list = data.players || PLAYERS_INIT;
+  const p = list.find(x => {
+    const n = (x.nom || '').replace(/'/g, "").toLowerCase().trim();
+    return n.includes(clean) || clean.includes(n);
+  });
+  return (p && p.img) ? p.img : "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png";
 }
 
-/* GESTION DU COMPTEUR DE VISITES */
+function logoImg(eq) {
+  const url = LOGOS[eq] || "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png";
+  return `<img src="${url}" class="logo-mini" alt="${eq}">`;
+}
+
+function formatDate(d) {
+  if (!d) return '';
+  const p = d.split('-');
+  return p.length === 3 ? p[2] + '/' + p[1] + '/' + p[0] : d;
+}
+
+function formatText(t) {
+  if (!t) return "";
+  let s = t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return s.replace(/#LaMaisonDesCrabes/g, '<a href="https://mustaphamobiste-hue.github.io/lnfa-centre-est/" target="_blank">#LaMaisonDesCrabes</a>');
+}
+
+function hasScore(m) {
+  return (m && m.sd !== undefined && m.sd !== null && m.sd !== '' && !isNaN(parseInt(m.sd)) &&
+          m.se !== undefined && m.se !== null && m.se !== '' && !isNaN(parseInt(m.se)));
+}
+
 function updateVisitDisplay(val) {
   const text = typeof val === 'number' ? `👁️ ${val} visite${val > 1 ? 's' : ''}` : `👁️ ${val}`;
-  const bPublic = document.getElementById('visitCounter');
-  const bAdmin = document.getElementById('adminVisitBadge');
-  if (bPublic) bPublic.innerHTML = text;
-  if (bAdmin) bAdmin.innerHTML = text;
+  const bPub = document.getElementById('visitCounter');
+  const bAdm = document.getElementById('adminVisitBadge');
+  if (bPub) bPub.innerHTML = text;
+  if (bAdm) bAdm.innerHTML = text;
 }
 
 async function trackVisit() {
   try {
     const vRef = ref(db, 'data_v10/visits');
     await runTransaction(vRef, (curr) => {
-      const val = (curr === null || curr === undefined) ? 0 : (typeof curr === 'number' ? curr : (curr.count || 0));
-      return val + 1;
+      const v = (curr === null || curr === undefined) ? 0 : (typeof curr === 'number' ? curr : (curr.count || 0));
+      return v + 1;
     });
     const snap = await get(vRef);
     if (snap.exists()) {
       const v = snap.val();
-      const total = typeof v === 'number' ? v : (v.count || 0);
-      updateVisitDisplay(total);
+      updateVisitDisplay(typeof v === 'number' ? v : (v.count || 0));
     }
   } catch (e) {
-    console.warn("Erreur transaction visites:", e);
-    try {
-      const snap = await get(ref(db, 'data_v10/visits'));
-      if (snap.exists()) {
-        const v = snap.val();
-        updateVisitDisplay(typeof v === 'number' ? v : (v.count || 0));
-      }
-    } catch(err2) {
-      console.log(err2);
-    }
+    console.warn("Visite:", e);
   }
-}
-
-function formatText(t) {
-  if(!t) return "";
-  let s = t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  return s.replace(/#LaMaisonDesCrabes/g, '<a href="https://mustaphamobiste-hue.github.io/lnfa-centre-est/" target="_blank">#LaMaisonDesCrabes</a>');
 }
 
 function handleTitleClick() {
   clickCount++;
-  if (clickCount >= 5) { clickCount = 0; if (isAdmin) logoutAdmin(); else openModal('modalAdmin'); }
+  if (clickCount >= 5) {
+    clickCount = 0;
+    if (isAdmin) logoutAdmin(); else openModal('modalAdmin');
+  }
   setTimeout(() => { clickCount = 0; }, 2000);
 }
 
@@ -1008,11 +1056,9 @@ function tryLogin() {
     document.querySelectorAll('.col-actions').forEach(el => el.style.display = 'table-cell');
     
     ['news-toolbar', 'club-toolbar', 'mob-avant-toolbar', 'mob-day-toolbar', 'mob-apres-toolbar', 'media-toolbar', 'stats-toolbar', 'historique-toolbar'].forEach(id => {
-      const el = document.getElementById(id); if(el) el.style.display = 'flex';
+      const el = document.getElementById(id); if (el) el.style.display = 'flex';
     });
     
-    document.getElementById('btnAddAlbum').style.display = currentMediaSubTab === 'images' ? 'inline-block' : 'none';
-    document.getElementById('btnAddVideoMedia').style.display = currentMediaSubTab === 'videos' ? 'inline-block' : 'none';
     updateStatsAdminButtons();
     closeModal('modalAdmin');
     alert('✅ Admin connecté');
@@ -1029,12 +1075,13 @@ function logoutAdmin() {
   document.querySelectorAll('.col-actions').forEach(el => el.style.display = 'none');
   
   ['btnAddFdm', 'news-toolbar', 'media-toolbar', 'club-toolbar', 'mob-avant-toolbar', 'mob-day-toolbar', 'mob-apres-toolbar', 'stats-toolbar', 'historique-toolbar'].forEach(id => {
-    const el = document.getElementById(id); if(el) el.style.display = 'none';
+    const el = document.getElementById(id); if (el) el.style.display = 'none';
   });
   renderAll();
 }
 
 function updateStatsAdminButtons() {
+  if (!isAdmin) return;
   document.getElementById('btnAddVote').style.display = (currentStatsSubTab === 'vote' && !data.stats.activeVote) ? 'inline-block' : 'none';
   document.getElementById('btnManageVote').style.display = (currentStatsSubTab === 'vote' && data.stats.activeVote) ? 'inline-block' : 'none';
   document.getElementById('btnResetVote').style.display = (currentStatsSubTab === 'vote' && data.stats.activeVote) ? 'inline-block' : 'none';
@@ -1042,42 +1089,25 @@ function updateStatsAdminButtons() {
   document.getElementById('btnAddCarton').style.display = (currentStatsSubTab === 'cartons') ? 'inline-block' : 'none';
 }
 
-function renderAll() {
-  initJourneesSelectors();
-  renderRencontresView();
-  renderClub();
-  renderMob();
-  renderNewsTab();
-  renderMedias();
-  renderFdM();
-  renderBreves();
-  renderStats();
-  updateNextMatch();
-  renderHomeVoteWidget();
-  renderCarousel();
-  renderHistoriqueDynamic();
+function openModal(id) { 
+  document.getElementById(id).classList.add('active'); 
+  const btnShare = document.getElementById('btnShareMain');
+  if (btnShare) btnShare.style.display = 'none';
 }
 
-function shareContext() {
-  if (document.getElementById('modalArticle').classList.contains('active') && currentArticleForShare) shareArticle();
-  else if (document.getElementById('modalFDMView').classList.contains('active') && currentFdmForShare) shareFdm();
-  else if (document.getElementById('modalBreveView').classList.contains('active') && currentBreveForShare) shareBreve();
-  else sharePage();
+function closeModal(id) { 
+  document.getElementById(id).classList.remove('active'); 
+  const btnShare = document.getElementById('btnShareMain');
+  if (btnShare) btnShare.style.display = 'flex';
 }
-function sharePage() { const s = { title: 'MO Béjaïa - Ligue 2 Amateur', text: 'Suivez le MO Béjaïa ! 🦀 #LaMaisonDesCrabes', url: window.location.href.split('?')[0] + '?tab=' + currentTabName }; if (navigator.share) navigator.share(s).catch(e=>console.log(e)); else prompt("Copiez ce lien :", s.url); }
-function shareArticle() { if (!currentArticleForShare) return sharePage(); const s = { title: currentArticleForShare.titre, text: 'À lire sur #LaMaisonDesCrabes 🦀 : ' + currentArticleForShare.titre, url: window.location.href.split('?')[0] + '?tab=actualite&article=' + currentArticleForShare.id }; if (navigator.share) navigator.share(s).catch(e=>console.log(e)); else prompt("Copiez ce lien :", s.url); }
-function shareFdm() { if (!currentFdmForShare) return sharePage(); const s = { title: currentFdmForShare.titre, text: 'Feuille de match du MOB 🦀 : ' + currentFdmForShare.titre, url: window.location.href.split('?')[0] }; if (navigator.share) navigator.share(s).catch(e=>console.log(e)); else prompt("Copiez ce lien :", s.url); }
-function shareBreve() { if (!currentBreveForShare) return sharePage(); const s = { title: currentBreveForShare.titre, text: 'Brève info du MOB 🦀 : ' + currentBreveForShare.titre, url: window.location.href.split('?')[0] }; if (navigator.share) navigator.share(s).catch(e=>console.log(e)); else prompt("Copiez ce lien :", s.url); }
 
 function switchTab(name, el) {
   currentTabName = name;
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   if (el) el.classList.add('active');
-  const target = document.getElementById('tab-'+name);
+  const target = document.getElementById('tab-' + name);
   if (target) target.classList.add('active');
-  const newUrl = window.location.pathname + '?tab=' + name;
-  window.history.replaceState({path: newUrl}, '', newUrl);
   
   if (name === 'rencontres') renderRencontresView();
   if (name === 'club') renderClub();
@@ -1086,34 +1116,6 @@ function switchTab(name, el) {
   if (name === 'medias') renderMedias();
   if (name === 'stats') renderStats();
   if (name === 'historique') renderHistoriqueDynamic();
-}
-
-function formatDate(d) { if (!d) return ''; const p = d.split('-'); return p.length===3 ? p[2]+'/'+p[1]+'/'+p[0] : d; }
-function logoImg(equipe) { const url = LOGOS[equipe]; return url ? `<img src="${url}" class="logo-mini" alt="${equipe}">` : ''; }
-function hasScore(m) { return (m.sd!==undefined && m.sd!==null && m.sd!=='' && !isNaN(parseInt(m.sd)) && m.se!==undefined && m.se!==null && m.se!=='' && !isNaN(parseInt(m.se))); }
-
-/* NAVIGATION RENCONTRES */
-function getLastPlayedJournee() {
-  const pl = data.championnat.filter(m => hasScore(m)).map(m => parseInt(m.journee)).filter(Boolean);
-  return pl.length > 0 ? Math.max(...pl) : 1;
-}
-
-function getUpcomingJournee() {
-  const un = data.championnat.filter(m => !hasScore(m)).map(m => parseInt(m.journee)).filter(Boolean);
-  return un.length > 0 ? Math.min(...un) : getLastPlayedJournee();
-}
-
-function initJourneesSelectors() {
-  const journees = [...new Set(data.championnat.map(m => parseInt(m.journee)).filter(Boolean))].sort((a,b)=>a-b);
-  if (journees.length === 0) return;
-  const selP = document.getElementById('selectJourneeProg');
-  const selR = document.getElementById('selectJourneeRes');
-  const selC = document.getElementById('selectJourneeClas');
-  const opts = journees.map(j => `<option value="${j}">Journée ${j}</option>`).join('');
-  
-  if (selP) { const v = selP.value; selP.innerHTML = opts; selP.value = v || getUpcomingJournee(); }
-  if (selR) { const v = selR.value; selR.innerHTML = opts; selR.value = v || getLastPlayedJournee(); }
-  if (selC) { const v = selC.value; selC.innerHTML = `<option value="all">Général (Actuel)</option>` + journees.map(j => `<option value="${j}">Après la Journée ${j}</option>`).join(''); selC.value = v || getLastPlayedJournee(); }
 }
 
 function switchRencontreNav(mode) {
@@ -1146,6 +1148,28 @@ function switchRencontreNav(mode) {
   if (isAdmin) document.querySelectorAll('.col-actions').forEach(el => el.style.display = 'table-cell');
 }
 
+function initJourneesSelectors() {
+  if (!data.championnat || data.championnat.length === 0) return;
+  const journees = [...new Set(data.championnat.map(m => parseInt(m.journee)).filter(Boolean))].sort((a,b) => a - b);
+  if (journees.length === 0) return;
+  const selP = document.getElementById('selectJourneeProg');
+  const selR = document.getElementById('selectJourneeRes');
+  const selC = document.getElementById('selectJourneeClas');
+  const opts = journees.map(j => `<option value="${j}">Journée ${j}</option>`).join('');
+
+  const played = data.championnat.filter(m => hasScore(m)).map(m => parseInt(m.journee)).filter(Boolean);
+  const lastP = played.length > 0 ? Math.max(...played) : 1;
+  const unplayed = data.championnat.filter(m => !hasScore(m)).map(m => parseInt(m.journee)).filter(Boolean);
+  const nextP = unplayed.length > 0 ? Math.min(...unplayed) : lastP;
+
+  if (selP) { selP.innerHTML = opts; if (!selP.value) selP.value = nextP; }
+  if (selR) { selR.innerHTML = opts; if (!selR.value) selR.value = lastP; }
+  if (selC) { 
+    selC.innerHTML = `<option value="all">Général (Actuel)</option>` + journees.map(j => `<option value="${j}">Après la Journée ${j}</option>`).join(''); 
+    if (!selC.value) selC.value = lastP; 
+  }
+}
+
 function renderRencontresView() {
   initJourneesSelectors();
   switchRencontreNav(currentRencontreView);
@@ -1153,49 +1177,39 @@ function renderRencontresView() {
 
 function renderProgrammeView() {
   const sel = document.getElementById('selectJourneeProg');
-  const j = sel ? sel.value : getUpcomingJournee();
+  const j = sel ? sel.value : 1;
   const tbody = document.getElementById('tbody-programme');
-  const matches = data.championnat.filter(m => String(m.journee) === String(j)).sort((a,b)=>(a.date||'').localeCompare(b.date||''));
-
-  if (matches.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="8" class="empty">Aucun match programmé pour cette journée.</td></tr>';
-    return;
-  }
-
+  const matches = (data.championnat || []).filter(m => String(m.journee) === String(j)).sort((a,b) => (a.date||'').localeCompare(b.date||''));
+  if (matches.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="empty">Aucun match.</td></tr>'; return; }
   tbody.innerHTML = matches.map(m => {
     const idx = data.championnat.indexOf(m);
     const act = isAdmin ? `<td class="col-actions"><button class="btn-small btn-edit" onclick="openModalMatch('championnat',${idx})">✏️</button><button class="btn-small btn-del" onclick="deleteItem('championnat',${idx})">🗑️</button></td>` : `<td class="col-actions" style="display:none;"></td>`;
-    return `<tr><td><b>J${m.journee}</b></td><td>${formatDate(m.date)}</td><td>${m.heure||'15:00'}</td><td>${logoImg(m.dom)}${m.dom}</td><td>${logoImg(m.ext)}${m.ext}</td><td>${m.stade||'—'}</td><td class="obs ${m.obs?'':'obs-empty'}">${m.obs||'—'}</td>${act}</tr>`;
+    return `<tr><td><b>J${m.journee}</b></td><td>${formatDate(m.date)}</td><td>${m.heure||'15:00'}</td><td>${logoImg(m.dom)}${m.dom}</td><td>${logoImg(m.ext)}${m.ext}</td><td>${m.stade||'—'}</td><td class="obs">${m.obs||'—'}</td>${act}</tr>`;
   }).join('');
 }
 
 function renderResultatsView() {
   const sel = document.getElementById('selectJourneeRes');
-  const j = sel ? sel.value : getLastPlayedJournee();
+  const j = sel ? sel.value : 1;
   const tbody = document.getElementById('tbody-resultats');
-  const matches = data.championnat.filter(m => String(m.journee) === String(j)).sort((a,b)=>(a.date||'').localeCompare(b.date||''));
-
-  if (matches.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="8" class="empty">Aucun résultat saisi pour cette journée.</td></tr>';
-    return;
-  }
-
+  const matches = (data.championnat || []).filter(m => String(m.journee) === String(j)).sort((a,b) => (a.date||'').localeCompare(b.date||''));
+  if (matches.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="empty">Aucun résultat.</td></tr>'; return; }
   tbody.innerHTML = matches.map(m => {
     const idx = data.championnat.indexOf(m);
-    const score = hasScore(m) ? `<span class="score">${m.sd} - ${m.se}</span>` : `<span style="color:#999">— vs —</span>`;
+    const sc = hasScore(m) ? `<span class="score">${m.sd} - ${m.se}</span>` : `<span style="color:#666;">vs</span>`;
     const act = isAdmin ? `<td class="col-actions"><button class="btn-small btn-edit" onclick="openModalMatch('championnat',${idx})">✏️</button><button class="btn-small btn-del" onclick="deleteItem('championnat',${idx})">🗑️</button></td>` : `<td class="col-actions" style="display:none;"></td>`;
-    return `<tr><td><b>J${m.journee}</b></td><td>${formatDate(m.date)}</td><td>${logoImg(m.dom)}${m.dom}</td><td>${score}</td><td>${logoImg(m.ext)}${m.ext}</td><td>${m.stade||'—'}</td><td class="obs ${m.obs?'':'obs-empty'}">${m.obs||'—'}</td>${act}</tr>`;
+    return `<tr><td><b>J${m.journee}</b></td><td>${formatDate(m.date)}</td><td>${logoImg(m.dom)}${m.dom}</td><td>${sc}</td><td>${logoImg(m.ext)}${m.ext}</td><td>${m.stade||'—'}</td><td class="obs">${m.obs||'—'}</td>${act}</tr>`;
   }).join('');
 }
 
 function renderClassementView() {
   const sel = document.getElementById('selectJourneeClas');
-  const jMax = sel ? sel.value : getLastPlayedJournee();
+  const jMax = sel ? sel.value : 'all';
   const tbody = document.getElementById('tbody-classement');
   const stats = {};
   EQUIPES.forEach(e => stats[e] = { j:0, g:0, n:0, p:0, bp:0, bc:0, pts:0 });
 
-  data.championnat.forEach(m => {
+  (data.championnat || []).forEach(m => {
     if (!hasScore(m) || (jMax !== 'all' && parseInt(m.journee) > parseInt(jMax))) return;
     const sd = parseInt(m.sd), se = parseInt(m.se);
     if (isNaN(sd) || isNaN(se) || !stats[m.dom] || !stats[m.ext]) return;
@@ -1210,132 +1224,197 @@ function renderClassementView() {
   const classement = EQUIPES.map(e => ({ equipe: e, ...stats[e], diff: stats[e].bp - stats[e].bc }))
     .sort((a,b) => (b.pts - a.pts) || (b.diff - a.diff) || (b.bp - a.bp) || a.equipe.localeCompare(b.equipe));
 
-  if (classement.every(c => c.j === 0)) {
-    tbody.innerHTML = '<tr><td colspan="10" class="empty">Aucun match joué jusqu\'à cette date.</td></tr>';
-    return;
-  }
-
   tbody.innerHTML = classement.map((c, idx) => {
     const pos = idx + 1;
     let z = '';
     if (pos === 1) z = 'zone-montee';
     else if (pos <= 3) z = 'zone-playoff';
     else if (pos >= 14) z = 'zone-relégation';
-    return `<tr class="${z}"><td><b>${pos}</b></td><td class="equipe">${logoImg(c.equipe)}${c.equipe}</td><td>${c.j}</td><td>${c.g}</td><td>${c.n}</td><td>${c.p}</td><td>${c.bp}</td><td>${c.bc}</td><td>${c.diff>0?'+'+c.diff:c.diff}</td><td><b>${c.pts}</b></td></tr>`;
+    return `<tr class="${z}"><td><b>${pos}</b></td><td>${logoImg(c.equipe)}${c.equipe}</td><td>${c.j}</td><td>${c.g}</td><td>${c.n}</td><td>${c.p}</td><td>${c.bp}</td><td>${c.bc}</td><td>${c.diff>0?'+'+c.diff:c.diff}</td><td><b>${c.pts}</b></td></tr>`;
   }).join('');
 }
 
 function renderCoupeMobView() {
   const tbody = document.getElementById('tbody-coupe-mob');
   const matches = (data.coupe || []).filter(m => m.dom === 'MO Béjaïa' || m.ext === 'MO Béjaïa');
-
-  if (matches.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="9" class="empty">Aucune rencontre de Coupe programmée pour le MOB.</td></tr>';
-    return;
-  }
-
+  if (matches.length === 0) { tbody.innerHTML = '<tr><td colspan="9" class="empty">Aucune rencontre de Coupe pour le MOB.</td></tr>'; return; }
   tbody.innerHTML = matches.map(m => {
     const idx = data.coupe.indexOf(m);
-    const score = hasScore(m) ? `<span class="score">${m.sd} - ${m.se}</span>` : `<span style="color:#999">— vs —</span>`;
+    const sc = hasScore(m) ? `<span class="score">${m.sd} - ${m.se}</span>` : 'vs';
     const act = isAdmin ? `<td class="col-actions"><button class="btn-small btn-edit" onclick="openModalMatch('coupe',${idx})">✏️</button><button class="btn-small btn-del" onclick="deleteItem('coupe',${idx})">🗑️</button></td>` : `<td class="col-actions" style="display:none;"></td>`;
-    return `<tr><td><b>${m.journee||'Tour'}</b></td><td>${formatDate(m.date)}</td><td>${m.heure||'15:00'}</td><td>${logoImg(m.dom)}${m.dom}</td><td>${score}</td><td>${logoImg(m.ext)}${m.ext}</td><td>${m.stade||'—'}</td><td class="obs ${m.obs?'':'obs-empty'}">${m.obs||'—'}</td>${act}</tr>`;
+    return `<tr><td><b>${m.journee||'Tour'}</b></td><td>${formatDate(m.date)}</td><td>${m.heure||'15:00'}</td><td>${logoImg(m.dom)}${m.dom}</td><td>${sc}</td><td>${logoImg(m.ext)}${m.ext}</td><td>${m.stade||'—'}</td><td class="obs">${m.obs||'—'}</td>${act}</tr>`;
   }).join('');
 }
 
-function switchSubTabMob(mode) {
-  currentMobSubTab = mode;
-  document.getElementById('subtab-mob-avant').classList.toggle('active', mode === 'avant');
-  document.getElementById('subtab-mob-day').classList.toggle('active', mode === 'day');
-  document.getElementById('subtab-mob-apres').classList.toggle('active', mode === 'apres');
-  document.getElementById('mob-avant').style.display = mode === 'avant' ? 'block' : 'none';
-  document.getElementById('mob-day').style.display = mode === 'day' ? 'block' : 'none';
-  document.getElementById('mob-apres').style.display = mode === 'apres' ? 'block' : 'none';
-  renderMob();
-}
+let carouselTimer = null;
+let currentNewsSlideIdx = 0;
 
-function switchSubTabNews(cat) {
-  currentNewsSubTab = cat;
-  document.getElementById('subtab-news-all').classList.toggle('active', cat === 'all');
-  document.getElementById('subtab-news-portraits').classList.toggle('active', cat === 'portraits');
-  document.getElementById('subtab-news-jeunes').classList.toggle('active', cat === 'jeunes');
-  renderNewsTab();
-}
-
-function switchSubTabMedia(type) {
-  currentMediaSubTab = type;
-  document.getElementById('subtab-media-images').classList.toggle('active', type === 'images');
-  document.getElementById('subtab-media-videos').classList.toggle('active', type === 'videos');
-  document.getElementById('media-images-container').style.display = type === 'images' ? 'block' : 'none';
-  document.getElementById('media-videos-container').style.display = type === 'videos' ? 'block' : 'none';
-  if(isAdmin) {
-    document.getElementById('btnAddAlbum').style.display = type === 'images' ? 'inline-block' : 'none';
-    document.getElementById('btnAddVideoMedia').style.display = type === 'videos' ? 'inline-block' : 'none';
+function renderCarousel() {
+  const container = document.getElementById('homeCarousel');
+  if (!container) return;
+  const list = (articles && articles.length > 0) ? articles : ARTICLES_INIT;
+  const sorted = [...list].sort((a,b) => (b.date||'').localeCompare(a.date||'')).slice(0, 5);
+  if (sorted.length === 0) {
+    container.innerHTML = '<p style="padding:20px; text-align:center; color:#888; font-size:12px;">Aucune actualité disponible.</p>';
+    return;
   }
-  renderMedias();
+  container.className = 'news-fade-container';
+  container.innerHTML = sorted.map((a, i) => `
+    <div class="news-fade-slide ${i === 0 ? 'active' : ''}" onclick="openArticleModal('${a.id}')" data-idx="${i}">
+      <img src="${a.image || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'">
+      <div class="news-fade-body">
+        <span class="news-fade-meta">📅 ${formatDate(a.date)}</span>
+        <div class="news-fade-title">${a.titre}</div>
+      </div>
+    </div>
+  `).join('') + `
+    <div class="news-fade-dots">
+      ${sorted.map((_, i) => `<span class="news-fade-dot ${i === 0 ? 'active' : ''}"></span>`).join('')}
+    </div>
+  `;
+  startCarouselAuto(sorted.length);
 }
 
-function switchSubTabStats(type) {
-  currentStatsSubTab = type;
-  document.getElementById('subtab-stats-vote').classList.toggle('active', type === 'vote');
-  document.getElementById('subtab-stats-buteurs').classList.toggle('active', type === 'buteurs');
-  document.getElementById('subtab-stats-cartons').classList.toggle('active', type === 'cartons');
-  document.getElementById('stats-vote').style.display = type === 'vote' ? 'block' : 'none';
-  document.getElementById('stats-buteurs').style.display = type === 'buteurs' ? 'block' : 'none';
-  document.getElementById('stats-cartons').style.display = type === 'cartons' ? 'block' : 'none';
-  if(isAdmin) updateStatsAdminButtons();
+function startCarouselAuto(total) {
+  if (carouselTimer) clearInterval(carouselTimer);
+  if (!total || total <= 1) return;
+  currentNewsSlideIdx = 0;
+  carouselTimer = setInterval(() => {
+    currentNewsSlideIdx = (currentNewsSlideIdx + 1) % total;
+    const slides = document.querySelectorAll('.news-fade-slide');
+    const dots = document.querySelectorAll('.news-fade-dot');
+    slides.forEach((s, i) => s.classList.toggle('active', i === currentNewsSlideIdx));
+    dots.forEach((d, i) => d.classList.toggle('active', i === currentNewsSlideIdx));
+  }, 4500);
+}
+
+function renderStats() {
+  if (currentStatsSubTab === 'vote') {
+    const container = document.getElementById('voteContainer');
+    if (!data.stats || !data.stats.activeVote) {
+      container.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">Aucun vote en cours.</p>';
+      return;
+    }
+    const v = data.stats.activeVote;
+    const totalVotes = Object.values(v.votes || {}).reduce((a,b) => a + b, 0);
+    const hasVoted = localStorage.getItem('voted_' + v.id);
+    let html = `<div class="vote-card"><div class="vote-title">⭐ Homme du Match : ${v.matchName}</div>`;
+    if (hasVoted) {
+      html += `<p style="text-align:center; color:#27ae60; font-weight:bold; margin-bottom:15px;">✅ Vous avez voté !</p>`;
+      v.candidates.forEach(c => {
+        const count = (v.votes && v.votes[c]) ? v.votes[c] : 0;
+        const pct = totalVotes > 0 ? Math.round((count / totalVotes) * 100) : 0;
+        const img = getPlayerImg(c);
+        html += `
+          <div style="margin-bottom:8px;">
+            <div class="vote-bar-label">
+              <span style="display:flex; align-items:center; gap:8px;">
+                <img src="${img}" class="vote-avatar" style="width:28px; height:28px;">
+                ${c}
+              </span>
+              <span>${pct}% (${count})</span>
+            </div>
+            <div class="vote-bar-bg"><div class="vote-bar-fill" style="width:${pct}%"></div></div>
+          </div>
+        `;
+      });
+    } else {
+      v.candidates.forEach(c => {
+        const img = getPlayerImg(c);
+        html += `
+          <button class="vote-player-btn" onclick="submitVote('${escapeQuotes(c)}')">
+            <img src="${img}" class="vote-avatar">
+            <span>${c}</span>
+          </button>
+        `;
+      });
+    }
+    html += `</div>`;
+    container.innerHTML = html;
+  } else if (currentStatsSubTab === 'buteurs') {
+    const tbody = document.getElementById('tbody-buteurs');
+    const buteurs = Object.entries((data.stats && data.stats.buteurs) || {}).sort((a,b) => b[1] - a[1]);
+    if (buteurs.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="empty">Aucun buteur.</td></tr>'; return; }
+    tbody.innerHTML = buteurs.map((b, i) => {
+      const act = isAdmin ? `<td class="col-actions"><button class="btn-small btn-del" onclick="deleteStat('buteur','${escapeQuotes(b[0])}')">🗑️</button></td>` : `<td class="col-actions" style="display:none;"></td>`;
+      return `<tr><td><b>${i+1}</b></td><td><img src="${getPlayerImg(b[0])}" class="vote-avatar" style="width:24px; height:24px; vertical-align:middle; margin-right:6px;"> ${b[0]}</td><td><b>${b[1]}</b></td>${act}</tr>`;
+    }).join('');
+  } else if (currentStatsSubTab === 'cartons') {
+    const tbody = document.getElementById('tbody-cartons');
+    const cartons = Object.entries((data.stats && data.stats.cartons) || {}).sort((a,b) => (b[1].rouge*10 + b[1].jaune) - (a[1].rouge*10 + a[1].jaune));
+    if (cartons.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="empty">Aucun carton.</td></tr>'; return; }
+    tbody.innerHTML = cartons.map(c => {
+      const act = isAdmin ? `<td class="col-actions"><button class="btn-small btn-del" onclick="deleteStat('carton','${escapeQuotes(c[0])}')">🗑️</button></td>` : `<td class="col-actions" style="display:none;"></td>`;
+      return `<tr><td><img src="${getPlayerImg(c[0])}" class="vote-avatar" style="width:24px; height:24px; vertical-align:middle; margin-right:6px;"> ${c[0]}</td><td>${c[1].jaune || 0}</td><td>${c[1].rouge || 0}</td>${act}</tr>`;
+    }).join('');
+  }
+}
+
+function renderHomeVoteWidget() {
+  const container = document.getElementById('homeVoteContainer');
+  if (!data.stats || !data.stats.activeVote) {
+    container.innerHTML = '<p style="font-size:11px; color:#888; margin:0;">Aucun vote en cours.</p>';
+    return;
+  }
+  const v = data.stats.activeVote;
+  const hasVoted = localStorage.getItem('voted_' + v.id);
+  let html = `<h4 style="font-size:12px; margin-bottom:8px; color:#1a4d2e;">${v.matchName}</h4>`;
+  if (hasVoted) {
+    const top = v.candidates.reduce((a, b) => ((v.votes&&v.votes[a])||0) > ((v.votes&&v.votes[b])||0) ? a : b);
+    html += `<p style="font-size:11px; color:#27ae60; font-weight:bold;">✅ Voté ! (${top} mène)</p>`;
+  } else {
+    v.candidates.slice(0, 3).forEach(c => {
+      const img = getPlayerImg(c);
+      html += `
+        <button class="vote-player-btn" style="padding:4px 8px; font-size:11px;" onclick="submitVote('${escapeQuotes(c)}')">
+          <img src="${img}" class="vote-avatar" style="width:24px; height:24px;">
+          <span>${c}</span>
+        </button>
+      `;
+    });
+  }
+  container.innerHTML = html;
+}
+
+async function submitVote(pName) {
+  if (!data.stats || !data.stats.activeVote) return;
+  const v = data.stats.activeVote;
+  if (localStorage.getItem('voted_' + v.id)) return;
+  if (!v.votes) v.votes = {};
+  v.votes[pName] = (v.votes[pName] || 0) + 1;
+  localStorage.setItem('voted_' + v.id, 'true');
+  await saveToFirebase();
   renderStats();
+  renderHomeVoteWidget();
 }
 
-function exportData(section) {
-  const arr = data[section] || [];
-  const blob = new Blob([JSON.stringify(arr, null, 2)], { type: "application/json" });
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = `${section}_${new Date().toISOString().split('T')[0]}.json`;
-  a.click();
-}
-
-function importData(event, section) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = async (e) => {
-    try {
-      const parsed = JSON.parse(e.target.result);
-      if (Array.isArray(parsed)) {
-        data[section] = parsed;
-        await saveToFirebase();
-        renderRencontresView();
-        updateNextMatch();
-        alert(`✅ Données ${section} importées avec succès !`);
-      } else { alert("❌ Format invalide"); }
-    } catch (err) { alert("❌ Erreur de lecture JSON"); }
-  };
-  reader.readAsText(file);
-  event.target.value = '';
+async function resetVote() {
+  if (confirm('Clôturer ce vote ?')) {
+    data.stats.activeVote = null;
+    await saveToFirebase();
+    renderStats();
+    renderHomeVoteWidget();
+    updateStatsAdminButtons();
+  }
 }
 
 function renderClub() {
-  document.getElementById('grid-staff').innerHTML = data.staff.map((s, i) => {
-    const badge = s.departDate ? `<div class="badge-left">A QUITTÉ LE CLUB</div>` : '';
-    return `<div class="player-card" onclick="openModalStaff(${i})">${badge}<img src="${s.img || 'https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png'}"><div class="pc-info"><div class="pc-name">${s.nom}</div><div class="pc-pos">${s.fonction}</div></div></div>`;
+  document.getElementById('grid-staff').innerHTML = (data.staff || []).map((s, i) => {
+    return `<div class="player-card"><img src="${s.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}"><div class="pc-info"><div class="pc-name">${s.nom}</div><div class="pc-pos">${s.fonction}</div></div></div>`;
   }).join('');
 
-  document.getElementById('grid-players').innerHTML = data.players.sort((a,b)=>a.num - b.num).map((p) => {
-    const realIdx = data.players.findIndex(pl => pl.num === p.num && pl.nom === p.nom);
-    const badge = p.departDate ? `<div class="badge-left">A QUITTÉ LE CLUB</div>` : '';
-    return `<div class="player-card" onclick="openModalPlayer(${realIdx})">${badge}<div class="pc-num">${p.num}</div><img src="${p.img || 'https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png'}"><div class="pc-info"><div class="pc-name">${p.nom}</div><div class="pc-pos">${p.poste}</div></div></div>`;
+  document.getElementById('grid-players').innerHTML = (data.players || []).sort((a,b) => a.num - b.num).map((p) => {
+    return `<div class="player-card"><div class="pc-num">${p.num}</div><img src="${p.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}"><div class="pc-info"><div class="pc-name">${p.nom}</div><div class="pc-pos">${p.poste}</div></div></div>`;
   }).join('');
 
-  document.getElementById('grid-dirigeants').innerHTML = data.dirigeants.map((d, i) => {
-    const badge = d.departDate ? `<div class="badge-left">A QUITTÉ LE CLUB</div>` : '';
-    return `<div class="player-card" onclick="openModalDirigeant(${i})">${badge}<img src="${d.img || 'https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png'}"><div class="pc-info"><div class="pc-name">${d.nom}</div><div class="pc-pos">${d.fonction}</div></div></div>`;
+  document.getElementById('grid-dirigeants').innerHTML = (data.dirigeants || []).map((d) => {
+    return `<div class="player-card"><img src="${d.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}"><div class="pc-info"><div class="pc-name">${d.nom}</div><div class="pc-pos">${d.fonction}</div></div></div>`;
   }).join('');
 }
 
 function renderMob() {
   const now = new Date();
-  const mobMatches = data.championnat.filter(m => (m.dom === 'MO Béjaïa' || m.ext === 'MO Béjaïa')).sort((a,b)=> new Date(a.date) - new Date(b.date));
+  const mobMatches = (data.championnat || []).filter(m => (m.dom === 'MO Béjaïa' || m.ext === 'MO Béjaïa')).sort((a,b) => new Date(a.date) - new Date(b.date));
   const nextMatch = mobMatches.find(m => new Date(m.date + 'T' + (m.heure || '15:00')) > now) || mobMatches[mobMatches.length-1];
   const lastMatch = [...mobMatches].reverse().find(m => new Date(m.date + 'T' + (m.heure || '15:00')) <= now && hasScore(m));
   const formatM = (m) => m ? `${m.dom} ${hasScore(m) ? m.sd+'-'+m.se : 'vs'} ${m.ext}` : "Aucun match.";
@@ -1355,22 +1434,21 @@ function renderMob() {
   };
   setContent('avant'); setContent('day'); setContent('apres');
 
-  const imgAvant = document.getElementById('mob-avant-img'); if(data.affiches.avant) { imgAvant.src = data.affiches.avant; imgAvant.style.display = 'block'; } else { imgAvant.style.display = 'none'; }
-  const imgDay = document.getElementById('mob-day-img'); if(data.affiches.day) { imgDay.src = data.affiches.day; imgDay.style.display = 'block'; } else { imgDay.style.display = 'none'; }
-  const imgApres = document.getElementById('mob-apres-img'); if(data.affiches.apres) { imgApres.src = data.affiches.apres; imgApres.style.display = 'block'; } else { imgApres.style.display = 'none'; }
+  const imgAvant = document.getElementById('mob-avant-img'); if (data.affiches.avant) { imgAvant.src = data.affiches.avant; imgAvant.style.display = 'block'; } else { imgAvant.style.display = 'none'; }
+  const imgDay = document.getElementById('mob-day-img'); if (data.affiches.day) { imgDay.src = data.affiches.day; imgDay.style.display = 'block'; } else { imgDay.style.display = 'none'; }
+  const imgApres = document.getElementById('mob-apres-img'); if (data.affiches.apres) { imgApres.src = data.affiches.apres; imgApres.style.display = 'block'; } else { imgApres.style.display = 'none'; }
   
   const vidApres = document.getElementById('mob-apres-video');
   const vidCap = document.getElementById('mob-apres-video-caption');
-  if(data.videos.apres && data.videos.apres.url) { 
+  if (data.videos.apres && data.videos.apres.url) { 
     let url = data.videos.apres.url; let embedUrl = url;
     if (url.includes("youtube.com/shorts/")) embedUrl = `https://www.youtube.com/embed/${url.split("shorts/")[1].split("?")[0]}`;
     else if (url.includes("youtu.be/")) embedUrl = `https://www.youtube.com/embed/${url.split("youtu.be/")[1].split("?")[0]}`;
     else if (url.includes("youtube.com/watch")) embedUrl = `https://www.youtube.com/embed/${url.split("v=")[1].split("&")[0]}`;
     vidApres.src = embedUrl; vidApres.style.display = 'block'; 
-    if(data.videos.apres.txt) { vidCap.textContent = data.videos.apres.txt; vidCap.style.display = 'block'; } else { vidCap.style.display = 'none'; }
+    if (data.videos.apres.txt) { vidCap.textContent = data.videos.apres.txt; vidCap.style.display = 'block'; } else { vidCap.style.display = 'none'; }
   } else { vidApres.style.display = 'none'; vidCap.style.display = 'none'; }
 
-  /* RENDU DU LIVE (VERT PASTEL MOB + DEUX ÉQUIPES) */
   const liveW = document.getElementById('live-widget');
   const globalBanner = document.getElementById('globalLiveBanner');
   
@@ -1385,7 +1463,7 @@ function renderMob() {
     document.getElementById('live-status').innerHTML = formatText(data.live.texte || 'Match en direct');
     document.getElementById('live-badge-status').textContent = data.live.statut === 'actif' ? 'EN COURS' : 'TERMINÉ';
 
-    if(data.live.statut === 'actif') {
+    if (data.live.statut === 'actif') {
       globalBanner.style.display = 'block';
       let bannerHTML = `🟢 <b>EN DIRECT :</b> ${domName} <b>${scoreStr}</b> ${extName}`;
       if (data.live.texte && data.live.texte.trim() !== '') {
@@ -1401,166 +1479,16 @@ function renderMob() {
   }
 }
 
-function renderStats() {
-  if(currentStatsSubTab === 'vote') {
-    const container = document.getElementById('voteContainer');
-    if(!data.stats.activeVote) { container.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">Aucun vote en cours.</p>'; return; }
-    const v = data.stats.activeVote;
-    const totalVotes = Object.values(v.votes || {}).reduce((a,b)=>a+b, 0);
-    const hasVoted = localStorage.getItem('voted_' + v.id);
-    let html = `<div class="vote-card"><div class="vote-title">⭐ Homme du Match : ${v.matchName}</div>`;
-    if(hasVoted) {
-      html += `<p style="text-align:center; color:#27ae60; font-weight:bold; margin-bottom:15px;">✅ Vous avez voté !</p>`;
-      v.candidates.forEach(c => {
-        const count = v.votes[c] || 0;
-        const pct = totalVotes > 0 ? Math.round((count / totalVotes) * 100) : 0;
-        html += `<div style="margin-bottom:10px;"><div class="vote-bar-label"><span>${c}</span><span>${pct}% (${count})</span></div><div class="vote-bar-bg"><div class="vote-bar-fill" style="width:${pct}%"></div></div></div>`;
-      });
-    } else {
-      v.candidates.forEach(c => { html += `<button class="vote-option" onclick="submitVote('${escapeQuotes(c)}')">${c}</button>`; });
-    }
-    html += `</div>`;
-    container.innerHTML = html;
-  }
-  else if(currentStatsSubTab === 'buteurs') {
-    const tbody = document.getElementById('tbody-buteurs');
-    const buteurs = Object.entries(data.stats.buteurs || {}).sort((a,b) => b[1] - a[1]);
-    if(buteurs.length === 0) { tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#888;">Aucun buteur.</td></tr>'; return; }
-    tbody.innerHTML = buteurs.map((b, i) => {
-      const act = isAdmin ? `<button class="btn-small btn-del" onclick="deleteStat('buteur','${escapeQuotes(b[0])}')">🗑️</button>` : '';
-      return `<tr><td><b>${i+1}</b></td><td><img src="${getPlayerImg(b[0])}" class="stats-img"> ${b[0]}</td><td><b>${b[1]}</b></td><td>${act}</td></tr>`;
-    }).join('');
-  }
-  else if(currentStatsSubTab === 'cartons') {
-    const tbody = document.getElementById('tbody-cartons');
-    const cartons = Object.entries(data.stats.cartons || {}).sort((a,b) => (b[1].rouge*10 + b[1].jaune) - (a[1].rouge*10 + a[1].jaune));
-    if(cartons.length === 0) { tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#888;">Aucun carton.</td></tr>'; return; }
-    tbody.innerHTML = cartons.map(c => {
-      const act = isAdmin ? `<button class="btn-small btn-del" onclick="deleteStat('carton','${escapeQuotes(c[0])}')">🗑️</button>` : '';
-      return `<tr><td><img src="${getPlayerImg(c[0])}" class="stats-img"> ${c[0]}</td><td>${c[1].jaune || 0}</td><td>${c[1].rouge || 0}</td><td>${act}</td></tr>`;
-    }).join('');
-  }
-}
-
-function renderHomeVoteWidget() {
-  const container = document.getElementById('homeVoteContainer');
-  if(!data.stats.activeVote) { container.innerHTML = '<p style="font-size:11px; color:#888; margin:0;">Aucun vote en cours.</p>'; return; }
-  const v = data.stats.activeVote;
-  const hasVoted = localStorage.getItem('voted_' + v.id);
-  let html = `<h4>${v.matchName}</h4>`;
-  if(hasVoted) {
-    const top = v.candidates.reduce((a, b) => (v.votes[a] || 0) > (v.votes[b] || 0) ? a : b);
-    html += `<p style="font-size:11px; color:#27ae60; font-weight:bold;">✅ Voté ! (${top} mène)</p>`;
-  } else {
-    v.candidates.slice(0, 3).forEach(c => { html += `<button class="home-vote-option" onclick="submitVote('${escapeQuotes(c)}')">${c}</button>`; });
-  }
-  container.innerHTML = html;
-}
-
-async function submitVote(pName) {
-  if(!data.stats.activeVote) return;
-  const v = data.stats.activeVote;
-  if(localStorage.getItem('voted_' + v.id)) return;
-  if(!v.votes) v.votes = {};
-  v.votes[pName] = (v.votes[pName] || 0) + 1;
-  localStorage.setItem('voted_' + v.id, 'true');
-  await saveToFirebase();
-  renderStats();
-  renderHomeVoteWidget();
-}
-
-async function resetVote() {
-  if(confirm('Clôturer ce vote ?')) {
-    data.stats.activeVote = null;
-    await saveToFirebase();
-    renderStats();
-    renderHomeVoteWidget();
-    updateStatsAdminButtons();
-  }
-}
-function openModalCreateVote() { document.getElementById('voteMatchName').value = ''; document.getElementById('voteCandidates').value = ''; openModal('modalCreateVote'); }
-async function saveNewVote() {
-  const m = document.getElementById('voteMatchName').value;
-  const c = document.getElementById('voteCandidates').value.split(',').map(x=>x.trim()).filter(Boolean);
-  if(!m || c.length === 0) return alert('Champs requis');
-  data.stats.activeVote = { id: 'v'+Date.now(), matchName: m, candidates: c, votes: {} };
-  await saveToFirebase();
-  closeModal('modalCreateVote');
-  renderStats();
-  renderHomeVoteWidget();
-}
-function openModalManageVote() {
-  if(!data.stats.activeVote) return;
-  document.getElementById('manageVoteList').innerHTML = data.stats.activeVote.candidates.map((c, i) => `
-    <div style="display:flex; justify-content:space-between; align-items:center; background:#f9f9f9; padding:6px; margin-bottom:4px; border-radius:4px;">
-      <span>${c}</span><button onclick="removeCandidateByIndex(${i})" class="btn-small btn-del">🗑️</button>
-    </div>
-  `).join('');
-  openModal('modalManageVote');
-}
-async function addCandidateToVote() {
-  const n = document.getElementById('newCandidateName').value.trim();
-  if(!n || !data.stats.activeVote) return;
-  data.stats.activeVote.candidates.push(n);
-  await saveToFirebase();
-  openModalManageVote();
-  renderStats();
-}
-async function removeCandidateByIndex(idx) {
-  if(!data.stats.activeVote) return;
-  const n = data.stats.activeVote.candidates[idx];
-  data.stats.activeVote.candidates.splice(idx, 1);
-  if(data.stats.activeVote.votes) delete data.stats.activeVote.votes[n];
-  await saveToFirebase();
-  openModalManageVote();
-  renderStats();
-}
-
-function openModalAddStat(type) {
-  document.getElementById('statType').value = type;
-  document.getElementById('statPlayerName').value = '';
-  document.getElementById('statGoals').value = 1;
-  document.getElementById('statCartonType').value = 'jaune';
-  document.getElementById('modalStatTitle').textContent = type === 'buteur' ? 'Ajouter un Buteur' : 'Ajouter un Carton';
-  document.getElementById('statGoalFields').style.display = type === 'buteur' ? 'block' : 'none';
-  document.getElementById('statCartonFields').style.display = type === 'carton' ? 'block' : 'none';
-  openModal('modalAddStat');
-}
-async function saveStat() {
-  const type = document.getElementById('statType').value;
-  const p = document.getElementById('statPlayerName').value.trim();
-  if(!p) return alert('Nom requis');
-  if(type === 'buteur') {
-    if(!data.stats.buteurs) data.stats.buteurs = {};
-    data.stats.buteurs[p] = (data.stats.buteurs[p] || 0) + (parseInt(document.getElementById('statGoals').value) || 1);
-  } else {
-    const cType = document.getElementById('statCartonType').value;
-    if(!data.stats.cartons) data.stats.cartons = {};
-    if(!data.stats.cartons[p]) data.stats.cartons[p] = { jaune: 0, rouge: 0 };
-    data.stats.cartons[p][cType]++;
-  }
-  await saveToFirebase();
-  closeModal('modalAddStat');
-  renderStats();
-}
-async function deleteStat(type, p) {
-  if(confirm(`Supprimer ${p} ?`)) {
-    if(type === 'buteur') delete data.stats.buteurs[p];
-    if(type === 'carton') delete data.stats.cartons[p];
-    await saveToFirebase();
-    renderStats();
-  }
-}
-
 function renderNewsTab() {
   const container = document.getElementById('news-container');
-  let sorted = [...articles].sort((a,b) => b.date.localeCompare(a.date));
+  const list = (articles && articles.length > 0) ? articles : ARTICLES_INIT;
+  let sorted = [...list].sort((a,b) => (b.date||'').localeCompare(a.date||''));
   if (currentNewsSubTab !== 'all') sorted = sorted.filter(a => a.cat === currentNewsSubTab);
   if (sorted.length === 0) { container.innerHTML = '<p style="text-align:center; padding:20px; color:#888;">Aucun article.</p>'; return; }
   container.innerHTML = sorted.map((a) => {
-    const realIdx = data.articles.findIndex(art => art.id === a.id);
+    const realIdx = (data.articles || []).findIndex(art => art.id === a.id);
     const editBtn = isAdmin ? `<button class="btn-edit-news-text" onclick="event.stopPropagation(); openModalNews(${realIdx})">✏️ Modifier</button>` : '';
-    return `<div class="news-card" onclick="openArticleModal('${a.id}')"><img src="${a.image}" onerror="this.src='https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png'"><div class="news-card-body"><div class="news-card-title">${a.titre}</div><div class="news-card-date">📅 ${formatDate(a.date)} ${editBtn}</div><div class="news-card-preview">${a.texte}</div></div></div>`;
+    return `<div class="news-card" onclick="openArticleModal('${a.id}')"><img src="${a.image}" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'"><div class="news-card-body"><div class="news-card-title">${a.titre}</div><div class="news-card-date">📅 ${formatDate(a.date)} ${editBtn}</div><div class="news-card-preview">${a.texte}</div></div></div>`;
   }).join('');
 }
 
@@ -1569,11 +1497,11 @@ function renderMedias() {
   const gridV = document.getElementById('grid-videos');
   if (currentMediaSubTab === 'images') {
     if (!data.medias.albums || data.medias.albums.length === 0) gridA.innerHTML = '<p style="text-align:center; width:100%; color:#888;">Aucun album.</p>';
-    else gridA.innerHTML = data.medias.albums.map((a, i) => `<div class="album-card" onclick="openAlbumView(${i})"><h4>📸 ${a.titre}</h4><p>${formatDate(a.date)}<br>${a.photos.length} photo(s)</p>${isAdmin ? `<button class="btn-small btn-del" onclick="event.stopPropagation(); deleteAlbum(${i})">🗑️</button>` : ''}</div>`).join('');
+    else gridA.innerHTML = data.medias.albums.map((a, i) => `<div class="album-card" onclick="openAlbumView(${i})"><h4>📸 ${a.titre}</h4><p>${formatDate(a.date)}<br>${(a.photos||[]).length} photo(s)</p>${isAdmin ? `<button class="btn-small btn-del" onclick="event.stopPropagation(); deleteAlbum(${i})">🗑️</button>` : ''}</div>`).join('');
   } else {
     if (!data.medias.videos || data.medias.videos.length === 0) gridV.innerHTML = '<p style="text-align:center; color:#888;">Aucune vidéo.</p>';
     else gridV.innerHTML = data.medias.videos.map((v, i) => {
-      let embed = v.url, thumb = "https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png";
+      let embed = v.url, thumb = "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png";
       if (v.url.includes("youtube.com/shorts/")) { const id = v.url.split("shorts/")[1].split("?")[0]; embed = `https://www.youtube.com/embed/${id}`; thumb = `https://img.youtube.com/vi/${id}/0.jpg`; }
       else if (v.url.includes("youtu.be/")) { const id = v.url.split("youtu.be/")[1].split("?")[0]; embed = `https://www.youtube.com/embed/${id}`; thumb = `https://img.youtube.com/vi/${id}/0.jpg`; }
       return `<div class="video-item">${isAdmin ? `<button class="btn-del-video" onclick="deleteVideoMedia(${i})">🗑️</button>` : ''}<h5>${v.titre}</h5><div onclick="openVideoModal('${embed}', '${v.titre}')"><img src="${thumb}" class="video-thumb"></div></div>`;
@@ -1583,11 +1511,11 @@ function renderMedias() {
 
 function renderFdM() {
   const container = document.getElementById('fdmContainer');
-  if(!data.fdm || data.fdm.length === 0) { container.innerHTML = '<p style="text-align:center; color:#888; font-size:12px;">Aucune feuille de match.</p>'; return; }
-  container.innerHTML = [...data.fdm].sort((a,b) => b.date.localeCompare(a.date)).map((f) => {
-    const realIdx = data.fdm.findIndex(item => item.id === f.id);
+  const list = (data.fdm && data.fdm.length > 0) ? data.fdm : FDM_INIT;
+  container.innerHTML = [...list].sort((a,b) => (b.date||'').localeCompare(a.date||'')).map((f) => {
+    const realIdx = (data.fdm || []).findIndex(item => item.id === f.id);
     const act = isAdmin ? `<button class="btn-small btn-del" onclick="event.stopPropagation(); deleteFDM(${realIdx})">🗑️</button>` : '';
-    return `<div class="fdm-item" onclick="openFDMView('${f.id}')"><img src="${f.image}" onerror="this.src='https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png'"><div><h4>${f.titre}</h4><p>${formatDate(f.date)} ${act}</p></div></div>`;
+    return `<div class="fdm-item" onclick="openFDMView('${f.id}')"><img src="${f.image}" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'"><div><h4>${f.titre}</h4><p>${formatDate(f.date)} ${act}</p></div></div>`;
   }).join('');
   startFdmAutoScroll();
 }
@@ -1605,224 +1533,16 @@ function startFdmAutoScroll() {
 
 function renderBreves() {
   const ticker = document.getElementById('tickerContent');
-  if(!data.breves || data.breves.length === 0) { ticker.textContent = "Aucune brève info."; return; }
-  ticker.textContent = data.breves.map(b => b.titre).join('  •  ') + '  •  ';
+  const list = (data.breves && data.breves.length > 0) ? data.breves : BREVES_INIT;
+  ticker.textContent = list.map(b => b.titre).join('  •  ') + '  •  ';
 }
-
-/* OUVERTURE ET FERMETURE SÉCURISÉE DES MODALES (MASQUE LE BOUTON PARTAGER) */
-function openModal(id) { 
-  document.getElementById(id).classList.add('active'); 
-  const btnShare = document.getElementById('btnShareMain');
-  if (btnShare) btnShare.style.display = 'none';
-}
-
-function closeModal(id) { 
-  document.getElementById(id).classList.remove('active'); 
-  const btnShare = document.getElementById('btnShareMain');
-  if (btnShare) btnShare.style.display = 'flex';
-}
-
-async function addNewEquipe(type) {
-  const n = prompt("Nom de l'équipe :");
-  if(n && n.trim() !== '') {
-    const v = n.trim();
-    if(!data.equipes.includes(v)) { data.equipes.push(v); EQUIPES = data.equipes; await saveToFirebase(); }
-    document.getElementById(type === 'dom' ? 'fDom' : 'fExt').innerHTML = EQUIPES.map(e=>`<option value="${e}">${e}</option>`).join('');
-    document.getElementById(type === 'dom' ? 'fDom' : 'fExt').value = v;
-  }
-}
-async function addNewStade() {
-  const n = prompt("Nom du stade :");
-  if(n && n.trim() !== '') {
-    const v = n.trim();
-    if(!data.stades.includes(v)) { data.stades.push(v); STADES = data.stades; await saveToFirebase(); }
-    document.getElementById('fStade').innerHTML = STADES.map(s=>`<option value="${s}">${s}</option>`).join('');
-    document.getElementById('fStade').value = v;
-  }
-}
-
-function openModalMatch(section, idx) {
-  if (!isAdmin) return;
-  document.getElementById('editSectionMatch').value = section;
-  document.getElementById('editIndexMatch').value = idx !== undefined ? idx : '';
-  document.getElementById('modalTitleMatch').textContent = (idx !== undefined ? 'Modifier' : 'Ajouter') + ' un match';
-  document.getElementById('fDom').innerHTML = EQUIPES.map(e=>`<option value="${e}">${e}</option>`).join('');
-  document.getElementById('fExt').innerHTML = EQUIPES.map(e=>`<option value="${e}">${e}</option>`).join('');
-  document.getElementById('fStade').innerHTML = STADES.map(s=>`<option value="${s}">${s}</option>`).join('');
-  if (idx !== undefined) {
-    const m = data[section][idx];
-    document.getElementById('fJournee').value = m.journee||''; document.getElementById('fDate').value = m.date||''; document.getElementById('fHeure').value = m.heure||'';
-    document.getElementById('fDom').value = m.dom||''; document.getElementById('fExt').value = m.ext||''; document.getElementById('fSd').value = m.sd??''; document.getElementById('fSe').value = m.se??'';
-    document.getElementById('fStade').value = m.stade||''; document.getElementById('fObs').value = m.obs||'';
-  } else { ['fJournee','fDate','fHeure','fSd','fSe','fStade','fObs'].forEach(id => document.getElementById(id).value = ''); }
-  openModal('modalMatch');
-}
-
-async function saveMatch() {
-  const sec = document.getElementById('editSectionMatch').value;
-  const idx = document.getElementById('editIndexMatch').value;
-  const m = { journee: document.getElementById('fJournee').value, date: document.getElementById('fDate').value, heure: document.getElementById('fHeure').value, dom: document.getElementById('fDom').value, ext: document.getElementById('fExt').value, sd: document.getElementById('fSd').value, se: document.getElementById('fSe').value, stade: document.getElementById('fStade').value, obs: document.getElementById('fObs').value.trim() };
-  if(!data[sec]) data[sec] = [];
-  if (idx === '') data[sec].push(m); else data[sec][idx] = m;
-  await saveToFirebase();
-  closeModal('modalMatch');
-  initJourneesSelectors();
-  renderRencontresView();
-  updateNextMatch();
-}
-
-function openModalNews(idx) {
-  if(!isAdmin) return;
-  document.getElementById('editNewsIdx').value = idx === 'new' ? '' : idx;
-  const a = idx !== 'new' ? data.articles[idx] : {cat:'all', titre:'', date:'', image:'', texte:''};
-  document.getElementById('nCat').value = a.cat || 'all';
-  document.getElementById('nTitre').value = a.titre; document.getElementById('nDate').value = a.date; document.getElementById('nImg').value = a.image; document.getElementById('nTexte').value = a.texte;
-  openModal('modalNewsEdit');
-}
-async function saveNews() {
-  const idx = document.getElementById('editNewsIdx').value;
-  const a = { id: 'a' + Date.now(), cat: document.getElementById('nCat').value, titre: document.getElementById('nTitre').value, date: document.getElementById('nDate').value, image: document.getElementById('nImg').value, texte: document.getElementById('nTexte').value };
-  if(idx === '') data.articles.push(a); else data.articles[parseInt(idx)] = a;
-  articles = data.articles;
-  await saveToFirebase(); closeModal('modalNewsEdit'); renderNewsTab(); renderCarousel();
-}
-
-function openModalFDM(idx) {
-  if(!isAdmin) return;
-  document.getElementById('editFdmIdx').value = idx === 'new' ? '' : idx;
-  const f = idx !== 'new' ? data.fdm[idx] : {titre:'', date:'', image:'', texte:''};
-  document.getElementById('fdmTitre').value = f.titre; document.getElementById('fdmDate').value = f.date; document.getElementById('fdmImg').value = f.image; document.getElementById('fdmTexte').value = f.texte;
-  openModal('modalFDMEdit');
-}
-async function saveFDM() {
-  const idx = document.getElementById('editFdmIdx').value;
-  const f = { id: 'fdm' + Date.now(), titre: document.getElementById('fdmTitre').value, date: document.getElementById('fdmDate').value, image: document.getElementById('fdmImg').value, texte: document.getElementById('fdmTexte').value };
-  if(!data.fdm) data.fdm = [];
-  if(idx === '') data.fdm.push(f); else data.fdm[parseInt(idx)] = f;
-  await saveToFirebase(); closeModal('modalFDMEdit'); renderFdM();
-}
-async function deleteFDM(idx) { if(confirm('Supprimer cette feuille de match ?')) { data.fdm.splice(idx, 1); await saveToFirebase(); renderFdM(); } }
-function openFDMView(id) {
-  const f = data.fdm.find(x => x.id === id); if(!f) return;
-  currentFdmForShare = f;
-  document.getElementById('fdmViewTitle').textContent = f.titre;
-  document.getElementById('fdmViewDate').textContent = '📅 ' + formatDate(f.date);
-  document.getElementById('fdmViewImg').src = f.image;
-  document.getElementById('fdmViewImg').style.display = 'block';
-  document.getElementById('fdmViewText').innerHTML = formatText(f.texte);
-  openModal('modalFDMView');
-}
-
-function openModalAllBreves() {
-  if(!data.breves || data.breves.length === 0) return;
-  document.getElementById('allBrevesList').innerHTML = [...data.breves].sort((a,b) => b.date.localeCompare(a.date)).map(b => `
-    <div class="news-card" style="margin-bottom:10px;" onclick="closeModal('modalAllBreves'); openModalBreveView('${b.id}')">
-      <div class="news-card-body" style="padding:10px;"><div class="news-card-title" style="font-size:14px;">${b.titre}</div><div class="news-card-date">📅 ${formatDate(b.date)}</div></div>
-    </div>
-  `).join('');
-  openModal('modalAllBreves');
-}
-function openModalBreveView(id) {
-  const b = data.breves.find(x => x.id === id); if(!b) return;
-  currentBreveForShare = b;
-  document.getElementById('breveViewTitle').textContent = b.titre;
-  document.getElementById('breveViewDate').textContent = '📅 ' + formatDate(b.date);
-  document.getElementById('breveViewImg').style.display = b.image ? 'block' : 'none';
-  if(b.image) document.getElementById('breveViewImg').src = b.image;
-  document.getElementById('breveViewText').innerHTML = formatText(b.texte);
-  openModal('modalBreveView');
-}
-
-function openModalAlbum() { if(!isAdmin) return; document.getElementById('albumTitre').value = ''; document.getElementById('albumDate').value = new Date().toISOString().split('T')[0]; openModal('modalAlbum'); }
-async function saveAlbum() { const a = { id: 'al'+Date.now(), titre: document.getElementById('albumTitre').value, date: document.getElementById('albumDate').value, photos: [] }; if(!data.medias.albums) data.medias.albums = []; data.medias.albums.push(a); await saveToFirebase(); closeModal('modalAlbum'); renderMedias(); }
-function openAlbumView(idx) { const a = data.medias.albums[idx]; document.getElementById('albumViewTitle').textContent = `📸 ${a.titre}`; document.getElementById('albumViewGrid').innerHTML = a.photos.map((p, pIdx) => `<div class="photo-wrapper">${isAdmin ? `<button class="btn-del-photo" onclick="deletePhoto(${idx}, ${pIdx})">🗑️</button>` : ''}<img src="${p}" onclick="window.open('${p}','_blank')"></div>`).join(''); document.getElementById('albumViewToolbar').style.display = isAdmin ? 'block' : 'none'; document.getElementById('photoAlbumId').value = idx; openModal('modalAlbumView'); }
-function openModalAddPhoto() { document.getElementById('photoUrl').value = ''; openModal('modalAddPhoto'); }
-async function savePhoto() { const idx = document.getElementById('photoAlbumId').value; const url = document.getElementById('photoUrl').value; if(url) { data.medias.albums[idx].photos.push(url); await saveToFirebase(); closeModal('modalAddPhoto'); openAlbumView(idx); renderMedias(); } }
-async function deleteAlbum(idx) { if(confirm('Supprimer tout cet album ?')) { data.medias.albums.splice(idx, 1); await saveToFirebase(); renderMedias(); } }
-async function deletePhoto(aIdx, pIdx) { if(confirm('Supprimer cette photo ?')) { data.medias.albums[aIdx].photos.splice(pIdx, 1); await saveToFirebase(); openAlbumView(aIdx); renderMedias(); } }
-function openModalVideoMedia() { document.getElementById('vmTitre').value = ''; document.getElementById('vmUrl').value = ''; openModal('modalVideoMedia'); }
-async function saveVideoMedia() { const v = { id: 'vid'+Date.now(), titre: document.getElementById('vmTitre').value, url: document.getElementById('vmUrl').value }; if(!data.medias.videos) data.medias.videos = []; data.medias.videos.push(v); await saveToFirebase(); closeModal('modalVideoMedia'); renderMedias(); }
-async function deleteVideoMedia(idx) { if(confirm('Supprimer cette vidéo ?')) { data.medias.videos.splice(idx, 1); await saveToFirebase(); renderMedias(); } }
-function openVideoModal(url, title) { document.getElementById('videoModalTitle').textContent = title; document.getElementById('videoModalIframe').src = url; openModal('modalVideoPlayer'); }
-function closeVideoModal() { document.getElementById('videoModalIframe').src = ''; closeModal('modalVideoPlayer'); }
 
 function renderHistoriqueDynamic() {
-  const container = document.getElementById('historique-dynamic-sections'); if(!container) return;
-  if(!data.historique_custom) data.historique_custom = [];
-  container.innerHTML = data.historique_custom.map((h, i) => `
+  const container = document.getElementById('historique-dynamic-sections'); if (!container) return;
+  container.innerHTML = (data.historique_custom || []).map((h, i) => `
     <div class="historique-section"><div class="historique-section-title">${h.titre}</div><div class="historique-text">${h.texte}</div>${h.img ? `<img src="${h.img}" class="historique-image">` : ''}${isAdmin ? `<div style="text-align:right;"><button class="btn-small btn-del" onclick="deleteHisto(${i})">🗑️</button></div>` : ''}</div>
   `).join('');
 }
-function openModalHisto(idx) {
-  if(!isAdmin) return;
-  document.getElementById('editHistoIdx').value = idx === 'new' ? '' : idx;
-  const h = idx !== 'new' ? data.historique_custom[idx] : {titre:'', texte:'', img:''};
-  document.getElementById('hTitre').value = h.titre; document.getElementById('hTexte').value = h.texte; document.getElementById('hImg').value = h.img || '';
-  openModal('modalHisto');
-}
-async function saveHisto() {
-  const idx = document.getElementById('editHistoIdx').value;
-  const h = { titre: document.getElementById('hTitre').value, texte: document.getElementById('hTexte').value, img: document.getElementById('hImg').value };
-  if(!data.historique_custom) data.historique_custom = [];
-  if(idx === '') data.historique_custom.push(h); else data.historique_custom[parseInt(idx)] = h;
-  await saveToFirebase(); closeModal('modalHisto'); renderHistoriqueDynamic();
-}
-async function deleteHisto(idx) { if(confirm('Supprimer cette section ?')) { data.historique_custom.splice(idx, 1); await saveToFirebase(); renderHistoriqueDynamic(); } }
-
-function openModalMob(section) { if (!isAdmin) return; document.getElementById('mobSection').value = section; document.getElementById('mobImgInput').value = (data.mob[section] && data.mob[section].img) ? data.mob[section].img : ''; document.getElementById('mobTextInput').value = (data.mob[section] && data.mob[section].txt) ? data.mob[section].txt : ''; openModal('modalMob'); }
-async function saveMobContent() { const section = document.getElementById('mobSection').value; data.mob[section] = { img: document.getElementById('mobImgInput').value, txt: document.getElementById('mobTextInput').value }; await saveToFirebase(); closeModal('modalMob'); renderMob(); }
-function openModalAffiche(section) { if(!isAdmin) return; document.getElementById('afficheSection').value = section; document.getElementById('afficheUrl').value = data.affiches[section] || ''; openModal('modalAffiche'); }
-async function saveAffiche() { const section = document.getElementById('afficheSection').value; data.affiches[section] = document.getElementById('afficheUrl').value; await saveToFirebase(); closeModal('modalAffiche'); renderMob(); }
-function openModalVideo(section) { if(!isAdmin) return; document.getElementById('videoSection').value = section; document.getElementById('videoUrl').value = (data.videos[section] && data.videos[section].url) ? data.videos[section].url : ''; document.getElementById('videoTexte').value = (data.videos[section] && data.videos[section].txt) ? data.videos[section].txt : ''; openModal('modalVideo'); }
-async function saveVideo() { const section = document.getElementById('videoSection').value; data.videos[section] = { url: document.getElementById('videoUrl').value, txt: document.getElementById('videoTexte').value }; await saveToFirebase(); closeModal('modalVideo'); renderMob(); }
-
-/* GESTION & SAUVEGARDE DU LIVE */
-function openModalLive() { 
-  if (!isAdmin) return; 
-  const l = data.live || {};
-  document.getElementById('liveStatut').value = l.statut || 'inactif'; 
-  document.getElementById('liveDom').value = l.dom || 'MO Béjaïa';
-  document.getElementById('liveExt').value = l.ext || '';
-  document.getElementById('liveSd').value = l.sd !== undefined ? l.sd : 0; 
-  document.getElementById('liveSe').value = l.se !== undefined ? l.se : 0; 
-  document.getElementById('liveTexte').value = l.texte || ''; 
-  openModal('modalLive'); 
-}
-
-async function saveLive() { 
-  const liveObj = { 
-    statut: document.getElementById('liveStatut').value || 'inactif', 
-    dom: (document.getElementById('liveDom').value || '').trim() || 'MO Béjaïa',
-    ext: (document.getElementById('liveExt').value || '').trim() || 'Adversaire',
-    sd: parseInt(document.getElementById('liveSd').value, 10) || 0, 
-    se: parseInt(document.getElementById('liveSe').value, 10) || 0, 
-    texte: document.getElementById('liveTexte').value || ''
-  }; 
-  
-  data.live = liveObj;
-  closeModal('modalLive'); 
-  renderMob(); 
-
-  try {
-    await set(ref(db, 'data_v10/live'), liveObj);
-  } catch (err) {
-    console.warn("Écriture ciblée non permise, tentative globale...", err);
-    try {
-      await saveToFirebase();
-    } catch(e) {
-      console.error("Erreur Firebase:", e);
-      alert("Erreur de synchronisation Firebase.");
-    }
-  }
-}
-
-function openModalPlayer(idx) { if (!isAdmin) return; document.getElementById('editPlayerIdx').value = idx === 'new' ? '' : idx; const p = idx !== 'new' ? data.players[idx] : {num:'', nom:'', poste:'', ddn:'', lieu:'', nat:'', taille:'', pied:'', prev:'', finContrat:'', img:'', departDate:'', departMotif:''}; document.getElementById('pNum').value = p.num; document.getElementById('pNom').value = p.nom; document.getElementById('pPoste').value = p.poste; document.getElementById('pDdn').value = p.ddn; document.getElementById('pLieu').value = p.lieu; document.getElementById('pNat').value = p.nat; document.getElementById('pTaille').value = p.taille; document.getElementById('pPied').value = p.pied; document.getElementById('pPrev').value = p.prev; document.getElementById('pFinContrat').value = p.finContrat || ''; document.getElementById('pImg').value = p.img; document.getElementById('pDepartDate').value = p.departDate || ''; document.getElementById('pDepartMotif').value = p.departMotif || ''; openModal('modalPlayer'); }
-async function savePlayer() { const idx = document.getElementById('editPlayerIdx').value; const p = { num: parseInt(document.getElementById('pNum').value), nom: document.getElementById('pNom').value, poste: document.getElementById('pPoste').value, ddn: document.getElementById('pDdn').value, lieu: document.getElementById('pLieu').value, nat: document.getElementById('pNat').value, taille: document.getElementById('pTaille').value, pied: document.getElementById('pPied').value, prev: document.getElementById('pPrev').value, finContrat: document.getElementById('pFinContrat').value, img: document.getElementById('pImg').value, departDate: document.getElementById('pDepartDate').value, departMotif: document.getElementById('pDepartMotif').value }; if (idx === '') data.players.push(p); else data.players[parseInt(idx)] = p; await saveToFirebase(); closeModal('modalPlayer'); renderClub(); }
-function openModalStaff(idx) { if (!isAdmin) return; document.getElementById('editStaffIdx').value = idx === 'new' ? '' : idx; const s = idx !== 'new' ? data.staff[idx] : {nom:'', fonction:'', ddn:'', infos:'', img:'', departDate:'', departMotif:''}; document.getElementById('sNom').value = s.nom; document.getElementById('sFonction').value = s.fonction; document.getElementById('sDdn').value = s.ddn; document.getElementById('sInfos').value = s.infos; document.getElementById('sImg').value = s.img; document.getElementById('sDepartDate').value = s.departDate || ''; document.getElementById('sDepartMotif').value = s.departMotif || ''; openModal('modalStaff'); }
-async function saveStaff() { const idx = document.getElementById('editStaffIdx').value; const s = { nom: document.getElementById('sNom').value, fonction: document.getElementById('sFonction').value, ddn: document.getElementById('sDdn').value, infos: document.getElementById('sInfos').value, img: document.getElementById('sImg').value, departDate: document.getElementById('sDepartDate').value, departMotif: document.getElementById('sDepartMotif').value }; if (idx === '') data.staff.push(s); else data.staff[parseInt(idx)] = s; await saveToFirebase(); closeModal('modalStaff'); renderClub(); }
-function openModalDirigeant(idx) { if (!isAdmin) return; document.getElementById('editDirIdx').value = idx === 'new' ? '' : idx; const d = idx !== 'new' ? data.dirigeants[idx] : {nom:'', fonction:'', img:'', departDate:'', departMotif:''}; document.getElementById('dNom').value = d.nom; document.getElementById('dFonction').value = d.fonction; document.getElementById('dImg').value = d.img; document.getElementById('dDepartDate').value = d.departDate || ''; document.getElementById('dDepartMotif').value = d.departMotif || ''; openModal('modalDirigeant'); }
-async function saveDirigeant() { const idx = document.getElementById('editDirIdx').value; const d = { nom: document.getElementById('dNom').value, fonction: document.getElementById('dFonction').value, img: document.getElementById('dImg').value, departDate: document.getElementById('dDepartDate').value, departMotif: document.getElementById('dDepartMotif').value }; if (idx === '') data.dirigeants.push(d); else data.dirigeants[parseInt(idx)] = d; await saveToFirebase(); closeModal('modalDirigeant'); renderClub(); }
-async function deleteItem(section, idx) { if (confirm('Supprimer cet élément ?')) { data[section].splice(idx,1); await saveToFirebase(); if(section==='championnat' || section==='coupe') renderRencontresView(); else renderClub(); } }
 
 let countdownInterval = null;
 function updateNextMatch() {
@@ -1856,22 +1576,6 @@ function updateNextMatch() {
   document.getElementById('nextMatchBanner').style.display = 'block';
 }
 
-let carouselTimer = null;
-function renderCarousel() {
-  const container = document.getElementById('homeCarousel');
-  container.innerHTML = [...articles].sort((a,b) => b.date.localeCompare(a.date)).slice(0, 5).map(a => `<div class="carousel-item" onclick="openArticleModal('${a.id}')"><img src="${a.image}" onerror="this.src='https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png'"><p>${a.titre}</p></div>`).join('');
-}
-function startCarouselAuto() {
-  const container = document.getElementById('homeCarousel');
-  if (carouselTimer) clearInterval(carouselTimer);
-  carouselTimer = setInterval(() => {
-    const items = container.querySelectorAll('.carousel-item'); if (items.length === 0) return;
-    const maxScroll = container.scrollWidth - container.clientWidth;
-    if (container.scrollLeft >= maxScroll - 5) container.scrollTo({ left: 0, behavior: 'smooth' });
-    else container.scrollBy({ left: items[0].offsetWidth + 10, behavior: 'smooth' });
-  }, 3500);
-}
-
 function openArticleModal(id) {
   const a = articles.find(x => x.id === id); if (!a) return;
   currentArticleForShare = a;
@@ -1883,71 +1587,8 @@ function openArticleModal(id) {
   openModal('modalArticle');
 }
 
-/* NETTOYAGE ET CHARGEMENT FIREBASE */
 function sanitizeData(obj) {
   return JSON.parse(JSON.stringify(obj, (k, v) => (v === undefined ? null : v)));
-}
-
-function loadFromFirebase() {
-  document.getElementById('statusBar').className = 'status loading';
-  document.getElementById('statusBar').textContent = '⏳ Connexion en direct...';
-  
-  data.championnat = [...MATCHS_INIT]; 
-  data.players = [...PLAYERS_INIT]; 
-  data.staff = [...STAFF_INIT]; 
-  data.dirigeants = [...DIRIGEANTS_INIT]; 
-  data.articles = [...ARTICLES_INIT]; 
-  data.fdm = [...FDM_INIT]; 
-  data.breves = [...BREVES_INIT]; 
-  data.equipes = [...EQUIPES]; 
-  data.stades = [...STADES];
-  articles = data.articles;
-  
-  renderAll();
-  startCarouselAuto();
-  trackVisit();
-
-  try {
-    onValue(ref(db, 'data_v10'), (snap) => {
-      if (snap.exists()) {
-        const fb = snap.val();
-        data.championnat = fb.championnat || [...MATCHS_INIT];
-        data.coupe = fb.coupe || [];
-        data.players = fb.players || [...PLAYERS_INIT];
-        data.staff = fb.staff || [...STAFF_INIT];
-        data.dirigeants = fb.dirigeants || [...DIRIGEANTS_INIT];
-        data.mob = fb.mob || {};
-        data.live = fb.live || { statut: 'inactif', dom: 'MO Béjaïa', ext: '', sd: 0, se: 0, texte: '' };
-        data.affiches = fb.affiches || {};
-        data.videos = fb.videos || {};
-        data.articles = fb.articles || [...ARTICLES_INIT];
-        data.medias = fb.medias || data.medias;
-        data.fdm = fb.fdm || [...FDM_INIT];
-        data.breves = fb.breves || [...BREVES_INIT];
-        data.stats = fb.stats || { activeVote: null, buteurs: {}, cartons: {} };
-        data.historique_custom = fb.historique_custom || [];
-        if(fb.equipes) { data.equipes = fb.equipes; EQUIPES = data.equipes; }
-        if(fb.stades) { data.stades = fb.stades; STADES = data.stades; }
-        articles = data.articles;
-        
-        if (fb.visits !== undefined) {
-          const total = typeof fb.visits === 'number' ? fb.visits : (fb.visits.count || 0);
-          updateVisitDisplay(total);
-        }
-
-        renderAll();
-        document.getElementById('statusBar').className = 'status online';
-        document.getElementById('statusBar').textContent = `🟢 Connecté en direct (${data.championnat.length} matchs)`;
-      }
-    }, (err) => {
-      console.log('Mode hors ligne ou erreur', err);
-      document.getElementById('statusBar').className = 'status offline';
-      document.getElementById('statusBar').textContent = '🔴 Hors ligne';
-    });
-  } catch(e) {
-    document.getElementById('statusBar').className = 'status offline';
-    document.getElementById('statusBar').textContent = '🔴 Erreur de connexion';
-  }
 }
 
 async function saveToFirebase() {
@@ -1959,82 +1600,550 @@ async function saveToFirebase() {
   }
 }
 
+function renderAll() {
+  initJourneesSelectors();
+  renderRencontresView();
+  renderClub();
+  renderMob();
+  renderNewsTab();
+  renderMedias();
+  renderFdM();
+  renderBreves();
+  renderStats();
+  updateNextMatch();
+  renderHomeVoteWidget();
+  renderCarousel();
+  renderHistoriqueDynamic();
+}
+
+function loadFromFirebase() {
+  trackVisit();
+
+  onValue(ref(db, 'data_v10'), (snap) => {
+    try {
+      if (snap.exists()) {
+        const fb = snap.val();
+        if (fb.championnat && Array.isArray(fb.championnat)) data.championnat = fb.championnat;
+        if (fb.coupe && Array.isArray(fb.coupe)) data.coupe = fb.coupe;
+        if (fb.players && Array.isArray(fb.players)) data.players = fb.players;
+        if (fb.staff && Array.isArray(fb.staff)) data.staff = fb.staff;
+        if (fb.dirigeants && Array.isArray(fb.dirigeants)) data.dirigeants = fb.dirigeants;
+        if (fb.mob) data.mob = fb.mob;
+        if (fb.live) data.live = fb.live;
+        if (fb.affiches) data.affiches = fb.affiches;
+        if (fb.videos) data.videos = fb.videos;
+        if (fb.articles && Array.isArray(fb.articles)) { data.articles = fb.articles; articles = fb.articles; }
+        if (fb.medias) data.medias = fb.medias;
+        if (fb.fdm && Array.isArray(fb.fdm)) data.fdm = fb.fdm;
+        if (fb.breves && Array.isArray(fb.breves)) data.breves = fb.breves;
+        if (fb.stats) data.stats = fb.stats;
+        if (fb.historique_custom) data.historique_custom = fb.historique_custom;
+        
+        if (fb.visits !== undefined) {
+          const total = typeof fb.visits === 'number' ? fb.visits : (fb.visits.count || 0);
+          updateVisitDisplay(total);
+        }
+      }
+      renderAll();
+      document.getElementById('statusBar').className = 'status online';
+      document.getElementById('statusBar').textContent = `🟢 Connecté en direct (${(data.championnat||[]).length} matchs)`;
+    } catch(err) {
+      console.error("Erreur rendu Firebase:", err);
+      renderAll();
+      document.getElementById('statusBar').className = 'status online';
+      document.getElementById('statusBar').textContent = `🟢 Connecté en direct`;
+    }
+  }, (err) => {
+    console.warn('Mode hors ligne:', err);
+    renderAll();
+    document.getElementById('statusBar').className = 'status offline';
+    document.getElementById('statusBar').textContent = '🔴 Hors ligne';
+  });
+}
+
 document.getElementById('mainTitle').addEventListener('click', handleTitleClick);
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadFromFirebase); else loadFromFirebase();
 
-/* EXPOSITIONS GLOBALES */
+/* FONCTIONS MODALES ET GLOBALES */
 window.switchTab = switchTab;
 window.switchRencontreNav = switchRencontreNav;
 window.renderProgrammeView = renderProgrammeView;
 window.renderResultatsView = renderResultatsView;
 window.renderClassementView = renderClassementView;
-window.switchSubTabMob = switchSubTabMob;
-window.switchSubTabNews = switchSubTabNews;
-window.switchSubTabMedia = switchSubTabMedia;
-window.switchSubTabStats = switchSubTabStats;
+window.switchSubTabMob = (m) => { currentMobSubTab = m; document.querySelectorAll('#tab-mob .sub-tab').forEach(b => b.classList.remove('active')); document.getElementById('subtab-mob-'+m).classList.add('active'); ['avant','day','apres'].forEach(k => document.getElementById('mob-'+k).style.display = k === m ? 'block' : 'none'); renderMob(); };
+window.switchSubTabNews = (c) => { currentNewsSubTab = c; document.querySelectorAll('#tab-actualite .sub-tab').forEach(b => b.classList.remove('active')); document.getElementById('subtab-news-'+c).classList.add('active'); renderNewsTab(); };
+window.switchSubTabMedia = (t) => { currentMediaSubTab = t; document.querySelectorAll('#tab-medias .sub-tab').forEach(b => b.classList.remove('active')); document.getElementById('subtab-media-'+t).classList.add('active'); document.getElementById('media-images-container').style.display = t === 'images' ? 'block' : 'none'; document.getElementById('media-videos-container').style.display = t === 'videos' ? 'block' : 'none'; renderMedias(); };
+window.switchSubTabStats = (t) => { currentStatsSubTab = t; document.querySelectorAll('#tab-stats .sub-tab').forEach(b => b.classList.remove('active')); document.getElementById('subtab-stats-'+t).classList.add('active'); ['vote','buteurs','cartons'].forEach(k => document.getElementById('stats-'+k).style.display = k === t ? 'block' : 'none'); updateStatsAdminButtons(); renderStats(); };
 window.openModal = openModal;
 window.closeModal = closeModal;
-window.openModalMatch = openModalMatch;
-window.saveMatch = saveMatch;
-window.deleteItem = deleteItem;
-window.openModalPlayer = openModalPlayer;
-window.savePlayer = savePlayer;
-window.openModalStaff = openModalStaff;
-window.saveStaff = saveStaff;
-window.openModalDirigeant = openModalDirigeant;
-window.saveDirigeant = saveDirigeant;
-window.openModalMob = openModalMob;
-window.saveMobContent = saveMobContent;
-window.openModalAffiche = openModalAffiche;
-window.saveAffiche = saveAffiche;
-window.openModalVideo = openModalVideo;
-window.saveVideo = saveVideo;
-window.openModalNews = openModalNews;
-window.saveNews = saveNews;
-window.openModalAlbum = openModalAlbum;
-window.saveAlbum = saveAlbum;
-window.openAlbumView = openAlbumView;
-window.openModalAddPhoto = openModalAddPhoto;
-window.savePhoto = savePhoto;
-window.openModalVideoMedia = openModalVideoMedia;
-window.saveVideoMedia = saveVideoMedia;
-window.deleteAlbum = deleteAlbum;
-window.deletePhoto = deletePhoto;
-window.deleteVideoMedia = deleteVideoMedia;
-window.openVideoModal = openVideoModal;
-window.closeVideoModal = closeVideoModal;
-window.addNewEquipe = addNewEquipe;
-window.addNewStade = addNewStade;
-window.openModalLive = openModalLive;
-window.saveLive = saveLive;
 window.tryLogin = tryLogin;
 window.logoutAdmin = logoutAdmin;
-window.openArticleModal = openArticleModal;
-window.shareContext = shareContext;
-window.shareArticle = shareArticle;
-window.shareFdm = shareFdm;
-window.shareBreve = shareBreve;
-window.openModalFDM = openModalFDM;
-window.saveFDM = saveFDM;
-window.deleteFDM = deleteFDM;
-window.openFDMView = openFDMView;
-window.openModalAllBreves = openModalAllBreves;
-window.openModalBreveView = openModalBreveView;
+window.handleTitleClick = handleTitleClick;
 window.submitVote = submitVote;
 window.resetVote = resetVote;
-window.openModalCreateVote = openModalCreateVote;
-window.saveNewVote = saveNewVote;
-window.openModalManageVote = openModalManageVote;
-window.addCandidateToVote = addCandidateToVote;
-window.removeCandidateByIndex = removeCandidateByIndex;
-window.openModalAddStat = openModalAddStat;
-window.saveStat = saveStat;
-window.deleteStat = deleteStat;
-window.openModalHisto = openModalHisto;
-window.saveHisto = saveHisto;
-window.deleteHisto = deleteHisto;
-window.exportData = exportData;
-window.importData = importData;
+window.openArticleModal = openArticleModal;
+
+window.openModalMatch = function(sec, idx) {
+  if (!isAdmin) return;
+  document.getElementById('editSectionMatch').value = sec;
+  document.getElementById('editIndexMatch').value = idx !== undefined ? idx : '';
+  document.getElementById('fDom').innerHTML = EQUIPES.map(e => `<option value="${e}">${e}</option>`).join('');
+  document.getElementById('fExt').innerHTML = EQUIPES.map(e => `<option value="${e}">${e}</option>`).join('');
+  document.getElementById('fStade').innerHTML = STADES.map(s => `<option value="${s}">${s}</option>`).join('');
+  if (idx !== undefined) {
+    const m = data[sec][idx];
+    document.getElementById('fJournee').value = m.journee || '';
+    document.getElementById('fDate').value = m.date || '';
+    document.getElementById('fHeure').value = m.heure || '';
+    document.getElementById('fDom').value = m.dom || '';
+    document.getElementById('fExt').value = m.ext || '';
+    document.getElementById('fSd').value = m.sd ?? '';
+    document.getElementById('fSe').value = m.se ?? '';
+    document.getElementById('fStade').value = m.stade || '';
+    document.getElementById('fObs').value = m.obs || '';
+  } else {
+    ['fJournee','fDate','fHeure','fSd','fSe','fObs'].forEach(id => document.getElementById(id).value = '');
+  }
+  openModal('modalMatch');
+};
+
+window.saveMatch = async function() {
+  const sec = document.getElementById('editSectionMatch').value;
+  const idx = document.getElementById('editIndexMatch').value;
+  const m = {
+    journee: document.getElementById('fJournee').value,
+    date: document.getElementById('fDate').value,
+    heure: document.getElementById('fHeure').value,
+    dom: document.getElementById('fDom').value,
+    ext: document.getElementById('fExt').value,
+    sd: document.getElementById('fSd').value,
+    se: document.getElementById('fSe').value,
+    stade: document.getElementById('fStade').value,
+    obs: document.getElementById('fObs').value
+  };
+  if (!data[sec]) data[sec] = [];
+  if (idx === '') data[sec].push(m); else data[sec][idx] = m;
+  await saveToFirebase();
+  closeModal('modalMatch');
+  renderAll();
+};
+
+window.deleteItem = async function(section, idx) {
+  if (!isAdmin) return;
+  if (confirm('Confirmer la suppression de cet élément ?')) {
+    if (data[section]) data[section].splice(idx, 1);
+    await saveToFirebase();
+    renderAll();
+  }
+};
+
+window.openModalLive = function() {
+  if (!isAdmin) return;
+  const l = data.live || {};
+  document.getElementById('liveStatut').value = l.statut || 'inactif';
+  document.getElementById('liveDom').value = l.dom || 'MO Béjaïa';
+  document.getElementById('liveExt').value = l.ext || '';
+  document.getElementById('liveSd').value = l.sd || 0;
+  document.getElementById('liveSe').value = l.se || 0;
+  document.getElementById('liveTexte').value = l.texte || '';
+  openModal('modalLive');
+};
+
+window.saveLive = async function() {
+  const liveObj = {
+    statut: document.getElementById('liveStatut').value,
+    dom: document.getElementById('liveDom').value.trim() || 'MO Béjaïa',
+    ext: document.getElementById('liveExt').value.trim() || 'Adversaire',
+    sd: parseInt(document.getElementById('liveSd').value, 10) || 0,
+    se: parseInt(document.getElementById('liveSe').value, 10) || 0,
+    texte: document.getElementById('liveTexte').value
+  };
+  data.live = liveObj;
+  closeModal('modalLive');
+  renderMob();
+  try {
+    await set(ref(db, 'data_v10/live'), liveObj);
+  } catch(e) {
+    await saveToFirebase();
+  }
+};
+
+window.openModalNews = function(idx) {
+  if (!isAdmin) return;
+  document.getElementById('editNewsIdx').value = idx === 'new' ? '' : idx;
+  const a = idx !== 'new' ? data.articles[idx] : {cat:'all', titre:'', date:'', image:'', texte:''};
+  document.getElementById('nCat').value = a.cat || 'all';
+  document.getElementById('nTitre').value = a.titre || '';
+  document.getElementById('nDate').value = a.date || '';
+  document.getElementById('nImg').value = a.image || '';
+  document.getElementById('nTexte').value = a.texte || '';
+  openModal('modalNewsEdit');
+};
+
+window.saveNews = async function() {
+  const idx = document.getElementById('editNewsIdx').value;
+  const a = {
+    id: 'a' + Date.now(),
+    cat: document.getElementById('nCat').value,
+    titre: document.getElementById('nTitre').value,
+    date: document.getElementById('nDate').value,
+    image: document.getElementById('nImg').value,
+    texte: document.getElementById('nTexte').value
+  };
+  if (idx === '') data.articles.push(a); else data.articles[parseInt(idx)] = a;
+  articles = data.articles;
+  await saveToFirebase();
+  closeModal('modalNewsEdit');
+  renderNewsTab();
+  renderCarousel();
+};
+
+window.openModalPlayer = function(idx) {
+  if (!isAdmin) return;
+  document.getElementById('editPlayerIdx').value = idx === 'new' ? '' : idx;
+  const p = idx !== 'new' ? data.players[idx] : {num:'', nom:'', poste:'', img:''};
+  document.getElementById('pNum').value = p.num || '';
+  document.getElementById('pNom').value = p.nom || '';
+  document.getElementById('pPoste').value = p.poste || '';
+  document.getElementById('pImg').value = p.img || '';
+  openModal('modalPlayer');
+};
+
+window.savePlayer = async function() {
+  const idx = document.getElementById('editPlayerIdx').value;
+  const p = {
+    num: parseInt(document.getElementById('pNum').value, 10) || 0,
+    nom: document.getElementById('pNom').value.trim(),
+    poste: document.getElementById('pPoste').value.trim(),
+    img: document.getElementById('pImg').value.trim()
+  };
+  if (!data.players) data.players = [];
+  if (idx === '') data.players.push(p); else data.players[parseInt(idx)] = p;
+  await saveToFirebase();
+  closeModal('modalPlayer');
+  renderClub();
+};
+
+window.openModalStaff = function(idx) {
+  if (!isAdmin) return;
+  document.getElementById('editStaffIdx').value = idx === 'new' ? '' : idx;
+  const s = idx !== 'new' ? data.staff[idx] : {nom:'', fonction:'', img:''};
+  document.getElementById('sNom').value = s.nom || '';
+  document.getElementById('sFonction').value = s.fonction || '';
+  document.getElementById('sImg').value = s.img || '';
+  openModal('modalStaff');
+};
+
+window.saveStaff = async function() {
+  const idx = document.getElementById('editStaffIdx').value;
+  const s = { nom: document.getElementById('sNom').value, fonction: document.getElementById('sFonction').value, img: document.getElementById('sImg').value };
+  if (!data.staff) data.staff = [];
+  if (idx === '') data.staff.push(s); else data.staff[parseInt(idx)] = s;
+  await saveToFirebase();
+  closeModal('modalStaff');
+  renderClub();
+};
+
+window.openModalDirigeant = function(idx) {
+  if (!isAdmin) return;
+  document.getElementById('editDirIdx').value = idx === 'new' ? '' : idx;
+  const d = idx !== 'new' ? data.dirigeants[idx] : {nom:'', fonction:'', img:''};
+  document.getElementById('dNom').value = d.nom || '';
+  document.getElementById('dFonction').value = d.fonction || '';
+  document.getElementById('dImg').value = d.img || '';
+  openModal('modalDirigeant');
+};
+
+window.saveDirigeant = async function() {
+  const idx = document.getElementById('editDirIdx').value;
+  const d = { nom: document.getElementById('dNom').value, fonction: document.getElementById('dFonction').value, img: document.getElementById('dImg').value };
+  if (!data.dirigeants) data.dirigeants = [];
+  if (idx === '') data.dirigeants.push(d); else data.dirigeants[parseInt(idx)] = d;
+  await saveToFirebase();
+  closeModal('modalDirigeant');
+  renderClub();
+};
+
+window.openModalCreateVote = function() {
+  document.getElementById('voteMatchName').value = '';
+  document.getElementById('voteCandidates').value = '';
+  openModal('modalCreateVote');
+};
+
+window.saveNewVote = async function() {
+  const m = document.getElementById('voteMatchName').value.trim();
+  const c = document.getElementById('voteCandidates').value.split(',').map(x=>x.trim()).filter(Boolean);
+  if (!m || c.length === 0) return alert('Champs requis');
+  data.stats.activeVote = { id: 'v' + Date.now(), matchName: m, candidates: c, votes: {} };
+  await saveToFirebase();
+  closeModal('modalCreateVote');
+  renderStats();
+  renderHomeVoteWidget();
+};
+
+window.openModalManageVote = function() {
+  if (!data.stats.activeVote) return;
+  document.getElementById('manageVoteList').innerHTML = data.stats.activeVote.candidates.map((c, i) => `
+    <div style="display:flex; justify-content:space-between; align-items:center; background:#f9f9f9; padding:6px; margin-bottom:4px; border-radius:4px;">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <img src="${getPlayerImg(c)}" class="vote-avatar" style="width:24px; height:24px;">
+        <span>${c}</span>
+      </div>
+      <button class="btn-small btn-del" onclick="removeCandidateByIndex(${i})">🗑️</button>
+    </div>
+  `).join('');
+  openModal('modalManageVote');
+};
+
+window.addCandidateToVote = async function() {
+  const n = document.getElementById('newCandidateName').value.trim();
+  if (!n || !data.stats.activeVote) return;
+  data.stats.activeVote.candidates.push(n);
+  await saveToFirebase();
+  openModalManageVote();
+  renderStats();
+};
+
+window.removeCandidateByIndex = async function(idx) {
+  if (!data.stats.activeVote) return;
+  const n = data.stats.activeVote.candidates[idx];
+  data.stats.activeVote.candidates.splice(idx, 1);
+  if (data.stats.activeVote.votes) delete data.stats.activeVote.votes[n];
+  await saveToFirebase();
+  openModalManageVote();
+  renderStats();
+};
+
+window.openModalAddStat = function(type) {
+  document.getElementById('statType').value = type;
+  document.getElementById('statPlayerName').value = '';
+  document.getElementById('statGoals').value = 1;
+  document.getElementById('modalStatTitle').textContent = type === 'buteur' ? 'Ajouter un Buteur' : 'Ajouter un Carton';
+  document.getElementById('statGoalFields').style.display = type === 'buteur' ? 'block' : 'none';
+  document.getElementById('statCartonFields').style.display = type === 'carton' ? 'block' : 'none';
+  openModal('modalAddStat');
+};
+
+window.saveStat = async function() {
+  const type = document.getElementById('statType').value;
+  const p = document.getElementById('statPlayerName').value.trim();
+  if (!p) return alert('Nom requis');
+  if (type === 'buteur') {
+    if (!data.stats.buteurs) data.stats.buteurs = {};
+    data.stats.buteurs[p] = (data.stats.buteurs[p] || 0) + (parseInt(document.getElementById('statGoals').value) || 1);
+  } else {
+    const ct = document.getElementById('statCartonType').value;
+    if (!data.stats.cartons) data.stats.cartons = {};
+    if (!data.stats.cartons[p]) data.stats.cartons[p] = { jaune: 0, rouge: 0 };
+    data.stats.cartons[p][ct]++;
+  }
+  await saveToFirebase();
+  closeModal('modalAddStat');
+  renderStats();
+};
+
+window.deleteStat = async function(type, p) {
+  if (!isAdmin) return;
+  if (confirm(`Supprimer les stats de ${p} ?`)) {
+    if (type === 'buteur' && data.stats.buteurs) delete data.stats.buteurs[p];
+    if (type === 'carton' && data.stats.cartons) delete data.stats.cartons[p];
+    await saveToFirebase();
+    renderStats();
+  }
+};
+
+window.openModalFDM = function(idx) {
+  if (!isAdmin) return;
+  document.getElementById('editFdmIdx').value = idx === 'new' ? '' : idx;
+  const f = idx !== 'new' ? data.fdm[idx] : {titre:'', date:'', image:'', texte:''};
+  document.getElementById('fdmTitre').value = f.titre || '';
+  document.getElementById('fdmDate').value = f.date || '';
+  document.getElementById('fdmImg').value = f.image || '';
+  document.getElementById('fdmTexte').value = f.texte || '';
+  openModal('modalFDMEdit');
+};
+
+window.saveFDM = async function() {
+  const idx = document.getElementById('editFdmIdx').value;
+  const f = {
+    id: 'fdm' + Date.now(),
+    titre: document.getElementById('fdmTitre').value,
+    date: document.getElementById('fdmDate').value,
+    image: document.getElementById('fdmImg').value,
+    texte: document.getElementById('fdmTexte').value
+  };
+  if (!data.fdm) data.fdm = [];
+  if (idx === '') data.fdm.push(f); else data.fdm[parseInt(idx)] = f;
+  await saveToFirebase();
+  closeModal('modalFDMEdit');
+  renderFdM();
+};
+
+window.deleteFDM = async function(idx) {
+  if (!isAdmin) return;
+  if (confirm('Supprimer cette feuille de match ?')) {
+    data.fdm.splice(idx, 1);
+    await saveToFirebase();
+    renderFdM();
+  }
+};
+
+window.openFDMView = function(id) {
+  const f = (data.fdm || []).find(x => x.id === id);
+  if (!f) return;
+  document.getElementById('fdmViewTitle').textContent = f.titre;
+  document.getElementById('fdmViewDate').textContent = '📅 ' + formatDate(f.date);
+  const img = document.getElementById('fdmViewImg');
+  img.style.display = f.image ? 'block' : 'none';
+  if (f.image) img.src = f.image;
+  document.getElementById('fdmViewText').innerHTML = formatText(f.texte);
+  openModal('modalFDMView');
+};
+
+window.openModalHisto = function(idx) {
+  if (!isAdmin) return;
+  document.getElementById('editHistoIdx').value = idx === 'new' ? '' : idx;
+  const h = idx !== 'new' ? data.historique_custom[idx] : {titre:'', texte:'', img:''};
+  document.getElementById('hTitre').value = h.titre || '';
+  document.getElementById('hTexte').value = h.texte || '';
+  document.getElementById('hImg').value = h.img || '';
+  openModal('modalHisto');
+};
+
+window.saveHisto = async function() {
+  const idx = document.getElementById('editHistoIdx').value;
+  const h = { titre: document.getElementById('hTitre').value, texte: document.getElementById('hTexte').value, img: document.getElementById('hImg').value };
+  if (!data.historique_custom) data.historique_custom = [];
+  if (idx === '') data.historique_custom.push(h); else data.historique_custom[parseInt(idx)] = h;
+  await saveToFirebase();
+  closeModal('modalHisto');
+  renderHistoriqueDynamic();
+};
+
+window.openModalMob = function(sec) {
+  if (!isAdmin) return;
+  document.getElementById('mobSection').value = sec;
+  document.getElementById('mobImgInput').value = (data.mob[sec] && data.mob[sec].img) ? data.mob[sec].img : '';
+  document.getElementById('mobTextInput').value = (data.mob[sec] && data.mob[sec].txt) ? data.mob[sec].txt : '';
+  openModal('modalMob');
+};
+
+window.saveMobContent = async function() {
+  const sec = document.getElementById('mobSection').value;
+  data.mob[sec] = { img: document.getElementById('mobImgInput').value, txt: document.getElementById('mobTextInput').value };
+  await saveToFirebase();
+  closeModal('modalMob');
+  renderMob();
+};
+
+window.openModalAffiche = function(sec) {
+  if (!isAdmin) return;
+  document.getElementById('afficheSection').value = sec;
+  document.getElementById('afficheUrl').value = data.affiches[sec] || '';
+  openModal('modalAffiche');
+};
+
+window.saveAffiche = async function() {
+  const sec = document.getElementById('afficheSection').value;
+  data.affiches[sec] = document.getElementById('afficheUrl').value;
+  await saveToFirebase();
+  closeModal('modalAffiche');
+  renderMob();
+};
+
+window.openModalVideo = function(sec) {
+  if (!isAdmin) return;
+  document.getElementById('videoSection').value = sec;
+  document.getElementById('videoUrl').value = (data.videos[sec] && data.videos[sec].url) ? data.videos[sec].url : '';
+  document.getElementById('videoTexte').value = (data.videos[sec] && data.videos[sec].txt) ? data.videos[sec].txt : '';
+  openModal('modalVideo');
+};
+
+window.saveVideo = async function() {
+  const sec = document.getElementById('videoSection').value;
+  data.videos[sec] = { url: document.getElementById('videoUrl').value, txt: document.getElementById('videoTexte').value };
+  await saveToFirebase();
+  closeModal('modalVideo');
+  renderMob();
+};
+
+window.openModalAlbum = function() {
+  if (!isAdmin) return;
+  document.getElementById('albumTitre').value = '';
+  document.getElementById('albumDate').value = new Date().toISOString().split('T')[0];
+  openModal('modalAlbum');
+};
+
+window.saveAlbum = async function() {
+  const a = { id: 'al' + Date.now(), titre: document.getElementById('albumTitre').value, date: document.getElementById('albumDate').value, photos: [] };
+  if (!data.medias.albums) data.medias.albums = [];
+  data.medias.albums.push(a);
+  await saveToFirebase();
+  closeModal('modalAlbum');
+  renderMedias();
+};
+
+window.deleteAlbum = async function(idx) {
+  if (!isAdmin) return;
+  if (confirm('Supprimer cet album ?')) {
+    data.medias.albums.splice(idx, 1);
+    await saveToFirebase();
+    renderMedias();
+  }
+};
+
+window.openModalVideoMedia = function() {
+  if (!isAdmin) return;
+  document.getElementById('vmTitre').value = '';
+  document.getElementById('vmUrl').value = '';
+  openModal('modalVideoMedia');
+};
+
+window.saveVideoMedia = async function() {
+  const v = { id: 'vid' + Date.now(), titre: document.getElementById('vmTitre').value, url: document.getElementById('vmUrl').value };
+  if (!data.medias.videos) data.medias.videos = [];
+  data.medias.videos.push(v);
+  await saveToFirebase();
+  closeModal('modalVideoMedia');
+  renderMedias();
+};
+
+window.deleteVideoMedia = async function(idx) {
+  if (!isAdmin) return;
+  if (confirm('Supprimer cette vidéo ?')) {
+    data.medias.videos.splice(idx, 1);
+    await saveToFirebase();
+    renderMedias();
+  }
+};
+
+window.openModalAllBreves = function() { openModal('modalAllBreves'); };
+window.shareContext = function() {
+  const s = { title: 'MO Béjaïa', text: 'Suivez le MO Béjaïa ! 🦀 #LaMaisonDesCrabes', url: window.location.href };
+  if (navigator.share) navigator.share(s).catch(console.warn); else prompt("Lien :", s.url);
+};
+window.exportData = function(sec) {
+  const b = new Blob([JSON.stringify(data[sec]||[], null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = `${sec}.json`; a.click();
+};
+window.importData = function(e, sec) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = async (evt) => {
+    try {
+      const parsed = JSON.parse(evt.target.result);
+      if (Array.isArray(parsed)) {
+        data[sec] = parsed;
+        await saveToFirebase();
+        renderAll();
+        alert('✅ Import réussi !');
+      }
+    } catch(err) { alert('❌ Fichier invalide.'); }
+  };
+  r.readAsText(file);
+  e.target.value = '';
+};
 </script>
 </body>
 </html>
