@@ -24,7 +24,7 @@
   .btn-small { padding: 5px 8px; font-size: 12px; margin: 1px; }
   .btn-edit { background: #2980b9; }
   .btn-del { background: #c0392b; }
-  .btn-live { background: #e74c3c; animation: pulse 1.5s infinite; }
+  .btn-live { background: #27ae60; animation: pulse 1.5s infinite; }
   @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
   .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; background: white; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
   table { width: 100%; border-collapse: collapse; min-width: 750px; }
@@ -35,7 +35,9 @@
   .obs { color: #c0392b; font-style: italic; }
   .obs-empty { color: #999; }
   .empty { text-align: center; padding: 25px; color: #888; }
-  .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 100; padding: 10px; }
+  
+  /* Modale avec priorité d'affichage au-dessus de tous les éléments flottants */
+  .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); justify-content: center; align-items: center; z-index: 3000; padding: 10px; }
   .modal.active { display: flex; }
   .modal-content { background: white; padding: 20px; border-radius: 10px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; position: relative; }
   .modal-close { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; color: #888; }
@@ -60,8 +62,27 @@
   .cd-num { font-size: 1.4em; font-weight: bold; color: #c9a961; display: block; line-height: 1; }
   .cd-label { font-size: 9px; text-transform: uppercase; opacity: 0.8; letter-spacing: 1px; }
 
-  .live-banner { background-color: #e74c3c; color: white; text-align: center; padding: 8px; border-radius: 6px; font-weight: bold; margin-bottom: 12px; display: none; animation: flashLive 1s infinite; box-shadow: 0 2px 8px rgba(231, 76, 60, 0.5); cursor: pointer; white-space: pre-wrap; font-size: 13px;}
-  @keyframes flashLive { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+  /* Bandeau Live : Vert clair pastel MOB */
+  .live-banner { 
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); 
+    color: #1a4d2e; 
+    border: 2px solid #2e7d32; 
+    text-align: center; 
+    padding: 10px 14px; 
+    border-radius: 8px; 
+    font-weight: bold; 
+    margin-bottom: 12px; 
+    display: none; 
+    animation: pulseLiveGreen 1.8s infinite; 
+    box-shadow: 0 3px 10px rgba(46, 125, 50, 0.25); 
+    cursor: pointer; 
+    white-space: pre-wrap; 
+    font-size: 13px;
+  }
+  @keyframes pulseLiveGreen { 
+    0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 3px 10px rgba(46, 125, 50, 0.25); } 
+    50% { opacity: 0.88; transform: scale(1.008); box-shadow: 0 4px 14px rgba(46, 125, 50, 0.4); } 
+  }
 
   .ticker-container { width: 100%; background: #1a4d2e; color: white; padding: 8px 0; overflow: hidden; border-radius: 6px; margin-bottom: 12px; position: relative; cursor: pointer; }
   .ticker-title { position: absolute; left: 0; top: 0; bottom: 0; background: #c9a961; color: #1a4d2e; padding: 0 10px; font-weight: bold; font-size: 12px; display: flex; align-items: center; z-index: 2; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}
@@ -98,7 +119,6 @@
   .article-full-text { line-height: 1.6; font-size: 14px; color: #333; white-space: pre-wrap; margin-top: 10px; }
   .article-full-text a { color: #1a4d2e; font-weight: bold; text-decoration: underline; }
 
-  /* 4 Boutons de navigation des rencontres */
   .rencontres-nav { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; justify-content: center; }
   .btn-rencontre-nav { flex: 1; min-width: 110px; max-width: 180px; padding: 10px 6px; border-radius: 8px; font-size: 12px; font-weight: bold; text-align: center; cursor: pointer; background: white; color: #1a4d2e; border: 2px solid #ddd; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
   .btn-rencontre-nav.active { background: #1a4d2e; color: white; border-color: #c9a961; box-shadow: 0 3px 8px rgba(26,77,46,0.3); }
@@ -109,7 +129,7 @@
 
   .mob-card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
   .mob-title { color: #1a4d2e; font-size: 1.1em; font-weight: bold; margin-bottom: 10px; border-bottom: 2px solid #c9a961; padding-bottom: 5px; }
-  .live-score { font-size: 2em; font-weight: bold; text-align: center; color: #e74c3c; margin: 10px 0; }
+  .live-score { font-size: 2.2em; font-weight: bold; text-align: center; color: #1a4d2e; margin: 8px 0; }
   .mob-text { font-size: 14px; line-height: 1.6; white-space: pre-wrap; }
   .mob-affiche { width: 100%; border-radius: 8px; margin-bottom: 15px; display: none; }
   .mob-video { width: 100%; aspect-ratio: 16/9; border: none; border-radius: 8px; margin-top: 15px; display: none; }
@@ -170,6 +190,7 @@
   .historique-list { padding-left: 20px; margin: 12px 0; }
   .historique-list li { margin-bottom: 6px; color: #333; line-height: 1.5; font-size: 0.9em; }
 
+  /* Bouton Partager flottant */
   .btn-share-float { position: fixed; bottom: 20px; right: 20px; background-color: #2980b9; color: white; border-radius: 50px; padding: 12px 20px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 8px; z-index: 1000; cursor: pointer; border: 2px solid white; }
   .visit-badge { position: fixed; bottom: 20px; left: 20px; background-color: #2c3e50; color: white; border-radius: 50px; padding: 8px 15px; font-size: 13px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 1000; border: 2px solid white; display: none; align-items: center; gap: 5px; }
 
@@ -194,11 +215,13 @@
 
 <div id="statusBar" class="status loading">⏳ Chargement des données...</div>
 
+<!-- Bandeau Live Général (Vert Pastel MOB) -->
 <div id="globalLiveBanner" class="live-banner" onclick="switchTab('mob', document.querySelectorAll('.tab')[0])"></div>
 
+<!-- Onglets Principaux : "Rencontres" est l'onglet actif par défaut -->
 <div class="tabs">
-  <div class="tab active" onclick="switchTab('mob', this)">🦀 MOB</div>
-  <div class="tab" onclick="switchTab('rencontres', this)">🏆 Rencontres</div>
+  <div class="tab" onclick="switchTab('mob', this)">🦀 MOB</div>
+  <div class="tab active" onclick="switchTab('rencontres', this)">🏆 Rencontres</div>
   <div class="tab" onclick="switchTab('club', this)">👥 Club</div>
   <div class="tab" onclick="switchTab('stats', this)">📊 Stats</div>
   <div class="tab" onclick="switchTab('actualite', this)">📰 Actualité</div>
@@ -206,9 +229,13 @@
   <div class="tab" onclick="switchTab('historique', this)">📜 Historique</div>
 </div>
 
-<div id="adminPanel" class="admin-panel" style="display:none; background:#f0e6ff; border:2px solid #8e44ad; border-radius:8px; padding:15px; margin-bottom:15px;">
-  <div style="display:flex; justify-content:space-between; align-items:center;">
-    <strong style="color:#8e44ad; font-size:15px;">🔐 Mode Admin activé (Édition activée)</strong>
+<!-- Panneau Admin avec affichage direct du compteur de visites -->
+<div id="adminPanel" class="admin-panel" style="display:none; background:#f0e6ff; border:2px solid #8e44ad; border-radius:8px; padding:12px 15px; margin-bottom:15px;">
+  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+    <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+      <strong style="color:#8e44ad; font-size:14px;">🔐 Mode Admin activé</strong>
+      <span id="adminVisitBadge" style="background:#2c3e50; color:white; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:bold;">👁️ ...</span>
+    </div>
     <button class="btn-small btn-del" onclick="logoutAdmin()">Déconnexion</button>
   </div>
 </div>
@@ -254,8 +281,8 @@
   </div>
 </div>
 
-<!-- ONGLET MOB -->
-<div id="tab-mob" class="tab-content active">
+<!-- ONGLET MOB AVEC LIVE RÉINSTALLÉ -->
+<div id="tab-mob" class="tab-content">
   <div class="sub-tabs">
     <div class="sub-tab active" id="subtab-mob-avant" onclick="switchSubTabMob('avant')">⏳ Avant-match</div>
     <div class="sub-tab" id="subtab-mob-day" onclick="switchSubTabMob('day')">🏟️ Match Day</div>
@@ -285,13 +312,20 @@
     <div class="toolbar" id="mob-day-toolbar" style="display:none;">
       <button onclick="openModalMob('day')" class="btn-edit">✏️ Modifier texte/image</button>
       <button onclick="openModalAffiche('day')" class="btn-edit" style="background:#8e44ad;">🖼️ Changer l'affiche</button>
-      <button onclick="openModalLive()" class="btn-live" id="btn-live">🔴 Gérer le Live</button>
+      <button onclick="openModalLive()" class="btn-live" id="btn-live">🟢 Gérer le Live</button>
     </div>
-    <div class="mob-card" style="border: 2px solid #e74c3c; display:none;" id="live-widget">
-      <div class="mob-title" style="color:#e74c3c; border-color:#e74c3c;">🔴 Live</div>
+
+    <!-- Widget Live Match Day avec Vert MOB et noms des équipes -->
+    <div class="mob-card" style="border: 2px solid #2e7d32; display:none; background:#f4fbf6;" id="live-widget">
+      <div class="mob-title" style="color:#1a4d2e; border-color:#2e7d32; display:flex; justify-content:space-between; align-items:center;">
+        <span>🟢 DIRECT DU MATCH</span>
+        <span id="live-badge-status" style="font-size:11px; background:#2e7d32; color:white; padding:2px 8px; border-radius:12px;">EN COURS</span>
+      </div>
+      <div id="live-match-teams" style="text-align:center; font-weight:bold; font-size:15px; color:#1a4d2e; margin-top:5px;"></div>
       <div class="live-score" id="live-score">0 - 0</div>
-      <div class="live-update" id="live-status">Match en cours</div>
+      <div class="live-update" id="live-status" style="text-align:center; font-size:13px; color:#444; font-weight:500;">Match en cours</div>
     </div>
+
     <div class="mob-card">
       <div class="mob-title">🏟️ Le match du jour</div>
       <div id="mob-day-auto" style="text-align:center; font-weight:bold; margin-bottom:10px; color:#1a4d2e;"></div>
@@ -330,8 +364,8 @@
   </div>
 </div>
 
-<!-- ONGLET RENCONTRES AVEC LES 4 BOUTONS INTERACTIFS -->
-<div id="tab-rencontres" class="tab-content">
+<!-- ONGLET RENCONTRES (ACTIF PAR DÉFAUT) -->
+<div id="tab-rencontres" class="tab-content active">
   <div class="rencontres-nav">
     <div class="btn-rencontre-nav active" id="btnNavProg" onclick="switchRencontreNav('programme')">📅 Programmes</div>
     <div class="btn-rencontre-nav" id="btnNavRes" onclick="switchRencontreNav('resultats')">📊 Résultats</div>
@@ -388,7 +422,7 @@
     </div>
   </div>
 
-  <!-- 4. Coupe d'Algérie (MOB uniquement) -->
+  <!-- 4. Coupe d'Algérie -->
   <div id="view-coupe" class="rencontre-view" style="display:none;">
     <div style="text-align:center; margin-bottom:12px;">
       <h3 style="color:#1a4d2e; font-size:14px;">🦀 Parcours du MO Béjaïa en Coupe d'Algérie</h3>
@@ -507,27 +541,36 @@
         <div class="historique-fiche-item"><div class="historique-fiche-label">Championnat actuel :</div><div>Ligue 2 Amateur (Groupe Centre-Est) 2026/2027</div></div>
       </div>
     </div>
-    <div class="historique-section">
-      <div class="historique-section-title">📅 La naissance et le sacrifice (1954-1962)</div>
-      <div class="historique-text">La trajectoire du MOB est intimement liée à l'histoire de l'Algérie. Le 5 juillet 1954, le récépissé de déclaration est officiellement déposé par M. Abdelhafid Tamzali, marquant la naissance administrative du club.</div>
-      <img src="https://i.postimg.cc/zvngc2PV/1000012070.jpg" alt="Abdelhafid Tamzali" class="historique-image">
-      <div class="historique-image-caption">M. Abdelhafid Tamzali, premier président du MO Béjaïa (1954)</div>
-    </div>
-    <div class="historique-section">
-      <div class="historique-section-title">👥 Les présidents du MO Béjaïa depuis la création</div>
-      <img src="https://i.postimg.cc/DyLg9BbL/les-dirigeants-du-MOB-post-independance.jpg" alt="Dirigeants du MOB" class="historique-image">
-      <div class="historique-image-caption">Les dirigeants post-indépendance</div>
-      <ul class="historique-list">
-        <li>Tamzali Abdelhafid</li><li>Yousfi Loucif</li><li>Hadahoum Salah</li><li>Belhocine Hocine</li><li>Mendil Boualem</li><li>Dali Ahmed</li><li>Zaouche Salah</li><li>Benalouche Salah</li><li>Kasri Allaoua</li><li>Tighidet Ahcen</li><li>Ferdjoukh Abdelkader</li><li>Maître Yanat</li><li>Ladjouz</li><li>Oulmou Mohamed</li><li>Tikheroubine Mohamed</li><li>Berri Larbi</li><li>Allouache Larbi</li><li>Hamouche Yahia</li><li>Bannai Zahir</li><li>Rezki Mustapha</li><li>Leklak Norredine</li><li>Bouchaara</li><li>Maouche Nacer</li><li>Bouchebah Mustapha</li><li>Adrar Akli</li><li>Attia Zahir</li><li>Ikhlef Boubekeur</li><li>Hassisen Farid</li><li>Boudiab Rezki</li><li>Benai Arab</li><li>Boukhiba Djamel</li>
-      </ul>
-    </div>
   </div>
 </div>
 
+<!-- Boutons flottants -->
 <div class="btn-share-float" id="btnShareMain" onclick="shareContext()">📤 Partager</div>
 <div class="visit-badge" id="visitCounter">👁️ -- visites</div>
 
-<!-- MODALES -->
+<!-- MODALE DU LIVE RÉINSTALLÉE ET AMÉLIORÉE -->
+<div class="modal" id="modalLive">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('modalLive')">×</span>
+    <h3>🟢 Gérer le Live de la Rencontre</h3>
+    <label>Statut du Live <select id="liveStatut"><option value="inactif">Inactif (Masquer le direct)</option><option value="actif">Match en cours (Actif) 🟢</option><option value="termine">Match terminé</option></select></label>
+    
+    <div style="display:flex; gap:10px; margin-top:8px;">
+      <label style="flex:1;">Équipe Domicile <input type="text" id="liveDom" placeholder="Ex: MO Béjaïa"></label>
+      <label style="flex:1;">Équipe Extérieure <input type="text" id="liveExt" placeholder="Ex: MO Constantine"></label>
+    </div>
+
+    <div style="display:flex; gap:10px; margin-top:8px;">
+      <label style="flex:1;">Score Domicile <input type="number" id="liveSd" min="0" value="0"></label>
+      <label style="flex:1;">Score Extérieur <input type="number" id="liveSe" min="0" value="0"></label>
+    </div>
+    
+    <label>Déroulement / Faits de jeu (Minute & Buteurs...) <textarea id="liveTexte" rows="4" placeholder="Ex: 45' But de Faouzi Yaya !&#10;72' Occasion pour le MOB"></textarea></label>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalLive')">Annuler</button><button onclick="saveLive()">Mettre à jour & Diffuser</button></div>
+  </div>
+</div>
+
+<!-- AUTRES MODALES -->
 <div class="modal" id="modalMatch">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalMatch')">×</span>
@@ -806,23 +849,9 @@
   </div>
 </div>
 
-<div class="modal" id="modalLive">
-  <div class="modal-content">
-    <span class="modal-close" onclick="closeModal('modalLive')">×</span>
-    <h3>🔴 Gérer le Live</h3>
-    <label>Statut <select id="liveStatut"><option value="inactif">Inactif</option><option value="actif">Match en cours 🔴</option><option value="termine">Match terminé</option></select></label>
-    <div style="display:flex; gap:10px; margin-top:10px;">
-      <label style="flex:1;">Score MOB <input type="number" id="liveSd" min="0"></label>
-      <label style="flex:1;">Score Adv <input type="number" id="liveSe" min="0"></label>
-    </div>
-    <label>Déroulement du match <textarea id="liveTexte" rows="4"></textarea></label>
-    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalLive')">Annuler</button><button onclick="saveLive()">Mettre à jour</button></div>
-  </div>
-</div>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, set, get, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, set, get, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDr_pGZnYTSDXGbQprDuvMFeWnuinxRpH8",
@@ -844,7 +873,8 @@ let currentMobSubTab = 'avant';
 let currentNewsSubTab = 'all';
 let currentMediaSubTab = 'images';
 let currentStatsSubTab = 'vote';
-let currentTabName = 'mob';
+// Onglet actif par défaut : "rencontres"
+let currentTabName = 'rencontres';
 let currentRencontreView = 'programme';
 
 let currentArticleForShare = null;
@@ -906,7 +936,7 @@ const PLAYERS_INIT = [
 ];
 const ARTICLES_INIT = [{id:"a1", cat:"all", date:"2026-10-13", titre:"COUP DE MASSUE / J5 : MO Béjaïa vs NRB Beni Oulbane à huis clos", image:"https://i.postimg.cc/NjDfRd1H/MO-Bejaia-vs-NRB-Beni-Oulbane-a-Huis-Clos.jpg", texte:"La rencontre opposant le MO Béjaïa au NRB Beni Oulbane se disputera à huis clos.\n#LaMaisonDesCrabes"}];
 
-let data = { championnat: [], coupe: [], players: [], staff: [], dirigeants: [], mob: {}, live: {}, affiches: {}, videos: {}, articles: [], equipes: [], stades: [], fdm: [], breves: [], stats: { activeVote: null, buteurs: {}, cartons: {} }, historique_custom: [], medias: { albums: [], videos: [] } };
+let data = { championnat: [], coupe: [], players: [], staff: [], dirigeants: [], mob: {}, live: { statut: 'inactif', dom: 'MO Béjaïa', ext: '', sd: 0, se: 0, texte: '' }, affiches: {}, videos: {}, articles: [], equipes: [], stades: [], fdm: [], breves: [], stats: { activeVote: null, buteurs: {}, cartons: {} }, historique_custom: [], medias: { albums: [], videos: [] } };
 let articles = [];
 
 function escapeQuotes(str) { return str ? str.replace(/'/g, "\\'") : ""; }
@@ -918,13 +948,40 @@ function getPlayerImg(playerName) {
   return p && p.img ? p.img : "https://i.postimg.cc/L4kgsMyG/MO-Bejaia-logo-officiel.png";
 }
 
+/* GESTION DU COMPTEUR DE VISITES */
+function updateVisitDisplay(val) {
+  const text = typeof val === 'number' ? `👁️ ${val} visite${val > 1 ? 's' : ''}` : `👁️ ${val}`;
+  const bPublic = document.getElementById('visitCounter');
+  const bAdmin = document.getElementById('adminVisitBadge');
+  if (bPublic) bPublic.innerHTML = text;
+  if (bAdmin) bAdmin.innerHTML = text;
+}
+
 async function trackVisit() {
   try {
-    const vRef = ref(db, 'visits');
-    await runTransaction(vRef, c => c === null ? { count: 1 } : { count: c.count + 1 });
+    const vRef = ref(db, 'data_v10/visits');
+    await runTransaction(vRef, (curr) => {
+      const val = (curr === null || curr === undefined) ? 0 : (typeof curr === 'number' ? curr : (curr.count || 0));
+      return val + 1;
+    });
     const snap = await get(vRef);
-    if (snap.exists()) document.getElementById('visitCounter').innerHTML = `👁️ ${snap.val().count} visites`;
-  } catch (e) { console.log(e); }
+    if (snap.exists()) {
+      const v = snap.val();
+      const total = typeof v === 'number' ? v : (v.count || 0);
+      updateVisitDisplay(total);
+    }
+  } catch (e) {
+    console.warn("Erreur transaction visites:", e);
+    try {
+      const snap = await get(ref(db, 'data_v10/visits'));
+      if (snap.exists()) {
+        const v = snap.val();
+        updateVisitDisplay(typeof v === 'number' ? v : (v.count || 0));
+      }
+    } catch(err2) {
+      console.log(err2);
+    }
+  }
 }
 
 function formatText(t) {
@@ -1313,17 +1370,35 @@ function renderMob() {
     if(data.videos.apres.txt) { vidCap.textContent = data.videos.apres.txt; vidCap.style.display = 'block'; } else { vidCap.style.display = 'none'; }
   } else { vidApres.style.display = 'none'; vidCap.style.display = 'none'; }
 
+  /* RENDU DU LIVE (VERT PASTEL MOB + DEUX ÉQUIPES) */
   const liveW = document.getElementById('live-widget');
   const globalBanner = document.getElementById('globalLiveBanner');
+  
   if (data.live && (data.live.statut === 'actif' || data.live.statut === 'termine')) {
+    const domName = data.live.dom || 'MO Béjaïa';
+    const extName = data.live.ext || 'Adversaire';
+    const scoreStr = `${data.live.sd || 0} - ${data.live.se || 0}`;
+
     liveW.style.display = 'block';
-    document.getElementById('live-score').textContent = `${data.live.sd || 0} - ${data.live.se || 0}`;
-    document.getElementById('live-status').innerHTML = formatText(data.live.texte || 'Match en cours');
+    document.getElementById('live-match-teams').textContent = `${domName} vs ${extName}`;
+    document.getElementById('live-score').textContent = scoreStr;
+    document.getElementById('live-status').innerHTML = formatText(data.live.texte || 'Match en direct');
+    document.getElementById('live-badge-status').textContent = data.live.statut === 'actif' ? 'EN COURS' : 'TERMINÉ';
+
     if(data.live.statut === 'actif') {
       globalBanner.style.display = 'block';
-      globalBanner.innerHTML = `🔴 EN DIRECT : ${data.live.sd || 0} - ${data.live.se || 0} <br><span style="font-size:11px;">${formatText(data.live.texte || '')}</span>`;
-    } else { globalBanner.style.display = 'none'; }
-  } else { liveW.style.display = 'none'; globalBanner.style.display = 'none'; }
+      let bannerHTML = `🟢 <b>EN DIRECT :</b> ${domName} <b>${scoreStr}</b> ${extName}`;
+      if (data.live.texte && data.live.texte.trim() !== '') {
+        bannerHTML += `<br><span style="font-size:11.5px; opacity:0.95;">${formatText(data.live.texte)}</span>`;
+      }
+      globalBanner.innerHTML = bannerHTML;
+    } else {
+      globalBanner.style.display = 'none';
+    }
+  } else {
+    liveW.style.display = 'none';
+    globalBanner.style.display = 'none';
+  }
 }
 
 function renderStats() {
@@ -1534,8 +1609,18 @@ function renderBreves() {
   ticker.textContent = data.breves.map(b => b.titre).join('  •  ') + '  •  ';
 }
 
-function openModal(id) { document.getElementById(id).classList.add('active'); }
-function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+/* OUVERTURE ET FERMETURE SÉCURISÉE DES MODALES (MASQUE LE BOUTON PARTAGER) */
+function openModal(id) { 
+  document.getElementById(id).classList.add('active'); 
+  const btnShare = document.getElementById('btnShareMain');
+  if (btnShare) btnShare.style.display = 'none';
+}
+
+function closeModal(id) { 
+  document.getElementById(id).classList.remove('active'); 
+  const btnShare = document.getElementById('btnShareMain');
+  if (btnShare) btnShare.style.display = 'flex';
+}
 
 async function addNewEquipe(type) {
   const n = prompt("Nom de l'équipe :");
@@ -1690,8 +1775,46 @@ function openModalAffiche(section) { if(!isAdmin) return; document.getElementByI
 async function saveAffiche() { const section = document.getElementById('afficheSection').value; data.affiches[section] = document.getElementById('afficheUrl').value; await saveToFirebase(); closeModal('modalAffiche'); renderMob(); }
 function openModalVideo(section) { if(!isAdmin) return; document.getElementById('videoSection').value = section; document.getElementById('videoUrl').value = (data.videos[section] && data.videos[section].url) ? data.videos[section].url : ''; document.getElementById('videoTexte').value = (data.videos[section] && data.videos[section].txt) ? data.videos[section].txt : ''; openModal('modalVideo'); }
 async function saveVideo() { const section = document.getElementById('videoSection').value; data.videos[section] = { url: document.getElementById('videoUrl').value, txt: document.getElementById('videoTexte').value }; await saveToFirebase(); closeModal('modalVideo'); renderMob(); }
-function openModalLive() { if (!isAdmin) return; document.getElementById('liveStatut').value = (data.live && data.live.statut) ? data.live.statut : 'inactif'; document.getElementById('liveSd').value = (data.live && data.live.sd) ? data.live.sd : 0; document.getElementById('liveSe').value = (data.live && data.live.se) ? data.live.se : 0; document.getElementById('liveTexte').value = (data.live && data.live.texte) ? data.live.texte : ''; openModal('modalLive'); }
-async function saveLive() { data.live = { statut: document.getElementById('liveStatut').value, sd: document.getElementById('liveSd').value, se: document.getElementById('liveSe').value, texte: document.getElementById('liveTexte').value }; await saveToFirebase(); closeModal('modalLive'); renderMob(); }
+
+/* GESTION & SAUVEGARDE DU LIVE */
+function openModalLive() { 
+  if (!isAdmin) return; 
+  const l = data.live || {};
+  document.getElementById('liveStatut').value = l.statut || 'inactif'; 
+  document.getElementById('liveDom').value = l.dom || 'MO Béjaïa';
+  document.getElementById('liveExt').value = l.ext || '';
+  document.getElementById('liveSd').value = l.sd !== undefined ? l.sd : 0; 
+  document.getElementById('liveSe').value = l.se !== undefined ? l.se : 0; 
+  document.getElementById('liveTexte').value = l.texte || ''; 
+  openModal('modalLive'); 
+}
+
+async function saveLive() { 
+  const liveObj = { 
+    statut: document.getElementById('liveStatut').value || 'inactif', 
+    dom: (document.getElementById('liveDom').value || '').trim() || 'MO Béjaïa',
+    ext: (document.getElementById('liveExt').value || '').trim() || 'Adversaire',
+    sd: parseInt(document.getElementById('liveSd').value, 10) || 0, 
+    se: parseInt(document.getElementById('liveSe').value, 10) || 0, 
+    texte: document.getElementById('liveTexte').value || ''
+  }; 
+  
+  data.live = liveObj;
+  closeModal('modalLive'); 
+  renderMob(); 
+
+  try {
+    await set(ref(db, 'data_v10/live'), liveObj);
+  } catch (err) {
+    console.warn("Écriture ciblée non permise, tentative globale...", err);
+    try {
+      await saveToFirebase();
+    } catch(e) {
+      console.error("Erreur Firebase:", e);
+      alert("Erreur de synchronisation Firebase.");
+    }
+  }
+}
 
 function openModalPlayer(idx) { if (!isAdmin) return; document.getElementById('editPlayerIdx').value = idx === 'new' ? '' : idx; const p = idx !== 'new' ? data.players[idx] : {num:'', nom:'', poste:'', ddn:'', lieu:'', nat:'', taille:'', pied:'', prev:'', finContrat:'', img:'', departDate:'', departMotif:''}; document.getElementById('pNum').value = p.num; document.getElementById('pNom').value = p.nom; document.getElementById('pPoste').value = p.poste; document.getElementById('pDdn').value = p.ddn; document.getElementById('pLieu').value = p.lieu; document.getElementById('pNat').value = p.nat; document.getElementById('pTaille').value = p.taille; document.getElementById('pPied').value = p.pied; document.getElementById('pPrev').value = p.prev; document.getElementById('pFinContrat').value = p.finContrat || ''; document.getElementById('pImg').value = p.img; document.getElementById('pDepartDate').value = p.departDate || ''; document.getElementById('pDepartMotif').value = p.departMotif || ''; openModal('modalPlayer'); }
 async function savePlayer() { const idx = document.getElementById('editPlayerIdx').value; const p = { num: parseInt(document.getElementById('pNum').value), nom: document.getElementById('pNom').value, poste: document.getElementById('pPoste').value, ddn: document.getElementById('pDdn').value, lieu: document.getElementById('pLieu').value, nat: document.getElementById('pNat').value, taille: document.getElementById('pTaille').value, pied: document.getElementById('pPied').value, prev: document.getElementById('pPrev').value, finContrat: document.getElementById('pFinContrat').value, img: document.getElementById('pImg').value, departDate: document.getElementById('pDepartDate').value, departMotif: document.getElementById('pDepartMotif').value }; if (idx === '') data.players.push(p); else data.players[parseInt(idx)] = p; await saveToFirebase(); closeModal('modalPlayer'); renderClub(); }
@@ -1757,20 +1880,35 @@ function openArticleModal(id) {
   document.getElementById('articleImg').src = a.image;
   document.getElementById('articleImg').style.display = 'block';
   document.getElementById('articleText').innerHTML = formatText(a.texte);
-  document.getElementById('modalArticle').classList.add('active');
+  openModal('modalArticle');
 }
 
-async function loadFromFirebase() {
+/* NETTOYAGE ET CHARGEMENT FIREBASE */
+function sanitizeData(obj) {
+  return JSON.parse(JSON.stringify(obj, (k, v) => (v === undefined ? null : v)));
+}
+
+function loadFromFirebase() {
   document.getElementById('statusBar').className = 'status loading';
-  document.getElementById('statusBar').textContent = '⏳ Chargement des données...';
-  data.championnat = [...MATCHS_INIT]; data.players = [...PLAYERS_INIT]; data.staff = [...STAFF_INIT]; data.dirigeants = [...DIRIGEANTS_INIT]; data.articles = [...ARTICLES_INIT]; data.fdm = [...FDM_INIT]; data.breves = [...BREVES_INIT]; data.equipes = [...EQUIPES]; data.stades = [...STADES];
+  document.getElementById('statusBar').textContent = '⏳ Connexion en direct...';
+  
+  data.championnat = [...MATCHS_INIT]; 
+  data.players = [...PLAYERS_INIT]; 
+  data.staff = [...STAFF_INIT]; 
+  data.dirigeants = [...DIRIGEANTS_INIT]; 
+  data.articles = [...ARTICLES_INIT]; 
+  data.fdm = [...FDM_INIT]; 
+  data.breves = [...BREVES_INIT]; 
+  data.equipes = [...EQUIPES]; 
+  data.stades = [...STADES];
   articles = data.articles;
+  
   renderAll();
   startCarouselAuto();
   trackVisit();
 
   try {
-    get(ref(db, 'data_v10')).then((snap) => {
+    onValue(ref(db, 'data_v10'), (snap) => {
       if (snap.exists()) {
         const fb = snap.val();
         data.championnat = fb.championnat || [...MATCHS_INIT];
@@ -1779,7 +1917,7 @@ async function loadFromFirebase() {
         data.staff = fb.staff || [...STAFF_INIT];
         data.dirigeants = fb.dirigeants || [...DIRIGEANTS_INIT];
         data.mob = fb.mob || {};
-        data.live = fb.live || {};
+        data.live = fb.live || { statut: 'inactif', dom: 'MO Béjaïa', ext: '', sd: 0, se: 0, texte: '' };
         data.affiches = fb.affiches || {};
         data.videos = fb.videos || {};
         data.articles = fb.articles || [...ARTICLES_INIT];
@@ -1791,28 +1929,40 @@ async function loadFromFirebase() {
         if(fb.equipes) { data.equipes = fb.equipes; EQUIPES = data.equipes; }
         if(fb.stades) { data.stades = fb.stades; STADES = data.stades; }
         articles = data.articles;
+        
+        if (fb.visits !== undefined) {
+          const total = typeof fb.visits === 'number' ? fb.visits : (fb.visits.count || 0);
+          updateVisitDisplay(total);
+        }
+
         renderAll();
         document.getElementById('statusBar').className = 'status online';
-        document.getElementById('statusBar').textContent = `🟢 Connecté (${data.championnat.length} matchs)`;
+        document.getElementById('statusBar').textContent = `🟢 Connecté en direct (${data.championnat.length} matchs)`;
       }
-    }).catch(e => {
+    }, (err) => {
+      console.log('Mode hors ligne ou erreur', err);
       document.getElementById('statusBar').className = 'status offline';
       document.getElementById('statusBar').textContent = '🔴 Hors ligne';
     });
   } catch(e) {
     document.getElementById('statusBar').className = 'status offline';
-    document.getElementById('statusBar').textContent = '🔴 Erreur';
+    document.getElementById('statusBar').textContent = '🔴 Erreur de connexion';
   }
 }
 
 async function saveToFirebase() {
-  try { await set(ref(db, 'data_v10'), data); } catch (e) { console.error('Erreur sauvegarde', e); }
+  try { 
+    const cleanData = sanitizeData(data);
+    await set(ref(db, 'data_v10'), cleanData); 
+  } catch (e) { 
+    console.error('Erreur sauvegarde générale', e); 
+  }
 }
 
 document.getElementById('mainTitle').addEventListener('click', handleTitleClick);
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadFromFirebase); else loadFromFirebase();
 
-/* EXPOSITIONS GLOBALES WINDOW */
+/* EXPOSITIONS GLOBALES */
 window.switchTab = switchTab;
 window.switchRencontreNav = switchRencontreNav;
 window.renderProgrammeView = renderProgrammeView;
@@ -1888,5 +2038,4 @@ window.importData = importData;
 </script>
 </body>
 </html>
-
 
