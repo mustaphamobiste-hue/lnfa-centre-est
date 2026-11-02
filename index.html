@@ -201,6 +201,35 @@
   .player-card .pc-name { font-weight: bold; font-size: 12px; color: #1a4d2e; line-height: 1.2; margin-bottom: 3px; }
   .player-card .pc-pos { font-size: 10px; color: #666; }
 
+  /* MÉDIAS (ALBUMS & VIDÉOS) */
+  .album-card { 
+    background: white; 
+    border-radius: 10px; 
+    overflow: hidden; 
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15); 
+    text-align: center; 
+    position: relative; 
+    cursor: pointer; 
+    border-bottom: 4px solid #c9a961; 
+    padding: 15px; 
+    transition: transform 0.2s; 
+  }
+  .album-card:hover { transform: scale(1.02); }
+  .album-card h4 { color: #1a4d2e; margin-bottom: 5px; font-size: 14px; }
+  .album-card p { font-size: 12px; color: #666; }
+  
+  .album-photos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 15px; }
+  .photo-wrapper { position: relative; }
+  .photo-wrapper img { width: 100%; height: 100px; object-fit: cover; border-radius: 6px; cursor: pointer; transition: transform 0.2s; }
+  .photo-wrapper img:hover { transform: scale(1.05); }
+  .btn-del-photo { position: absolute; top: 2px; right: 2px; background: rgba(192, 57, 43, 0.9); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+
+  .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; }
+  .video-item { background: white; padding: 10px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); text-align: center; position: relative; }
+  .video-item h5 { font-size: 12px; color: #1a4d2e; margin-bottom: 8px; height: 30px; overflow: hidden; }
+  .video-thumb { width: 100%; aspect-ratio: 9/16; object-fit: cover; border-radius: 6px; cursor: pointer; background: #000; }
+  .btn-del-video { position: absolute; top: 5px; right: 5px; background: rgba(192, 57, 43, 0.9); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; z-index: 2; }
+
   .vote-bar-label { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: bold; margin-bottom: 4px; }
   .vote-bar-bg { width: 100%; height: 10px; background: #e0e0e0; border-radius: 5px; overflow: hidden; margin-bottom: 10px; }
   .vote-bar-fill { height: 100%; background: #1a4d2e; border-radius: 5px; transition: width 0.8s; }
@@ -209,6 +238,7 @@
   .stats-table th, .stats-table td { padding: 10px; border-bottom: 1px solid #eee; text-align: left; font-size: 13px; vertical-align: middle;}
   .stats-table th { background: #1a4d2e; color: white; }
 
+  /* HISTORIQUE ET IMAGES D'ARCHIVES */
   .historique-container { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); max-width: 900px; margin: 0 auto; }
   .historique-header { text-align: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 2px solid #c9a961; }
   .historique-logo { max-width: 140px; margin: 0 auto 15px; display: block; }
@@ -217,12 +247,16 @@
   .historique-section { margin-bottom: 25px; }
   .historique-section-title { color: #1a4d2e; font-size: 1.15em; font-weight: bold; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #c9a961; }
   .historique-text { color: #333; line-height: 1.7; font-size: 0.95em; text-align: justify; margin-bottom: 10px; }
+  .historique-image { width: 100%; border-radius: 8px; margin: 12px 0; box-shadow: 0 2px 6px rgba(0,0,0,0.15); display: block; }
+  .historique-image-caption { text-align: center; font-size: 0.8em; color: #777; font-style: italic; margin-top: -8px; margin-bottom: 15px; }
   .historique-fiche { background: #f0f8f4; border-left: 4px solid #1a4d2e; padding: 15px; border-radius: 6px; margin: 15px 0; }
   .historique-fiche-item { display: flex; margin-bottom: 6px; font-size: 0.9em; }
   .historique-fiche-label { font-weight: bold; color: #1a4d2e; min-width: 140px; }
   .historique-list { padding-left: 20px; margin: 10px 0; }
   .historique-list li { margin-bottom: 5px; color: #333; line-height: 1.5; font-size: 0.9em; }
   .historique-ultras { background: #fff8e6; border-left: 4px solid #c9a961; padding: 12px; border-radius: 6px; margin: 10px 0; }
+  .historique-ultras-name { font-weight: bold; color: #1a4d2e; }
+  .historique-ultras-info { font-size: 0.9em; color: #333; margin-top: 2px; }
 
   .btn-share-float { position: fixed; bottom: 20px; right: 20px; background-color: #2980b9; color: white; border-radius: 50px; padding: 12px 20px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 8px; z-index: 1000; cursor: pointer; border: 2px solid white; }
   .visit-badge { position: fixed; bottom: 20px; left: 20px; background-color: #2c3e50; color: white; border-radius: 50px; padding: 8px 15px; font-size: 13px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 1000; border: 2px solid white; display: none; align-items: center; gap: 5px; }
@@ -241,7 +275,7 @@
 <!-- Bandeau Live Général -->
 <div id="globalLiveBanner" class="live-banner" onclick="switchTab('mob', document.querySelectorAll('.tab')[0])"></div>
 
-<!-- Onglets Principaux -->
+<!-- Onglets Principaux : "Rencontres" actif par défaut -->
 <div class="tabs">
   <div class="tab" onclick="switchTab('mob', this)">🦀 MOB</div>
   <div class="tab active" onclick="switchTab('rencontres', this)">🏆 Rencontres</div>
@@ -523,7 +557,7 @@
   <div id="news-container" style="max-width: 800px; margin: 0 auto;"></div>
 </div>
 
-<!-- ONGLET MÉDIAS -->
+<!-- ONGLET MÉDIAS (ALBUMS & VIDÉOS RESTAURÉS) -->
 <div id="tab-medias" class="tab-content">
   <div class="sub-tabs">
     <div class="sub-tab active" id="subtab-media-images" onclick="switchSubTabMedia('images')">🖼️ Images</div>
@@ -541,7 +575,7 @@
   </div>
 </div>
 
-<!-- ONGLET HISTORIQUE COMPLET RESTAURÉ -->
+<!-- ONGLET HISTORIQUE COMPLET RESTAURÉ AVEC TOUTES SES IMAGES D'ARCHIVES -->
 <div id="tab-historique" class="tab-content">
   <div class="toolbar" id="historique-toolbar" style="display:none; margin-bottom: 15px;">
     <button onclick="openModalHisto('new')" style="background:#27ae60;">➕ Ajouter une section</button>
@@ -571,47 +605,89 @@
     <div class="historique-section">
       <div class="historique-section-title">📅 La naissance et le sacrifice (1954-1962)</div>
       <div class="historique-text">La trajectoire du MOB est intimement liée à l'histoire de l'Algérie. Le 5 juillet 1954, le récépissé de déclaration est officiellement déposé par M. Abdelhafid Tamzali, marquant la naissance administrative du club.</div>
+      <img src="https://i.postimg.cc/zvngc2PV/1000012070.jpg" alt="Abdelhafid Tamzali" class="historique-image">
+      <div class="historique-image-caption">M. Abdelhafid Tamzali, premier président du MO Béjaïa (1954)</div>
     </div>
 
     <div class="historique-section">
       <div class="historique-section-title">👥 Les présidents du MO Béjaïa depuis la création</div>
+      <img src="https://i.postimg.cc/DyLg9BbL/les-dirigeants-du-MOB-post-independance.jpg" alt="Dirigeants du MOB" class="historique-image">
+      <div class="historique-image-caption">Les dirigeants post-indépendance</div>
       <ul class="historique-list">
-        <li>Tamzali Abdelhafid • Yousfi Loucif • Hadahoum Salah • Belhocine Hocine • Mendil Boualem • Dali Ahmed • Zaouche Salah • Benalouche Salah • Kasri Allaoua • Tighidet Ahcen • Ferdjoukh Abdelkader • Maître Yanat • Ladjouz • Oulmou Mohamed • Tikheroubine Mohamed • Berri Larbi • Allouache Larbi • Hamouche Yahia • Bannai Zahir • Rezki Mustapha • Leklak Norredine • Bouchaara • Maouche Nacer • Bouchebah Mustapha • Adrar Akli • Attia Zahir • Ikhlef Boubekeur • Hassisen Farid • Boudiab Rezki • Benai Arab • Boukhiba Djamel</li>
+        <li>Tamzali Abdelhafid</li><li>Yousfi Loucif</li><li>Hadahoum Salah</li><li>Belhocine Hocine</li><li>Mendil Boualem</li><li>Dali Ahmed</li><li>Zaouche Salah</li><li>Benalouche Salah</li><li>Kasri Allaoua</li><li>Tighidet Ahcen</li><li>Ferdjoukh Abdelkader</li><li>Maître Yanat</li><li>Ladjouz</li><li>Oulmou Mohamed</li><li>Tikheroubine Mohamed</li><li>Berri Larbi</li><li>Allouache Larbi</li><li>Hamouche Yahia</li><li>Bannai Zahir</li><li>Rezki Mustapha</li><li>Leklak Norredine</li><li>Bouchaara</li><li>Maouche Nacer</li><li>Bouchebah Mustapha</li><li>Adrar Akli</li><li>Attia Zahir</li><li>Ikhlef Boubekeur</li><li>Hassisen Farid</li><li>Boudiab Rezki</li><li>Benai Arab</li><li>Boukhiba Djamel</li>
       </ul>
     </div>
 
     <div class="historique-section">
       <div class="historique-section-title">🗺️ Le parcours du MOB à travers les divisions</div>
-      <div class="historique-text">Un voyage héroïque marqué par des périodes de transition et une reconstruction progressive :</div>
+      <div class="historique-text">Le parcours du MOB à travers les divisions du football algérien est un véritable voyage, marqué par des périodes de transition et une reconstruction progressive.</div>
+      <img src="https://i.postimg.cc/0Nb9QMvG/MO-Bejaia-archive-1.jpg" alt="Archive 1" class="historique-image">
+      <div class="historique-image-caption">MOB, histoire et archives</div>
       <ul class="historique-list">
         <li><b>1962 - 1963 :</b> Reprise post-indépendance dans la division Nationale de Constantine.</li>
-        <li><b>1977 - 1990 :</b> Fusion sous l'appellation du MBB (Mechâal Baladiat Béjaïa), oscillant entre la D2 et la D3.</li>
-        <li><b>1994 - 2001 :</b> Stabilisation de la structure en Division 3 (Région Est).</li>
-        <li><b>2012 - 2013 :</b> Accession historique en Ligue 1 Professionnelle.</li>
+        <li><b>1964 - 1965 :</b> Évolution en Division 2 (Division d'Honneur).</li>
+        <li><b>1966 - 1969 :</b> Passage en Division 4 (Promotion d'Honneur).</li>
+        <li><b>1977 - 1990 :</b> Longue période de transition où le MOB fusionne et joue sous l'appellation du MBB (Mechâal Baladiat Béjaïa), oscillant entre la D2 et la D3.</li>
+        <li><b>1994 - 2001 :</b> Le club stabilise sa structure en Division 3 (Région Est).</li>
+        <li><b>2012 :</b> Le grand retour en Ligue 2, prémisse d'un âge d'or imminent.</li>
       </ul>
+      <img src="https://i.postimg.cc/zv3C2kYH/MO-Bejaia-archive-2.jpg" alt="Archive 2" class="historique-image">
+      <div class="historique-image-caption">MOB, histoire et archives</div>
     </div>
 
     <div class="historique-section">
       <div class="historique-section-title">🏆 L'âge d'or national (2013-2015)</div>
-      <div class="historique-text">L'exercice 2014/2015 restera gravé dans les mémoires des supporters mobistes :</div>
+      <div class="historique-text">Après des décennies de lutte dans les divisions inférieures, le MOB écrit les plus belles pages de son histoire au milieu des années 2010. Au terme de la saison 2012/2013, le club accède pour la toute première fois de son histoire à la Ligue 1 Professionnelle. Après une première saison de maintien (2013/2014), l'exercice 2014/2015 vire au chef-d'œuvre :</div>
       <ul class="historique-list">
-        <li>🏆 <b>Vainqueur de la Coupe d'Algérie 2015 :</b> Victoire 1-0 face au RC Arbaâ au stade Mustapha Tchaker de Blida. Premier trophée majeur de l'histoire du club !</li>
-        <li>🥈 <b>Vice-Champion d'Algérie 2014/2015 :</b> Qualification historique en Ligue des Champions de la CAF.</li>
+        <li>🏆 Une victoire historique en <b>Coupe d'Algérie</b>, le tout premier trophée majeur du club.</li>
+        <li>🥈 Une place de <b>Vice-Champion d'Algérie</b>, qualifiant le club pour les joutes continentales.</li>
       </ul>
+      <img src="https://i.postimg.cc/9XZfdg0N/joie-de-toute-l-equipe-apres-la-victoire-MO-Bejaia-1-0-RC-arbaa.jpg" alt="Victoire RC Arbaa" class="historique-image">
+      <div class="historique-image-caption">Historique : Le MOB décroche sa première Coupe d'Algérie (1-0 vs RC Arbaâ) au stade Mustapha Tchaker de Blida</div>
+      <img src="https://i.postimg.cc/R0XvC72C/le-groupe-a-Bejaia-apres-la-finale-coupe-d-Algerie-2015-MO-Bejaia-1-0-RC-Arbaa-cou.jpg" alt="Groupe finale 2015" class="historique-image">
+      <div class="historique-image-caption">Le groupe à Béjaïa après la victoire en Coupe d'Algérie 2015</div>
     </div>
 
     <div class="historique-section">
-      <div class="historique-section-title">🌍 L'épopée africaine (2016)</div>
-      <div class="historique-text">Propulsé sur la scène continentale, le MOB réalise l'exploit d'atteindre la <b>Finale de la Coupe de la Confédération (CAF)</b> en novembre 2016 face au TP Mazembe. Une aventure inoubliable gravée dans le cœur des Crabes.</div>
+      <div class="historique-section-title">🌍 Le rêve africain (2016)</div>
+      <div class="historique-text">Propulsé sur la scène continentale, le MOB surprend l'Afrique. Après un beau parcours en Ligue des Champions, les Crabes sont reversés en Coupe de la CAF et se hissent jusqu'en <b>Finale en novembre 2016</b> face au TP Mazembe.</div>
+      <ul class="historique-list">
+        <li><b>Match aller (29 octobre 2016) :</b> MO Béjaïa 1-1 TP Mazembe</li>
+        <li><b>Match retour :</b> TP Mazembe 4-1 MO Béjaïa</li>
+      </ul>
+      <div class="historique-text">Le MOB s'incline, mais sort la tête haute d'une aventure mémorable.</div>
+      <img src="https://i.postimg.cc/13Jh0wD6/1000011470.jpg" alt="Obuasi" class="historique-image">
+      <div class="historique-image-caption">La délégation du MO Béjaïa au cœur de la ville d'Obuasi au Ghana (Finale CAF 2016)</div>
     </div>
 
     <div class="historique-section">
-      <div class="historique-section-title">🥁 Le 12ème Homme : Les groupes de supporters</div>
-      <div class="historique-text">L'âme du MO Béjaïa réside dans la ferveur exceptionnelle de son public :</div>
-      <div class="historique-ultras"><b>🔥 Ultras Granchio (UG) :</b> Fondé en 2009 au Couvert B.</div>
-      <div class="historique-ultras"><b>👑 Ultras Saldae Kings (USK) :</b> Fondé en 2011 au Couvert A.</div>
-      <div class="historique-ultras"><b>🦅 Ultras Free Men 16 (UFM16) :</b> Fondé en 2016 à la tribune Adrar N Tizi.</div>
-      <div class="historique-ultras"><b>💀 Ultra Mobiste (UM) :</b> Né de la fusion des Pirate Boys, Banda Berberista et KOP 12.</div>
+      <div class="historique-section-title">📉 Descente, reconstruction et grand retour (2017-2026)</div>
+      <div class="historique-text">Le football est fait de cycles. Après avoir touché les sommets, les Vert et Noir connaissent des années plus instables, avant de valider avec fierté leur retour en <b>Ligue 2 Amateur (Groupe Centre-Est)</b> pour aborder la saison 2026/2027 avec ambition.</div>
+      <img src="https://i.postimg.cc/qRvygGRm/MOB-archive-3.jpg" alt="Archive 3" class="historique-image">
+      <div class="historique-image-caption">MOB, histoire et archives</div>
+    </div>
+
+    <div class="historique-section">
+      <div class="historique-section-title">🥁 Le 12ème Homme : La ferveur des supporters</div>
+      <div class="historique-text">Si le MOB est respecté partout en Algérie, il le doit à son public unique. Les tribunes du Stade de l'Unité Maghrébine vibrent au rythme de groupes Ultras passionnés :</div>
+      <img src="https://i.postimg.cc/K8cDTMZ9/Stade-de-l-unite-Maghrebine-de-Bejaia.jpg" alt="Stade Unité Maghrébine" class="historique-image">
+      <div class="historique-image-caption">Le Stade de l'Unité Maghrébine de Béjaïa</div>
+      <div class="historique-ultras">
+        <div class="historique-ultras-name">🔥 Ultras Granchio (UG)</div>
+        <div class="historique-ultras-info">Fondé le 2 octobre 2009. Ce groupe historique donne de la voix depuis le Couvert B du stade.</div>
+      </div>
+      <div class="historique-ultras">
+        <div class="historique-ultras-name">👑 Ultras Saldae Kings (USK)</div>
+        <div class="historique-ultras-info">Fondé le 4 mars 2011. Ils animent avec ferveur le Couvert A.</div>
+      </div>
+      <div class="historique-ultras">
+        <div class="historique-ultras-name">🦅 Ultras Free Men 16 (UFM16)</div>
+        <div class="historique-ultras-info">Fondé le 19 juin 2016. Ils occupent la mythique tribune "Adrar N Tizi".</div>
+      </div>
+      <div class="historique-ultras">
+        <div class="historique-ultras-name">💀 Ultra Mobiste (UM)</div>
+        <div class="historique-ultras-info">Fondé le 11 janvier 2025. Issu de la fusion des Pirate Boys (UPB 2011), de la Banda Berberista (2015) et du KOP 12.</div>
+      </div>
     </div>
   </div>
 </div>
@@ -619,7 +695,7 @@
 <div class="btn-share-float" id="btnShareMain" onclick="shareContext()">📤 Partager</div>
 <div class="visit-badge" id="visitCounter">👁️ -- visites</div>
 
-<!-- MODALES DU SITE -->
+<!-- TOUTES LES MODALES DU SITE -->
 <div class="modal" id="modalLive">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalLive')">×</span>
@@ -846,10 +922,31 @@
 <div class="modal" id="modalAlbum">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal('modalAlbum')">×</span>
-    <h3>📸 Nouvel Album</h3>
-    <label>Titre <input type="text" id="albumTitre"></label>
+    <h3>🖼️ Créer un Album</h3>
+    <label>Titre de l'album <input type="text" id="albumTitre" placeholder="Ex: J6 - MSP Batna 1-0 MOB"></label>
     <label>Date <input type="date" id="albumDate"></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalAlbum')">Annuler</button><button onclick="saveAlbum()">Créer</button></div>
+  </div>
+</div>
+
+<div class="modal" id="modalAddPhoto">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('modalAddPhoto')">×</span>
+    <h3>📸 Ajouter une photo à l'album</h3>
+    <input type="hidden" id="photoAlbumId">
+    <label>Lien de l'image (URL) <input type="url" id="photoUrl"></label>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalAddPhoto')">Annuler</button><button onclick="savePhoto()">Ajouter</button></div>
+  </div>
+</div>
+
+<div class="modal" id="modalAlbumView">
+  <div class="modal-content" style="max-width: 800px;">
+    <span class="modal-close" onclick="closeModal('modalAlbumView')">×</span>
+    <h3 id="albumViewTitle"></h3>
+    <div class="toolbar" id="albumViewToolbar" style="display:none;">
+      <button onclick="openModalAddPhoto()" style="background:#27ae60;">➕ Ajouter une photo</button>
+    </div>
+    <div class="album-photos-grid" id="albumViewGrid"></div>
   </div>
 </div>
 
@@ -860,6 +957,14 @@
     <label>Titre <input type="text" id="vmTitre"></label>
     <label>Lien YouTube <input type="url" id="vmUrl"></label>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalVideoMedia')">Annuler</button><button onclick="saveVideoMedia()">Ajouter</button></div>
+  </div>
+</div>
+
+<div class="modal" id="modalVideoPlayer">
+  <div class="modal-content" style="padding:0; background:black; max-width:800px;">
+    <span class="modal-close" style="color:white; z-index:10;" onclick="closeVideoModal()">×</span>
+    <h3 id="videoModalTitle" style="color:white; padding:10px; font-size:14px; text-align:center;"></h3>
+    <iframe id="videoModalIframe" style="width:100%; aspect-ratio:16/9; border:none;" allowfullscreen></iframe>
   </div>
 </div>
 
@@ -1399,7 +1504,7 @@ async function resetVote() {
 }
 
 function renderClub() {
-  document.getElementById('grid-staff').innerHTML = (data.staff || []).map((s, i) => {
+  document.getElementById('grid-staff').innerHTML = (data.staff || []).map((s) => {
     return `<div class="player-card"><img src="${s.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}"><div class="pc-info"><div class="pc-name">${s.nom}</div><div class="pc-pos">${s.fonction}</div></div></div>`;
   }).join('');
 
@@ -1492,21 +1597,149 @@ function renderNewsTab() {
   }).join('');
 }
 
+/* RENDU ORIGINAL ET COMPLET DE L'ONGLET MÉDIAS */
 function renderMedias() {
-  const gridA = document.getElementById('grid-albums');
-  const gridV = document.getElementById('grid-videos');
+  const gridAlbums = document.getElementById('grid-albums');
+  const gridVideos = document.getElementById('grid-videos');
+  
   if (currentMediaSubTab === 'images') {
-    if (!data.medias.albums || data.medias.albums.length === 0) gridA.innerHTML = '<p style="text-align:center; width:100%; color:#888;">Aucun album.</p>';
-    else gridA.innerHTML = data.medias.albums.map((a, i) => `<div class="album-card" onclick="openAlbumView(${i})"><h4>📸 ${a.titre}</h4><p>${formatDate(a.date)}<br>${(a.photos||[]).length} photo(s)</p>${isAdmin ? `<button class="btn-small btn-del" onclick="event.stopPropagation(); deleteAlbum(${i})">🗑️</button>` : ''}</div>`).join('');
+    if (!data.medias || !data.medias.albums || data.medias.albums.length === 0) {
+      gridAlbums.innerHTML = '<p style="text-align:center; width:100%; color:#888; padding:25px;">Aucun album photo.</p>';
+    } else {
+      gridAlbums.innerHTML = data.medias.albums.map((a, i) => `
+        <div class="album-card" onclick="openAlbumView(${i})">
+          ${isAdmin ? `<button class="btn-small btn-del" onclick="event.stopPropagation(); deleteAlbum(${i})" style="position:absolute; top:6px; right:6px;">🗑️</button>` : ''}
+          <h4>📸 ${a.titre}</h4>
+          <p>${formatDate(a.date)}<br>${(a.photos || []).length} photo(s)</p>
+        </div>
+      `).join('');
+    }
   } else {
-    if (!data.medias.videos || data.medias.videos.length === 0) gridV.innerHTML = '<p style="text-align:center; color:#888;">Aucune vidéo.</p>';
-    else gridV.innerHTML = data.medias.videos.map((v, i) => {
-      let embed = v.url, thumb = "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png";
-      if (v.url.includes("youtube.com/shorts/")) { const id = v.url.split("shorts/")[1].split("?")[0]; embed = `https://www.youtube.com/embed/${id}`; thumb = `https://img.youtube.com/vi/${id}/0.jpg`; }
-      else if (v.url.includes("youtu.be/")) { const id = v.url.split("youtu.be/")[1].split("?")[0]; embed = `https://www.youtube.com/embed/${id}`; thumb = `https://img.youtube.com/vi/${id}/0.jpg`; }
-      return `<div class="video-item">${isAdmin ? `<button class="btn-del-video" onclick="deleteVideoMedia(${i})">🗑️</button>` : ''}<h5>${v.titre}</h5><div onclick="openVideoModal('${embed}', '${v.titre}')"><img src="${thumb}" class="video-thumb"></div></div>`;
-    }).join('');
+    if (!data.medias || !data.medias.videos || data.medias.videos.length === 0) {
+      gridVideos.innerHTML = '<p style="text-align:center; color:#888; padding:25px;">Aucune vidéo.</p>';
+    } else {
+      gridVideos.innerHTML = data.medias.videos.map((v, i) => {
+        let embedUrl = "";
+        let thumbUrl = "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png";
+        if (v.url.includes("youtube.com/shorts/")) { const id = v.url.split("shorts/")[1].split("?")[0]; embedUrl = `https://www.youtube.com/embed/${id}`; thumbUrl = `https://img.youtube.com/vi/${id}/0.jpg`; }
+        else if (v.url.includes("youtu.be/")) { const id = v.url.split("youtu.be/")[1].split("?")[0]; embedUrl = `https://www.youtube.com/embed/${id}`; thumbUrl = `https://img.youtube.com/vi/${id}/0.jpg`; }
+        else if (v.url.includes("youtube.com/watch")) { const id = v.url.split("v=")[1].split("&")[0]; embedUrl = `https://www.youtube.com/embed/${id}`; thumbUrl = `https://img.youtube.com/vi/${id}/0.jpg`; }
+        return `
+          <div class="video-item">
+            ${isAdmin ? `<button class="btn-del-video" onclick="deleteVideoMedia(${i})">🗑️</button>` : ''}
+            <h5>${v.titre}</h5>
+            <div onclick="openVideoModal('${embedUrl}', '${escapeQuotes(v.titre)}')">
+              <img src="${thumbUrl}" class="video-thumb" alt="${v.titre}">
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
   }
+}
+
+function openAlbumView(idx) {
+  const a = data.medias.albums[idx];
+  if (!a) return;
+  document.getElementById('albumViewTitle').textContent = `📸 ${a.titre}`;
+  document.getElementById('albumViewGrid').innerHTML = (a.photos || []).map((p, pIdx) => `
+    <div class="photo-wrapper">
+      ${isAdmin ? `<button class="btn-del-photo" onclick="deletePhoto(${idx}, ${pIdx})">🗑️</button>` : ''}
+      <img src="${p}" onclick="window.open('${p}','_blank')">
+    </div>
+  `).join('');
+  document.getElementById('albumViewToolbar').style.display = isAdmin ? 'block' : 'none';
+  document.getElementById('photoAlbumId').value = idx;
+  openModal('modalAlbumView');
+}
+
+function openModalAddPhoto() {
+  document.getElementById('photoUrl').value = '';
+  openModal('modalAddPhoto');
+}
+
+async function savePhoto() {
+  const idx = document.getElementById('photoAlbumId').value;
+  const url = document.getElementById('photoUrl').value.trim();
+  if (url && data.medias.albums[idx]) {
+    if (!data.medias.albums[idx].photos) data.medias.albums[idx].photos = [];
+    data.medias.albums[idx].photos.push(url);
+    await saveToFirebase();
+    closeModal('modalAddPhoto');
+    openAlbumView(idx);
+    renderMedias();
+  }
+}
+
+async function deleteAlbum(idx) {
+  if (!isAdmin) return;
+  if (confirm('Supprimer tout cet album ?')) {
+    data.medias.albums.splice(idx, 1);
+    await saveToFirebase();
+    renderMedias();
+  }
+}
+
+async function deletePhoto(aIdx, pIdx) {
+  if (!isAdmin) return;
+  if (confirm('Supprimer cette photo ?')) {
+    data.medias.albums[aIdx].photos.splice(pIdx, 1);
+    await saveToFirebase();
+    openAlbumView(aIdx);
+    renderMedias();
+  }
+}
+
+function openModalAlbum() {
+  if (!isAdmin) return;
+  document.getElementById('albumTitre').value = '';
+  document.getElementById('albumDate').value = new Date().toISOString().split('T')[0];
+  openModal('modalAlbum');
+}
+
+async function saveAlbum() {
+  const a = { id: 'al' + Date.now(), titre: document.getElementById('albumTitre').value, date: document.getElementById('albumDate').value, photos: [] };
+  if (!data.medias.albums) data.medias.albums = [];
+  data.medias.albums.push(a);
+  await saveToFirebase();
+  closeModal('modalAlbum');
+  renderMedias();
+}
+
+function openModalVideoMedia() {
+  if (!isAdmin) return;
+  document.getElementById('vmTitre').value = '';
+  document.getElementById('vmUrl').value = '';
+  openModal('modalVideoMedia');
+}
+
+async function saveVideoMedia() {
+  const v = { id: 'vid' + Date.now(), titre: document.getElementById('vmTitre').value, url: document.getElementById('vmUrl').value };
+  if (!data.medias.videos) data.medias.videos = [];
+  data.medias.videos.push(v);
+  await saveToFirebase();
+  closeModal('modalVideoMedia');
+  renderMedias();
+}
+
+async function deleteVideoMedia(idx) {
+  if (!isAdmin) return;
+  if (confirm('Supprimer cette vidéo ?')) {
+    data.medias.videos.splice(idx, 1);
+    await saveToFirebase();
+    renderMedias();
+  }
+}
+
+function openVideoModal(url, title) {
+  document.getElementById('videoModalTitle').textContent = title;
+  document.getElementById('videoModalIframe').src = url;
+  openModal('modalVideoPlayer');
+}
+
+function closeVideoModal() {
+  document.getElementById('videoModalIframe').src = '';
+  closeModal('modalVideoPlayer');
 }
 
 function renderFdM() {
@@ -1664,7 +1897,7 @@ function loadFromFirebase() {
 document.getElementById('mainTitle').addEventListener('click', handleTitleClick);
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadFromFirebase); else loadFromFirebase();
 
-/* FONCTIONS MODALES ET GLOBALES */
+/* EXPOSITIONS GLOBALES */
 window.switchTab = switchTab;
 window.switchRencontreNav = switchRencontreNav;
 window.renderProgrammeView = renderProgrammeView;
@@ -1672,18 +1905,66 @@ window.renderResultatsView = renderResultatsView;
 window.renderClassementView = renderClassementView;
 window.switchSubTabMob = (m) => { currentMobSubTab = m; document.querySelectorAll('#tab-mob .sub-tab').forEach(b => b.classList.remove('active')); document.getElementById('subtab-mob-'+m).classList.add('active'); ['avant','day','apres'].forEach(k => document.getElementById('mob-'+k).style.display = k === m ? 'block' : 'none'); renderMob(); };
 window.switchSubTabNews = (c) => { currentNewsSubTab = c; document.querySelectorAll('#tab-actualite .sub-tab').forEach(b => b.classList.remove('active')); document.getElementById('subtab-news-'+c).classList.add('active'); renderNewsTab(); };
-window.switchSubTabMedia = (t) => { currentMediaSubTab = t; document.querySelectorAll('#tab-medias .sub-tab').forEach(b => b.classList.remove('active')); document.getElementById('subtab-media-'+t).classList.add('active'); document.getElementById('media-images-container').style.display = t === 'images' ? 'block' : 'none'; document.getElementById('media-videos-container').style.display = t === 'videos' ? 'block' : 'none'; renderMedias(); };
+window.switchSubTabMedia = (t) => { currentMediaSubTab = t; document.querySelectorAll('#tab-medias .sub-tab').forEach(b => b.classList.remove('active')); document.getElementById('subtab-media-'+t).classList.add('active'); document.getElementById('media-images-container').style.display = t === 'images' ? 'block' : 'none'; document.getElementById('media-videos-container').style.display = t === 'videos' ? 'block' : 'none'; if(isAdmin) { document.getElementById('btnAddAlbum').style.display = t === 'images' ? 'inline-block' : 'none'; document.getElementById('btnAddVideoMedia').style.display = t === 'videos' ? 'inline-block' : 'none'; } renderMedias(); };
 window.switchSubTabStats = (t) => { currentStatsSubTab = t; document.querySelectorAll('#tab-stats .sub-tab').forEach(b => b.classList.remove('active')); document.getElementById('subtab-stats-'+t).classList.add('active'); ['vote','buteurs','cartons'].forEach(k => document.getElementById('stats-'+k).style.display = k === t ? 'block' : 'none'); updateStatsAdminButtons(); renderStats(); };
 window.openModal = openModal;
 window.closeModal = closeModal;
+window.openModalMatch = openModalMatch;
+window.saveMatch = saveMatch;
+window.deleteItem = deleteItem;
+window.openModalPlayer = openModalPlayer;
+window.savePlayer = savePlayer;
+window.openModalStaff = openModalStaff;
+window.saveStaff = saveStaff;
+window.openModalDirigeant = openModalDirigeant;
+window.saveDirigeant = saveDirigeant;
+window.openModalMob = openModalMob;
+window.saveMobContent = saveMobContent;
+window.openModalAffiche = openModalAffiche;
+window.saveAffiche = saveAffiche;
+window.openModalVideo = openModalVideo;
+window.saveVideo = saveVideo;
+window.openModalNews = openModalNews;
+window.saveNews = saveNews;
+window.openModalAlbum = openModalAlbum;
+window.saveAlbum = saveAlbum;
+window.openAlbumView = openAlbumView;
+window.openModalAddPhoto = openModalAddPhoto;
+window.savePhoto = savePhoto;
+window.deleteAlbum = deleteAlbum;
+window.deletePhoto = deletePhoto;
+window.openModalVideoMedia = openModalVideoMedia;
+window.saveVideoMedia = saveVideoMedia;
+window.deleteVideoMedia = deleteVideoMedia;
+window.openVideoModal = openVideoModal;
+window.closeVideoModal = closeVideoModal;
+window.openModalLive = openModalLive;
+window.saveLive = saveLive;
 window.tryLogin = tryLogin;
 window.logoutAdmin = logoutAdmin;
-window.handleTitleClick = handleTitleClick;
+window.openArticleModal = openArticleModal;
+window.shareContext = () => { const s = { title: 'MO Béjaïa', text: 'Suivez le MO Béjaïa ! 🦀 #LaMaisonDesCrabes', url: window.location.href }; if (navigator.share) navigator.share(s).catch(console.warn); else prompt("Lien :", s.url); };
+window.openModalFDM = openModalFDM;
+window.saveFDM = saveFDM;
+window.deleteFDM = deleteFDM;
+window.openFDMView = openFDMView;
+window.openModalAllBreves = () => openModal('modalAllBreves');
 window.submitVote = submitVote;
 window.resetVote = resetVote;
-window.openArticleModal = openArticleModal;
+window.openModalCreateVote = openModalCreateVote;
+window.saveNewVote = saveNewVote;
+window.openModalManageVote = openModalManageVote;
+window.addCandidateToVote = addCandidateToVote;
+window.removeCandidateByIndex = removeCandidateByIndex;
+window.openModalAddStat = openModalAddStat;
+window.saveStat = saveStat;
+window.deleteStat = deleteStat;
+window.openModalHisto = openModalHisto;
+window.saveHisto = saveHisto;
+window.exportData = (sec) => { const b = new Blob([JSON.stringify(data[sec]||[], null, 2)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = `${sec}.json`; a.click(); };
+window.importData = (e, sec) => { const file = e.target.files[0]; if(!file) return; const r = new FileReader(); r.onload = async (evt) => { try { const parsed = JSON.parse(evt.target.result); if(Array.isArray(parsed)) { data[sec] = parsed; await saveToFirebase(); renderAll(); alert('✅ Import réussi !'); } } catch(err) { alert('❌ Fichier invalide.'); } }; r.readAsText(file); e.target.value = ''; };
 
-window.openModalMatch = function(sec, idx) {
+function openModalMatch(sec, idx) {
   if (!isAdmin) return;
   document.getElementById('editSectionMatch').value = sec;
   document.getElementById('editIndexMatch').value = idx !== undefined ? idx : '';
@@ -1705,9 +1986,9 @@ window.openModalMatch = function(sec, idx) {
     ['fJournee','fDate','fHeure','fSd','fSe','fObs'].forEach(id => document.getElementById(id).value = '');
   }
   openModal('modalMatch');
-};
+}
 
-window.saveMatch = async function() {
+async function saveMatch() {
   const sec = document.getElementById('editSectionMatch').value;
   const idx = document.getElementById('editIndexMatch').value;
   const m = {
@@ -1726,18 +2007,18 @@ window.saveMatch = async function() {
   await saveToFirebase();
   closeModal('modalMatch');
   renderAll();
-};
+}
 
-window.deleteItem = async function(section, idx) {
+async function deleteItem(section, idx) {
   if (!isAdmin) return;
   if (confirm('Confirmer la suppression de cet élément ?')) {
     if (data[section]) data[section].splice(idx, 1);
     await saveToFirebase();
     renderAll();
   }
-};
+}
 
-window.openModalLive = function() {
+function openModalLive() {
   if (!isAdmin) return;
   const l = data.live || {};
   document.getElementById('liveStatut').value = l.statut || 'inactif';
@@ -1747,9 +2028,9 @@ window.openModalLive = function() {
   document.getElementById('liveSe').value = l.se || 0;
   document.getElementById('liveTexte').value = l.texte || '';
   openModal('modalLive');
-};
+}
 
-window.saveLive = async function() {
+async function saveLive() {
   const liveObj = {
     statut: document.getElementById('liveStatut').value,
     dom: document.getElementById('liveDom').value.trim() || 'MO Béjaïa',
@@ -1766,9 +2047,9 @@ window.saveLive = async function() {
   } catch(e) {
     await saveToFirebase();
   }
-};
+}
 
-window.openModalNews = function(idx) {
+function openModalNews(idx) {
   if (!isAdmin) return;
   document.getElementById('editNewsIdx').value = idx === 'new' ? '' : idx;
   const a = idx !== 'new' ? data.articles[idx] : {cat:'all', titre:'', date:'', image:'', texte:''};
@@ -1778,9 +2059,9 @@ window.openModalNews = function(idx) {
   document.getElementById('nImg').value = a.image || '';
   document.getElementById('nTexte').value = a.texte || '';
   openModal('modalNewsEdit');
-};
+}
 
-window.saveNews = async function() {
+async function saveNews() {
   const idx = document.getElementById('editNewsIdx').value;
   const a = {
     id: 'a' + Date.now(),
@@ -1796,9 +2077,9 @@ window.saveNews = async function() {
   closeModal('modalNewsEdit');
   renderNewsTab();
   renderCarousel();
-};
+}
 
-window.openModalPlayer = function(idx) {
+function openModalPlayer(idx) {
   if (!isAdmin) return;
   document.getElementById('editPlayerIdx').value = idx === 'new' ? '' : idx;
   const p = idx !== 'new' ? data.players[idx] : {num:'', nom:'', poste:'', img:''};
@@ -1807,9 +2088,9 @@ window.openModalPlayer = function(idx) {
   document.getElementById('pPoste').value = p.poste || '';
   document.getElementById('pImg').value = p.img || '';
   openModal('modalPlayer');
-};
+}
 
-window.savePlayer = async function() {
+async function savePlayer() {
   const idx = document.getElementById('editPlayerIdx').value;
   const p = {
     num: parseInt(document.getElementById('pNum').value, 10) || 0,
@@ -1822,9 +2103,9 @@ window.savePlayer = async function() {
   await saveToFirebase();
   closeModal('modalPlayer');
   renderClub();
-};
+}
 
-window.openModalStaff = function(idx) {
+function openModalStaff(idx) {
   if (!isAdmin) return;
   document.getElementById('editStaffIdx').value = idx === 'new' ? '' : idx;
   const s = idx !== 'new' ? data.staff[idx] : {nom:'', fonction:'', img:''};
@@ -1832,9 +2113,9 @@ window.openModalStaff = function(idx) {
   document.getElementById('sFonction').value = s.fonction || '';
   document.getElementById('sImg').value = s.img || '';
   openModal('modalStaff');
-};
+}
 
-window.saveStaff = async function() {
+async function saveStaff() {
   const idx = document.getElementById('editStaffIdx').value;
   const s = { nom: document.getElementById('sNom').value, fonction: document.getElementById('sFonction').value, img: document.getElementById('sImg').value };
   if (!data.staff) data.staff = [];
@@ -1842,9 +2123,9 @@ window.saveStaff = async function() {
   await saveToFirebase();
   closeModal('modalStaff');
   renderClub();
-};
+}
 
-window.openModalDirigeant = function(idx) {
+function openModalDirigeant(idx) {
   if (!isAdmin) return;
   document.getElementById('editDirIdx').value = idx === 'new' ? '' : idx;
   const d = idx !== 'new' ? data.dirigeants[idx] : {nom:'', fonction:'', img:''};
@@ -1852,9 +2133,9 @@ window.openModalDirigeant = function(idx) {
   document.getElementById('dFonction').value = d.fonction || '';
   document.getElementById('dImg').value = d.img || '';
   openModal('modalDirigeant');
-};
+}
 
-window.saveDirigeant = async function() {
+async function saveDirigeant() {
   const idx = document.getElementById('editDirIdx').value;
   const d = { nom: document.getElementById('dNom').value, fonction: document.getElementById('dFonction').value, img: document.getElementById('dImg').value };
   if (!data.dirigeants) data.dirigeants = [];
@@ -1862,15 +2143,15 @@ window.saveDirigeant = async function() {
   await saveToFirebase();
   closeModal('modalDirigeant');
   renderClub();
-};
+}
 
-window.openModalCreateVote = function() {
+function openModalCreateVote() {
   document.getElementById('voteMatchName').value = '';
   document.getElementById('voteCandidates').value = '';
   openModal('modalCreateVote');
-};
+}
 
-window.saveNewVote = async function() {
+async function saveNewVote() {
   const m = document.getElementById('voteMatchName').value.trim();
   const c = document.getElementById('voteCandidates').value.split(',').map(x=>x.trim()).filter(Boolean);
   if (!m || c.length === 0) return alert('Champs requis');
@@ -1879,9 +2160,9 @@ window.saveNewVote = async function() {
   closeModal('modalCreateVote');
   renderStats();
   renderHomeVoteWidget();
-};
+}
 
-window.openModalManageVote = function() {
+function openModalManageVote() {
   if (!data.stats.activeVote) return;
   document.getElementById('manageVoteList').innerHTML = data.stats.activeVote.candidates.map((c, i) => `
     <div style="display:flex; justify-content:space-between; align-items:center; background:#f9f9f9; padding:6px; margin-bottom:4px; border-radius:4px;">
@@ -1893,18 +2174,18 @@ window.openModalManageVote = function() {
     </div>
   `).join('');
   openModal('modalManageVote');
-};
+}
 
-window.addCandidateToVote = async function() {
+async function addCandidateToVote() {
   const n = document.getElementById('newCandidateName').value.trim();
   if (!n || !data.stats.activeVote) return;
   data.stats.activeVote.candidates.push(n);
   await saveToFirebase();
   openModalManageVote();
   renderStats();
-};
+}
 
-window.removeCandidateByIndex = async function(idx) {
+async function removeCandidateByIndex(idx) {
   if (!data.stats.activeVote) return;
   const n = data.stats.activeVote.candidates[idx];
   data.stats.activeVote.candidates.splice(idx, 1);
@@ -1912,9 +2193,9 @@ window.removeCandidateByIndex = async function(idx) {
   await saveToFirebase();
   openModalManageVote();
   renderStats();
-};
+}
 
-window.openModalAddStat = function(type) {
+function openModalAddStat(type) {
   document.getElementById('statType').value = type;
   document.getElementById('statPlayerName').value = '';
   document.getElementById('statGoals').value = 1;
@@ -1922,9 +2203,9 @@ window.openModalAddStat = function(type) {
   document.getElementById('statGoalFields').style.display = type === 'buteur' ? 'block' : 'none';
   document.getElementById('statCartonFields').style.display = type === 'carton' ? 'block' : 'none';
   openModal('modalAddStat');
-};
+}
 
-window.saveStat = async function() {
+async function saveStat() {
   const type = document.getElementById('statType').value;
   const p = document.getElementById('statPlayerName').value.trim();
   if (!p) return alert('Nom requis');
@@ -1940,9 +2221,9 @@ window.saveStat = async function() {
   await saveToFirebase();
   closeModal('modalAddStat');
   renderStats();
-};
+}
 
-window.deleteStat = async function(type, p) {
+async function deleteStat(type, p) {
   if (!isAdmin) return;
   if (confirm(`Supprimer les stats de ${p} ?`)) {
     if (type === 'buteur' && data.stats.buteurs) delete data.stats.buteurs[p];
@@ -1950,9 +2231,9 @@ window.deleteStat = async function(type, p) {
     await saveToFirebase();
     renderStats();
   }
-};
+}
 
-window.openModalFDM = function(idx) {
+function openModalFDM(idx) {
   if (!isAdmin) return;
   document.getElementById('editFdmIdx').value = idx === 'new' ? '' : idx;
   const f = idx !== 'new' ? data.fdm[idx] : {titre:'', date:'', image:'', texte:''};
@@ -1961,9 +2242,9 @@ window.openModalFDM = function(idx) {
   document.getElementById('fdmImg').value = f.image || '';
   document.getElementById('fdmTexte').value = f.texte || '';
   openModal('modalFDMEdit');
-};
+}
 
-window.saveFDM = async function() {
+async function saveFDM() {
   const idx = document.getElementById('editFdmIdx').value;
   const f = {
     id: 'fdm' + Date.now(),
@@ -1977,18 +2258,18 @@ window.saveFDM = async function() {
   await saveToFirebase();
   closeModal('modalFDMEdit');
   renderFdM();
-};
+}
 
-window.deleteFDM = async function(idx) {
+async function deleteFDM(idx) {
   if (!isAdmin) return;
   if (confirm('Supprimer cette feuille de match ?')) {
     data.fdm.splice(idx, 1);
     await saveToFirebase();
     renderFdM();
   }
-};
+}
 
-window.openFDMView = function(id) {
+function openFDMView(id) {
   const f = (data.fdm || []).find(x => x.id === id);
   if (!f) return;
   document.getElementById('fdmViewTitle').textContent = f.titre;
@@ -1998,9 +2279,9 @@ window.openFDMView = function(id) {
   if (f.image) img.src = f.image;
   document.getElementById('fdmViewText').innerHTML = formatText(f.texte);
   openModal('modalFDMView');
-};
+}
 
-window.openModalHisto = function(idx) {
+function openModalHisto(idx) {
   if (!isAdmin) return;
   document.getElementById('editHistoIdx').value = idx === 'new' ? '' : idx;
   const h = idx !== 'new' ? data.historique_custom[idx] : {titre:'', texte:'', img:''};
@@ -2008,9 +2289,9 @@ window.openModalHisto = function(idx) {
   document.getElementById('hTexte').value = h.texte || '';
   document.getElementById('hImg').value = h.img || '';
   openModal('modalHisto');
-};
+}
 
-window.saveHisto = async function() {
+async function saveHisto() {
   const idx = document.getElementById('editHistoIdx').value;
   const h = { titre: document.getElementById('hTitre').value, texte: document.getElementById('hTexte').value, img: document.getElementById('hImg').value };
   if (!data.historique_custom) data.historique_custom = [];
@@ -2018,132 +2299,63 @@ window.saveHisto = async function() {
   await saveToFirebase();
   closeModal('modalHisto');
   renderHistoriqueDynamic();
-};
+}
 
-window.openModalMob = function(sec) {
+async function deleteHisto(idx) {
+  if (!isAdmin) return;
+  if (confirm('Supprimer cette section ?')) {
+    data.historique_custom.splice(idx, 1);
+    await saveToFirebase();
+    renderHistoriqueDynamic();
+  }
+}
+
+function openModalMob(sec) {
   if (!isAdmin) return;
   document.getElementById('mobSection').value = sec;
   document.getElementById('mobImgInput').value = (data.mob[sec] && data.mob[sec].img) ? data.mob[sec].img : '';
   document.getElementById('mobTextInput').value = (data.mob[sec] && data.mob[sec].txt) ? data.mob[sec].txt : '';
   openModal('modalMob');
-};
+}
 
-window.saveMobContent = async function() {
+async function saveMobContent() {
   const sec = document.getElementById('mobSection').value;
   data.mob[sec] = { img: document.getElementById('mobImgInput').value, txt: document.getElementById('mobTextInput').value };
   await saveToFirebase();
   closeModal('modalMob');
   renderMob();
-};
+}
 
-window.openModalAffiche = function(sec) {
+function openModalAffiche(sec) {
   if (!isAdmin) return;
   document.getElementById('afficheSection').value = sec;
   document.getElementById('afficheUrl').value = data.affiches[sec] || '';
   openModal('modalAffiche');
-};
+}
 
-window.saveAffiche = async function() {
+async function saveAffiche() {
   const sec = document.getElementById('afficheSection').value;
   data.affiches[sec] = document.getElementById('afficheUrl').value;
   await saveToFirebase();
   closeModal('modalAffiche');
   renderMob();
-};
+}
 
-window.openModalVideo = function(sec) {
+function openModalVideo(sec) {
   if (!isAdmin) return;
   document.getElementById('videoSection').value = sec;
   document.getElementById('videoUrl').value = (data.videos[sec] && data.videos[sec].url) ? data.videos[sec].url : '';
   document.getElementById('videoTexte').value = (data.videos[sec] && data.videos[sec].txt) ? data.videos[sec].txt : '';
   openModal('modalVideo');
-};
+}
 
-window.saveVideo = async function() {
+async function saveVideo() {
   const sec = document.getElementById('videoSection').value;
   data.videos[sec] = { url: document.getElementById('videoUrl').value, txt: document.getElementById('videoTexte').value };
   await saveToFirebase();
   closeModal('modalVideo');
   renderMob();
-};
-
-window.openModalAlbum = function() {
-  if (!isAdmin) return;
-  document.getElementById('albumTitre').value = '';
-  document.getElementById('albumDate').value = new Date().toISOString().split('T')[0];
-  openModal('modalAlbum');
-};
-
-window.saveAlbum = async function() {
-  const a = { id: 'al' + Date.now(), titre: document.getElementById('albumTitre').value, date: document.getElementById('albumDate').value, photos: [] };
-  if (!data.medias.albums) data.medias.albums = [];
-  data.medias.albums.push(a);
-  await saveToFirebase();
-  closeModal('modalAlbum');
-  renderMedias();
-};
-
-window.deleteAlbum = async function(idx) {
-  if (!isAdmin) return;
-  if (confirm('Supprimer cet album ?')) {
-    data.medias.albums.splice(idx, 1);
-    await saveToFirebase();
-    renderMedias();
-  }
-};
-
-window.openModalVideoMedia = function() {
-  if (!isAdmin) return;
-  document.getElementById('vmTitre').value = '';
-  document.getElementById('vmUrl').value = '';
-  openModal('modalVideoMedia');
-};
-
-window.saveVideoMedia = async function() {
-  const v = { id: 'vid' + Date.now(), titre: document.getElementById('vmTitre').value, url: document.getElementById('vmUrl').value };
-  if (!data.medias.videos) data.medias.videos = [];
-  data.medias.videos.push(v);
-  await saveToFirebase();
-  closeModal('modalVideoMedia');
-  renderMedias();
-};
-
-window.deleteVideoMedia = async function(idx) {
-  if (!isAdmin) return;
-  if (confirm('Supprimer cette vidéo ?')) {
-    data.medias.videos.splice(idx, 1);
-    await saveToFirebase();
-    renderMedias();
-  }
-};
-
-window.openModalAllBreves = function() { openModal('modalAllBreves'); };
-window.shareContext = function() {
-  const s = { title: 'MO Béjaïa', text: 'Suivez le MO Béjaïa ! 🦀 #LaMaisonDesCrabes', url: window.location.href };
-  if (navigator.share) navigator.share(s).catch(console.warn); else prompt("Lien :", s.url);
-};
-window.exportData = function(sec) {
-  const b = new Blob([JSON.stringify(data[sec]||[], null, 2)], { type: 'application/json' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = `${sec}.json`; a.click();
-};
-window.importData = function(e, sec) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const r = new FileReader();
-  r.onload = async (evt) => {
-    try {
-      const parsed = JSON.parse(evt.target.result);
-      if (Array.isArray(parsed)) {
-        data[sec] = parsed;
-        await saveToFirebase();
-        renderAll();
-        alert('✅ Import réussi !');
-      }
-    } catch(err) { alert('❌ Fichier invalide.'); }
-  };
-  r.readAsText(file);
-  e.target.value = '';
-};
+}
 </script>
 </body>
 </html>
