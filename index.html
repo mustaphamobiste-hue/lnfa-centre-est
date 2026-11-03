@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -394,6 +395,7 @@
   .player-card { background: var(--card-dark); border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); text-align: center; position: relative; border-bottom: 3px solid var(--mob-green); }
   .player-card img { width: 100%; height: 150px; object-fit: cover; object-position: top; background: #000; }
   .player-card .pc-num { position: absolute; top: 5px; left: 5px; background: var(--mob-gold); color: #000; font-weight: 900; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; z-index: 2; }
+  .player-card .pc-actions { position: absolute; top: 5px; right: 5px; display: flex; gap: 4px; z-index: 3; }
   .player-card .pc-info { padding: 8px; }
   .player-card .pc-name { font-weight: 800; font-size: 12px; color: #fff; line-height: 1.2; margin-bottom: 3px; }
   .player-card .pc-pos { font-size: 10px; color: var(--text-muted); }
@@ -1300,8 +1302,13 @@
       appId: "1:638227294907:web:694f8c2e597954f59e579e"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+    let app, db;
+    try {
+      app = initializeApp(firebaseConfig);
+      db = getDatabase(app);
+    } catch(e) {
+      console.warn("Erreur initialisation Firebase:", e);
+    }
 
     const ADMIN_PASSWORD = "Béjaïa#2026!Mob";
     let isAdmin = false;
@@ -1315,8 +1322,8 @@
 
     let currentArticleForShare = null;
 
-    let EQUIPES = ["Paradou AC", "IRB Nezla", "NRB Beni Oulbane", "NRB Teleghma", "CA Batna", "US Chaouia", "AS Khroub", "MO Constantine", "USM Annaba", "JS Azazga", "MO Béjaïa", "NC Magra", "JSM Skikda", "MSP Batna", "JSD Jijel", "CR Beni Thour"];
-    let STADES = ["Stade Abed-Hamdani (El Khroub)", "Stade 19 Mai 1956 (Annaba)", "Stade Allag Abderrahmane (Aïn Fakroun)", "Stade Khabaza Bachir (Teleghma)", "Stade 1er Novembre 1954 (Batna)", "Stade 20 Août 1955 (Skikda)", "Stade 18 Février (Ouargla)", "Stade 10 000 places (Touggourt)", "Stade Tirsatine (Azazga)", "Stade Hammou Boukouffa (Beni Oulbane)", "Stade 20 Août 1955 (Alger)", "Stade des Frères Boucheligue (Magra)", "Stade 1er Novembre 1954 Guendouza (Akbou)", "Stade des Martyrs (Akbou)", "Stade Hocine Rouibah (Jijel)", "Stade Ramdane-Benabdelmalek (Constantine)", "Stade Zerdani Hassouna (Oum El Bouaghi)"];
+    let EQUIPES = ["Paradou AC", "IRB Nezla", "NRB Beni Oulbane", "NRB Teleghma", "CA Batna", "US Chaouia", "AS Khroub", "MO Constantine", "USM Annaba", "JS Azazga", "MO Béjaïa", "NC Magra", "JSM Skikda", "MSP Batna", "JSD Jijel", "CR Beni Thour", "WB Aïn Benian"];
+    let STADES = ["Stade Abed-Hamdani (El Khroub)", "Stade 19 Mai 1956 (Annaba)", "Stade Allag Abderrahmane (Aïn Fakroun)", "Stade Khabaza Bachir (Teleghma)", "Stade 1er Novembre 1954 (Batna)", "Stade 20 Août 1955 (Skikda)", "Stade 18 Février (Ouargla)", "Stade 10 000 places (Touggourt)", "Stade Tirsatine (Azazga)", "Stade Hammou Boukouffa (Beni Oulbane)", "Stade 20 Août 1955 (Alger)", "Stade des Frères Boucheligue (Magra)", "Stade 1er Novembre 1954 Guendouza (Akbou)", "Stade des Martyrs (Akbou)", "Stade Hocine Rouibah (Jijel)", "Stade Ramdane-Benabdelmalek (Constantine)", "Stade Zerdani Hassouna (Oum El Bouaghi)", "Terrain Neutre"];
 
     const LOGOS = {
       "Paradou AC": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Paradou_AC.png",
@@ -1334,7 +1341,8 @@
       "JSM Skikda": "https://upload.wikimedia.org/wikipedia/commons/4/48/JSMSkikdaofficiallogo.png",
       "MSP Batna": "https://upload.wikimedia.org/wikipedia/fr/a/a8/MSP_Batna_logo.png",
       "JSD Jijel": "https://upload.wikimedia.org/wikipedia/fr/4/43/JSD_Jijel_logo.png",
-      "CR Beni Thour": "https://upload.wikimedia.org/wikipedia/fr/8/86/CR_Beni_Thour_logo.png"
+      "CR Beni Thour": "https://upload.wikimedia.org/wikipedia/fr/8/86/CR_Beni_Thour_logo.png",
+      "WB Aïn Benian": "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png"
     };
 
     const MATCHS_INIT = [
@@ -1360,8 +1368,13 @@
       {journee:"3", date:"2026-10-03", heure:"15:00", dom:"JSD Jijel", ext:"JS Azazga", sd:"0", se:"0", stade:"", obs:""}
     ];
 
+    const COUPE_INIT = [
+      {journee:"4e Tour", date:"2026-11-13", heure:"15:00", dom:"MO Béjaïa", ext:"WB Aïn Benian", sd:"", se:"", stade:"Terrain Neutre", obs:"Coupe d'Algérie"}
+    ];
+
     const ARTICLES_INIT = [
-      { id: "a1", cat: "all", date: "2026-10-13", titre: "COUP DE MASSUE / J5 : MO Béjaïa vs NRB Beni Oulbane à huis clos", image: "https://i.postimg.cc/NjDfRd1H/MO-Bejaia-vs-NRB-Beni-Oulbane-a-Huis-Clos.jpg", texte: "La rencontre opposant le MO Béjaïa au NRB Beni Oulbane se disputera à huis clos au Stade des Martyrs d'Akbou.\n#LaMaisonDesCrabes" }
+      { id: "a1", cat: "all", date: "2026-11-03", titre: "Coupe d'Algérie (4e tour LRFA) : Le MO Béjaïa affrontera le WB Aïn Benian", image: "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png", texte: "Le tirage au sort du 4e tour régional de la Coupe d'Algérie a désigné le Wifak Baladiat Aïn Benian (WBAB) comme adversaire des Crabes du MO Béjaïa. La rencontre se jouera les 13 ou 14 novembre 2026 sur terrain neutre.\n#LaMaisonDesCrabes" },
+      { id: "a2", cat: "all", date: "2026-10-13", titre: "COUP DE MASSUE / J5 : MO Béjaïa vs NRB Beni Oulbane à huis clos", image: "https://i.postimg.cc/NjDfRd1H/MO-Bejaia-vs-NRB-Beni-Oulbane-a-Huis-Clos.jpg", texte: "La rencontre opposant le MO Béjaïa au NRB Beni Oulbane se disputera à huis clos au Stade des Martyrs d'Akbou.\n#LaMaisonDesCrabes" }
     ];
 
     const PLAYERS_INIT = [
@@ -1425,7 +1438,7 @@
 
     let data = {
       championnat: [...MATCHS_INIT],
-      coupe: [],
+      coupe: [...COUPE_INIT],
       players: [...PLAYERS_INIT],
       staff: [],
       dirigeants: [],
@@ -1437,7 +1450,9 @@
       equipes: EQUIPES,
       stades: STADES,
       fdm: [],
-      breves: [],
+      breves: [
+        { id: "b1", titre: "Bienvenue sur le site officiel du MO Béjaïa !", date: "2026-11-03", texte: "Retrouvez l'actualité des Crabes." }
+      ],
       stats: {
         activeVote: {
           id: "v1",
@@ -1449,7 +1464,7 @@
         buteurs: { "Ben Mazouz Mohamed Saïd": 2, "Faouzi Yaya": 1 },
         cartons: { "Hamza Rebiai": { jaune: 1, rouge: 0 } }
       },
-      match_stats: {}, // STOCKAGE DES FICHES DE MATCHS DÉTAILLÉES DU MOB
+      match_stats: {},
       historique: [...HISTORIQUE_INIT],
       medias: { albums: [], videos: [] }
     };
@@ -2211,22 +2226,26 @@
     }
 
     function renderClub() {
-      document.getElementById('grid-staff').innerHTML = (data.staff || []).map((s) => {
-        return `<div class="player-card"><img src="${s.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}"><div class="pc-info"><div class="pc-name">${s.nom}</div><div class="pc-pos">${s.fonction}</div></div></div>`;
+      document.getElementById('grid-staff').innerHTML = (data.staff || []).map((s, idx) => {
+        const actions = isAdmin ? `<div class="pc-actions"><button class="btn-small btn-edit" onclick="openModalStaff(${idx})">✏️</button><button class="btn-small btn-del" onclick="deleteItem('staff',${idx})">🗑️</button></div>` : '';
+        return `<div class="player-card">${actions}<img src="${s.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}"><div class="pc-info"><div class="pc-name">${s.nom}</div><div class="pc-pos">${s.fonction}</div></div></div>`;
       }).join('');
 
       document.getElementById('grid-players').innerHTML = (data.players || []).sort((a,b) => a.num - b.num).map((p) => {
-        return `<div class="player-card"><div class="pc-num">${p.num}</div><img src="${p.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}"><div class="pc-info"><div class="pc-name">${p.nom}</div><div class="pc-pos">${p.poste}</div></div></div>`;
+        const realIdx = (data.players || []).indexOf(p);
+        const actions = isAdmin ? `<div class="pc-actions"><button class="btn-small btn-edit" onclick="openModalPlayer(${realIdx})">✏️</button><button class="btn-small btn-del" onclick="deleteItem('players',${realIdx})">🗑️</button></div>` : '';
+        return `<div class="player-card">${actions}<div class="pc-num">${p.num}</div><img src="${p.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}"><div class="pc-info"><div class="pc-name">${p.nom}</div><div class="pc-pos">${p.poste}</div></div></div>`;
       }).join('');
 
-      document.getElementById('grid-dirigeants').innerHTML = (data.dirigeants || []).map((d) => {
-        return `<div class="player-card"><img src="${d.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}"><div class="pc-info"><div class="pc-name">${d.nom}</div><div class="pc-pos">${d.fonction}</div></div></div>`;
+      document.getElementById('grid-dirigeants').innerHTML = (data.dirigeants || []).map((d, idx) => {
+        const actions = isAdmin ? `<div class="pc-actions"><button class="btn-small btn-edit" onclick="openModalDirigeant(${idx})">✏️</button><button class="btn-small btn-del" onclick="deleteItem('dirigeants',${idx})">🗑️</button></div>` : '';
+        return `<div class="player-card">${actions}<img src="${d.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}"><div class="pc-info"><div class="pc-name">${d.nom}</div><div class="pc-pos">${d.fonction}</div></div></div>`;
       }).join('');
     }
 
     function renderMob() {
       const now = new Date();
-      const mobMatches = (data.championnat || []).filter(m => (m.dom === 'MO Béjaïa' || m.ext === 'MO Béjaïa')).sort((a,b) => new Date(a.date) - new Date(b.date));
+      const mobMatches = (data.championnat || []).concat(data.coupe || []).filter(m => (m.dom === 'MO Béjaïa' || m.ext === 'MO Béjaïa')).sort((a,b) => new Date(a.date) - new Date(b.date));
       const nextMatch = mobMatches.find(m => new Date(m.date + 'T' + (m.heure || '15:00')) > now) || mobMatches[mobMatches.length-1];
       const lastMatch = [...mobMatches].reverse().find(m => new Date(m.date + 'T' + (m.heure || '15:00')) <= now && hasScore(m));
       const formatM = (m) => m ? `${m.dom} ${hasScore(m) ? m.sd+'-'+m.se : 'vs'} ${m.ext}` : "Aucun match.";
@@ -2599,7 +2618,7 @@
     function updateNextMatch() {
       if (!data.championnat || data.championnat.length === 0) return;
       const now = new Date();
-      const validMob = data.championnat.filter(m => (m.dom === 'MO Béjaïa' || m.ext === 'MO Béjaïa') && !hasScore(m) && (!m.obs || !m.obs.toLowerCase().includes('report')));
+      const validMob = (data.championnat || []).concat(data.coupe || []).filter(m => (m.dom === 'MO Béjaïa' || m.ext === 'MO Béjaïa') && !hasScore(m) && (!m.obs || !m.obs.toLowerCase().includes('report')));
       if (validMob.length === 0) { document.getElementById('nextMatchBanner').style.display = 'none'; return; }
       validMob.sort((a,b) => { if(a.date && b.date) return new Date(a.date + 'T' + (a.heure || '15:00')) - new Date(b.date + 'T' + (b.heure || '15:00')); return 0; });
       let next = validMob.find(m => m.date && new Date(m.date + 'T' + (m.heure || '15:00')) > now) || validMob[0];
@@ -2651,6 +2670,7 @@
     }
 
     async function saveToFirebase() {
+      if (!db) return;
       try { 
         const cleanData = sanitizeData(data);
         await set(ref(db, 'data_v10'), cleanData); 
@@ -2680,50 +2700,59 @@
     }
 
     function loadFromFirebase() {
-      trackVisit();
+      // RENDU IMMÉDIAT DES DONNÉES LOCALES POUR ÉVITER LES BLOCAGES DANS ACODE
       renderAll();
+      const statusEl = document.getElementById('statusBar');
+      if (statusEl) {
+        statusEl.className = 'status online';
+        statusEl.textContent = '🟢 Mode local actif (Connexion au serveur...)';
+      }
 
-      onValue(ref(db, 'data_v10'), (snap) => {
-        try {
-          if (snap.exists()) {
-            const fb = snap.val();
-            if (fb.championnat && Array.isArray(fb.championnat)) data.championnat = fb.championnat;
-            if (fb.coupe && Array.isArray(fb.coupe)) data.coupe = fb.coupe;
-            if (fb.players && Array.isArray(fb.players)) data.players = fb.players;
-            if (fb.staff && Array.isArray(fb.staff)) data.staff = fb.staff;
-            if (fb.dirigeants && Array.isArray(fb.dirigeants)) data.dirigeants = fb.dirigeants;
-            if (fb.mob) data.mob = fb.mob;
-            if (fb.live) data.live = fb.live;
-            if (fb.affiches) data.affiches = fb.affiches;
-            if (fb.videos) data.videos = fb.videos;
-            if (fb.articles && Array.isArray(fb.articles)) { data.articles = fb.articles; articles = fb.articles; }
-            if (fb.medias) data.medias = fb.medias;
-            if (fb.fdm && Array.isArray(fb.fdm)) data.fdm = fb.fdm;
-            if (fb.breves && Array.isArray(fb.breves)) data.breves = fb.breves;
-            if (fb.stats) data.stats = fb.stats;
-            if (fb.match_stats) data.match_stats = fb.match_stats;
-            if (fb.historique && Array.isArray(fb.historique)) data.historique = fb.historique;
-            
-            if (fb.visits !== undefined) {
-              const total = typeof fb.visits === 'number' ? fb.visits : (fb.visits.count || 0);
-              updateVisitDisplay(total);
+      if (!db) return;
+
+      try {
+        trackVisit();
+        onValue(ref(db, 'data_v10'), (snap) => {
+          try {
+            if (snap.exists()) {
+              const fb = snap.val();
+              if (fb.championnat && Array.isArray(fb.championnat)) data.championnat = fb.championnat;
+              if (fb.coupe && Array.isArray(fb.coupe)) data.coupe = fb.coupe;
+              if (fb.players && Array.isArray(fb.players)) data.players = fb.players;
+              if (fb.staff && Array.isArray(fb.staff)) data.staff = fb.staff;
+              if (fb.dirigeants && Array.isArray(fb.dirigeants)) data.dirigeants = fb.dirigeants;
+              if (fb.mob) data.mob = fb.mob;
+              if (fb.live) data.live = fb.live;
+              if (fb.affiches) data.affiches = fb.affiches;
+              if (fb.videos) data.videos = fb.videos;
+              if (fb.articles && Array.isArray(fb.articles)) { data.articles = fb.articles; articles = fb.articles; }
+              if (fb.medias) data.medias = fb.medias;
+              if (fb.fdm && Array.isArray(fb.fdm)) data.fdm = fb.fdm;
+              if (fb.breves && Array.isArray(fb.breves)) data.breves = fb.breves;
+              if (fb.stats) data.stats = fb.stats;
+              if (fb.match_stats) data.match_stats = fb.match_stats;
+              if (fb.historique && Array.isArray(fb.historique)) data.historique = fb.historique;
+              
+              if (fb.visits !== undefined) {
+                const total = typeof fb.visits === 'number' ? fb.visits : (fb.visits.count || 0);
+                updateVisitDisplay(total);
+              }
             }
+            renderAll();
+            if (statusEl) {
+              statusEl.className = 'status online';
+              statusEl.textContent = `🟢 Synchronisé en direct (${(data.championnat||[]).length} matchs)`;
+            }
+          } catch(err) {
+            console.error("Erreur rendu Firebase:", err);
+            renderAll();
           }
-          renderAll();
-          document.getElementById('statusBar').className = 'status online';
-          document.getElementById('statusBar').textContent = `🟢 Connecté en direct (${(data.championnat||[]).length} matchs)`;
-        } catch(err) {
-          console.error("Erreur rendu Firebase:", err);
-          renderAll();
-          document.getElementById('statusBar').className = 'status online';
-          document.getElementById('statusBar').textContent = `🟢 Connecté en direct`;
-        }
-      }, (err) => {
-        console.warn('Mode hors ligne:', err);
-        renderAll();
-        document.getElementById('statusBar').className = 'status offline';
-        document.getElementById('statusBar').textContent = '🔴 Hors ligne';
-      });
+        }, (err) => {
+          console.warn('Mode hors ligne Firebase:', err);
+        });
+      } catch(e) {
+        console.warn("Erreur chargement Firebase:", e);
+      }
     }
 
     document.getElementById('mainTitle').addEventListener('click', handleTitleClick);
@@ -3177,6 +3206,4 @@
   </script>
 </body>
 </html>
-
-
-
+```
