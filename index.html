@@ -29,7 +29,7 @@
     padding-bottom: 80px;
   }
 
-  /* 1. EN-TÊTE OFFICIEL */
+  /* EN-TÊTE */
   .header {
     background: linear-gradient(180deg, #000000 0%, #0d1410 100%);
     padding: 18px 12px 14px;
@@ -76,7 +76,6 @@
     margin-top: 5px;
   }
 
-  /* STATUT SERVEUR */
   .status {
     text-align: center;
     font-size: 11px;
@@ -114,7 +113,7 @@
     50% { opacity: 0.88; transform: scale(1.008); } 
   }
 
-  /* BARRE D'ONGLETS */
+  /* BARRE ONGLETS */
   .tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 10px; -webkit-overflow-scrolling: touch; }
   .tabs::-webkit-scrollbar { display: none; }
   .tab {
@@ -168,7 +167,7 @@
   .cd-num { font-family: 'Teko', sans-serif; font-size: 24px; line-height: 1; color: var(--mob-green-neon); display: block; }
   .cd-label { font-size: 8px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; }
 
-  /* 1. FLASH INFOS : BADGE AU PREMIER PLAN ET TEXTE QUI GLISSE PAR-DESSOUS */
+  /* FLASH INFOS (LE TEXTE GLISSE SOUS LE BADGE) */
   .ticker-container {
     position: relative;
     display: flex;
@@ -214,7 +213,7 @@
   .home-widgets { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 15px; }
   @media (min-width: 900px) { .home-widgets { grid-template-columns: 1fr 1fr 1fr; } }
   
-  /* CARROUSEL D'ACTUALITÉS FIXE EN FONDU (FADE) */
+  /* CARROUSEL SUR PLACE (FADE) */
   .news-fade-container {
     position: relative;
     width: 100%;
@@ -261,7 +260,6 @@
   .news-fade-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: background 0.3s; }
   .news-fade-dot.active { background: var(--mob-green-neon); transform: scale(1.2); }
 
-  /* FEUILLES DE MATCH */
   .fdm-container { display: flex; flex-direction: column; gap: 10px; max-height: 235px; overflow-y: auto; padding-right: 5px; scroll-behavior: smooth; }
   .fdm-item { display: flex; gap: 10px; background: var(--card-dark); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 8px; cursor: pointer; align-items: center; }
   .fdm-item img { width: 65px; height: 65px; object-fit: cover; border-radius: 6px; }
@@ -269,7 +267,7 @@
   .fdm-item h4 { font-size: 12px; color: var(--mob-green-neon); margin-bottom: 4px; font-weight: 800; }
   .fdm-item p { font-size: 10px; color: var(--text-muted); }
 
-  /* 3. VOTE HOMME DU MATCH IMPACTANT (STYLE TROPHÉE / MVP) */
+  /* VOTE HOMME DU MATCH (MVP TROPHÉE & SANS NOMBRE DE VOTANTS) */
   .home-vote-widget { 
     background: radial-gradient(circle at 50% 0%, #18281d 0%, #0d1410 100%);
     border: 1px solid var(--mob-gold);
@@ -277,7 +275,6 @@
     padding: 14px 12px;
     text-align: center;
     box-shadow: 0 4px 20px rgba(245, 158, 11, 0.15), inset 0 0 15px rgba(0, 230, 118, 0.05);
-    position: relative;
   }
   .vote-header-tag {
     display: inline-flex;
@@ -310,20 +307,11 @@
     color: #fff;
     transition: all 0.2s;
   }
-  .vote-player-btn:hover { 
-    background: #1b291f; 
-    border-color: var(--mob-green-neon); 
-    transform: scale(1.01); 
-  }
-  .vote-player-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-align: left;
-  }
+  .vote-player-btn:hover { background: #1b291f; border-color: var(--mob-green-neon); transform: scale(1.01); }
+  .vote-player-info { display: flex; align-items: center; gap: 10px; text-align: left; }
   .vote-avatar { 
-    width: 34px; 
-    height: 34px; 
+    width: 36px; 
+    height: 36px; 
     border-radius: 50%; 
     object-fit: cover; 
     border: 2px solid var(--mob-green-neon); 
@@ -342,6 +330,31 @@
     border-radius: 6px;
     background: rgba(0,0,0,0.4);
   }
+
+  /* CARTE JOUEUR ÉLU (ARTICLE & PHOTO EN FIN DE VOTE) */
+  .elu-winner-card {
+    background: radial-gradient(circle at 50% 0%, #201a0d 0%, #0d1410 100%);
+    border: 2px solid var(--mob-gold);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 15px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(245, 158, 11, 0.25);
+    position: relative;
+  }
+  .elu-img {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--mob-gold);
+    margin: 0 auto 10px;
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+    display: block;
+  }
+  .elu-nom { font-size: 16px; font-weight: 900; color: #fff; text-transform: uppercase; }
+  .elu-titre { font-size: 13px; font-weight: 800; color: var(--mob-gold); margin: 6px 0 10px; }
+  .elu-texte { font-size: 12px; line-height: 1.6; color: #d1d5db; text-align: justify; white-space: pre-wrap; }
 
   /* CARTES ARTICLES */
   .news-card { background: var(--card-dark); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); cursor: pointer; position: relative; }
@@ -414,8 +427,8 @@
   .video-thumb { width: 100%; aspect-ratio: 9/16; object-fit: cover; border-radius: 6px; cursor: pointer; background: #000; }
   .btn-del-video { position: absolute; top: 5px; right: 5px; background: rgba(192, 57, 43, 0.9); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; z-index: 2; }
 
-  /* VOTE BARS */
-  .vote-card { background: var(--card-dark); border-radius: 10px; padding: 15px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
+  /* VOTE BARS (SEULEMENT LE POURCENTAGE %) */
+  .vote-card { background: var(--card-dark); border-radius: 10px; padding: 15px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 2px 6px rgba(0,0,0,0.3); margin-bottom: 15px; }
   .vote-title { font-size: 1.1em; font-weight: 900; color: var(--mob-green-neon); margin-bottom: 10px; text-align: center; text-transform: uppercase; }
   .vote-bar-label { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 800; margin-bottom: 4px; }
   .vote-bar-bg { width: 100%; height: 10px; background: #17211a; border-radius: 5px; overflow: hidden; margin-bottom: 10px; }
@@ -457,20 +470,12 @@
   .historique-text { color: #d1d5db; line-height: 1.7; font-size: 0.95em; text-align: justify; margin-bottom: 10px; }
   .historique-image { width: 100%; border-radius: 8px; margin: 12px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.5); display: block; }
   .historique-image-caption { text-align: center; font-size: 0.8em; color: var(--text-muted); font-style: italic; margin-top: -6px; margin-bottom: 15px; }
-  .historique-fiche { background: #131b15; border-left: 4px solid var(--mob-green); padding: 15px; border-radius: 6px; margin: 15px 0; }
-  .historique-fiche-item { display: flex; margin-bottom: 6px; font-size: 0.9em; }
-  .historique-fiche-label { font-weight: bold; color: var(--mob-green-neon); min-width: 140px; }
-  .historique-list { padding-left: 20px; margin: 10px 0; }
-  .historique-list li { margin-bottom: 5px; color: #d1d5db; line-height: 1.5; font-size: 0.9em; }
-  .historique-ultras { background: #1a160d; border-left: 4px solid var(--mob-gold); padding: 12px; border-radius: 6px; margin: 10px 0; }
-  .historique-ultras-name { font-weight: bold; color: var(--mob-gold); }
-  .historique-ultras-info { font-size: 0.9em; color: #d1d5db; margin-top: 2px; }
 
   /* BOUTON FLOTTANT & VISITES */
   .btn-share-float { position: fixed; bottom: 20px; right: 20px; background-color: #2563eb; color: white; border-radius: 50px; padding: 11px 18px; font-size: 14px; font-weight: 800; box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 6px; z-index: 1000; cursor: pointer; border: 2px solid white; }
   .visit-badge { position: fixed; bottom: 20px; left: 20px; background-color: #1e293b; color: white; border-radius: 50px; padding: 8px 14px; font-size: 12px; font-weight: 800; box-shadow: 0 4px 15px rgba(0,0,0,0.5); z-index: 1000; border: 2px solid white; display: none; align-items: center; gap: 5px; }
 
-  /* MODALES AVEC DESIGN SOMBRE */
+  /* MODALES */
   .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); justify-content: center; align-items: center; z-index: 3000; padding: 10px; }
   .modal.active { display: flex; }
   .modal-content { background: #121a14; border: 1px solid var(--card-border); color: #fff; padding: 20px; border-radius: 12px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; position: relative; }
@@ -491,7 +496,7 @@
 </head>
 <body>
 
-  <!-- EN-TÊTE OFFICIEL DU CLUB -->
+  <!-- EN-TÊTE DU SITE -->
   <header class="header">
     <img src="https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png" alt="MO Béjaïa" class="header-logo" onclick="handleTitleClick()">
     <div class="header-title" id="mainTitle">MO <span>BÉJAÏA</span><span id="adminBadge"></span></div>
@@ -514,7 +519,7 @@
     <div class="tab" onclick="switchTab('historique', this)">📜 Historique</div>
   </div>
 
-  <!-- ESPACE ADMIN AVEC BOUTON BRÈVE FLASH DIRECT -->
+  <!-- ESPACE ADMIN -->
   <div id="adminPanel" class="admin-panel" style="display:none;">
     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
       <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
@@ -744,7 +749,7 @@
     </div>
   </div>
 
-  <!-- 4. ONGLET STATS -->
+  <!-- 4. ONGLET STATS (AVEC JOUEUR ÉLU & VOTES SANS COMPTEUR) -->
   <div id="tab-stats" class="tab-content">
     <div class="sub-tabs">
       <div class="sub-tab active" id="subtab-stats-vote" onclick="switchSubTabStats('vote')">⭐ Homme du Match</div>
@@ -752,13 +757,18 @@
       <div class="sub-tab" id="subtab-stats-cartons" onclick="switchSubTabStats('cartons')">🟨 Cartons</div>
     </div>
     <div class="toolbar" id="stats-toolbar" style="display:none;">
-      <button id="btnAddVote" onclick="openModalCreateVote()" style="display:none;">➕ Créer un Vote</button>
-      <button id="btnManageVote" onclick="openModalManageVote()" style="background:#f39c12; display:none;">⚙️ Gérer les candidats</button>
-      <button id="btnResetVote" onclick="resetVote()" style="background:#c0392b; display:none;">🔄 Clôturer le Vote</button>
-      <button id="btnAddStat" onclick="openModalAddStat('buteur')" style="display:none;">➕ Ajouter un Buteur</button>
-      <button id="btnAddCarton" onclick="openModalAddStat('carton')" style="background:#c0392b; display:none;">➕ Ajouter un Carton</button>
+      <button id="btnAddVote" onclick="openModalCreateVote()" style="display:none;">➕ Nouveau Vote</button>
+      <button id="btnManageVote" onclick="openModalManageVote()" style="background:#f39c12; display:none;">⚙️ Candidats</button>
+      <button id="btnResetVote" onclick="resetVote()" style="background:#c0392b; display:none;">🔄 Clôturer Vote</button>
+      <!-- BOUTON DÉDIÉ POUR L'ÉLU -->
+      <button id="btnManageElu" onclick="openModalElu()" style="background:#f59e0b; color:#000; font-weight:900;">🏆 Homme du Match Élu (Photo & Article)</button>
+      <button id="btnAddStat" onclick="openModalAddStat('buteur')" style="display:none;">➕ Buteur</button>
+      <button id="btnAddCarton" onclick="openModalAddStat('carton')" style="background:#c0392b; display:none;">➕ Carton</button>
     </div>
-    <div id="stats-vote" class="stats-section"><div id="voteContainer" style="margin:10px;"></div></div>
+    
+    <div id="stats-vote" class="stats-section">
+      <div id="voteContainer" style="margin:10px;"></div>
+    </div>
     <div id="stats-buteurs" class="stats-section" style="display:none;">
       <div class="table-wrap">
         <table>
@@ -808,7 +818,7 @@
     </div>
   </div>
 
-  <!-- 7. ONGLET HISTORIQUE COMPLET -->
+  <!-- 7. ONGLET HISTORIQUE COMPLET 100% MODIFIABLE -->
   <div id="tab-historique" class="tab-content">
     <div class="toolbar" id="historique-toolbar" style="display:none; margin-bottom: 15px;">
       <button onclick="openModalHisto('new')">➕ Ajouter une section</button>
@@ -822,106 +832,6 @@
       </div>
 
       <div id="historique-dynamic-sections"></div>
-
-      <div class="historique-section">
-        <div class="historique-section-title">📋 Fiche d'identité</div>
-        <div class="historique-fiche">
-          <div class="historique-fiche-item"><div class="historique-fiche-label">Nom officiel :</div><div>Mouloudia Olympique de Béjaïa (M.O.B)</div></div>
-          <div class="historique-fiche-item"><div class="historique-fiche-label">Date de fondation :</div><div>5 juillet 1954</div></div>
-          <div class="historique-fiche-item"><div class="historique-fiche-label">Surnom :</div><div>Les Crabes 🦀</div></div>
-          <div class="historique-fiche-item"><div class="historique-fiche-label">Stade :</div><div>Stade de l'Unité Maghrébine (Béjaïa)</div></div>
-          <div class="historique-fiche-item"><div class="historique-fiche-label">Couleurs :</div><div>Vert et Noir (domicile) / Vert et Blanc (extérieur)</div></div>
-          <div class="historique-fiche-item"><div class="historique-fiche-label">Championnat actuel :</div><div>Ligue 2 Amateur (Groupe Centre-Est) 2026/2027</div></div>
-        </div>
-      </div>
-
-      <div class="historique-section">
-        <div class="historique-section-title">📅 La naissance et le sacrifice (1954-1962)</div>
-        <div class="historique-text">La trajectoire du MOB est intimement liée à l'histoire de l'Algérie. Le 5 juillet 1954, le récépissé de déclaration est officiellement déposé par M. Abdelhafid Tamzali, marquant la naissance administrative du club.</div>
-        <img src="https://i.postimg.cc/zvngc2PV/1000012070.jpg" alt="Abdelhafid Tamzali" class="historique-image">
-        <div class="historique-image-caption">M. Abdelhafid Tamzali, premier président du MO Béjaïa (1954)</div>
-      </div>
-
-      <div class="historique-section">
-        <div class="historique-section-title">👥 Les présidents du MO Béjaïa depuis la création</div>
-        <img src="https://i.postimg.cc/DyLg9BbL/les-dirigeants-du-MOB-post-independance.jpg" alt="Dirigeants du MOB" class="historique-image">
-        <div class="historique-image-caption">Les dirigeants post-indépendance</div>
-        <ul class="historique-list">
-          <li>Tamzali Abdelhafid • Yousfi Loucif • Hadahoum Salah • Belhocine Hocine • Mendil Boualem • Dali Ahmed • Zaouche Salah • Benalouche Salah • Kasri Allaoua • Tighidet Ahcen • Ferdjoukh Abdelkader • Maître Yanat • Ladjouz • Oulmou Mohamed • Tikheroubine Mohamed • Berri Larbi • Allouache Larbi • Hamouche Yahia • Bannai Zahir • Rezki Mustapha • Leklak Norredine • Bouchaara • Maouche Nacer • Bouchebah Mustapha • Adrar Akli • Attia Zahir • Ikhlef Boubekeur • Hassisen Farid • Boudiab Rezki • Benai Arab • Boukhiba Djamel</li>
-        </ul>
-      </div>
-
-      <div class="historique-section">
-        <div class="historique-section-title">🗺️ Le parcours du MOB à travers les divisions</div>
-        <div class="historique-text">Le parcours du MOB à travers les divisions du football algérien est un véritable voyage, marqué par des périodes de transition et une reconstruction progressive.</div>
-        <img src="https://i.postimg.cc/0Nb9QMvG/MO-Bejaia-archive-1.jpg" alt="Archive 1" class="historique-image">
-        <div class="historique-image-caption">MOB, histoire et archives</div>
-        <ul class="historique-list">
-          <li><b>1962 - 1963 :</b> Reprise post-indépendance dans la division Nationale de Constantine.</li>
-          <li><b>1964 - 1965 :</b> Évolution en Division 2 (Division d'Honneur).</li>
-          <li><b>1966 - 1969 :</b> Passage en Division 4 (Promotion d'Honneur).</li>
-          <li><b>1977 - 1990 :</b> Longue période de transition où le MOB fusionne et joue sous l'appellation du MBB (Mechâal Baladiat Béjaïa), oscillant entre la D2 et la D3.</li>
-          <li><b>1994 - 2001 :</b> Le club stabilise sa structure en Division 3 (Région Est).</li>
-          <li><b>2012 :</b> Le grand retour en Ligue 2, prémisse d'un âge d'or imminent.</li>
-        </ul>
-        <img src="https://i.postimg.cc/zv3C2kYH/MO-Bejaia-archive-2.jpg" alt="Archive 2" class="historique-image">
-        <div class="historique-image-caption">MOB, histoire et archives</div>
-      </div>
-
-      <div class="historique-section">
-        <div class="historique-section-title">🏆 L'âge d'or national (2013-2015)</div>
-        <div class="historique-text">Après des décennies de lutte dans les divisions inférieures, le MOB écrit les plus belles pages de son histoire au milieu des années 2010. Au terme de la saison 2012/2013, le club accède pour la toute première fois de son histoire à la Ligue 1 Professionnelle. Après une première saison de maintien (2013/2014), l'exercice 2014/2015 vire au chef-d'œuvre :</div>
-        <ul class="historique-list">
-          <li>🏆 Une victoire historique en <b>Coupe d'Algérie</b>, le tout premier trophée majeur du club.</li>
-          <li>🥈 Une place de <b>Vice-Champion d'Algérie</b>, qualifiant le club pour les joutes continentales.</li>
-        </ul>
-        <img src="https://i.postimg.cc/9XZfdg0N/joie-de-toute-l-equipe-apres-la-victoire-MO-Bejaia-1-0-RC-arbaa.jpg" alt="Victoire RC Arbaa" class="historique-image">
-        <div class="historique-image-caption">Historique : Le MOB décroche sa première Coupe d'Algérie (1-0 vs RC Arbaâ) au stade Mustapha Tchaker de Blida</div>
-        <img src="https://i.postimg.cc/R0XvC72C/le-groupe-a-Bejaia-apres-la-finale-coupe-d-Algerie-2015-MO-Bejaia-1-0-RC-Arbaa-cou.jpg" alt="Groupe finale 2015" class="historique-image">
-        <div class="historique-image-caption">Le groupe à Béjaïa après la victoire en Coupe d'Algérie 2015</div>
-      </div>
-
-      <div class="historique-section">
-        <div class="historique-section-title">🌍 Le rêve africain (2016)</div>
-        <div class="historique-text">Propulsé sur la scène continentale, le MOB surprend l'Afrique. Après un beau parcours en Ligue des Champions, les Crabes sont reversés en Coupe de la CAF et se hissent jusqu'en <b>Finale en novembre 2016</b> face au TP Mazembe.</div>
-        <ul class="historique-list">
-          <li><b>Match aller (29 octobre 2016) :</b> MO Béjaïa 1-1 TP Mazembe</li>
-          <li><b>Match retour :</b> TP Mazembe 4-1 MO Béjaïa</li>
-        </ul>
-        <div class="historique-text">Le MOB s'incline, mais sort la tête haute d'une aventure mémorable.</div>
-        <img src="https://i.postimg.cc/13Jh0wD6/1000011470.jpg" alt="Obuasi" class="historique-image">
-        <div class="historique-image-caption">La délégation du MO Béjaïa au cœur de la ville d'Obuasi au Ghana (Finale CAF 2016)</div>
-      </div>
-
-      <div class="historique-section">
-        <div class="historique-section-title">📉 Descente, reconstruction et grand retour (2017-2026)</div>
-        <div class="historique-text">Le football est fait de cycles. Après avoir touché les sommets, les Vert et Noir connaissent des années plus instables, avant de valider avec fierté leur retour en <b>Ligue 2 Amateur (Groupe Centre-Est)</b> pour aborder la saison 2026/2027 avec ambition.</div>
-        <img src="https://i.postimg.cc/qRvygGRm/MOB-archive-3.jpg" alt="Archive 3" class="historique-image">
-        <div class="historique-image-caption">MOB, histoire et archives</div>
-      </div>
-
-      <div class="historique-section">
-        <div class="historique-section-title">🥁 Le 12ème Homme : La ferveur des supporters</div>
-        <div class="historique-text">Si le MOB est respecté partout en Algérie, il le doit à son public unique. Les tribunes du Stade de l'Unité Maghrébine vibrent au rythme de groupes Ultras passionnés :</div>
-        <img src="https://i.postimg.cc/K8cDTMZ9/Stade-de-l-unite-Maghrebine-de-Bejaia.jpg" alt="Stade Unité Maghrébine" class="historique-image">
-        <div class="historique-image-caption">Le Stade de l'Unité Maghrébine de Béjaïa</div>
-        <div class="historique-ultras">
-          <div class="historique-ultras-name">🔥 Ultras Granchio (UG)</div>
-          <div class="historique-ultras-info">Fondé le 2 octobre 2009. Ce groupe historique donne de la voix depuis le Couvert B du stade.</div>
-        </div>
-        <div class="historique-ultras">
-          <div class="historique-ultras-name">👑 Ultras Saldae Kings (USK)</div>
-          <div class="historique-ultras-info">Fondé le 4 mars 2011. Ils animent avec ferveur le Couvert A.</div>
-        </div>
-        <div class="historique-ultras">
-          <div class="historique-ultras-name">🦅 Ultras Free Men 16 (UFM16)</div>
-          <div class="historique-ultras-info">Fondé le 19 juin 2016. Ils occupent la mythique tribune "Adrar N Tizi".</div>
-        </div>
-        <div class="historique-ultras">
-          <div class="historique-ultras-name">💀 Ultra Mobiste (UM)</div>
-          <div class="historique-ultras-info">Fondé le 11 janvier 2025. Issu de la fusion des Pirate Boys (UPB 2011), de la Banda Berberista (2015) et du KOP 12.</div>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -1069,6 +979,22 @@
     </div>
   </div>
 
+  <!-- MODALE HOMME DU MATCH ÉLU (ARTICLE & PHOTO) -->
+  <div class="modal" id="modalElu">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('modalElu')">×</span>
+      <h3>🏆 Homme du Match Élu (Résultat Final)</h3>
+      <label>Nom du joueur élu <input type="text" id="eluNom" placeholder="Ex: Ben Mazouz Mohamed Saïd"></label>
+      <label>Photo de l'élu (URL) <input type="url" id="eluImg" placeholder="https://..."></label>
+      <label>Titre de l'article <input type="text" id="eluTitre" placeholder="Ex: Plébiscité Homme du Match face à l'AS Khroub !"></label>
+      <label>Article / Débriefing du joueur <textarea id="eluTexte" rows="7" placeholder="Rédigez l'article célébrant la performance du joueur..."></textarea></label>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('modalElu')">Annuler</button>
+        <button onclick="saveElu()">Publier l'Élu</button>
+      </div>
+    </div>
+  </div>
+
   <div class="modal" id="modalAddStat">
     <div class="modal-content">
       <span class="modal-close" onclick="closeModal('modalAddStat')">×</span>
@@ -1105,7 +1031,6 @@
     </div>
   </div>
 
-  <!-- 2. MODALES POUR FLASH INFOS (LISTE + CRÉATION/ÉDITION ADMIN) -->
   <div class="modal" id="modalAllBreves">
     <div class="modal-content">
       <span class="modal-close" onclick="closeModal('modalAllBreves')">×</span>
@@ -1132,15 +1057,20 @@
     </div>
   </div>
 
+  <!-- MODALE HISTORIQUE (POUR TOUTES LES SECTIONS) -->
   <div class="modal" id="modalHisto">
     <div class="modal-content">
       <span class="modal-close" onclick="closeModal('modalHisto')">×</span>
       <h3>📜 Section Historique</h3>
       <input type="hidden" id="editHistoIdx">
-      <label>Titre <input type="text" id="hTitre"></label>
-      <label>Texte <textarea id="hTexte" rows="6"></textarea></label>
-      <label>Photo (URL) <input type="url" id="hImg"></label>
-      <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalHisto')">Annuler</button><button onclick="saveHisto()">Enregistrer</button></div>
+      <label>Titre de l'époque / section <input type="text" id="hTitre" placeholder="Ex: 🏆 L'âge d'or national (2013-2015)"></label>
+      <label>Texte historique <textarea id="hTexte" rows="8"></textarea></label>
+      <label>Photo d'archive (URL) <input type="url" id="hImg" placeholder="https://..."></label>
+      <label>Légende sous la photo <input type="text" id="hCaption" placeholder="Ex: Victoire en Coupe d'Algérie..."></label>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('modalHisto')">Annuler</button>
+        <button onclick="saveHisto()">Enregistrer</button>
+      </div>
     </div>
   </div>
 
@@ -1176,7 +1106,6 @@
     </div>
   </div>
 
-  <!-- MODALES DU SYSTÈME ORIGINAL DE MÉDIAS -->
   <div class="modal" id="modalAlbum">
     <div class="modal-content">
       <span class="modal-close" onclick="closeModal('modalAlbum')">×</span>
@@ -1226,7 +1155,7 @@
     </div>
   </div>
 
-  <!-- SCRIPT DU SITE SÉCURISÉ SANS ERREUR -->
+  <!-- SCRIPT DU SITE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getDatabase, ref, set, get, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
@@ -1278,6 +1207,29 @@
       "CR Beni Thour": "https://upload.wikimedia.org/wikipedia/fr/8/86/CR_Beni_Thour_logo.png"
     };
 
+    const MATCHS_INIT = [
+      {journee:"1", date:"2026-09-18", heure:"16:00", dom:"AS Khroub", ext:"Paradou AC", sd:"0", se:"0", stade:"Stade Abed-Hamdani (El Khroub)", obs:""},
+      {journee:"1", date:"2026-09-18", heure:"16:00", dom:"USM Annaba", ext:"NC Magra", sd:"3", se:"0", stade:"Stade 19 Mai 1956 (Annaba)", obs:""},
+      {journee:"1", date:"2026-09-18", heure:"16:00", dom:"US Chaouia", ext:"NRB Beni Oulbane", sd:"1", se:"1", stade:"", obs:""},
+      {journee:"1", date:"2026-09-18", heure:"16:00", dom:"NRB Teleghma", ext:"MSP Batna", sd:"1", se:"1", stade:"Stade Khabaza Bachir (Teleghma)", obs:""},
+      {journee:"1", date:"2026-09-18", heure:"16:00", dom:"CA Batna", ext:"JS Azazga", sd:"2", se:"2", stade:"Stade 1er Novembre 1954 (Batna)", obs:""},
+      {journee:"1", date:"2026-09-18", heure:"16:00", dom:"JSM Skikda", ext:"IRB Nezla", sd:"2", se:"0", stade:"Stade 20 Août 1955 (Skikda)", obs:""},
+      {journee:"1", date:"2026-09-18", heure:"16:00", dom:"MO Béjaïa", ext:"MO Constantine", sd:"0", se:"0", stade:"Stade des Martyrs (Akbou)", obs:""},
+      {journee:"2", date:"2026-09-26", heure:"16:00", dom:"CR Beni Thour", ext:"MO Béjaïa", sd:"1", se:"3", stade:"", obs:""},
+      {journee:"2", date:"2026-09-26", heure:"16:00", dom:"IRB Nezla", ext:"JSD Jijel", sd:"1", se:"0", stade:"", obs:""},
+      {journee:"2", date:"2026-09-26", heure:"16:00", dom:"NRB Beni Oulbane", ext:"CA Batna", sd:"1", se:"0", stade:"", obs:""},
+      {journee:"2", date:"2026-09-26", heure:"16:00", dom:"Paradou AC", ext:"NRB Teleghma", sd:"2", se:"1", stade:"", obs:""},
+      {journee:"2", date:"2026-09-26", heure:"16:00", dom:"NC Magra", ext:"US Chaouia", sd:"1", se:"0", stade:"", obs:""},
+      {journee:"2", date:"2026-09-26", heure:"16:00", dom:"MSP Batna", ext:"MO Constantine", sd:"0", se:"0", stade:"", obs:""},
+      {journee:"3", date:"2026-10-02", heure:"15:00", dom:"USM Annaba", ext:"Paradou AC", sd:"2", se:"1", stade:"", obs:""},
+      {journee:"3", date:"2026-10-02", heure:"15:00", dom:"NRB Teleghma", ext:"NC Magra", sd:"1", se:"2", stade:"", obs:""},
+      {journee:"3", date:"2026-10-02", heure:"15:00", dom:"CA Batna", ext:"MSP Batna", sd:"0", se:"1", stade:"", obs:""},
+      {journee:"3", date:"2026-10-02", heure:"15:00", dom:"MO Constantine", ext:"CR Beni Thour", sd:"2", se:"1", stade:"", obs:""},
+      {journee:"3", date:"2026-10-02", heure:"15:00", dom:"US Chaouia", ext:"AS Khroub", sd:"0", se:"0", stade:"", obs:""},
+      {journee:"3", date:"2026-10-03", heure:"15:00", dom:"JSM Skikda", ext:"NRB Beni Oulbane", sd:"1", se:"0", stade:"", obs:""},
+      {journee:"3", date:"2026-10-03", heure:"15:00", dom:"JSD Jijel", ext:"JS Azazga", sd:"0", se:"0", stade:"", obs:""}
+    ];
+
     const ARTICLES_INIT = [
       { id: "a1", cat: "all", date: "2026-10-13", titre: "COUP DE MASSUE / J5 : MO Béjaïa vs NRB Beni Oulbane à huis clos", image: "https://i.postimg.cc/NjDfRd1H/MO-Bejaia-vs-NRB-Beni-Oulbane-a-Huis-Clos.jpg", texte: "La rencontre opposant le MO Béjaïa au NRB Beni Oulbane se disputera à huis clos au Stade des Martyrs d'Akbou.\n#LaMaisonDesCrabes" }
     ];
@@ -1290,14 +1242,66 @@
       { num: 2, nom: "Djelloul Abbou M'hamed", poste: "Latéral droit", img: "https://i.postimg.cc/wTTzKNPM/Djelloul-Abbou-M-hamed-rejoint-le-MO-Bejaia.jpg" }
     ];
 
+    // SECTIONS HISTORIQUES INITIALES (100% MODIFIABLES)
+    const HISTORIQUE_INIT = [
+      {
+        titre: "📋 Fiche d'identité",
+        texte: "Nom officiel : Mouloudia Olympique de Béjaïa (M.O.B)\nDate de fondation : 5 juillet 1954\nSurnom : Les Crabes 🦀\nStade : Stade de l'Unité Maghrébine (Béjaïa)\nCouleurs : Vert et Noir (domicile) / Vert et Blanc (extérieur)\nChampionnat actuel : Ligue 2 Amateur (Groupe Centre-Est) 2026/2027",
+        img: "",
+        caption: ""
+      },
+      {
+        titre: "📅 La naissance et le sacrifice (1954-1962)",
+        texte: "La trajectoire du MOB est intimement liée à l'histoire de l'Algérie. Le 5 juillet 1954, le récépissé de déclaration est officiellement déposé par M. Abdelhafid Tamzali, marquant la naissance administrative du club.",
+        img: "https://i.postimg.cc/zvngc2PV/1000012070.jpg",
+        caption: "M. Abdelhafid Tamzali, premier président du MO Béjaïa (1954)"
+      },
+      {
+        titre: "👥 Les présidents du MO Béjaïa depuis la création",
+        texte: "Tamzali Abdelhafid • Yousfi Loucif • Hadahoum Salah • Belhocine Hocine • Mendil Boualem • Dali Ahmed • Zaouche Salah • Benalouche Salah • Kasri Allaoua • Tighidet Ahcen • Ferdjoukh Abdelkader • Maître Yanat • Ladjouz • Oulmou Mohamed • Tikheroubine Mohamed • Berri Larbi • Allouache Larbi • Hamouche Yahia • Bannai Zahir • Rezki Mustapha • Leklak Norredine • Bouchaara • Maouche Nacer • Bouchebah Mustapha • Adrar Akli • Attia Zahir • Ikhlef Boubekeur • Hassisen Farid • Boudiab Rezki • Benai Arab • Boukhiba Djamel",
+        img: "https://i.postimg.cc/DyLg9BbL/les-dirigeants-du-MOB-post-independance.jpg",
+        caption: "Les dirigeants post-indépendance"
+      },
+      {
+        titre: "🗺️ Le parcours du MOB à travers les divisions",
+        texte: "Le parcours du MOB à travers les divisions du football algérien est un véritable voyage, marqué par des périodes de transition et une reconstruction progressive :\n\n• 1962 - 1963 : Reprise post-indépendance dans la division Nationale de Constantine.\n• 1964 - 1965 : Évolution en Division 2 (Division d'Honneur).\n• 1966 - 1969 : Passage en Division 4 (Promotion d'Honneur).\n• 1977 - 1990 : Longue période de transition où le MOB fusionne et joue sous l'appellation du MBB (Mechâal Baladiat Béjaïa), oscillant entre la D2 et la D3.\n• 1994 - 2001 : Le club stabilise sa structure en Division 3 (Région Est).\n• 2012 : Le grand retour en Ligue 2, prémisse d'un âge d'or imminent.",
+        img: "https://i.postimg.cc/0Nb9QMvG/MO-Bejaia-archive-1.jpg",
+        caption: "Archive historique du MO Béjaïa"
+      },
+      {
+        titre: "🏆 L'âge d'or national (2013-2015)",
+        texte: "Après des décennies de lutte dans les divisions inférieures, le MOB écrit les plus belles pages de son histoire au milieu des années 2010. Au terme de la saison 2012/2013, le club accède pour la toute première fois de son histoire à la Ligue 1 Professionnelle. Après une première saison de maintien (2013/2014), l'exercice 2014/2015 vire au chef-d'œuvre :\n\n• Vainqueur de la Coupe d'Algérie 2015 : Victoire 1-0 face au RC Arbaâ au stade Mustapha Tchaker de Blida. Premier trophée majeur de l'histoire du club !\n• Vice-Champion d'Algérie 2014/2015 : Qualification historique en Ligue des Champions de la CAF.",
+        img: "https://i.postimg.cc/9XZfdg0N/joie-de-toute-l-equipe-apres-la-victoire-MO-Bejaia-1-0-RC-arbaa.jpg",
+        caption: "Historique : Le MOB décroche sa première Coupe d'Algérie (1-0 vs RC Arbaâ) à Blida"
+      },
+      {
+        titre: "🌍 Le rêve africain (2016)",
+        texte: "Propulsé sur la scène continentale, le MOB surprend l'Afrique. Après un beau parcours en Ligue des Champions, les Crabes sont reversés en Coupe de la CAF et se hissent jusqu'en Finale en novembre 2016 face au TP Mazembe.\n\n• Match aller (29 octobre 2016) : MO Béjaïa 1-1 TP Mazembe\n• Match retour : TP Mazembe 4-1 MO Béjaïa\n\nLe MOB s'incline, mais sort la tête haute d'une aventure mémorable.",
+        img: "https://i.postimg.cc/13Jh0wD6/1000011470.jpg",
+        caption: "La délégation du MO Béjaïa au cœur de la ville d'Obuasi au Ghana (Finale CAF 2016)"
+      },
+      {
+        titre: "📉 Descente, reconstruction et grand retour (2017-2026)",
+        texte: "Le football est fait de cycles. Après avoir touché les sommets, les Vert et Noir connaissent des années plus instables, avant de valider avec fierté leur retour en Ligue 2 Amateur (Groupe Centre-Est) pour aborder la saison 2026/2027 avec ambition.",
+        img: "https://i.postimg.cc/qRvygGRm/MOB-archive-3.jpg",
+        caption: "MOB, histoire et archives"
+      },
+      {
+        titre: "🥁 Le 12ème Homme : La ferveur des supporters",
+        texte: "Si le MOB est respecté partout en Algérie, il le doit à son public unique. Les tribunes du Stade de l'Unité Maghrébine vibrent au rythme de groupes Ultras passionnés :\n\n• 🔥 Ultras Granchio (UG) : Fondé le 2 octobre 2009 au Couvert B.\n• 👑 Ultras Saldae Kings (USK) : Fondé le 4 mars 2011 au Couvert A.\n• 🦅 Ultras Free Men 16 (UFM16) : Fondé le 19 juin 2016 à la tribune Adrar N Tizi.\n• 💀 Ultra Mobiste (UM) : Fondé le 11 janvier 2025 (fusion UPB 2011, Banda Berberista 2015, KOP 12).",
+        img: "https://i.postimg.cc/K8cDTMZ9/Stade-de-l-unite-Maghrebine-de-Bejaia.jpg",
+        caption: "Le Stade de l'Unité Maghrébine de Béjaïa"
+      }
+    ];
+
     let data = {
-      championnat: [],
+      championnat: [...MATCHS_INIT],
       coupe: [],
       players: [...PLAYERS_INIT],
       staff: [],
       dirigeants: [],
       mob: {},
-      live: { statut: 'inactif', dom: 'MO Béjaïa', ext: 'Adversaire', sd: 0, se: 0, texte: '' },
+      live: { statut: 'inactif', dom: 'AS Khroub', ext: 'MO Béjaïa', sd: 0, se: 1, texte: "80' But : Ben Mazouz Mohamed Saïd" },
       affiches: {},
       videos: {},
       articles: [...ARTICLES_INIT],
@@ -1312,10 +1316,11 @@
           candidates: ["Faouzi Yaya", "Ben Mazouz Mohamed Saïd", "Hamza Rebiai", "Sami Tlemcani"],
           votes: {}
         },
+        elu: null,
         buteurs: { "Ben Mazouz Mohamed Saïd": 2, "Faouzi Yaya": 1 },
         cartons: { "Hamza Rebiai": { jaune: 1, rouge: 0 } }
       },
-      historique_custom: [],
+      historique: [...HISTORIQUE_INIT],
       medias: { albums: [], videos: [] }
     };
 
@@ -1348,7 +1353,7 @@
     function formatText(t) {
       if (!t) return "";
       let s = t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-      return s.replace(/#LaMaisonDesCrabes/g, '<a href="https://mustaphamobiste-hue.github.io/lnfa-centre-est/" target="_blank">#LaMaisonDesCrabes</a>');
+      return s.replace(/#LaMaisonDesCrabes/g, '<a href="https://mustaphamobiste-hue.github.io/lnfa-centre-est/" target="_blank" style="color:var(--mob-green-neon);">#LaMaisonDesCrabes</a>');
     }
 
     function hasScore(m) {
@@ -1636,52 +1641,77 @@
       }, 4500);
     }
 
-    /* 3. VOTE HOMME DU MATCH RELOOKÉ (CARTE TROPHÉE / MVP) */
+    /* 1 & 2. STATS & HOMME DU MATCH (AVEC ÉLU ET SANS NOMBRE DE VOTANTS) */
     function renderStats() {
       if (currentStatsSubTab === 'vote') {
         const container = document.getElementById('voteContainer');
-        if (!data.stats || !data.stats.activeVote) {
-          container.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">Aucun vote en cours.</p>';
-          return;
-        }
-        const v = data.stats.activeVote;
-        const totalVotes = Object.values(v.votes || {}).reduce((a,b) => a + b, 0);
-        const hasVoted = localStorage.getItem('voted_' + v.id);
-        let html = `<div class="vote-card"><div class="vote-title">⭐ Homme du Match : ${v.matchName}</div>`;
-        if (hasVoted) {
-          html += `<p style="text-align:center; color:var(--mob-green-neon); font-weight:bold; margin-bottom:15px;">✅ Vous avez voté !</p>`;
-          (v.candidates || []).forEach(c => {
-            const count = (v.votes && v.votes[c]) ? v.votes[c] : 0;
-            const pct = totalVotes > 0 ? Math.round((count / totalVotes) * 100) : 0;
-            const img = getPlayerImg(c);
-            html += `
-              <div style="margin-bottom:8px;">
-                <div class="vote-bar-label">
-                  <span style="display:flex; align-items:center; gap:8px;">
-                    <img src="${img}" class="vote-avatar" style="width:28px; height:28px;">
-                    ${c}
-                  </span>
-                  <span>${pct}% (${count})</span>
+        let html = '';
+
+        // AFFICHAGE DU JOUEUR ÉLU (SI PUBLIÉ)
+        if (data.stats && data.stats.elu) {
+          const e = data.stats.elu;
+          html += `
+            <div class="elu-winner-card">
+              ${isAdmin ? `
+                <div style="position:absolute; top:10px; right:10px; display:flex; gap:5px;">
+                  <button class="btn-small btn-edit" onclick="openModalElu()">✏️</button>
+                  <button class="btn-small btn-del" onclick="deleteElu()">🗑️</button>
                 </div>
-                <div class="vote-bar-bg"><div class="vote-bar-fill" style="width:${pct}%"></div></div>
-              </div>
-            `;
-          });
-        } else {
-          (v.candidates || []).forEach(c => {
-            const img = getPlayerImg(c);
-            html += `
-              <button class="vote-player-btn" onclick="submitVote('${escapeQuotes(c)}')">
-                <div class="vote-player-info">
-                  <img src="${img}" class="vote-avatar">
-                  <span>${c}</span>
-                </div>
-                <span class="vote-cta-icon">VOTER ➔</span>
-              </button>
-            `;
-          });
+              ` : ''}
+              <div class="vote-header-tag" style="background:rgba(245,158,11,0.2);">🏆 HOMME DU MATCH ÉLU</div>
+              <img src="${e.img || getPlayerImg(e.nom)}" class="elu-img" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'">
+              <div class="elu-nom">${e.nom}</div>
+              <div class="elu-titre">${e.titre || ''}</div>
+              <div class="elu-texte">${formatText(e.texte || '')}</div>
+            </div>
+          `;
         }
-        html += `</div>`;
+
+        // AFFICHAGE DU SONDAGE EN COURS (SEULEMENT LE POURCENTAGE %)
+        if (data.stats && data.stats.activeVote) {
+          const v = data.stats.activeVote;
+          const totalVotes = Object.values(v.votes || {}).reduce((a,b) => a + b, 0);
+          const hasVoted = localStorage.getItem('voted_' + v.id);
+
+          html += `<div class="vote-card"><div class="vote-title">⭐ Vote en cours : ${v.matchName}</div>`;
+          if (hasVoted) {
+            html += `<p style="text-align:center; color:var(--mob-green-neon); font-weight:bold; margin-bottom:15px; font-size:12px;">✅ Vous avez voté !</p>`;
+            (v.candidates || []).forEach(c => {
+              const count = (v.votes && v.votes[c]) ? v.votes[c] : 0;
+              const pct = totalVotes > 0 ? Math.round((count / totalVotes) * 100) : 0;
+              const img = getPlayerImg(c);
+              html += `
+                <div style="margin-bottom:8px;">
+                  <div class="vote-bar-label">
+                    <span style="display:flex; align-items:center; gap:8px;">
+                      <img src="${img}" class="vote-avatar" style="width:28px; height:28px;">
+                      ${c}
+                    </span>
+                    <span style="color:var(--mob-green-neon); font-size:13px; font-weight:900;">${pct}%</span>
+                  </div>
+                  <div class="vote-bar-bg"><div class="vote-bar-fill" style="width:${pct}%"></div></div>
+                </div>
+              `;
+            });
+          } else {
+            (v.candidates || []).forEach(c => {
+              const img = getPlayerImg(c);
+              html += `
+                <button class="vote-player-btn" onclick="submitVote('${escapeQuotes(c)}')">
+                  <div class="vote-player-info">
+                    <img src="${img}" class="vote-avatar">
+                    <span>${c}</span>
+                  </div>
+                  <span class="vote-cta-icon">VOTER ➔</span>
+                </button>
+              `;
+            });
+          }
+          html += `</div>`;
+        } else if (!data.stats || !data.stats.elu) {
+          html += '<p style="text-align:center; color:#888; padding:20px;">Aucun vote ou élection en cours.</p>';
+        }
+
         container.innerHTML = html;
       } else if (currentStatsSubTab === 'buteurs') {
         const tbody = document.getElementById('tbody-buteurs');
@@ -1704,40 +1734,64 @@
 
     function renderHomeVoteWidget() {
       const container = document.getElementById('homeVoteContainer');
-      if (!data.stats || !data.stats.activeVote) {
+
+      // Priorité 1 : Si un vote est actif
+      if (data.stats && data.stats.activeVote) {
+        const v = data.stats.activeVote;
+        const hasVoted = localStorage.getItem('voted_' + v.id);
+        let html = `
+          <div class="vote-header-tag">⭐ ÉLECTION DU JOUEUR DU MATCH</div>
+          <div style="font-size:12px; font-weight:800; color:#fff; margin-bottom:8px;">${v.matchName}</div>
+        `;
+        if (hasVoted) {
+          const totalVotes = Object.values(v.votes || {}).reduce((a,b) => a + b, 0);
+          const top = (v.candidates || []).reduce((a, b) => ((v.votes&&v.votes[a])||0) > ((v.votes&&v.votes[b])||0) ? a : b);
+          const topPct = totalVotes > 0 ? Math.round((((v.votes&&v.votes[top])||0) / totalVotes) * 100) : 0;
+          html += `<p style="font-size:12px; color:var(--mob-green-neon); font-weight:800;">✅ Voté ! (<b>${top}</b> mène avec <b>${topPct}%</b>)</p>`;
+        } else {
+          (v.candidates || []).slice(0, 3).forEach(c => {
+            const img = getPlayerImg(c);
+            html += `
+              <button class="vote-player-btn" onclick="submitVote('${escapeQuotes(c)}')">
+                <div class="vote-player-info">
+                  <img src="${img}" class="vote-avatar">
+                  <span>${c}</span>
+                </div>
+                <span class="vote-cta-icon">VOTER ➔</span>
+              </button>
+            `;
+          });
+          if ((v.candidates || []).length > 3) {
+            html += `<div style="font-size:10px; color:var(--mob-gold); cursor:pointer; margin-top:5px;" onclick="switchTab('stats', document.querySelectorAll('.tab')[3])">+ Voir tous les candidats</div>`;
+          }
+        }
+        container.innerHTML = html;
+        return;
+      }
+
+      // Priorité 2 : Si un élu est proclamé
+      if (data.stats && data.stats.elu) {
+        const e = data.stats.elu;
         container.innerHTML = `
-          <div class="vote-header-tag">🏆 HOMME DU MATCH</div>
-          <p style="font-size:11px; color:#aaa; margin:5px 0;">Le vote s'ouvrira dès la fin de la rencontre.</p>
+          <div class="vote-header-tag">🏆 HOMME DU MATCH ÉLU</div>
+          <div style="display:flex; align-items:center; gap:10px; margin:8px 0; text-align:left;">
+            <img src="${e.img || getPlayerImg(e.nom)}" class="vote-avatar" style="width:40px; height:40px; border-color:var(--mob-gold);">
+            <div>
+              <div style="font-size:13px; font-weight:900; color:#fff;">${e.nom}</div>
+              <div style="font-size:10.5px; color:var(--mob-gold);">${e.titre || 'Élu par les supporters'}</div>
+            </div>
+          </div>
+          <div style="font-size:10.5px; color:#bbb; text-align:left; max-height:40px; overflow:hidden; text-overflow:ellipsis;">${e.texte || ''}</div>
+          <button onclick="switchTab('stats', document.querySelectorAll('.tab')[3])" style="margin-top:8px; font-size:11px; padding:4px 10px; background:#1b241c; border:1px solid var(--mob-gold); color:var(--mob-gold); width:100%;">Lire l'article complet ➔</button>
         `;
         return;
       }
-      const v = data.stats.activeVote;
-      const hasVoted = localStorage.getItem('voted_' + v.id);
-      let html = `
-        <div class="vote-header-tag">⭐ ÉLECTION DU JOUEUR DU MATCH</div>
-        <div class="vote-match-badge">${v.matchName}</div>
+
+      // Si rien n'est actif
+      container.innerHTML = `
+        <div class="vote-header-tag">🏆 HOMME DU MATCH</div>
+        <p style="font-size:11px; color:#aaa; margin:5px 0;">Le vote s'ouvrira dès la fin de la rencontre.</p>
       `;
-      if (hasVoted) {
-        const top = (v.candidates || []).reduce((a, b) => ((v.votes&&v.votes[a])||0) > ((v.votes&&v.votes[b])||0) ? a : b);
-        html += `<p style="font-size:12px; color:var(--mob-green-neon); font-weight:800;">✅ Voté ! (<b>${top}</b> est en tête des votes)</p>`;
-      } else {
-        (v.candidates || []).slice(0, 3).forEach(c => {
-          const img = getPlayerImg(c);
-          html += `
-            <button class="vote-player-btn" onclick="submitVote('${escapeQuotes(c)}')">
-              <div class="vote-player-info">
-                <img src="${img}" class="vote-avatar">
-                <span>${c}</span>
-              </div>
-              <span class="vote-cta-icon">VOTER ➔</span>
-            </button>
-          `;
-        });
-        if ((v.candidates || []).length > 3) {
-          html += `<div style="font-size:10px; color:var(--mob-gold); cursor:pointer; margin-top:5px;" onclick="switchTab('stats', document.querySelectorAll('.tab')[3])">+ Voir tous les candidats</div>`;
-        }
-      }
-      container.innerHTML = html;
     }
 
     async function submitVote(pName) {
@@ -1753,12 +1807,55 @@
     }
 
     async function resetVote() {
-      if (confirm('Clôturer ce vote ?')) {
+      if (!isAdmin) return;
+      if (confirm('Clôturer ce vote ? Vous pourrez ensuite désigner l\'élu avec son article.')) {
         data.stats.activeVote = null;
         await saveToFirebase();
         renderStats();
         renderHomeVoteWidget();
         updateStatsAdminButtons();
+        openModalElu();
+      }
+    }
+
+    /* GESTION DE L'ÉLU (ADMIN) */
+    function openModalElu() {
+      if (!isAdmin) return;
+      const e = (data.stats && data.stats.elu) ? data.stats.elu : { nom: '', img: '', titre: '', texte: '' };
+      document.getElementById('eluNom').value = e.nom || '';
+      document.getElementById('eluImg').value = e.img || '';
+      document.getElementById('eluTitre').value = e.titre || '';
+      document.getElementById('eluTexte').value = e.texte || '';
+      openModal('modalElu');
+    }
+
+    async function saveElu() {
+      const nom = document.getElementById('eluNom').value.trim();
+      if (!nom) return alert('Veuillez entrer le nom du joueur élu');
+      
+      const eluObj = {
+        nom: nom,
+        img: document.getElementById('eluImg').value.trim() || getPlayerImg(nom),
+        titre: document.getElementById('eluTitre').value.trim() || `Élu Homme du Match par les supporters`,
+        texte: document.getElementById('eluTexte').value.trim()
+      };
+
+      if (!data.stats) data.stats = {};
+      data.stats.elu = eluObj;
+      await saveToFirebase();
+      closeModal('modalElu');
+      renderStats();
+      renderHomeVoteWidget();
+      alert('🏆 Joueur élu et article publiés avec succès !');
+    }
+
+    async function deleteElu() {
+      if (!isAdmin) return;
+      if (confirm('Supprimer l\'élu et son article ?')) {
+        if (data.stats) data.stats.elu = null;
+        await saveToFirebase();
+        renderStats();
+        renderHomeVoteWidget();
       }
     }
 
@@ -1800,9 +1897,9 @@
       };
       setContent('avant'); setContent('day'); setContent('apres');
 
-      const imgAvant = document.getElementById('mob-avant-img'); if (imgAvant) { imgAvant.style.display = data.affiches.avant ? 'block':'none'; imgAvant.src = data.affiches.avant || ''; }
-      const imgDay = document.getElementById('mob-day-img'); if (imgDay) { imgDay.style.display = data.affiches.day ? 'block':'none'; imgDay.src = data.affiches.day || ''; }
-      const imgApres = document.getElementById('mob-apres-img'); if (imgApres) { imgApres.style.display = data.affiches.apres ? 'block':'none'; imgApres.src = data.affiches.apres || ''; }
+      const imgAvant = document.getElementById('mob-avant-img'); if (data.affiches.avant) { imgAvant.src = data.affiches.avant; imgAvant.style.display = 'block'; } else { imgAvant.style.display = 'none'; }
+      const imgDay = document.getElementById('mob-day-img'); if (data.affiches.day) { imgDay.src = data.affiches.day; imgDay.style.display = 'block'; } else { imgDay.style.display = 'none'; }
+      const imgApres = document.getElementById('mob-apres-img'); if (data.affiches.apres) { imgApres.src = data.affiches.apres; imgApres.style.display = 'block'; } else { imgApres.style.display = 'none'; }
       
       const vidApres = document.getElementById('mob-apres-video');
       const vidCap = document.getElementById('mob-apres-video-caption');
@@ -2030,7 +2127,6 @@
       }, 3000);
     }
 
-    /* 2. BRÈVES : GESTION DÉFILEMENT + BOUTONS ADMIN */
     function renderBreves() {
       const ticker = document.getElementById('tickerContent');
       const list = data.breves || [];
@@ -2083,11 +2179,69 @@
       renderBreves();
     }
 
+    /* 2. RENDU DYNAMIQUE DE TOUT L'HISTORIQUE (AVEC ACTIONS ADMIN SUR TOUTES LES SECTIONS) */
     function renderHistoriqueDynamic() {
-      const container = document.getElementById('historique-dynamic-sections'); if (!container) return;
-      container.innerHTML = (data.historique_custom || []).map((h, i) => `
-        <div class="historique-section"><div class="historique-section-title">${h.titre}</div><div class="historique-text">${h.texte}</div>${h.img ? `<img src="${h.img}" class="historique-image">` : ''}${isAdmin ? `<div style="text-align:right;"><button class="btn-small btn-del" onclick="deleteHisto(${i})">🗑️</button></div>` : ''}</div>
+      const container = document.getElementById('historique-dynamic-sections');
+      if (!container) return;
+      const list = (data.historique && data.historique.length > 0) ? data.historique : HISTORIQUE_INIT;
+      
+      container.innerHTML = list.map((h, i) => `
+        <div class="historique-section">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div class="historique-section-title">${h.titre}</div>
+            ${isAdmin ? `
+              <div style="display:flex; gap:4px;">
+                <button class="btn-small btn-edit" onclick="openModalHisto(${i})">✏️</button>
+                <button class="btn-small btn-del" onclick="deleteHisto(${i})">🗑️</button>
+              </div>
+            ` : ''}
+          </div>
+          <div class="historique-text">${formatText(h.texte)}</div>
+          ${h.img ? `
+            <img src="${h.img}" class="historique-image" onerror="this.style.display='none'">
+            ${h.caption ? `<div class="historique-image-caption">${h.caption}</div>` : ''}
+          ` : ''}
+        </div>
       `).join('');
+    }
+
+    function openModalHisto(idx) {
+      if (!isAdmin) return;
+      document.getElementById('editHistoIdx').value = idx === 'new' ? '' : idx;
+      const list = (data.historique && data.historique.length > 0) ? data.historique : HISTORIQUE_INIT;
+      const h = (idx !== 'new' && list[idx]) ? list[idx] : { titre: '', texte: '', img: '', caption: '' };
+      document.getElementById('hTitre').value = h.titre || '';
+      document.getElementById('hTexte').value = h.texte || '';
+      document.getElementById('hImg').value = h.img || '';
+      document.getElementById('hCaption').value = h.caption || '';
+      openModal('modalHisto');
+    }
+
+    async function saveHisto() {
+      const idx = document.getElementById('editHistoIdx').value;
+      const h = {
+        titre: document.getElementById('hTitre').value.trim(),
+        texte: document.getElementById('hTexte').value.trim(),
+        img: document.getElementById('hImg').value.trim(),
+        caption: document.getElementById('hCaption').value.trim()
+      };
+      if (!h.titre) return alert('Veuillez entrer un titre');
+      if (!data.historique) data.historique = [...HISTORIQUE_INIT];
+      if (idx === '') data.historique.push(h);
+      else data.historique[parseInt(idx)] = h;
+      await saveToFirebase();
+      closeModal('modalHisto');
+      renderHistoriqueDynamic();
+    }
+
+    async function deleteHisto(idx) {
+      if (!isAdmin) return;
+      if (confirm('Supprimer cette section historique ?')) {
+        if (!data.historique) data.historique = [...HISTORIQUE_INIT];
+        data.historique.splice(idx, 1);
+        await saveToFirebase();
+        renderHistoriqueDynamic();
+      }
     }
 
     /* PROCHAIN MATCH */
@@ -2197,7 +2351,7 @@
             if (fb.fdm && Array.isArray(fb.fdm)) data.fdm = fb.fdm;
             if (fb.breves && Array.isArray(fb.breves)) data.breves = fb.breves;
             if (fb.stats) data.stats = fb.stats;
-            if (fb.historique_custom) data.historique_custom = fb.historique_custom;
+            if (fb.historique && Array.isArray(fb.historique)) data.historique = fb.historique;
             
             if (fb.visits !== undefined) {
               const total = typeof fb.visits === 'number' ? fb.visits : (fb.visits.count || 0);
@@ -2269,6 +2423,12 @@
     window.saveLive = saveLive;
     window.openModalBreve = openModalBreve;
     window.saveBreve = saveBreve;
+    window.openModalElu = openModalElu;
+    window.saveElu = saveElu;
+    window.deleteElu = deleteElu;
+    window.openModalHisto = openModalHisto;
+    window.saveHisto = saveHisto;
+    window.deleteHisto = deleteHisto;
     window.tryLogin = tryLogin;
     window.logoutAdmin = logoutAdmin;
     window.openArticleModal = openArticleModal;
@@ -2288,8 +2448,6 @@
     window.openModalAddStat = openModalAddStat;
     window.saveStat = saveStat;
     window.deleteStat = deleteStat;
-    window.openModalHisto = openModalHisto;
-    window.saveHisto = saveHisto;
     window.exportData = (sec) => { const b = new Blob([JSON.stringify(data[sec]||[], null, 2)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = `${sec}.json`; a.click(); };
     window.importData = (e, sec) => { const file = e.target.files[0]; if(!file) return; const r = new FileReader(); r.onload = async (evt) => { try { const parsed = JSON.parse(evt.target.result); if(Array.isArray(parsed)) { data[sec] = parsed; await saveToFirebase(); renderAll(); alert('✅ Import réussi !'); } } catch(err) { alert('❌ Fichier invalide.'); } }; r.readAsText(file); e.target.value = ''; };
 
@@ -2610,35 +2768,6 @@
       openModal('modalFDMView');
     }
 
-    function openModalHisto(idx) {
-      if (!isAdmin) return;
-      document.getElementById('editHistoIdx').value = idx === 'new' ? '' : idx;
-      const h = idx !== 'new' ? data.historique_custom[idx] : {titre:'', texte:'', img:''};
-      document.getElementById('hTitre').value = h.titre || '';
-      document.getElementById('hTexte').value = h.texte || '';
-      document.getElementById('hImg').value = h.img || '';
-      openModal('modalHisto');
-    }
-
-    async function saveHisto() {
-      const idx = document.getElementById('editHistoIdx').value;
-      const h = { titre: document.getElementById('hTitre').value, texte: document.getElementById('hTexte').value, img: document.getElementById('hImg').value };
-      if (!data.historique_custom) data.historique_custom = [];
-      if (idx === '') data.historique_custom.push(h); else data.historique_custom[parseInt(idx)] = h;
-      await saveToFirebase();
-      closeModal('modalHisto');
-      renderHistoriqueDynamic();
-    }
-
-    async function deleteHisto(idx) {
-      if (!isAdmin) return;
-      if (confirm('Supprimer cette section ?')) {
-        data.historique_custom.splice(idx, 1);
-        await saveToFirebase();
-        renderHistoriqueDynamic();
-      }
-    }
-
     function openModalMob(sec) {
       if (!isAdmin) return;
       document.getElementById('mobSection').value = sec;
@@ -2688,4 +2817,5 @@
   </script>
 </body>
 </html>
+
 
