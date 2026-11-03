@@ -167,7 +167,7 @@
   .cd-num { font-family: 'Teko', sans-serif; font-size: 24px; line-height: 1; color: var(--mob-green-neon); display: block; }
   .cd-label { font-size: 8px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; }
 
-  /* FLASH INFOS (LE TEXTE GLISSE SOUS LE BADGE) */
+  /* FLASH INFOS */
   .ticker-container {
     position: relative;
     display: flex;
@@ -260,6 +260,7 @@
   .news-fade-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: background 0.3s; }
   .news-fade-dot.active { background: var(--mob-green-neon); transform: scale(1.2); }
 
+  /* FEUILLES DE MATCH */
   .fdm-container { display: flex; flex-direction: column; gap: 10px; max-height: 235px; overflow-y: auto; padding-right: 5px; scroll-behavior: smooth; }
   .fdm-item { display: flex; gap: 10px; background: var(--card-dark); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 8px; cursor: pointer; align-items: center; }
   .fdm-item img { width: 65px; height: 65px; object-fit: cover; border-radius: 6px; }
@@ -267,7 +268,7 @@
   .fdm-item h4 { font-size: 12px; color: var(--mob-green-neon); margin-bottom: 4px; font-weight: 800; }
   .fdm-item p { font-size: 10px; color: var(--text-muted); }
 
-  /* VOTE HOMME DU MATCH (MVP TROPHÉE & SANS NOMBRE DE VOTANTS) */
+  /* VOTE HOMME DU MATCH */
   .home-vote-widget { 
     background: radial-gradient(circle at 50% 0%, #18281d 0%, #0d1410 100%);
     border: 1px solid var(--mob-gold);
@@ -331,7 +332,7 @@
     background: rgba(0,0,0,0.4);
   }
 
-  /* CARTE JOUEUR ÉLU (ARTICLE & PHOTO EN FIN DE VOTE) */
+  /* CARTE JOUEUR ÉLU */
   .elu-winner-card {
     background: radial-gradient(circle at 50% 0%, #201a0d 0%, #0d1410 100%);
     border: 2px solid var(--mob-gold);
@@ -427,7 +428,7 @@
   .video-thumb { width: 100%; aspect-ratio: 9/16; object-fit: cover; border-radius: 6px; cursor: pointer; background: #000; }
   .btn-del-video { position: absolute; top: 5px; right: 5px; background: rgba(192, 57, 43, 0.9); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; z-index: 2; }
 
-  /* VOTE BARS (SEULEMENT LE POURCENTAGE %) */
+  /* VOTE BARS */
   .vote-card { background: var(--card-dark); border-radius: 10px; padding: 15px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 2px 6px rgba(0,0,0,0.3); margin-bottom: 15px; }
   .vote-title { font-size: 1.1em; font-weight: 900; color: var(--mob-green-neon); margin-bottom: 10px; text-align: center; text-transform: uppercase; }
   .vote-bar-label { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 800; margin-bottom: 4px; }
@@ -459,7 +460,7 @@
   .zone-playoff { background: rgba(245, 158, 11, 0.2) !important; color: #fff; }
   .zone-relégation { background: rgba(220, 38, 38, 0.25) !important; color: #fff; }
 
-  /* HISTORIQUE ET IMAGES D'ARCHIVES */
+  /* HISTORIQUE */
   .historique-container { background: var(--card-dark); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); max-width: 900px; margin: 0 auto; }
   .historique-header { text-align: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 2px solid var(--mob-gold); }
   .historique-logo { max-width: 140px; margin: 0 auto 15px; display: block; filter: drop-shadow(0 0 10px rgba(0,230,118,0.5)); }
@@ -470,12 +471,20 @@
   .historique-text { color: #d1d5db; line-height: 1.7; font-size: 0.95em; text-align: justify; margin-bottom: 10px; }
   .historique-image { width: 100%; border-radius: 8px; margin: 12px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.5); display: block; }
   .historique-image-caption { text-align: center; font-size: 0.8em; color: var(--text-muted); font-style: italic; margin-top: -6px; margin-bottom: 15px; }
+  .historique-fiche { background: #131b15; border-left: 4px solid var(--mob-green); padding: 15px; border-radius: 6px; margin: 15px 0; }
+  .historique-fiche-item { display: flex; margin-bottom: 6px; font-size: 0.9em; }
+  .historique-fiche-label { font-weight: bold; color: var(--mob-green-neon); min-width: 140px; }
+  .historique-list { padding-left: 20px; margin: 10px 0; }
+  .historique-list li { margin-bottom: 5px; color: #d1d5db; line-height: 1.5; font-size: 0.9em; }
+  .historique-ultras { background: #1a160d; border-left: 4px solid var(--mob-gold); padding: 12px; border-radius: 6px; margin: 10px 0; }
+  .historique-ultras-name { font-weight: bold; color: var(--mob-gold); }
+  .historique-ultras-info { font-size: 0.9em; color: #d1d5db; margin-top: 2px; }
 
   /* BOUTON FLOTTANT & VISITES */
   .btn-share-float { position: fixed; bottom: 20px; right: 20px; background-color: #2563eb; color: white; border-radius: 50px; padding: 11px 18px; font-size: 14px; font-weight: 800; box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 6px; z-index: 1000; cursor: pointer; border: 2px solid white; }
   .visit-badge { position: fixed; bottom: 20px; left: 20px; background-color: #1e293b; color: white; border-radius: 50px; padding: 8px 14px; font-size: 12px; font-weight: 800; box-shadow: 0 4px 15px rgba(0,0,0,0.5); z-index: 1000; border: 2px solid white; display: none; align-items: center; gap: 5px; }
 
-  /* MODALES */
+  /* MODALES AVEC DESIGN SOMBRE */
   .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); justify-content: center; align-items: center; z-index: 3000; padding: 10px; }
   .modal.active { display: flex; }
   .modal-content { background: #121a14; border: 1px solid var(--card-border); color: #fff; padding: 20px; border-radius: 12px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; position: relative; }
@@ -492,6 +501,25 @@
   .classement-table th, .classement-table td { padding: 5px 3px; font-size: 11px; text-align: center; }
   .classement-table th:nth-child(2), .classement-table td:nth-child(2) { text-align: left; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
   .classement-table .logo-mini { width: 18px; height: 18px; margin-right: 3px; }
+
+  /* STYLE DU PANNEAU DE SAISIE DES JOUEURS */
+  .stats-sheet-section {
+    background: #141d17;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 12px;
+  }
+  .stats-sheet-title {
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--mob-gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 </style>
 </head>
 <body>
@@ -568,7 +596,7 @@
       <div class="fdm-container" id="fdmContainer"></div>
     </div>
 
-    <!-- WIDGET DU VOTE HOMME DU MATCH RELOOKÉ MVP -->
+    <!-- WIDGET VOTE HOMME DU MATCH (MVP TROPHÉE) -->
     <div>
       <div style="font-size: 12px; font-weight: 800; color: var(--mob-gold); margin-bottom: 5px; padding-left: 5px;">⭐ HOMME DU MATCH</div>
       <div class="home-vote-widget" id="homeVoteContainer">
@@ -749,7 +777,7 @@
     </div>
   </div>
 
-  <!-- 4. ONGLET STATS (AVEC JOUEUR ÉLU & VOTES SANS COMPTEUR) -->
+  <!-- 4. ONGLET STATS (AVEC SAISIE DES STATS MATCH PAR MATCH DU MOB) -->
   <div id="tab-stats" class="tab-content">
     <div class="sub-tabs">
       <div class="sub-tab active" id="subtab-stats-vote" onclick="switchSubTabStats('vote')">⭐ Homme du Match</div>
@@ -757,11 +785,12 @@
       <div class="sub-tab" id="subtab-stats-cartons" onclick="switchSubTabStats('cartons')">🟨 Cartons</div>
     </div>
     <div class="toolbar" id="stats-toolbar" style="display:none;">
+      <!-- BOUTON CLÉ POUR LA SAISIE DÉTAILLÉE DES MATCHS DU MOB -->
+      <button id="btnAdminMatchStats" onclick="openModalMatchStatsList()" style="background:#008f4c; font-weight:900;">📋 Saisie Stats Matchs MOB (J1 à J30)</button>
+      <button id="btnManageElu" onclick="openModalElu()" style="background:#f59e0b; color:#000; font-weight:900;">🏆 Homme du Match Élu (Photo & Article)</button>
       <button id="btnAddVote" onclick="openModalCreateVote()" style="display:none;">➕ Nouveau Vote</button>
       <button id="btnManageVote" onclick="openModalManageVote()" style="background:#f39c12; display:none;">⚙️ Candidats</button>
       <button id="btnResetVote" onclick="resetVote()" style="background:#c0392b; display:none;">🔄 Clôturer Vote</button>
-      <!-- BOUTON DÉDIÉ POUR L'ÉLU -->
-      <button id="btnManageElu" onclick="openModalElu()" style="background:#f59e0b; color:#000; font-weight:900;">🏆 Homme du Match Élu (Photo & Article)</button>
       <button id="btnAddStat" onclick="openModalAddStat('buteur')" style="display:none;">➕ Buteur</button>
       <button id="btnAddCarton" onclick="openModalAddStat('carton')" style="background:#c0392b; display:none;">➕ Carton</button>
     </div>
@@ -843,7 +872,110 @@
     <div style="margin-top:3px; font-size:10px;">Club fondé en 1954 • Ferveur & Passion 🦀</div>
   </footer>
 
-  <!-- MODALES DU SITE -->
+  <!-- ==================== TOUTES LES MODALES DU SITE ==================== -->
+  <!-- 1. MODALE LISTE DES MATCHS DU MOB POUR SAISIE DES STATS -->
+  <div class="modal" id="modalMatchStatsList">
+    <div class="modal-content" style="max-width:700px;">
+      <span class="modal-close" onclick="closeModal('modalMatchStatsList')">×</span>
+      <h3>📋 Saisie des Fiches de Matchs du MOB</h3>
+      <p style="font-size:11px; color:var(--text-muted); margin-bottom:12px;">Sélectionnez une rencontre pour enregistrer les 11 titulaires, les remplaçants, les entrées/sorties et la discipline.</p>
+      <div id="mobMatchListContainer" style="max-height:60vh; overflow-y:auto;"></div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('modalMatchStatsList')">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. MODALE SAISIE DÉTAILLÉE DU MATCH (FEUILLE D'ÉMARGEMENT DU MOB) -->
+  <div class="modal" id="modalMatchStats">
+    <div class="modal-content" style="max-width:750px;">
+      <span class="modal-close" onclick="closeModal('modalMatchStats')">×</span>
+      <h3 id="mStatsHeader">📋 Fiche Détaillée du Match</h3>
+      <input type="hidden" id="mStatsMatchKey">
+
+      <!-- BLOC 1 : TITULAIRES (11 JOUEURS) -->
+      <div class="stats-sheet-section">
+        <div class="stats-sheet-title">
+          <span>⚽ 11 TITULAIRES DU MOB</span>
+          <button class="btn-small" onclick="openModalQuickPlayer('titulaire')" style="background:#2563eb;">➕ Inscrire un nouveau joueur</button>
+        </div>
+        <div id="mStatsTitulairesGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:6px;"></div>
+      </div>
+
+      <!-- BLOC 2 : REMPLAÇANTS SUR LE BANC -->
+      <div class="stats-sheet-section">
+        <div class="stats-sheet-title">
+          <span>🛡️ REMPLAÇANTS (SUR LE BANC)</span>
+          <button class="btn-small" onclick="openModalQuickPlayer('remplacant')" style="background:#2563eb;">➕ Inscrire un nouveau joueur</button>
+        </div>
+        <div id="mStatsRemplacantsGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:6px;"></div>
+      </div>
+
+      <!-- BLOC 3 : CHANGEMENTS EN COURS DE MATCH (TEMPS DE JEU CALCULÉ AUTOMATIQUEMENT) -->
+      <div class="stats-sheet-section">
+        <div class="stats-sheet-title">
+          <span>🔄 REMPLACEMENTS (ENTRÉES / SORTIES)</span>
+          <button class="btn-small" onclick="addChangementRow()" style="background:#16a34a;">➕ Ajouter un changement</button>
+        </div>
+        <div id="mStatsChangementsList"></div>
+      </div>
+
+      <!-- BLOC 4 : BUTEURS & CARTONS DU MOB -->
+      <div class="stats-sheet-section">
+        <div class="stats-sheet-title">
+          <span>⚽ BUTEURS & 🟨 CARTONS DU MOB</span>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <div style="flex:1; min-width:260px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:11px; font-weight:bold;">
+              <span>Buteurs :</span>
+              <button class="btn-small" onclick="addButeurRow()" style="background:#16a34a;">+ Buteur</button>
+            </div>
+            <div id="mStatsButeursList"></div>
+          </div>
+          <div style="flex:1; min-width:260px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:11px; font-weight:bold;">
+              <span>Cartons :</span>
+              <button class="btn-small" onclick="addCartonRow()" style="background:#dc2626;">+ Carton</button>
+            </div>
+            <div id="mStatsCartonsList"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BLOC 5 : AMENDES & SANCTIONS -->
+      <div class="stats-sheet-section">
+        <div class="stats-sheet-title"><span>⚖️ AMENDES & DISCIPLINE (DZD)</span></div>
+        <input type="text" id="mStatsAmendes" placeholder="Ex: 20 000 DZD pour utilisation de fumigènes">
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('modalMatchStats')">Annuler</button>
+        <button onclick="saveMatchStats()">Enregistrer la feuille de match</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. MODALE D'INSCRIPTION RAPIDE D'UN JOUEUR À LA VOLÉE -->
+  <div class="modal" id="modalQuickPlayer">
+    <div class="modal-content" style="max-width:480px; z-index:3500;">
+      <span class="modal-close" onclick="closeModal('modalQuickPlayer')">×</span>
+      <h3>⚽ Inscription Rapide d'un Joueur</h3>
+      <input type="hidden" id="quickPlayerTarget">
+      <div style="display:flex; gap:10px;">
+        <label style="width:70px;">N° <input type="number" id="qpNum" placeholder="10"></label>
+        <label style="flex:1;">Nom complet <input type="text" id="qpNom" placeholder="Ex: Faouzi Yaya"></label>
+      </div>
+      <label>Poste <input type="text" id="qpPoste" placeholder="Ex: Milieu Offensif"></label>
+      <label>Photo (URL Image) <input type="url" id="qpImg" placeholder="https://..."></label>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('modalQuickPlayer')">Annuler</button>
+        <button onclick="saveQuickPlayer()" style="background:#16a34a;">Inscrire & Intégrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUTRES MODALES -->
   <div class="modal" id="modalLive">
     <div class="modal-content">
       <span class="modal-close" onclick="closeModal('modalLive')">×</span>
@@ -979,7 +1111,6 @@
     </div>
   </div>
 
-  <!-- MODALE HOMME DU MATCH ÉLU (ARTICLE & PHOTO) -->
   <div class="modal" id="modalElu">
     <div class="modal-content">
       <span class="modal-close" onclick="closeModal('modalElu')">×</span>
@@ -1057,7 +1188,6 @@
     </div>
   </div>
 
-  <!-- MODALE HISTORIQUE (POUR TOUTES LES SECTIONS) -->
   <div class="modal" id="modalHisto">
     <div class="modal-content">
       <span class="modal-close" onclick="closeModal('modalHisto')">×</span>
@@ -1242,7 +1372,6 @@
       { num: 2, nom: "Djelloul Abbou M'hamed", poste: "Latéral droit", img: "https://i.postimg.cc/wTTzKNPM/Djelloul-Abbou-M-hamed-rejoint-le-MO-Bejaia.jpg" }
     ];
 
-    // SECTIONS HISTORIQUES INITIALES (100% MODIFIABLES)
     const HISTORIQUE_INIT = [
       {
         titre: "📋 Fiche d'identité",
@@ -1320,6 +1449,7 @@
         buteurs: { "Ben Mazouz Mohamed Saïd": 2, "Faouzi Yaya": 1 },
         cartons: { "Hamza Rebiai": { jaune: 1, rouge: 0 } }
       },
+      match_stats: {}, // STOCKAGE DES FICHES DE MATCHS DÉTAILLÉES DU MOB
       historique: [...HISTORIQUE_INIT],
       medias: { albums: [], videos: [] }
     };
@@ -1435,6 +1565,8 @@
 
     function updateStatsAdminButtons() {
       if (!isAdmin) return;
+      document.getElementById('btnAdminMatchStats').style.display = 'inline-block';
+      document.getElementById('btnManageElu').style.display = 'inline-block';
       document.getElementById('btnAddVote').style.display = (currentStatsSubTab === 'vote' && !data.stats.activeVote) ? 'inline-block' : 'none';
       document.getElementById('btnManageVote').style.display = (currentStatsSubTab === 'vote' && data.stats.activeVote) ? 'inline-block' : 'none';
       document.getElementById('btnResetVote').style.display = (currentStatsSubTab === 'vote' && data.stats.activeVote) ? 'inline-block' : 'none';
@@ -1641,13 +1773,12 @@
       }, 4500);
     }
 
-    /* 1 & 2. STATS & HOMME DU MATCH (AVEC ÉLU ET SANS NOMBRE DE VOTANTS) */
+    /* STATS & HOMME DU MATCH (SANS NOMBRE DE VOTANTS) */
     function renderStats() {
       if (currentStatsSubTab === 'vote') {
         const container = document.getElementById('voteContainer');
         let html = '';
 
-        // AFFICHAGE DU JOUEUR ÉLU (SI PUBLIÉ)
         if (data.stats && data.stats.elu) {
           const e = data.stats.elu;
           html += `
@@ -1667,7 +1798,6 @@
           `;
         }
 
-        // AFFICHAGE DU SONDAGE EN COURS (SEULEMENT LE POURCENTAGE %)
         if (data.stats && data.stats.activeVote) {
           const v = data.stats.activeVote;
           const totalVotes = Object.values(v.votes || {}).reduce((a,b) => a + b, 0);
@@ -1735,7 +1865,6 @@
     function renderHomeVoteWidget() {
       const container = document.getElementById('homeVoteContainer');
 
-      // Priorité 1 : Si un vote est actif
       if (data.stats && data.stats.activeVote) {
         const v = data.stats.activeVote;
         const hasVoted = localStorage.getItem('voted_' + v.id);
@@ -1769,7 +1898,6 @@
         return;
       }
 
-      // Priorité 2 : Si un élu est proclamé
       if (data.stats && data.stats.elu) {
         const e = data.stats.elu;
         container.innerHTML = `
@@ -1787,7 +1915,6 @@
         return;
       }
 
-      // Si rien n'est actif
       container.innerHTML = `
         <div class="vote-header-tag">🏆 HOMME DU MATCH</div>
         <p style="font-size:11px; color:#aaa; margin:5px 0;">Le vote s'ouvrira dès la fin de la rencontre.</p>
@@ -1818,7 +1945,6 @@
       }
     }
 
-    /* GESTION DE L'ÉLU (ADMIN) */
     function openModalElu() {
       if (!isAdmin) return;
       const e = (data.stats && data.stats.elu) ? data.stats.elu : { nom: '', img: '', titre: '', texte: '' };
@@ -1859,6 +1985,231 @@
       }
     }
 
+    /* ==================== NOUVEAU SYSTÈME DE SAISIE STATS DU MOB ==================== */
+    function openModalMatchStatsList() {
+      if (!isAdmin) return;
+      const mobMatches = (data.championnat || []).filter(m => (m.dom === 'MO Béjaïa' || m.ext === 'MO Béjaïa'));
+      const container = document.getElementById('mobMatchListContainer');
+      
+      if (mobMatches.length === 0) {
+        container.innerHTML = '<p style="color:#aaa; text-align:center; padding:15px;">Aucune rencontre du MOB enregistrée dans le championnat.</p>';
+      } else {
+        container.innerHTML = mobMatches.map((m, idx) => {
+          const key = `J${m.journee}`;
+          const isDone = data.match_stats && data.match_stats[key];
+          const badge = isDone ? `<span style="color:var(--mob-green-neon); font-size:11px; font-weight:800;">✅ Fiche Remplie</span>` : `<span style="color:#888; font-size:11px;">⚪ En attente</span>`;
+          return `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:#141d17; padding:10px 12px; margin-bottom:6px; border-radius:6px; border:1px solid rgba(255,255,255,0.06);">
+              <div>
+                <b style="color:#fff; font-size:13px;">J${m.journee} : ${m.dom} ${hasScore(m) ? m.sd+'-'+m.se : 'vs'} ${m.ext}</b>
+                <div style="font-size:10px; color:#aaa; margin-top:2px;">${formatDate(m.date)} • ${badge}</div>
+              </div>
+              <div style="display:flex; gap:6px;">
+                <button class="btn-small" onclick="openModalMatchStats('${key}', '${escapeQuotes(m.dom)} vs ${escapeQuotes(m.ext)} (J${m.journee})')" style="background:#008f4c;">✏️ Saisir / Modifier</button>
+                ${isDone ? `<button class="btn-small btn-del" onclick="deleteMatchStats('${key}')">🗑️</button>` : ''}
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+      openModal('modalMatchStatsList');
+    }
+
+    function openModalMatchStats(key, title) {
+      document.getElementById('mStatsHeader').textContent = `📋 Fiche de Match : ${title}`;
+      document.getElementById('mStatsMatchKey').value = key;
+      const s = (data.match_stats && data.match_stats[key]) ? data.match_stats[key] : {
+        titulaires: [],
+        remplacants: [],
+        changements: [],
+        buteurs: [],
+        cartons: [],
+        amendes: ''
+      };
+
+      // 1. Grille des 11 titulaires
+      const allPlayers = data.players || PLAYERS_INIT;
+      const tituContainer = document.getElementById('mStatsTitulairesGrid');
+      tituContainer.innerHTML = Array.from({length: 11}).map((_, i) => {
+        const val = s.titulaires[i] || '';
+        return `
+          <div style="display:flex; align-items:center; gap:4px;">
+            <span style="font-size:11px; color:#aaa; width:18px;">${i+1}.</span>
+            <select class="m-titu-select" style="flex:1; font-size:11.5px; padding:4px;">
+              <option value="">-- Choisir Titulaire --</option>
+              ${allPlayers.map(p => `<option value="${p.nom}" ${p.nom === val ? 'selected':''}>${p.num ? p.num+' - ':''}${p.nom}</option>`).join('')}
+            </select>
+          </div>
+        `;
+      }).join('');
+
+      // 2. Remplaçants sur le banc (9 places disponibles)
+      const rempContainer = document.getElementById('mStatsRemplacantsGrid');
+      rempContainer.innerHTML = Array.from({length: 9}).map((_, i) => {
+        const val = s.remplacants[i] || '';
+        return `
+          <div style="display:flex; align-items:center; gap:4px;">
+            <span style="font-size:11px; color:#aaa; width:18px;">R${i+1}</span>
+            <select class="m-remp-select" style="flex:1; font-size:11.5px; padding:4px;">
+              <option value="">-- Choisir Remplaçant --</option>
+              ${allPlayers.map(p => `<option value="${p.nom}" ${p.nom === val ? 'selected':''}>${p.num ? p.num+' - ':''}${p.nom}</option>`).join('')}
+            </select>
+          </div>
+        `;
+      }).join('');
+
+      // 3. Changements
+      const chList = document.getElementById('mStatsChangementsList');
+      chList.innerHTML = '';
+      (s.changements || []).forEach(ch => addChangementRow(ch.sortant, ch.entrant, ch.minute));
+
+      // 4. Buteurs & Cartons
+      const bList = document.getElementById('mStatsButeursList');
+      bList.innerHTML = '';
+      (s.buteurs || []).forEach(b => addButeurRow(b.joueur, b.minute));
+
+      const cList = document.getElementById('mStatsCartonsList');
+      cList.innerHTML = '';
+      (s.cartons || []).forEach(c => addCartonRow(c.joueur, c.type, c.minute));
+
+      // 5. Amendes
+      document.getElementById('mStatsAmendes').value = s.amendes || '';
+
+      openModal('modalMatchStats');
+    }
+
+    function addChangementRow(sortant = '', entrant = '', minute = '') {
+      const container = document.getElementById('mStatsChangementsList');
+      const div = document.createElement('div');
+      div.style.cssText = "display:flex; gap:6px; align-items:center; margin-bottom:5px;";
+      div.innerHTML = `
+        <input type="text" class="ch-sortant" placeholder="Joueur Sortant" value="${sortant}" style="flex:1; font-size:11px;">
+        <span style="color:var(--mob-gold);">➔</span>
+        <input type="text" class="ch-entrant" placeholder="Joueur Entrant" value="${entrant}" style="flex:1; font-size:11px;">
+        <input type="number" class="ch-minute" placeholder="Min (ex: 65)" value="${minute}" style="width:75px; font-size:11px;">
+        <button class="btn-small btn-del" onclick="this.parentElement.remove()">🗑️</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function addButeurRow(joueur = '', minute = '') {
+      const container = document.getElementById('mStatsButeursList');
+      const div = document.createElement('div');
+      div.style.cssText = "display:flex; gap:5px; align-items:center; margin-bottom:4px;";
+      div.innerHTML = `
+        <input type="text" class="buteur-nom" placeholder="Buteur" value="${joueur}" style="flex:1; font-size:11px;">
+        <input type="number" class="buteur-minute" placeholder="Min" value="${minute}" style="width:65px; font-size:11px;">
+        <button class="btn-small btn-del" onclick="this.parentElement.remove()">🗑️</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function addCartonRow(joueur = '', type = 'jaune', minute = '') {
+      const container = document.getElementById('mStatsCartonsList');
+      const div = document.createElement('div');
+      div.style.cssText = "display:flex; gap:5px; align-items:center; margin-bottom:4px;";
+      div.innerHTML = `
+        <input type="text" class="carton-nom" placeholder="Joueur" value="${joueur}" style="flex:1; font-size:11px;">
+        <select class="carton-type" style="width:75px; font-size:11px; padding:2px;">
+          <option value="jaune" ${type==='jaune'?'selected':''}>🟨 Jaune</option>
+          <option value="rouge" ${type==='rouge'?'selected':''}>🟥 Rouge</option>
+        </select>
+        <input type="number" class="carton-minute" placeholder="Min" value="${minute}" style="width:55px; font-size:11px;">
+        <button class="btn-small btn-del" onclick="this.parentElement.remove()">🗑️</button>
+      `;
+      container.appendChild(div);
+    }
+
+    async function saveMatchStats() {
+      const key = document.getElementById('mStatsMatchKey').value;
+      if (!key) return;
+
+      const titulaires = Array.from(document.querySelectorAll('.m-titu-select')).map(s => s.value.trim()).filter(Boolean);
+      const remplacants = Array.from(document.querySelectorAll('.m-remp-select')).map(s => s.value.trim()).filter(Boolean);
+
+      const changements = Array.from(document.querySelectorAll('#mStatsChangementsList > div')).map(row => ({
+        sortant: row.querySelector('.ch-sortant').value.trim(),
+        entrant: row.querySelector('.ch-entrant').value.trim(),
+        minute: parseInt(row.querySelector('.ch-minute').value, 10) || 0
+      })).filter(ch => ch.sortant || ch.entrant);
+
+      const buteurs = Array.from(document.querySelectorAll('#mStatsButeursList > div')).map(row => ({
+        joueur: row.querySelector('.buteur-nom').value.trim(),
+        minute: parseInt(row.querySelector('.buteur-minute').value, 10) || 0
+      })).filter(b => b.joueur);
+
+      const cartons = Array.from(document.querySelectorAll('#mStatsCartonsList > div')).map(row => ({
+        joueur: row.querySelector('.carton-nom').value.trim(),
+        type: row.querySelector('.carton-type').value,
+        minute: parseInt(row.querySelector('.carton-minute').value, 10) || 0
+      })).filter(c => c.joueur);
+
+      const amendes = document.getElementById('mStatsAmendes').value.trim();
+
+      if (!data.match_stats) data.match_stats = {};
+      data.match_stats[key] = {
+        titulaires,
+        remplacants,
+        changements,
+        buteurs,
+        cartons,
+        amendes
+      };
+
+      await saveToFirebase();
+      closeModal('modalMatchStats');
+      openModalMatchStatsList();
+      alert('✅ Feuille de match enregistrée avec succès !');
+    }
+
+    async function deleteMatchStats(key) {
+      if (!isAdmin) return;
+      if (confirm(`Supprimer la fiche statistique de la ${key} ?`)) {
+        if (data.match_stats && data.match_stats[key]) {
+          delete data.match_stats[key];
+          await saveToFirebase();
+          openModalMatchStatsList();
+        }
+      }
+    }
+
+    /* INSCRIPTION RAPIDE D'UN JOUEUR À LA VOLÉE */
+    function openModalQuickPlayer(targetType) {
+      document.getElementById('quickPlayerTarget').value = targetType;
+      document.getElementById('qpNom').value = '';
+      document.getElementById('qpNum').value = '';
+      document.getElementById('qpPoste').value = '';
+      document.getElementById('qpImg').value = '';
+      openModal('modalQuickPlayer');
+    }
+
+    async function saveQuickPlayer() {
+      const nom = document.getElementById('qpNom').value.trim();
+      const num = parseInt(document.getElementById('qpNum').value, 10) || 0;
+      const poste = document.getElementById('qpPoste').value.trim();
+      const img = document.getElementById('qpImg').value.trim();
+
+      if (!nom) return alert('Veuillez entrer le nom du joueur');
+      const newPlayer = { nom, num, poste, img };
+
+      if (!data.players) data.players = [...PLAYERS_INIT];
+      data.players.push(newPlayer);
+      await saveToFirebase();
+      closeModal('modalQuickPlayer');
+
+      // Actualise immédiatement les sélecteurs du formulaire de match
+      const allPlayers = data.players;
+      document.querySelectorAll('.m-titu-select, .m-remp-select').forEach(sel => {
+        const currentVal = sel.value;
+        const isTitu = sel.classList.contains('m-titu-select');
+        sel.innerHTML = `<option value="">-- Choisir ${isTitu ? 'Titulaire' : 'Remplaçant'} --</option>` +
+          allPlayers.map(p => `<option value="${p.nom}" ${p.nom === currentVal ? 'selected':''}>${p.num ? p.num+' - ':''}${p.nom}</option>`).join('');
+      });
+
+      renderClub();
+      alert(`✅ Joueur ${nom} inscrit et ajouté à la liste !`);
+    }
+
     function renderClub() {
       document.getElementById('grid-staff').innerHTML = (data.staff || []).map((s) => {
         return `<div class="player-card"><img src="${s.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}"><div class="pc-info"><div class="pc-name">${s.nom}</div><div class="pc-pos">${s.fonction}</div></div></div>`;
@@ -1897,9 +2248,9 @@
       };
       setContent('avant'); setContent('day'); setContent('apres');
 
-      const imgAvant = document.getElementById('mob-avant-img'); if (data.affiches.avant) { imgAvant.src = data.affiches.avant; imgAvant.style.display = 'block'; } else { imgAvant.style.display = 'none'; }
-      const imgDay = document.getElementById('mob-day-img'); if (data.affiches.day) { imgDay.src = data.affiches.day; imgDay.style.display = 'block'; } else { imgDay.style.display = 'none'; }
-      const imgApres = document.getElementById('mob-apres-img'); if (data.affiches.apres) { imgApres.src = data.affiches.apres; imgApres.style.display = 'block'; } else { imgApres.style.display = 'none'; }
+      const imgAvant = document.getElementById('mob-avant-img'); if (imgAvant) { imgAvant.style.display = data.affiches.avant ? 'block':'none'; imgAvant.src = data.affiches.avant || ''; }
+      const imgDay = document.getElementById('mob-day-img'); if (imgDay) { imgDay.style.display = data.affiches.day ? 'block':'none'; imgDay.src = data.affiches.day || ''; }
+      const imgApres = document.getElementById('mob-apres-img'); if (imgApres) { imgApres.style.display = data.affiches.apres ? 'block':'none'; imgApres.src = data.affiches.apres || ''; }
       
       const vidApres = document.getElementById('mob-apres-video');
       const vidCap = document.getElementById('mob-apres-video-caption');
@@ -1960,7 +2311,7 @@
       }).join('');
     }
 
-    /* RENDU DE L'ONGLET MÉDIAS */
+    /* MÉDIAS */
     function renderMedias() {
       const gridAlbums = document.getElementById('grid-albums');
       const gridVideos = document.getElementById('grid-videos');
@@ -2179,7 +2530,6 @@
       renderBreves();
     }
 
-    /* 2. RENDU DYNAMIQUE DE TOUT L'HISTORIQUE (AVEC ACTIONS ADMIN SUR TOUTES LES SECTIONS) */
     function renderHistoriqueDynamic() {
       const container = document.getElementById('historique-dynamic-sections');
       if (!container) return;
@@ -2351,6 +2701,7 @@
             if (fb.fdm && Array.isArray(fb.fdm)) data.fdm = fb.fdm;
             if (fb.breves && Array.isArray(fb.breves)) data.breves = fb.breves;
             if (fb.stats) data.stats = fb.stats;
+            if (fb.match_stats) data.match_stats = fb.match_stats;
             if (fb.historique && Array.isArray(fb.historique)) data.historique = fb.historique;
             
             if (fb.visits !== undefined) {
@@ -2429,6 +2780,15 @@
     window.openModalHisto = openModalHisto;
     window.saveHisto = saveHisto;
     window.deleteHisto = deleteHisto;
+    window.openModalMatchStatsList = openModalMatchStatsList;
+    window.openModalMatchStats = openModalMatchStats;
+    window.saveMatchStats = saveMatchStats;
+    window.deleteMatchStats = deleteMatchStats;
+    window.openModalQuickPlayer = openModalQuickPlayer;
+    window.saveQuickPlayer = saveQuickPlayer;
+    window.addChangementRow = addChangementRow;
+    window.addButeurRow = addButeurRow;
+    window.addCartonRow = addCartonRow;
     window.tryLogin = tryLogin;
     window.logoutAdmin = logoutAdmin;
     window.openArticleModal = openArticleModal;
@@ -2817,5 +3177,6 @@
   </script>
 </body>
 </html>
+
 
 
