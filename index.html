@@ -912,7 +912,7 @@
         <div id="mStatsRemplacantsGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:6px;"></div>
       </div>
 
-      <!-- BLOC 3 : CHANGEMENTS EN COURS DE MATCH (TEMPS DE JEU CALCULÉ AUTOMATIQUEMENT) -->
+      <!-- BLOC 3 : CHANGEMENTS EN COURS DE MATCH -->
       <div class="stats-sheet-section">
         <div class="stats-sheet-title">
           <span>🔄 REMPLACEMENTS (ENTRÉES / SORTIES)</span>
@@ -936,7 +936,7 @@
           </div>
           <div style="flex:1; min-width:260px;">
             <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:11px; font-weight:bold;">
-              <span>Cartons :</span>
+              <span>Cartons & Motifs :</span>
               <button class="btn-small" onclick="addCartonRow()" style="background:#dc2626;">+ Carton</button>
             </div>
             <div id="mStatsCartonsList"></div>
@@ -944,10 +944,13 @@
         </div>
       </div>
 
-      <!-- BLOC 5 : AMENDES & SANCTIONS -->
+      <!-- BLOC 5 : TABLEAU AMENDES & SANCTIONS INDIVIDUELLES/COLLECTIVES -->
       <div class="stats-sheet-section">
-        <div class="stats-sheet-title"><span>⚖️ AMENDES & DISCIPLINE (DZD)</span></div>
-        <input type="text" id="mStatsAmendes" placeholder="Ex: 20 000 DZD pour utilisation de fumigènes">
+        <div class="stats-sheet-title">
+          <span>⚖️ AMENDES & DISCIPLINE (DZD)</span>
+          <button class="btn-small" onclick="addAmendeRow()" style="background:#f59e0b; color:#000; font-weight:800;">➕ Ajouter une amende</button>
+        </div>
+        <div id="mStatsAmendesList"></div>
       </div>
 
       <div class="modal-actions">
@@ -1240,10 +1243,11 @@
   <div class="modal" id="modalAlbum">
     <div class="modal-content">
       <span class="modal-close" onclick="closeModal('modalAlbum')">×</span>
-      <h3>🖼️ Créer un Album</h3>
+      <h3 id="modalAlbumHeaderTitle">🖼️ Créer un Album</h3>
+      <input type="hidden" id="editAlbumIdx">
       <label>Titre de l'album <input type="text" id="albumTitre" placeholder="Ex: J8 - MSP Batna vs MOB"></label>
       <label>Date <input type="date" id="albumDate"></label>
-      <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalAlbum')">Annuler</button><button onclick="saveAlbum()">Créer</button></div>
+      <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalAlbum')">Annuler</button><button onclick="saveAlbum()">Enregistrer</button></div>
     </div>
   </div>
 
@@ -1271,10 +1275,11 @@
   <div class="modal" id="modalVideoMedia">
     <div class="modal-content">
       <span class="modal-close" onclick="closeModal('modalVideoMedia')">×</span>
-      <h3>🎥 Ajouter Vidéo</h3>
+      <h3 id="modalVideoMediaTitle">🎥 Vidéo</h3>
+      <input type="hidden" id="editVideoMediaIdx">
       <label>Titre <input type="text" id="vmTitre"></label>
       <label>Lien YouTube <input type="url" id="vmUrl"></label>
-      <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalVideoMedia')">Annuler</button><button onclick="saveVideoMedia()">Ajouter</button></div>
+      <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalVideoMedia')">Annuler</button><button onclick="saveVideoMedia()">Enregistrer</button></div>
     </div>
   </div>
 
@@ -1285,7 +1290,8 @@
       <iframe id="videoModalIframe" style="width:100%; aspect-ratio:16/9; border:none;" allowfullscreen></iframe>
     </div>
   </div>
- <!-- SCRIPT DU SITE -->
+
+  <!-- SCRIPT DU SITE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getDatabase, ref, set, get, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
@@ -1786,7 +1792,7 @@
       }, 4500);
     }
 
-    /* STATS & HOMME DU MATCH (SANS NOMBRE DE VOTANTS) */
+    /* STATS & HOMME DU MATCH */
     function renderStats() {
       if (currentStatsSubTab === 'vote') {
         const container = document.getElementById('voteContainer');
@@ -1998,7 +2004,7 @@
       }
     }
 
-    /* ==================== NOUVEAU SYSTÈME DE SAISIE STATS DU MOB ==================== */
+    /* ==================== SAISIE DÉTAILLÉE STATS MATCHS MOB ==================== */
     function openModalMatchStatsList() {
       if (!isAdmin) return;
       const mobMatches = (data.championnat || []).filter(m => (m.dom === 'MO Béjaïa' || m.ext === 'MO Béjaïa'));
@@ -2037,7 +2043,7 @@
         changements: [],
         buteurs: [],
         cartons: [],
-        amendes: ''
+        amendesList: []
       };
 
       // 1. Grille des 11 titulaires
@@ -2076,17 +2082,24 @@
       chList.innerHTML = '';
       (s.changements || []).forEach(ch => addChangementRow(ch.sortant, ch.entrant, ch.minute));
 
-      // 4. Buteurs & Cartons
+      // 4. Buteurs & Cartons (AVEC MOTIFS)
       const bList = document.getElementById('mStatsButeursList');
       bList.innerHTML = '';
       (s.buteurs || []).forEach(b => addButeurRow(b.joueur, b.minute));
 
       const cList = document.getElementById('mStatsCartonsList');
       cList.innerHTML = '';
-      (s.cartons || []).forEach(c => addCartonRow(c.joueur, c.type, c.minute));
+      (s.cartons || []).forEach(c => addCartonRow(c.joueur, c.type, c.minute, c.motif));
 
-      // 5. Amendes
-      document.getElementById('mStatsAmendes').value = s.amendes || '';
+      // 5. Tableau Amendes & Sanctions
+      const aList = document.getElementById('mStatsAmendesList');
+      aList.innerHTML = '';
+      if (s.amendesList && s.amendesList.length > 0) {
+        s.amendesList.forEach(a => addAmendeRow(a.concerne, a.motif, a.montant));
+      } else if (s.amendes) {
+        // Rétrocompatibilité si ancien texte unique
+        addAmendeRow('Club / Équipe', s.amendes, '');
+      }
 
       openModal('modalMatchStats');
     }
@@ -2117,17 +2130,36 @@
       container.appendChild(div);
     }
 
-    function addCartonRow(joueur = '', type = 'jaune', minute = '') {
+    function addCartonRow(joueur = '', type = 'jaune', minute = '', motif = '') {
       const container = document.getElementById('mStatsCartonsList');
       const div = document.createElement('div');
-      div.style.cssText = "display:flex; gap:5px; align-items:center; margin-bottom:4px;";
+      div.style.cssText = "display:flex; gap:4px; align-items:center; margin-bottom:4px;";
       div.innerHTML = `
         <input type="text" class="carton-nom" placeholder="Joueur" value="${joueur}" style="flex:1; font-size:11px;">
-        <select class="carton-type" style="width:75px; font-size:11px; padding:2px;">
+        <select class="carton-type" style="width:70px; font-size:11px; padding:2px;">
           <option value="jaune" ${type==='jaune'?'selected':''}>🟨 Jaune</option>
           <option value="rouge" ${type==='rouge'?'selected':''}>🟥 Rouge</option>
         </select>
-        <input type="number" class="carton-minute" placeholder="Min" value="${minute}" style="width:55px; font-size:11px;">
+        <input type="number" class="carton-minute" placeholder="Min" value="${minute}" style="width:50px; font-size:11px;">
+        <input type="text" class="carton-motif" placeholder="Motif (ex: Jeu dangereux)" value="${motif}" style="flex:1; font-size:11px;">
+        <button class="btn-small btn-del" onclick="this.parentElement.remove()">🗑️</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function addAmendeRow(concerne = 'Club / Équipe', motif = '', montant = '') {
+      const container = document.getElementById('mStatsAmendesList');
+      const div = document.createElement('div');
+      div.style.cssText = "display:flex; gap:5px; align-items:center; margin-bottom:5px;";
+      div.innerHTML = `
+        <select class="amende-concerne" style="width:130px; font-size:11px; padding:3px;">
+          <option value="Club / Équipe" ${concerne==='Club / Équipe'?'selected':''}>🏢 Club / Équipe</option>
+          <option value="Supporters" ${concerne==='Supporters'?'selected':''}>🥁 Supporters</option>
+          <option value="Joueur" ${concerne==='Joueur'?'selected':''}>🏃 Joueur</option>
+          <option value="Staff / Délégation" ${concerne==='Staff / Délégation'?'selected':''}>👔 Staff / Délégation</option>
+        </select>
+        <input type="text" class="amende-motif" placeholder="Motif (ex: Fumigènes, Contestation)" value="${motif}" style="flex:1; font-size:11px;">
+        <input type="text" class="amende-montant" placeholder="Montant DZD (ex: 30 000)" value="${montant}" style="width:100px; font-size:11px;">
         <button class="btn-small btn-del" onclick="this.parentElement.remove()">🗑️</button>
       `;
       container.appendChild(div);
@@ -2154,10 +2186,15 @@
       const cartons = Array.from(document.querySelectorAll('#mStatsCartonsList > div')).map(row => ({
         joueur: row.querySelector('.carton-nom').value.trim(),
         type: row.querySelector('.carton-type').value,
-        minute: parseInt(row.querySelector('.carton-minute').value, 10) || 0
+        minute: parseInt(row.querySelector('.carton-minute').value, 10) || 0,
+        motif: row.querySelector('.carton-motif').value.trim()
       })).filter(c => c.joueur);
 
-      const amendes = document.getElementById('mStatsAmendes').value.trim();
+      const amendesList = Array.from(document.querySelectorAll('#mStatsAmendesList > div')).map(row => ({
+        concerne: row.querySelector('.amende-concerne').value,
+        motif: row.querySelector('.amende-motif').value.trim(),
+        montant: row.querySelector('.amende-montant').value.trim()
+      })).filter(a => a.motif || a.montant);
 
       if (!data.match_stats) data.match_stats = {};
       data.match_stats[key] = {
@@ -2166,7 +2203,7 @@
         changements,
         buteurs,
         cartons,
-        amendes
+        amendesList
       };
 
       await saveToFirebase();
@@ -2210,7 +2247,6 @@
       await saveToFirebase();
       closeModal('modalQuickPlayer');
 
-      // Actualise immédiatement les sélecteurs du formulaire de match
       const allPlayers = data.players;
       document.querySelectorAll('.m-titu-select, .m-remp-select').forEach(sel => {
         const currentVal = sel.value;
@@ -2328,7 +2364,7 @@
       }).join('');
     }
 
-    /* MÉDIAS */
+    /* MÉDIAS (AVEC POSSIBILITÉ DE MODIFIER LE TITRE DE L'ALBUM/VIDÉO) */
     function renderMedias() {
       const gridAlbums = document.getElementById('grid-albums');
       const gridVideos = document.getElementById('grid-videos');
@@ -2339,8 +2375,13 @@
         } else {
           gridAlbums.innerHTML = data.medias.albums.map((a, i) => `
             <div class="album-card" onclick="openAlbumView(${i})">
-              ${isAdmin ? `<button class="btn-small btn-del" onclick="event.stopPropagation(); deleteAlbum(${i})" style="position:absolute; top:6px; right:6px;">🗑️</button>` : ''}
-              <h4>📸 ${a.titre}</h4>
+              ${isAdmin ? `
+                <div style="position:absolute; top:6px; right:6px; display:flex; gap:4px;">
+                  <button class="btn-small btn-edit" onclick="event.stopPropagation(); openModalAlbum(${i})">✏️</button>
+                  <button class="btn-small btn-del" onclick="event.stopPropagation(); deleteAlbum(${i})">🗑️</button>
+                </div>
+              ` : ''}
+              <h4 style="padding-right:45px;">📸 ${a.titre}</h4>
               <p>${formatDate(a.date)}<br>${(a.photos || []).length} photo(s)</p>
             </div>
           `).join('');
@@ -2357,8 +2398,13 @@
             else if (v.url.includes("youtube.com/watch")) { const id = v.url.split("v=")[1].split("&")[0]; embedUrl = `https://www.youtube.com/embed/${id}`; thumbUrl = `https://img.youtube.com/vi/${id}/0.jpg`; }
             return `
               <div class="video-item">
-                ${isAdmin ? `<button class="btn-del-video" onclick="deleteVideoMedia(${i})">🗑️</button>` : ''}
-                <h5>${v.titre}</h5>
+                ${isAdmin ? `
+                  <div style="position:absolute; top:5px; right:5px; display:flex; gap:3px; z-index:3;">
+                    <button class="btn-small btn-edit" onclick="openModalVideoMedia(${i})">✏️</button>
+                    <button class="btn-small btn-del" onclick="deleteVideoMedia(${i})">🗑️</button>
+                  </div>
+                ` : ''}
+                <h5 style="padding-right:40px;">${v.titre}</h5>
                 <div onclick="openVideoModal('${embedUrl}', '${escapeQuotes(v.titre)}')">
                   <img src="${thumbUrl}" class="video-thumb" alt="${v.titre}">
                 </div>
@@ -2421,33 +2467,53 @@
       }
     }
 
-    function openModalAlbum() {
+    function openModalAlbum(idx) {
       if (!isAdmin) return;
-      document.getElementById('albumTitre').value = '';
-      document.getElementById('albumDate').value = new Date().toISOString().split('T')[0];
+      document.getElementById('editAlbumIdx').value = idx !== undefined ? idx : '';
+      document.getElementById('modalAlbumHeaderTitle').textContent = idx !== undefined ? '✏️ Modifier le Titre de l\'Album' : '🖼️ Créer un Album';
+      const a = (idx !== undefined && data.medias && data.medias.albums[idx]) ? data.medias.albums[idx] : { titre: '', date: new Date().toISOString().split('T')[0] };
+      document.getElementById('albumTitre').value = a.titre || '';
+      document.getElementById('albumDate').value = a.date || new Date().toISOString().split('T')[0];
       openModal('modalAlbum');
     }
 
     async function saveAlbum() {
-      const a = { id: 'al' + Date.now(), titre: document.getElementById('albumTitre').value, date: document.getElementById('albumDate').value, photos: [] };
+      const idx = document.getElementById('editAlbumIdx').value;
       if (!data.medias.albums) data.medias.albums = [];
-      data.medias.albums.push(a);
+      if (idx === '') {
+        const a = { id: 'al' + Date.now(), titre: document.getElementById('albumTitre').value, date: document.getElementById('albumDate').value, photos: [] };
+        data.medias.albums.push(a);
+      } else {
+        const i = parseInt(idx, 10);
+        data.medias.albums[i].titre = document.getElementById('albumTitre').value;
+        data.medias.albums[i].date = document.getElementById('albumDate').value;
+      }
       await saveToFirebase();
       closeModal('modalAlbum');
       renderMedias();
     }
 
-    function openModalVideoMedia() {
+    function openModalVideoMedia(idx) {
       if (!isAdmin) return;
-      document.getElementById('vmTitre').value = '';
-      document.getElementById('vmUrl').value = '';
+      document.getElementById('editVideoMediaIdx').value = idx !== undefined ? idx : '';
+      document.getElementById('modalVideoMediaTitle').textContent = idx !== undefined ? '✏️ Modifier la Vidéo' : '🎥 Ajouter une Vidéo';
+      const v = (idx !== undefined && data.medias && data.medias.videos[idx]) ? data.medias.videos[idx] : { titre: '', url: '' };
+      document.getElementById('vmTitre').value = v.titre || '';
+      document.getElementById('vmUrl').value = v.url || '';
       openModal('modalVideoMedia');
     }
 
     async function saveVideoMedia() {
-      const v = { id: 'vid' + Date.now(), titre: document.getElementById('vmTitre').value, url: document.getElementById('vmUrl').value };
+      const idx = document.getElementById('editVideoMediaIdx').value;
       if (!data.medias.videos) data.medias.videos = [];
-      data.medias.videos.push(v);
+      if (idx === '') {
+        const v = { id: 'vid' + Date.now(), titre: document.getElementById('vmTitre').value, url: document.getElementById('vmUrl').value };
+        data.medias.videos.push(v);
+      } else {
+        const i = parseInt(idx, 10);
+        data.medias.videos[i].titre = document.getElementById('vmTitre').value;
+        data.medias.videos[i].url = document.getElementById('vmUrl').value;
+      }
       await saveToFirebase();
       closeModal('modalVideoMedia');
       renderMedias();
@@ -2698,7 +2764,6 @@
     }
 
     function loadFromFirebase() {
-      // RENDU IMMÉDIAT DES DONNÉES LOCALES POUR ÉVITER LES BLOCAGES DANS ACODE
       renderAll();
       const statusEl = document.getElementById('statusBar');
       if (statusEl) {
@@ -2816,6 +2881,7 @@
     window.addChangementRow = addChangementRow;
     window.addButeurRow = addButeurRow;
     window.addCartonRow = addCartonRow;
+    window.addAmendeRow = addAmendeRow;
     window.tryLogin = tryLogin;
     window.logoutAdmin = logoutAdmin;
     window.openArticleModal = openArticleModal;
