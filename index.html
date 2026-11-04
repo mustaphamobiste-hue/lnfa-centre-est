@@ -472,14 +472,6 @@
   .historique-text { color: #d1d5db; line-height: 1.7; font-size: 0.95em; text-align: justify; margin-bottom: 10px; }
   .historique-image { width: 100%; border-radius: 8px; margin: 12px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.5); display: block; }
   .historique-image-caption { text-align: center; font-size: 0.8em; color: var(--text-muted); font-style: italic; margin-top: -6px; margin-bottom: 15px; }
-  .historique-fiche { background: #131b15; border-left: 4px solid var(--mob-green); padding: 15px; border-radius: 6px; margin: 15px 0; }
-  .historique-fiche-item { display: flex; margin-bottom: 6px; font-size: 0.9em; }
-  .historique-fiche-label { font-weight: bold; color: var(--mob-green-neon); min-width: 140px; }
-  .historique-list { padding-left: 20px; margin: 10px 0; }
-  .historique-list li { margin-bottom: 5px; color: #d1d5db; line-height: 1.5; font-size: 0.9em; }
-  .historique-ultras { background: #1a160d; border-left: 4px solid var(--mob-gold); padding: 12px; border-radius: 6px; margin: 10px 0; }
-  .historique-ultras-name { font-weight: bold; color: var(--mob-gold); }
-  .historique-ultras-info { font-size: 0.9em; color: #d1d5db; margin-top: 2px; }
 
   /* BOUTON FLOTTANT & VISITES */
   .btn-share-float { position: fixed; bottom: 20px; right: 20px; background-color: #2563eb; color: white; border-radius: 50px; padding: 11px 18px; font-size: 14px; font-weight: 800; box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 6px; z-index: 1000; cursor: pointer; border: 2px solid white; }
@@ -554,9 +546,9 @@
       <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
         <strong style="color:#d8b4fe; font-size:13px;">🔐 Mode Admin activé</strong>
         <span id="adminVisitBadge" style="background:#2c3e50; color:white; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:bold;">👁️ ...</span>
-        <button onclick="openModalBreve('new')" style="background:#16a34a; font-size:11px; padding:4px 8px;">➕ Brève Flash</button>
+        <button type="button" onclick="openModalBreve('new')" style="background:#16a34a; font-size:11px; padding:4px 8px;">➕ Brève Flash</button>
       </div>
-      <button class="btn-small btn-del" onclick="logoutAdmin()">Déconnexion</button>
+      <button type="button" class="btn-small btn-del" onclick="logoutAdmin()">Déconnexion</button>
     </div>
   </div>
 
@@ -617,9 +609,9 @@
     </div>
 
     <div class="toolbar" id="rencontres-admin-toolbar" style="display:none;">
-      <button onclick="openModalMatch(currentRencontreView === 'coupe' ? 'coupe' : 'championnat')">➕ Ajouter un match</button>
-      <button onclick="exportData(currentRencontreView === 'coupe' ? 'coupe' : 'championnat')">💾 Exporter</button>
-      <button onclick="document.getElementById('importChampFile').click()">📂 Importer</button>
+      <button type="button" onclick="handleBtnAddMatch(event)">➕ Ajouter un match</button>
+      <button type="button" onclick="handleBtnExport(event)">💾 Exporter</button>
+      <button type="button" onclick="document.getElementById('importChampFile').click()">📂 Importer</button>
       <input type="file" id="importChampFile" accept=".json" style="display:none" onchange="importData(event, currentRencontreView === 'coupe' ? 'coupe' : 'championnat')">
     </div>
 
@@ -778,7 +770,7 @@
     </div>
   </div>
 
-  <!-- 4. ONGLET STATS (AVEC SAISIE DES STATS MATCH PAR MATCH DU MOB) -->
+  <!-- 4. ONGLET STATS -->
   <div id="tab-stats" class="tab-content">
     <div class="sub-tabs">
       <div class="sub-tab active" id="subtab-stats-vote" onclick="switchSubTabStats('vote')">⭐ Homme du Match</div>
@@ -786,7 +778,6 @@
       <div class="sub-tab" id="subtab-stats-cartons" onclick="switchSubTabStats('cartons')">🟨 Cartons</div>
     </div>
     <div class="toolbar" id="stats-toolbar" style="display:none;">
-      <!-- BOUTON CLÉ POUR LA SAISIE DÉTAILLÉE DES MATCHS DU MOB -->
       <button id="btnAdminMatchStats" onclick="openModalMatchStatsList()" style="background:#008f4c; font-weight:900;">📋 Saisie Stats Matchs MOB (J1 à J30)</button>
       <button id="btnManageElu" onclick="openModalElu()" style="background:#f59e0b; color:#000; font-weight:900;">🏆 Homme du Match Élu (Photo & Article)</button>
       <button id="btnAddVote" onclick="openModalCreateVote()" style="display:none;">➕ Nouveau Vote</button>
@@ -1475,11 +1466,11 @@
 
     let articles = [...ARTICLES_INIT];
 
-    function escapeQuotes(str) { return str ? str.replace(/'/g, "\\'") : ""; }
+    function escapeQuotes(str) { return str ? String(str).replace(/'/g, "\\'") : ""; }
 
     function getPlayerImg(playerName) {
       if (!playerName) return "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png";
-      const clean = playerName.replace(/'/g, "").toLowerCase().trim();
+      const clean = String(playerName).replace(/'/g, "").toLowerCase().trim();
       const list = data.players || PLAYERS_INIT;
       const p = list.find(x => {
         const n = (x.nom || '').replace(/'/g, "").toLowerCase().trim();
@@ -1495,13 +1486,13 @@
 
     function formatDate(d) {
       if (!d) return '';
-      const p = d.split('-');
+      const p = String(d).split('-');
       return p.length === 3 ? p[2] + '/' + p[1] + '/' + p[0] : d;
     }
 
     function formatText(t) {
       if (!t) return "";
-      let s = t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      let s = String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
       return s.replace(/#LaMaisonDesCrabes/g, '<a href="https://mustaphamobiste-hue.github.io/lnfa-centre-est/" target="_blank" style="color:var(--mob-green-neon);">#LaMaisonDesCrabes</a>');
     }
 
@@ -1594,15 +1585,21 @@
     }
 
     function openModal(id) { 
-      document.getElementById(id).classList.add('active'); 
-      const btnShare = document.getElementById('btnShareMain');
-      if (btnShare) btnShare.style.display = 'none';
+      const target = document.getElementById(id);
+      if (target) {
+        target.classList.add('active'); 
+        const btnShare = document.getElementById('btnShareMain');
+        if (btnShare) btnShare.style.display = 'none';
+      }
     }
 
     function closeModal(id) { 
-      document.getElementById(id).classList.remove('active'); 
-      const btnShare = document.getElementById('btnShareMain');
-      if (btnShare) btnShare.style.display = 'flex';
+      const target = document.getElementById(id);
+      if (target) {
+        target.classList.remove('active'); 
+        const btnShare = document.getElementById('btnShareMain');
+        if (btnShare) btnShare.style.display = 'flex';
+      }
     }
 
     function switchTab(name, el) {
@@ -2013,7 +2010,7 @@
       if (mobMatches.length === 0) {
         container.innerHTML = '<p style="color:#aaa; text-align:center; padding:15px;">Aucune rencontre du MOB enregistrée dans le championnat.</p>';
       } else {
-        container.innerHTML = mobMatches.map((m, idx) => {
+        container.innerHTML = mobMatches.map((m) => {
           const key = `J${m.journee}`;
           const isDone = data.match_stats && data.match_stats[key];
           const badge = isDone ? `<span style="color:var(--mob-green-neon); font-size:11px; font-weight:800;">✅ Fiche Remplie</span>` : `<span style="color:#888; font-size:11px;">⚪ En attente</span>`;
@@ -2046,7 +2043,6 @@
         amendesList: []
       };
 
-      // 1. Grille des 11 titulaires
       const allPlayers = data.players || PLAYERS_INIT;
       const tituContainer = document.getElementById('mStatsTitulairesGrid');
       tituContainer.innerHTML = Array.from({length: 11}).map((_, i) => {
@@ -2062,7 +2058,6 @@
         `;
       }).join('');
 
-      // 2. Remplaçants sur le banc (9 places disponibles)
       const rempContainer = document.getElementById('mStatsRemplacantsGrid');
       rempContainer.innerHTML = Array.from({length: 9}).map((_, i) => {
         const val = s.remplacants[i] || '';
@@ -2077,12 +2072,10 @@
         `;
       }).join('');
 
-      // 3. Changements
       const chList = document.getElementById('mStatsChangementsList');
       chList.innerHTML = '';
       (s.changements || []).forEach(ch => addChangementRow(ch.sortant, ch.entrant, ch.minute));
 
-      // 4. Buteurs & Cartons (AVEC MOTIFS)
       const bList = document.getElementById('mStatsButeursList');
       bList.innerHTML = '';
       (s.buteurs || []).forEach(b => addButeurRow(b.joueur, b.minute));
@@ -2091,13 +2084,11 @@
       cList.innerHTML = '';
       (s.cartons || []).forEach(c => addCartonRow(c.joueur, c.type, c.minute, c.motif));
 
-      // 5. Tableau Amendes & Sanctions
       const aList = document.getElementById('mStatsAmendesList');
       aList.innerHTML = '';
       if (s.amendesList && s.amendesList.length > 0) {
         s.amendesList.forEach(a => addAmendeRow(a.concerne, a.motif, a.montant));
       } else if (s.amendes) {
-        // Rétrocompatibilité si ancien texte unique
         addAmendeRow('Club / Équipe', s.amendes, '');
       }
 
@@ -2223,7 +2214,6 @@
       }
     }
 
-    /* INSCRIPTION RAPIDE D'UN JOUEUR À LA VOLÉE */
     function openModalQuickPlayer(targetType) {
       document.getElementById('quickPlayerTarget').value = targetType;
       document.getElementById('qpNom').value = '';
@@ -2364,7 +2354,7 @@
       }).join('');
     }
 
-    /* MÉDIAS (AVEC POSSIBILITÉ DE MODIFIER LE TITRE DE L'ALBUM/VIDÉO) */
+    /* MÉDIAS */
     function renderMedias() {
       const gridAlbums = document.getElementById('grid-albums');
       const gridVideos = document.getElementById('grid-videos');
@@ -2544,7 +2534,12 @@
       const list = data.fdm || [];
       container.innerHTML = [...list].sort((a,b) => (b.date||'').localeCompare(a.date||'')).map((f) => {
         const realIdx = (data.fdm || []).findIndex(item => item.id === f.id);
-        const act = isAdmin ? `<button class="btn-small btn-del" onclick="event.stopPropagation(); deleteFDM(${realIdx})">🗑️</button>` : '';
+        const act = isAdmin ? `
+          <div style="display:inline-flex; gap:4px; margin-left:6px;">
+            <button class="btn-small btn-edit" onclick="event.stopPropagation(); openModalFDM(${realIdx})">✏️</button>
+            <button class="btn-small btn-del" onclick="event.stopPropagation(); deleteFDM(${realIdx})">🗑️</button>
+          </div>
+        ` : '';
         return `<div class="fdm-item" onclick="openFDMView('${f.id}')"><img src="${f.image}" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'"><div><h4>${f.titre}</h4><p>${formatDate(f.date)} ${act}</p></div></div>`;
       }).join('');
       startFdmAutoScroll();
@@ -2901,38 +2896,87 @@
     window.openModalAddStat = openModalAddStat;
     window.saveStat = saveStat;
     window.deleteStat = deleteStat;
-    window.exportData = (sec) => { const b = new Blob([JSON.stringify(data[sec]||[], null, 2)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = `${sec}.json`; a.click(); };
+
+    /* GESTIONNAIRES D'ÉVÉNEMENTS DÉDIÉS AUX BOUTONS ADMIN RENCONTRES */
+    window.handleBtnAddMatch = (evt) => {
+      if (evt && evt.preventDefault) evt.preventDefault();
+      const sec = (typeof currentRencontreView !== 'undefined' && currentRencontreView === 'coupe') ? 'coupe' : 'championnat';
+      openModalMatch(sec);
+    };
+
+    window.handleBtnExport = (evt) => {
+      if (evt && evt.preventDefault) evt.preventDefault();
+      const sec = (typeof currentRencontreView !== 'undefined' && currentRencontreView === 'coupe') ? 'coupe' : 'championnat';
+      exportData(sec);
+    };
+
+    /* EXPORTATION JSON SÉCURISÉE SANS VERROU */
+    window.exportData = (sec) => { 
+      try {
+        const targetSec = sec || 'championnat';
+        const payload = data[targetSec] || [];
+        const str = JSON.stringify(payload, null, 2);
+        const blob = new Blob([str], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${targetSec}_mob.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      } catch(err) {
+        alert("Erreur lors de l'exportation : " + err.message);
+      }
+    };
+
     window.importData = (e, sec) => { const file = e.target.files[0]; if(!file) return; const r = new FileReader(); r.onload = async (evt) => { try { const parsed = JSON.parse(evt.target.result); if(Array.isArray(parsed)) { data[sec] = parsed; await saveToFirebase(); renderAll(); alert('✅ Import réussi !'); } } catch(err) { alert('❌ Fichier invalide.'); } }; r.readAsText(file); e.target.value = ''; };
 
+    /* OUVERTURE GARANTIE DE LA MODALE D'AJOUT DE MATCH */
     function openModalMatch(sec, idx) {
       if (!isAdmin) return;
-      document.getElementById('editSectionMatch').value = sec;
-      document.getElementById('editIndexMatch').value = idx !== undefined ? idx : '';
-      document.getElementById('fDom').innerHTML = EQUIPES.map(e => `<option value="${e}">${e}</option>`).join('');
-      document.getElementById('fExt').innerHTML = EQUIPES.map(e => `<option value="${e}">${e}</option>`).join('');
-      document.getElementById('fStade').innerHTML = STADES.map(s => `<option value="${s}">${s}</option>`).join('');
-      if (idx !== undefined) {
-        const m = data[sec][idx];
+      const targetSection = sec || 'championnat';
+      document.getElementById('editSectionMatch').value = targetSection;
+      document.getElementById('editIndexMatch').value = (idx !== undefined && idx !== null && idx !== '') ? idx : '';
+      
+      const titleEl = document.getElementById('modalTitleMatch');
+      if (titleEl) {
+        titleEl.textContent = (idx !== undefined && idx !== null && idx !== '') ? "✏️ Modifier la rencontre" : "➕ Ajouter un match";
+      }
+
+      const selectDom = document.getElementById('fDom');
+      const selectExt = document.getElementById('fExt');
+      const selectStade = document.getElementById('fStade');
+
+      if (selectDom) selectDom.innerHTML = EQUIPES.map(e => `<option value="${e}">${e}</option>`).join('');
+      if (selectExt) selectExt.innerHTML = EQUIPES.map(e => `<option value="${e}">${e}</option>`).join('');
+      if (selectStade) selectStade.innerHTML = STADES.map(s => `<option value="${s}">${s}</option>`).join('');
+
+      if (idx !== undefined && idx !== null && idx !== '' && data[targetSection] && data[targetSection][idx]) {
+        const m = data[targetSection][idx];
         document.getElementById('fJournee').value = m.journee || '';
         document.getElementById('fDate').value = m.date || '';
         document.getElementById('fHeure').value = m.heure || '';
-        document.getElementById('fDom').value = m.dom || '';
-        document.getElementById('fExt').value = m.ext || '';
+        if (selectDom) selectDom.value = m.dom || EQUIPES[0];
+        if (selectExt) selectExt.value = m.ext || EQUIPES[1];
         document.getElementById('fSd').value = m.sd ?? '';
         document.getElementById('fSe').value = m.se ?? '';
-        document.getElementById('fStade').value = m.stade || '';
+        if (selectStade) selectStade.value = m.stade || STADES[0];
         document.getElementById('fObs').value = m.obs || '';
       } else {
-        ['fJournee','fDate','fHeure','fSd','fSe','fObs'].forEach(id => document.getElementById(id).value = '');
+        ['fJournee','fDate','fHeure','fSd','fSe','fObs'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.value = '';
+        });
       }
       openModal('modalMatch');
     }
 
     async function saveMatch() {
-      const sec = document.getElementById('editSectionMatch').value;
+      const sec = document.getElementById('editSectionMatch').value || 'championnat';
       const idx = document.getElementById('editIndexMatch').value;
       const m = {
-        journee: document.getElementById('fJournee').value,
+        journee: document.getElementById('fJournee').value.trim(),
         date: document.getElementById('fDate').value,
         heure: document.getElementById('fHeure').value,
         dom: document.getElementById('fDom').value,
@@ -2940,10 +2984,10 @@
         sd: document.getElementById('fSd').value,
         se: document.getElementById('fSe').value,
         stade: document.getElementById('fStade').value,
-        obs: document.getElementById('fObs').value
+        obs: document.getElementById('fObs').value.trim()
       };
       if (!data[sec]) data[sec] = [];
-      if (idx === '') data[sec].push(m); else data[sec][idx] = m;
+      if (idx === '') data[sec].push(m); else data[sec][parseInt(idx, 10)] = m;
       await saveToFirebase();
       closeModal('modalMatch');
       renderAll();
@@ -3176,7 +3220,7 @@
     function openModalFDM(idx) {
       if (!isAdmin) return;
       document.getElementById('editFdmIdx').value = idx === 'new' ? '' : idx;
-      const f = idx !== 'new' ? data.fdm[idx] : {titre:'', date:'', image:'', texte:''};
+      const f = (idx !== 'new' && data.fdm && data.fdm[idx]) ? data.fdm[idx] : {titre:'', date: new Date().toISOString().split('T')[0], image:'', texte:''};
       document.getElementById('fdmTitre').value = f.titre || '';
       document.getElementById('fdmDate').value = f.date || '';
       document.getElementById('fdmImg').value = f.image || '';
@@ -3188,13 +3232,13 @@
       const idx = document.getElementById('editFdmIdx').value;
       const f = {
         id: 'fdm' + Date.now(),
-        titre: document.getElementById('fdmTitre').value,
+        titre: document.getElementById('fdmTitre').value.trim(),
         date: document.getElementById('fdmDate').value,
-        image: document.getElementById('fdmImg').value,
-        texte: document.getElementById('fdmTexte').value
+        image: document.getElementById('fdmImg').value.trim(),
+        texte: document.getElementById('fdmTexte').value.trim()
       };
       if (!data.fdm) data.fdm = [];
-      if (idx === '') data.fdm.push(f); else data.fdm[parseInt(idx)] = f;
+      if (idx === '') data.fdm.unshift(f); else data.fdm[parseInt(idx, 10)] = f;
       await saveToFirebase();
       closeModal('modalFDMEdit');
       renderFdM();
