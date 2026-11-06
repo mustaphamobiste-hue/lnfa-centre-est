@@ -446,9 +446,9 @@
   .btn-del { background: #dc2626; }
   .btn-live { background: #16a34a; }
 
-  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; background: var(--card-dark); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; margin-bottom: 12px; }
-  table { width: 100%; border-collapse: collapse; min-width: 750px; }
-  th, td { padding: 9px 8px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 12px; white-space: nowrap; }
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; background: var(--card-dark); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; margin-bottom: 12px; padding-bottom: 5px; }
+  table { width: 100%; border-collapse: collapse; min-width: 600px; font-size: 11px; }
+  th, td { padding: 7px 5px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 11px; white-space: nowrap; }
   th { background: #0a0f0c; color: var(--mob-green-neon); text-transform: uppercase; font-size: 11px; letter-spacing: 1px; }
   tr:hover { background: rgba(0, 230, 118, 0.04); }
   .score { font-family: 'Teko', sans-serif; font-size: 20px; color: var(--mob-green-neon); font-weight: 700; }
@@ -512,6 +512,37 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  /* ========================================= */
+  /* OPTIMISATION MOBILE (TÉLÉPHONE)           */
+  /* ========================================= */
+  @media (max-width: 600px) {
+    .header { padding: 15px 8px 10px; }
+    .header-title { font-size: 20px; }
+    .next-match-teams { font-size: 1.1em; }
+    .countdown { gap: 4px; }
+    .cd-box { padding: 5px 8px; min-width: 45px; }
+    .cd-num { font-size: 20px; }
+    
+    .rencontres-nav { flex-direction: column; align-items: stretch; }
+    .btn-rencontre-nav { max-width: 100%; min-width: 100%; }
+    
+    .toolbar { flex-direction: column; }
+    .toolbar button, .toolbar select { width: 100%; }
+    
+    .table-wrap { border-radius: 8px; }
+    table { font-size: 10px; min-width: 500px; }
+    th, td { padding: 6px 4px; font-size: 10px; }
+    
+    .btn-share-float { padding: 8px 14px; font-size: 12px; bottom: 15px; right: 15px; }
+    .visit-badge { bottom: 15px; left: 15px; padding: 6px 10px; font-size: 10px; }
+    
+    .home-widgets { gap: 10px; }
+    .news-card img { height: 150px; }
+    .news-card-title { font-size: 1em; }
+    
+    .modal-content { padding: 15px; }
   }
 </style>
 </head>
@@ -1004,6 +1035,10 @@
         <label style="flex:1;">Score Extérieur <input type="number" id="fSe" min="0"></label>
       </div>
       <label>Stade <select id="fStade"></select></label>
+      <div style="display:flex; gap:6px; margin-top:4px; align-items:center;">
+        <input type="text" id="fNewStade" placeholder="Nouveau stade (ex: Stade de Béjaïa)" style="flex:1; font-size:11px; padding:6px;">
+        <button type="button" onclick="addNewStade()" style="background:#7c3aed; font-size:11px; padding:6px 10px;">➕ Ajouter</button>
+      </div>
       <label>Observations <input type="text" id="fObs"></label>
       <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalMatch')">Annuler</button><button onclick="saveMatch()">Enregistrer</button></div>
     </div>
@@ -1337,7 +1372,7 @@
       "MSP Batna": "https://upload.wikimedia.org/wikipedia/fr/a/a8/MSP_Batna_logo.png",
       "JSD Jijel": "https://upload.wikimedia.org/wikipedia/fr/4/43/JSD_Jijel_logo.png",
       "CR Beni Thour": "https://upload.wikimedia.org/wikipedia/fr/8/86/CR_Beni_Thour_logo.png",
-      "WB Aïn Benian": "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png"
+      "WB Aïn Benian": "https://i.postimg.cc/dQkvbQ28/Logo-du-WBAB-Ain-Benian-Alger.png"
     };
 
     const MATCHS_INIT = [
@@ -1708,7 +1743,10 @@
       const jMax = sel ? sel.value : 'all';
       const tbody = document.getElementById('tbody-classement');
       const stats = {};
-      EQUIPES.forEach(e => stats[e] = { j:0, g:0, n:0, p:0, bp:0, bc:0, pts:0 });
+      
+      // Filtrer les équipes du championnat (exclure le WB Aïn Benian)
+      const equipesChampionnat = EQUIPES.filter(e => e !== 'WB Aïn Benian');
+      equipesChampionnat.forEach(e => stats[e] = { j:0, g:0, n:0, p:0, bp:0, bc:0, pts:0 });
 
       (data.championnat || []).forEach(m => {
         if (!hasScore(m) || (jMax !== 'all' && parseInt(m.journee) > parseInt(jMax))) return;
@@ -1722,7 +1760,7 @@
         else { stats[m.dom].n++; stats[m.dom].pts++; stats[m.ext].n++; stats[m.ext].pts++; }
       });
 
-      const classement = EQUIPES.map(e => ({ equipe: e, ...stats[e], diff: stats[e].bp - stats[e].bc }))
+      const classement = equipesChampionnat.map(e => ({ equipe: e, ...stats[e], diff: stats[e].bp - stats[e].bc }))
         .sort((a,b) => (b.pts - a.pts) || (b.diff - a.diff) || (b.bp - a.bp) || a.equipe.localeCompare(b.equipe));
 
       tbody.innerHTML = classement.map((c, idx) => {
@@ -2763,7 +2801,7 @@
       const statusEl = document.getElementById('statusBar');
       if (statusEl) {
         statusEl.className = 'status online';
-        statusEl.textContent = '🟢 Mode local actif (Connexion au serveur...)';
+        statusEl.textContent = '🟢 Connecté au serveur du MOB';
       }
 
       if (!db) return;
@@ -2790,6 +2828,7 @@
               if (fb.stats) data.stats = fb.stats;
               if (fb.match_stats) data.match_stats = fb.match_stats;
               if (fb.historique && Array.isArray(fb.historique)) data.historique = fb.historique;
+              if (fb.stades && Array.isArray(fb.stades)) { data.stades = fb.stades; STADES = fb.stades; }
               
               if (fb.visits !== undefined) {
                 const total = typeof fb.visits === 'number' ? fb.visits : (fb.visits.count || 0);
@@ -2799,7 +2838,7 @@
             renderAll();
             if (statusEl) {
               statusEl.className = 'status online';
-              statusEl.textContent = `🟢 Synchronisé en direct (${(data.championnat||[]).length} matchs)`;
+              statusEl.textContent = `🟢 Site à jour (${(data.championnat||[]).length} matchs enregistrés)`;
             }
           } catch(err) {
             console.error("Erreur rendu Firebase:", err);
@@ -2896,6 +2935,7 @@
     window.openModalAddStat = openModalAddStat;
     window.saveStat = saveStat;
     window.deleteStat = deleteStat;
+    window.addNewStade = addNewStade;
 
     /* GESTIONNAIRES D'ÉVÉNEMENTS DÉDIÉS AUX BOUTONS ADMIN RENCONTRES */
     window.handleBtnAddMatch = (evt) => {
@@ -2909,6 +2949,38 @@
       const sec = (typeof currentRencontreView !== 'undefined' && currentRencontreView === 'coupe') ? 'coupe' : 'championnat';
       exportData(sec);
     };
+
+    /* FONCTION POUR AJOUTER UN NOUVEAU STADE */
+    async function addNewStade() {
+      const input = document.getElementById('fNewStade');
+      const newStade = input.value.trim();
+      
+      if (!newStade) return alert('Veuillez entrer le nom du stade.');
+      
+      if (STADES.includes(newStade)) {
+        alert('Ce stade existe déjà dans la liste.');
+        input.value = '';
+        return;
+      }
+      
+      STADES.push(newStade);
+      
+      if (!data.stades) data.stades = STADES;
+      data.stades.push(newStade);
+      
+      const selectStade = document.getElementById('fStade');
+      if (selectStade) {
+        const opt = document.createElement('option');
+        opt.value = newStade;
+        opt.textContent = newStade;
+        selectStade.appendChild(opt);
+        selectStade.value = newStade;
+      }
+      
+      input.value = '';
+      await saveToFirebase();
+      alert('✅ Stade ajouté avec succès !');
+    }
 
     /* EXPORTATION JSON SÉCURISÉE SANS VERROU */
     window.exportData = (sec) => { 
