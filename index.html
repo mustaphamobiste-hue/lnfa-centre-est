@@ -91,26 +91,27 @@
   .status.offline { color: #f87171; border-color: rgba(248,113,113,0.3); }
   .status.loading { color: var(--mob-gold); }
 
-  /* BANDEAU MATCH EN DIRECT */
+  /* BANDEAU MATCH EN DIRECT (OPTIMISÉ) */
   .live-banner { 
     background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); 
     color: #1a4d2e; 
     border: 2px solid #2e7d32; 
     text-align: center; 
-    padding: 10px 14px; 
+    padding: 12px 16px; 
     border-radius: 8px; 
-    font-weight: bold; 
+    font-weight: 900; 
     margin-bottom: 12px; 
     display: none; 
     animation: pulseLiveGreen 1.8s infinite; 
     box-shadow: 0 3px 10px rgba(46, 125, 50, 0.25); 
     cursor: pointer; 
     white-space: pre-wrap; 
-    font-size: 13px;
+    font-size: 15px;
+    line-height: 1.4;
   }
   @keyframes pulseLiveGreen { 
     0%, 100% { opacity: 1; transform: scale(1); } 
-    50% { opacity: 0.88; transform: scale(1.008); } 
+    50% { opacity: 0.9; transform: scale(1.01); } 
   }
 
   /* BARRE ONGLETS */
@@ -490,6 +491,14 @@
 
   .footer-mob { text-align: center; padding: 25px 10px 10px; font-size: 11px; color: var(--text-muted); }
   .footer-mob strong { color: var(--mob-green-neon); }
+  
+  /* 🦀 LE CRABE DU FOOTER EN VERT */
+  .footer-crab {
+    display: inline-block;
+    filter: sepia(1) hue-rotate(90deg) saturate(4) brightness(1.2);
+    font-size: 14px;
+    vertical-align: middle;
+  }
 
   .classement-table th, .classement-table td { padding: 5px 3px; font-size: 11px; text-align: center; }
   .classement-table th:nth-child(2), .classement-table td:nth-child(2) { text-align: left; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
@@ -543,6 +552,9 @@
     .news-card-title { font-size: 1em; }
     
     .modal-content { padding: 15px; }
+    
+    /* Bandeau Direct plus grand sur téléphone */
+    .live-banner { font-size: 16px; padding: 14px 16px; }
   }
 </style>
 </head>
@@ -642,8 +654,9 @@
     <div class="toolbar" id="rencontres-admin-toolbar" style="display:none;">
       <button type="button" onclick="handleBtnAddMatch(event)">➕ Ajouter un match</button>
       <button type="button" onclick="handleBtnExport(event)">💾 Exporter</button>
+      <!-- CORRECTION DU BOUTON IMPORTER -->
       <button type="button" onclick="document.getElementById('importChampFile').click()">📂 Importer</button>
-      <input type="file" id="importChampFile" accept=".json" style="display:none" onchange="importData(event, currentRencontreView === 'coupe' ? 'coupe' : 'championnat')">
+      <input type="file" id="importChampFile" accept=".json" style="display:none" onchange="window.importData(event, currentRencontreView === 'coupe' ? 'coupe' : 'championnat')">
     </div>
 
     <div id="view-programme" class="rencontre-view">
@@ -890,9 +903,10 @@
   <div class="btn-share-float" id="btnShareMain" onclick="shareContext()">📤 Partager</div>
   <div class="visit-badge" id="visitCounter">👁️ -- visites</div>
 
+  <!-- FOOTER AVEC CRABE VERT -->
   <footer class="footer-mob">
     <div><strong>MO BÉJAÏA</strong> • La Maison des Crabes</div>
-    <div style="margin-top:3px; font-size:10px;">Club fondé en 1954 • Ferveur & Passion 🦀</div>
+    <div style="margin-top:3px; font-size:10px;">Club fondé en 1954 • Ferveur & Passion <span class="footer-crab">🦀</span></div>
   </footer>
 
   <!-- ==================== TOUTES LES MODALES DU SITE ==================== -->
@@ -2191,7 +2205,6 @@
       const container = document.getElementById('mStatsAmendesList');
       const tr = document.createElement('tr');
       
-      // Construction des options pour le menu "Nom" (Staff, Dirigeants, Joueurs)
       const allPlayers = data.players || PLAYERS_INIT;
       const allStaff = data.staff || [];
       const allDirigeants = data.dirigeants || [];
