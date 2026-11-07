@@ -966,13 +966,27 @@
         </div>
       </div>
 
-      <!-- BLOC 5 : TABLEAU AMENDES & SANCTIONS INDIVIDUELLES/COLLECTIVES -->
+      <!-- BLOC 5 : TABLEAU AMENDES & SANCTIONS INDIVIDUELLES/COLLECTIVES (5 COLONNES) -->
       <div class="stats-sheet-section">
         <div class="stats-sheet-title">
-          <span>⚖️ AMENDES & DISCIPLINE (DZD)</span>
-          <button class="btn-small" onclick="addAmendeRow()" style="background:#f59e0b; color:#000; font-weight:800;">➕ Ajouter une amende</button>
+          <span>⚖️ GESTION DES AMENDES</span>
+          <button class="btn-small" onclick="addAmendeRow()" style="background:#008f4c; color:#fff; font-weight:800;">➕ Ajouter une amende</button>
         </div>
-        <div id="mStatsAmendesList"></div>
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; min-width: 550px; font-size: 11px;">
+            <thead>
+              <tr style="background: #0a0f0c; color: var(--mob-green-neon);">
+                <th style="padding: 6px; border: 1px solid rgba(255,255,255,0.1);">Date réelle</th>
+                <th style="padding: 6px; border: 1px solid rgba(255,255,255,0.1);">Nom</th>
+                <th style="padding: 6px; border: 1px solid rgba(255,255,255,0.1);">Responsable</th>
+                <th style="padding: 6px; border: 1px solid rgba(255,255,255,0.1);">Montant (DZ)</th>
+                <th style="padding: 6px; border: 1px solid rgba(255,255,255,0.1);">Motif</th>
+                <th style="padding: 6px; border: 1px solid rgba(255,255,255,0.1); width: 35px; text-align: center;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="mStatsAmendesList"></tbody>
+          </table>
+        </div>
       </div>
 
       <div class="modal-actions">
@@ -1744,7 +1758,6 @@
       const tbody = document.getElementById('tbody-classement');
       const stats = {};
       
-      // Filtrer les équipes du championnat (exclure le WB Aïn Benian)
       const equipesChampionnat = EQUIPES.filter(e => e !== 'WB Aïn Benian');
       equipesChampionnat.forEach(e => stats[e] = { j:0, g:0, n:0, p:0, bp:0, bc:0, pts:0 });
 
@@ -2125,9 +2138,7 @@
       const aList = document.getElementById('mStatsAmendesList');
       aList.innerHTML = '';
       if (s.amendesList && s.amendesList.length > 0) {
-        s.amendesList.forEach(a => addAmendeRow(a.concerne, a.motif, a.montant));
-      } else if (s.amendes) {
-        addAmendeRow('Club / Équipe', s.amendes, '');
+        s.amendesList.forEach(a => addAmendeRow(a.dateReelle, a.nom, a.responsable, a.montant, a.motif));
       }
 
       openModal('modalMatchStats');
@@ -2176,22 +2187,63 @@
       container.appendChild(div);
     }
 
-    function addAmendeRow(concerne = 'Club / Équipe', motif = '', montant = '') {
+    function addAmendeRow(dateReelle = '', nom = '', responsable = '', montant = '', motif = '') {
       const container = document.getElementById('mStatsAmendesList');
-      const div = document.createElement('div');
-      div.style.cssText = "display:flex; gap:5px; align-items:center; margin-bottom:5px;";
-      div.innerHTML = `
-        <select class="amende-concerne" style="width:130px; font-size:11px; padding:3px;">
-          <option value="Club / Équipe" ${concerne==='Club / Équipe'?'selected':''}>🏢 Club / Équipe</option>
-          <option value="Supporters" ${concerne==='Supporters'?'selected':''}>🥁 Supporters</option>
-          <option value="Joueur" ${concerne==='Joueur'?'selected':''}>🏃 Joueur</option>
-          <option value="Staff / Délégation" ${concerne==='Staff / Délégation'?'selected':''}>👔 Staff / Délégation</option>
-        </select>
-        <input type="text" class="amende-motif" placeholder="Motif (ex: Fumigènes, Contestation)" value="${motif}" style="flex:1; font-size:11px;">
-        <input type="text" class="amende-montant" placeholder="Montant DZD (ex: 30 000)" value="${montant}" style="width:100px; font-size:11px;">
-        <button class="btn-small btn-del" onclick="this.parentElement.remove()">🗑️</button>
+      const tr = document.createElement('tr');
+      
+      // Construction des options pour le menu "Nom" (Staff, Dirigeants, Joueurs)
+      const allPlayers = data.players || PLAYERS_INIT;
+      const allStaff = data.staff || [];
+      const allDirigeants = data.dirigeants || [];
+
+      let optionsNomHtml = `<option value="">-- Sélectionner --</option>`;
+      
+      if (allStaff.length > 0) {
+        optionsNomHtml += `<optgroup label="Staff">`;
+        allStaff.forEach(s => { optionsNomHtml += `<option value="${s.nom}" ${s.nom === nom ? 'selected':''}>${s.nom} (${s.fonction})</option>`; });
+        optionsNomHtml += `</optgroup>`;
+      }
+      if (allDirigeants.length > 0) {
+        optionsNomHtml += `<optgroup label="Dirigeants">`;
+        allDirigeants.forEach(d => { optionsNomHtml += `<option value="${d.nom}" ${d.nom === nom ? 'selected':''}>${d.nom} (${d.fonction})</option>`; });
+        optionsNomHtml += `</optgroup>`;
+      }
+      if (allPlayers.length > 0) {
+        optionsNomHtml += `<optgroup label="Joueurs">`;
+        allPlayers.forEach(p => { optionsNomHtml += `<option value="${p.nom}" ${p.nom === nom ? 'selected':''}>${p.num ? p.num+' - ':''}${p.nom}</option>`; });
+        optionsNomHtml += `</optgroup>`;
+      }
+
+      tr.innerHTML = `
+        <td style="padding: 4px; border: 1px solid rgba(255,255,255,0.08);">
+          <input type="date" class="amende-date" value="${dateReelle}" style="width: 100%; font-size: 10.5px; padding: 3px;">
+        </td>
+        <td style="padding: 4px; border: 1px solid rgba(255,255,255,0.08);">
+          <select class="amende-nom" style="width: 100%; font-size: 10.5px; padding: 3px;">
+            ${optionsNomHtml}
+          </select>
+        </td>
+        <td style="padding: 4px; border: 1px solid rgba(255,255,255,0.08);">
+          <select class="amende-responsable" style="width: 100%; font-size: 10.5px; padding: 3px;">
+            <option value="">-- Sélectionner --</option>
+            <option value="Club" ${responsable==='Club'?'selected':''}>Club</option>
+            <option value="Dirigeants" ${responsable==='Dirigeants'?'selected':''}>Dirigeants</option>
+            <option value="Joueurs" ${responsable==='Joueurs'?'selected':''}>Joueurs</option>
+            <option value="Spectateurs" ${responsable==='Spectateurs'?'selected':''}>Spectateurs</option>
+            <option value="Public" ${responsable==='Public'?'selected':''}>Public</option>
+          </select>
+        </td>
+        <td style="padding: 4px; border: 1px solid rgba(255,255,255,0.08);">
+          <input type="number" class="amende-montant" placeholder="ex: 50000" min="0" step="500" value="${montant}" style="width: 100%; font-size: 10.5px; padding: 3px;">
+        </td>
+        <td style="padding: 4px; border: 1px solid rgba(255,255,255,0.08);">
+          <input type="text" class="amende-motif" placeholder="Raison..." value="${motif}" style="width: 100%; font-size: 10.5px; padding: 3px;">
+        </td>
+        <td style="padding: 4px; border: 1px solid rgba(255,255,255,0.08); text-align: center;">
+          <button type="button" class="btn-small btn-del" onclick="this.closest('tr').remove()">🗑️</button>
+        </td>
       `;
-      container.appendChild(div);
+      container.appendChild(tr);
     }
 
     async function saveMatchStats() {
@@ -2219,11 +2271,13 @@
         motif: row.querySelector('.carton-motif').value.trim()
       })).filter(c => c.joueur);
 
-      const amendesList = Array.from(document.querySelectorAll('#mStatsAmendesList > div')).map(row => ({
-        concerne: row.querySelector('.amende-concerne').value,
-        motif: row.querySelector('.amende-motif').value.trim(),
-        montant: row.querySelector('.amende-montant').value.trim()
-      })).filter(a => a.motif || a.montant);
+      const amendesList = Array.from(document.querySelectorAll('#mStatsAmendesList > tr')).map(row => ({
+        dateReelle: row.querySelector('.amende-date').value,
+        nom: row.querySelector('.amende-nom').value,
+        responsable: row.querySelector('.amende-responsable').value,
+        montant: parseFloat(row.querySelector('.amende-montant').value) || 0,
+        motif: row.querySelector('.amende-motif').value.trim()
+      })).filter(a => a.motif || a.montant || a.nom);
 
       if (!data.match_stats) data.match_stats = {};
       data.match_stats[key] = {
