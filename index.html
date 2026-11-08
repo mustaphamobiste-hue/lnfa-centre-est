@@ -91,7 +91,7 @@
   .status.offline { color: #f87171; border-color: rgba(248,113,113,0.3); }
   .status.loading { color: var(--mob-gold); }
 
-  /* BANDEAU MATCH EN DIRECT (OPTIMISÉ) */
+  /* BANDEAU MATCH EN DIRECT */
   .live-banner { 
     background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); 
     color: #1a4d2e; 
@@ -368,6 +368,10 @@
   .news-card-preview { font-size: 13px; color: #cbd5e1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   .article-full-text { line-height: 1.6; font-size: 14px; color: #e2e8f0; white-space: pre-wrap; margin-top: 10px; }
   .article-full-text a { color: var(--mob-green-neon); font-weight: bold; text-decoration: underline; }
+  
+  /* LECTEUR VIDÉO INTÉGRÉ */
+  .video-embed-container { position: relative; width: 100%; padding-bottom: 56.25%; /* Ratio 16:9 */ margin: 10px 0; border-radius: 8px; overflow: hidden; background: #000; }
+  .video-embed-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
   /* NAVIGATION 4 BOUTONS (RENCONTRES) */
   .rencontres-nav { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; justify-content: center; }
@@ -446,6 +450,7 @@
   .btn-edit { background: #2563eb; }
   .btn-del { background: #dc2626; }
   .btn-live { background: #16a34a; }
+  .btn-import-album { background: #7c3aed; }
 
   .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; background: var(--card-dark); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; margin-bottom: 12px; padding-bottom: 5px; }
   table { width: 100%; border-collapse: collapse; min-width: 600px; font-size: 11px; }
@@ -489,6 +494,16 @@
   .modal-actions { margin-top: 15px; display: flex; gap: 8px; justify-content: flex-end; }
   .btn-cancel { background: #475569; }
 
+  /* FOOTER RICHE */
+  .footer-rich { background: #0a0f0c; border-top: 2px solid var(--mob-green); padding: 30px 15px 20px; margin-top: 30px; border-radius: 10px; }
+  .footer-grid { display: grid; grid-template-columns: 1fr; gap: 20px; max-width: 900px; margin: 0 auto; text-align: left; }
+  @media (min-width: 768px) { .footer-grid { grid-template-columns: 1fr 1fr 1fr; } }
+  .footer-col h4 { color: var(--mob-green-neon); font-size: 14px; font-weight: 900; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; }
+  .footer-col ul { list-style: none; padding: 0; }
+  .footer-col ul li { margin-bottom: 8px; }
+  .footer-col ul li a { color: #cbd5e1; text-decoration: none; font-size: 13px; transition: color 0.2s; }
+  .footer-col ul li a:hover { color: var(--mob-green-neon); }
+  .footer-copyright { text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 30px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); }
   .footer-mob { text-align: center; padding: 25px 10px 10px; font-size: 11px; color: var(--text-muted); }
   .footer-mob strong { color: var(--mob-green-neon); }
   
@@ -654,9 +669,8 @@
     <div class="toolbar" id="rencontres-admin-toolbar" style="display:none;">
       <button type="button" onclick="handleBtnAddMatch(event)">➕ Ajouter un match</button>
       <button type="button" onclick="handleBtnExport(event)">💾 Exporter</button>
-      <!-- CORRECTION DU BOUTON IMPORTER -->
-      <button type="button" onclick="document.getElementById('importChampFile').click()">📂 Importer</button>
-      <input type="file" id="importChampFile" accept=".json" style="display:none" onchange="window.importData(event, currentRencontreView === 'coupe' ? 'coupe' : 'championnat')">
+      <button type="button" onclick="document.getElementById('importChampFile').click()">📂 Importer (Matchs)</button>
+      <input type="file" id="importChampFile" accept=".json" style="display:none" onchange="importData(event, currentRencontreView === 'coupe' ? 'coupe' : 'championnat')">
     </div>
 
     <div id="view-programme" class="rencontre-view">
@@ -858,6 +872,7 @@
       <div class="sub-tab active" id="subtab-news-all" onclick="switchSubTabNews('all')">📰 Toutes les actus</div>
       <div class="sub-tab" id="subtab-news-portraits" onclick="switchSubTabNews('portraits')">👤 Portraits</div>
       <div class="sub-tab" id="subtab-news-jeunes" onclick="switchSubTabNews('jeunes')">⚽ Jeunes & École</div>
+      <div class="sub-tab" id="subtab-news-analyses" onclick="switchSubTabNews('analyses')">📊 Analyses</div>
     </div>
     <div class="toolbar" id="news-toolbar" style="display:none;">
       <button onclick="openModalNews('new')">➕ Nouvel Article</button>
@@ -873,6 +888,8 @@
     </div>
     <div class="toolbar" id="media-toolbar" style="display:none;">
       <button id="btnAddAlbum" onclick="openModalAlbum()">➕ Créer un Album</button>
+      <button id="btnImportAlbum" onclick="document.getElementById('importAlbumFile').click()" style="background:#7c3aed;">📂 Importer un Album</button>
+      <input type="file" id="importAlbumFile" accept=".json" style="display:none" onchange="importAlbumData(event)">
       <button id="btnAddVideoMedia" onclick="openModalVideoMedia()" style="background:#c0392b;">➕ Ajouter une Vidéo</button>
     </div>
     <div id="media-images-container">
@@ -903,10 +920,39 @@
   <div class="btn-share-float" id="btnShareMain" onclick="shareContext()">📤 Partager</div>
   <div class="visit-badge" id="visitCounter">👁️ -- visites</div>
 
-  <!-- FOOTER AVEC CRABE VERT -->
-  <footer class="footer-mob">
-    <div><strong>MO BÉJAÏA</strong> • La Maison des Crabes</div>
-    <div style="margin-top:3px; font-size:10px;">Club fondé en 1954 • Ferveur & Passion <span class="footer-crab">🦀</span></div>
+  <!-- NOUVEAU FOOTER RICHE -->
+  <footer class="footer-rich">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>🦀 Le Club</h4>
+        <ul>
+          <li><a href="#">Présentation</a></li>
+          <li><a href="#">Organigramme</a></li>
+          <li><a href="#">Stade de l'Unité Maghrébine</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>🔗 Liens Utiles</h4>
+        <ul>
+          <li><a href="https://www.facebook.com/share/1AEUmcf9d6/" target="_blank">Page Facebook Officielle</a></li>
+          <li><a href="https://www.facebook.com/share/1CYBwsrQWn/" target="_blank">LNFA</a></li>
+          <li><a href="https://www.faf.dz/" target="_blank">FAF</a></li>
+          <li><a href="https://www.lrfalger.dz/fr/" target="_blank">Ligue Régionale Alger</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>📞 Contact</h4>
+        <ul>
+          <li><a href="mailto:contactmobejaia@gmail.com">contactmobejaia@gmail.com</a></li>
+          <li><a href="https://www.facebook.com/share/1AEUmcf9d6/" target="_blank">Signaler un bug</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div style="margin-bottom:5px;"><strong>MO BÉJAÏA</strong> • La Maison des Crabes</div>
+      <div>Site officiel des supporters, par les supporters @mustaphamobiste. Ferveur & Passion <span class="footer-crab">🦀</span></div>
+      <div style="margin-top:5px; font-size:10px; opacity:0.7;">© 2026 MO Béjaïa - Tous droits réservés.</div>
+    </div>
   </footer>
 
   <!-- ==================== TOUTES LES MODALES DU SITE ==================== -->
@@ -1097,7 +1143,14 @@
       <span class="modal-close" onclick="closeModal('modalNewsEdit')">×</span>
       <h3>📰 Article</h3>
       <input type="hidden" id="editNewsIdx">
-      <label>Catégorie <select id="nCat"><option value="all">Actualité Générale</option><option value="portraits">Portrait</option><option value="jeunes">Jeunes</option></select></label>
+      <label>Catégorie 
+        <select id="nCat">
+          <option value="all">Actualité Générale</option>
+          <option value="portraits">Portrait</option>
+          <option value="jeunes">Jeunes</option>
+          <option value="analyses">📊 Analyses & Classement</option>
+        </select>
+      </label>
       <label>Titre <input type="text" id="nTitre"></label>
       <label>Date <input type="date" id="nDate"></label>
       <label>Lien Image <input type="url" id="nImg"></label>
@@ -1349,6 +1402,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getDatabase, ref, set, get, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDr_pGZnYTSDXGbQprDuvMFeWnuinxRpH8",
@@ -1360,16 +1414,18 @@
       appId: "1:638227294907:web:694f8c2e597954f59e579e"
     };
 
-    let app, db;
+    let app, db, auth;
     try {
       app = initializeApp(firebaseConfig);
       db = getDatabase(app);
+      auth = getAuth(app);
     } catch(e) {
       console.warn("Erreur initialisation Firebase:", e);
     }
 
-    const ADMIN_PASSWORD = "Béjaïa#2026!Mob";
+    const ADMIN_EMAIL = "mustaphamobiste@gmail.com"; 
     let isAdmin = false;
+    let currentAdminEmail = "";
     let clickCount = 0;
     let currentMobSubTab = 'avant';
     let currentNewsSubTab = 'all';
@@ -1515,7 +1571,7 @@
         activeVote: {
           id: "v1",
           matchName: "AS Khroub 0-1 MO Béjaïa",
-          candidates: ["Faouzi Yaya", "Ben Mazouz Mohamed Saïd", "Hamza Rebiai", "Sami Tlemcani"],
+          candidates: ["Faouzi Yaya", "Ben Mazouz Mohamed Saïd", "Hamza Rebiai", "Samia Tlemcani"],
           votes: {}
         },
         elu: null,
@@ -1556,6 +1612,12 @@
     function formatText(t) {
       if (!t) return "";
       let s = String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      
+      const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/g;
+      s = s.replace(ytRegex, (match, videoId) => {
+        return `<div class="video-embed-container"><iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe></div>`;
+      });
+
       return s.replace(/#LaMaisonDesCrabes/g, '<a href="https://mustaphamobiste-hue.github.io/lnfa-centre-est/" target="_blank" style="color:var(--mob-green-neon);">#LaMaisonDesCrabes</a>');
     }
 
@@ -1598,10 +1660,13 @@
       setTimeout(() => { clickCount = 0; }, 2000);
     }
 
-    function tryLogin() {
+    async function tryLogin() {
       const pwd = (document.getElementById('adminPwd').value || '').trim();
-      if (pwd === ADMIN_PASSWORD || pwd.toLowerCase() === 'bejaia#2026!mob') {
+      
+      try {
+        await signInWithEmailAndPassword(auth, ADMIN_EMAIL, pwd);
         isAdmin = true;
+        
         document.getElementById('adminBadge').innerHTML = '<span style="background:#27ae60;color:white;padding:3px 8px;border-radius:12px;font-size:11px;margin-left:8px;">ADMIN</span>';
         document.getElementById('adminPanel').style.display = 'block';
         document.getElementById('visitCounter').style.display = 'flex';
@@ -1616,13 +1681,18 @@
         
         updateStatsAdminButtons();
         closeModal('modalAdmin');
-        alert('✅ Admin connecté');
+        alert('✅ Admin connecté avec succès !');
         renderAll();
-      } else { alert('❌ Mot de passe incorrect'); }
+      } catch (error) {
+        console.error(error);
+        alert('❌ Mot de passe incorrect ou erreur de connexion.');
+      }
     }
 
-    function logoutAdmin() {
+    async function logoutAdmin() {
+      try { await signOut(auth); } catch(e) {}
       isAdmin = false;
+      currentAdminEmail = "";
       document.getElementById('adminBadge').innerHTML = '';
       document.getElementById('adminPanel').style.display = 'none';
       document.getElementById('visitCounter').style.display = 'none';
@@ -2588,6 +2658,40 @@
       renderMedias();
     }
 
+    /* ==================== IMPORTATION D'ALBUM JSON ==================== */
+    async function importAlbumData(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const r = new FileReader();
+      r.onload = async (evt) => {
+        try {
+          const parsed = JSON.parse(evt.target.result);
+          if (Array.isArray(parsed)) {
+            if (!data.medias) data.medias = { albums: [], videos: [] };
+            if (!data.medias.albums) data.medias.albums = [];
+            
+            parsed.forEach(album => {
+              if (album.titre && album.photos && Array.isArray(album.photos)) {
+                if (!album.id) album.id = 'al' + Date.now() + Math.floor(Math.random() * 1000);
+                data.medias.albums.push(album);
+              }
+            });
+            
+            await saveToFirebase();
+            renderMedias();
+            alert('✅ Album(s) importé(s) avec succès !');
+          } else {
+            alert('❌ Format invalide. Le fichier doit contenir un tableau [ ... ].');
+          }
+        } catch(err) {
+          alert('❌ Fichier JSON invalide.');
+          console.error(err);
+        }
+      };
+      r.readAsText(file);
+      e.target.value = '';
+    }
+
     function openModalVideoMedia(idx) {
       if (!isAdmin) return;
       document.getElementById('editVideoMediaIdx').value = idx !== undefined ? idx : '';
@@ -2834,7 +2938,11 @@
     }
 
     async function saveToFirebase() {
-      if (!db) return;
+      if (!db || !auth.currentUser) { 
+        console.warn("Non connecté à Firebase Auth, impossible de sauvegarder.");
+        if (isAdmin) console.log("Tentative de sauvegarde locale (mode admin déconnecté)"); 
+        return; 
+      }
       try { 
         const cleanData = sanitizeData(data);
         await set(ref(db, 'data_v10'), cleanData); 
@@ -3003,6 +3111,7 @@
     window.saveStat = saveStat;
     window.deleteStat = deleteStat;
     window.addNewStade = addNewStade;
+    window.importAlbumData = importAlbumData;
 
     /* GESTIONNAIRES D'ÉVÉNEMENTS DÉDIÉS AUX BOUTONS ADMIN RENCONTRES */
     window.handleBtnAddMatch = (evt) => {
