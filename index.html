@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MO Béjaïa - Ligue 2 Amateur 2026-2027</title>
+
+<!-- 🔍 GOOGLE ANALYTICS (REMPLACER G-XXXXXXXXXX PAR VOTRE ID) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9Q1GV46GFD"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-9Q1GV46GFD');
+</scrip>
+
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,600;0,700;0,900;1,900&family=Teko:wght@700&display=swap');
 
@@ -38,6 +48,7 @@
     box-shadow: 0 4px 25px rgba(0, 230, 118, 0.15);
     border-radius: 10px;
     margin-bottom: 10px;
+    position: relative;
   }
   .header-logo {
     width: 64px;
@@ -75,6 +86,26 @@
     text-transform: uppercase;
     margin-top: 5px;
   }
+
+  /* BOUTON RECHERCHE */
+  .btn-search {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--card-dark);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-white);
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-search:hover { background: var(--mob-green); border-color: var(--mob-green-neon); }
 
   .status {
     text-align: center;
@@ -138,6 +169,12 @@
   }
   .tab-content { display: none; }
   .tab-content.active { display: block; }
+  
+  /* CRABE VERT DANS L'ONGLET MOB */
+  .tab-crab-green {
+    display: inline-block;
+    filter: sepia(1) hue-rotate(90deg) saturate(4) brightness(1.2);
+  }
 
   /* ESPACE ADMIN */
   .admin-panel {
@@ -577,6 +614,7 @@
 
   <!-- EN-TÊTE DU SITE -->
   <header class="header">
+    <div class="btn-search" onclick="openModal('modalSearch')">🔍</div>
     <img src="https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png" alt="MO Béjaïa" class="header-logo" onclick="handleTitleClick()">
     <div class="header-title" id="mainTitle">MO <span>BÉJAÏA</span><span id="adminBadge"></span></div>
     <div><span class="header-badge-1954">⭐ FONDÉ EN 1954 • LES CRABES ⭐</span></div>
@@ -589,7 +627,7 @@
 
   <!-- ONGLETS PRINCIPAUX -->
   <div class="tabs">
-    <div class="tab" onclick="switchTab('mob', this)">🦀 MOB</div>
+    <div class="tab" onclick="switchTab('mob', this)"><span class="tab-crab-green">🦀</span> MOB</div>
     <div class="tab active" onclick="switchTab('rencontres', this)">🏆 Rencontres</div>
     <div class="tab" onclick="switchTab('club', this)">👥 Club</div>
     <div class="tab" onclick="switchTab('stats', this)">📊 Stats</div>
@@ -956,6 +994,19 @@
   </footer>
 
   <!-- ==================== TOUTES LES MODALES DU SITE ==================== -->
+  <!-- MODALE RECHERCHE -->
+  <div class="modal" id="modalSearch">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('modalSearch')">×</span>
+      <h3>🔍 Rechercher un article</h3>
+      <input type="text" id="searchInput" placeholder="Tapez un mot-clé (ex: Coupe, Annaba...)" oninput="performSearch()">
+      <div id="searchResults" style="margin-top:15px; max-height:50vh; overflow-y:auto;"></div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('modalSearch')">Fermer</button>
+      </div>
+    </div>
+  </div>
+
   <!-- 1. MODALE LISTE DES MATCHS DU MOB POUR SAISIE DES STATS -->
   <div class="modal" id="modalMatchStatsList">
     <div class="modal-content" style="max-width:700px;">
@@ -2232,10 +2283,21 @@
       const container = document.getElementById('mStatsChangementsList');
       const div = document.createElement('div');
       div.style.cssText = "display:flex; gap:6px; align-items:center; margin-bottom:5px;";
+      
+      const allPlayers = data.players || PLAYERS_INIT;
+      const options = allPlayers.map(p => `<option value="${p.nom}" ${p.nom===sortant?'selected':''}>${p.num ? p.num+' - ':''}${p.nom}</option>`).join('');
+      const optionsEntrant = allPlayers.map(p => `<option value="${p.nom}" ${p.nom===entrant?'selected':''}>${p.num ? p.num+' - ':''}${p.nom}</option>`).join('');
+
       div.innerHTML = `
-        <input type="text" class="ch-sortant" placeholder="Joueur Sortant" value="${sortant}" style="flex:1; font-size:11px;">
+        <select class="ch-sortant" style="flex:1; font-size:11px;">
+          <option value="">-- Sortant --</option>
+          ${options}
+        </select>
         <span style="color:var(--mob-gold);">➔</span>
-        <input type="text" class="ch-entrant" placeholder="Joueur Entrant" value="${entrant}" style="flex:1; font-size:11px;">
+        <select class="ch-entrant" style="flex:1; font-size:11px;">
+          <option value="">-- Entrant --</option>
+          ${optionsEntrant}
+        </select>
         <input type="number" class="ch-minute" placeholder="Min (ex: 65)" value="${minute}" style="width:75px; font-size:11px;">
         <button class="btn-small btn-del" onclick="this.parentElement.remove()">🗑️</button>
       `;
@@ -2246,8 +2308,15 @@
       const container = document.getElementById('mStatsButeursList');
       const div = document.createElement('div');
       div.style.cssText = "display:flex; gap:5px; align-items:center; margin-bottom:4px;";
+      
+      const allPlayers = data.players || PLAYERS_INIT;
+      const options = allPlayers.map(p => `<option value="${p.nom}" ${p.nom===joueur?'selected':''}>${p.num ? p.num+' - ':''}${p.nom}</option>`).join('');
+
       div.innerHTML = `
-        <input type="text" class="buteur-nom" placeholder="Buteur" value="${joueur}" style="flex:1; font-size:11px;">
+        <select class="buteur-nom" style="flex:1; font-size:11px;">
+          <option value="">-- Buteur --</option>
+          ${options}
+        </select>
         <input type="number" class="buteur-minute" placeholder="Min" value="${minute}" style="width:65px; font-size:11px;">
         <button class="btn-small btn-del" onclick="this.parentElement.remove()">🗑️</button>
       `;
@@ -2258,14 +2327,21 @@
       const container = document.getElementById('mStatsCartonsList');
       const div = document.createElement('div');
       div.style.cssText = "display:flex; gap:4px; align-items:center; margin-bottom:4px;";
+      
+      const allPlayers = data.players || PLAYERS_INIT;
+      const options = allPlayers.map(p => `<option value="${p.nom}" ${p.nom===joueur?'selected':''}>${p.num ? p.num+' - ':''}${p.nom}</option>`).join('');
+
       div.innerHTML = `
-        <input type="text" class="carton-nom" placeholder="Joueur" value="${joueur}" style="flex:1; font-size:11px;">
+        <select class="carton-nom" style="flex:1; font-size:11px;">
+          <option value="">-- Joueur --</option>
+          ${options}
+        </select>
         <select class="carton-type" style="width:70px; font-size:11px; padding:2px;">
           <option value="jaune" ${type==='jaune'?'selected':''}>🟨 Jaune</option>
           <option value="rouge" ${type==='rouge'?'selected':''}>🟥 Rouge</option>
         </select>
         <input type="number" class="carton-minute" placeholder="Min" value="${minute}" style="width:50px; font-size:11px;">
-        <input type="text" class="carton-motif" placeholder="Motif (ex: Jeu dangereux)" value="${motif}" style="flex:1; font-size:11px;">
+        <input type="text" class="carton-motif" placeholder="Motif" value="${motif}" style="flex:1; font-size:11px;">
         <button class="btn-small btn-del" onclick="this.parentElement.remove()">🗑️</button>
       `;
       container.appendChild(div);
@@ -2527,6 +2603,33 @@
         const editBtn = isAdmin ? `<button class="btn-edit-news-text" onclick="event.stopPropagation(); openModalNews(${realIdx})">✏️ Modifier</button>` : '';
         return `<div class="news-card" onclick="openArticleModal('${a.id}')"><img src="${a.image}" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'"><div class="news-card-body"><div class="news-card-title">${a.titre}</div><div class="news-card-date">📅 ${formatDate(a.date)} ${editBtn}</div><div class="news-card-preview">${a.texte}</div></div></div>`;
       }).join('');
+    }
+
+    /* RECHERCHE DANS LES ARTICLES */
+    function performSearch() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      const resultsContainer = document.getElementById('searchResults');
+      if (!query) { resultsContainer.innerHTML = ''; return; }
+      
+      const list = (articles && articles.length > 0) ? articles : ARTICLES_INIT;
+      const results = list.filter(a => 
+        (a.titre && a.titre.toLowerCase().includes(query)) || 
+        (a.texte && a.texte.toLowerCase().includes(query))
+      );
+
+      if (results.length === 0) {
+        resultsContainer.innerHTML = '<p style="color:#aaa; font-size:12px;">Aucun article trouvé.</p>';
+        return;
+      }
+
+      resultsContainer.innerHTML = results.map(a => `
+        <div class="news-card" onclick="closeModal('modalSearch'); openArticleModal('${a.id}')" style="margin-bottom:10px;">
+          <div class="news-card-body" style="padding:10px;">
+            <div class="news-card-title" style="font-size:12px; padding-right:0;">${a.titre}</div>
+            <div class="news-card-date" style="font-size:10px;">📅 ${formatDate(a.date)}</div>
+          </div>
+        </div>
+      `).join('');
     }
 
     /* MÉDIAS */
@@ -3112,6 +3215,7 @@
     window.deleteStat = deleteStat;
     window.addNewStade = addNewStade;
     window.importAlbumData = importAlbumData;
+    window.performSearch = performSearch;
 
     /* GESTIONNAIRES D'ÉVÉNEMENTS DÉDIÉS AUX BOUTONS ADMIN RENCONTRES */
     window.handleBtnAddMatch = (evt) => {
@@ -3562,4 +3666,3 @@
   </script>
 </body>
 </html>
-
