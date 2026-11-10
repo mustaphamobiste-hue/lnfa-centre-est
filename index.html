@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MO Béjaïa - Ligue 2 Amateur 2026-2027</title>
-
-<!-- 🔍 GOOGLE ANALYTICS (REMPLACER G-XXXXXXXXXX PAR VOTRE ID) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Q1GV46GFD"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -13,7 +11,6 @@
   gtag('js', new Date());
   gtag('config', 'G-9Q1GV46GFD');
 </script>
-
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,600;0,700;0,900;1,900&family=Teko:wght@700&display=swap');
 
@@ -501,7 +498,7 @@
 
   .logo-mini { width: 22px; height: 22px; object-fit: contain; vertical-align: middle; margin-right: 6px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6)); }
   .zone-montee { background: rgba(0, 143, 76, 0.25) !important; color: #fff; }
-  .zone-playoff { background: rgba(245, 158, 11, 0.2) !important; color: #fff; }
+  .zone-playoff { background: rgba(245, 158, 11, 0.2) !important; color: #fff; border-left: 3px solid #f59e0b; } /* Couleur Jaune/Or */
   .zone-relégation { background: rgba(220, 38, 38, 0.25) !important; color: #fff; }
 
   /* HISTORIQUE */
@@ -866,12 +863,14 @@
     </div>
   </div>
 
-  <!-- 4. ONGLET STATS -->
+  <!-- 4. ONGLET STATS (MODIFIÉ AVEC NOUVEAUX ONGLETS) -->
   <div id="tab-stats" class="tab-content">
     <div class="sub-tabs">
       <div class="sub-tab active" id="subtab-stats-vote" onclick="switchSubTabStats('vote')">⭐ Homme du Match</div>
       <div class="sub-tab" id="subtab-stats-buteurs" onclick="switchSubTabStats('buteurs')">⚽ Buteurs</div>
       <div class="sub-tab" id="subtab-stats-cartons" onclick="switchSubTabStats('cartons')">🟨 Cartons</div>
+      <div class="sub-tab" id="subtab-stats-amendes" onclick="switchSubTabStats('amendes')">⚖️ Amendes</div>
+      <div class="sub-tab" id="subtab-stats-temps" onclick="switchSubTabStats('temps')">⏱️ Temps de jeu</div>
     </div>
     <div class="toolbar" id="stats-toolbar" style="display:none;">
       <button id="btnAdminMatchStats" onclick="openModalMatchStatsList()" style="background:#008f4c; font-weight:900;">📋 Saisie Stats Matchs MOB (J1 à J30)</button>
@@ -899,6 +898,23 @@
         <table>
           <thead><tr><th>Joueur</th><th>🟨 Jaunes</th><th>🟥 Rouges</th><th class="col-actions" style="display:none;">Actions</th></tr></thead>
           <tbody id="tbody-cartons"></tbody>
+        </table>
+      </div>
+    </div>
+    <div id="stats-amendes" class="stats-section" style="display:none;">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Date</th><th>Nom</th><th>Responsable</th><th>Montant</th><th>Motif</th></tr></thead>
+          <tbody id="tbody-amendes"></tbody>
+        </table>
+      </div>
+      <div style="text-align:right; font-weight:900; color:var(--mob-gold); margin-top:10px; font-size:14px;" id="total-amendes"></div>
+    </div>
+    <div id="stats-temps" class="stats-section" style="display:none;">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Joueur</th><th>Matchs joués</th><th>Minutes cumulées</th></tr></thead>
+          <tbody id="tbody-temps"></tbody>
         </table>
       </div>
     </div>
@@ -964,9 +980,9 @@
       <div class="footer-col">
         <h4>🦀 Le Club</h4>
         <ul>
-          <li><a href="#">Présentation</a></li>
+          <li><a href="#" onclick="event.preventDefault(); openModal('modalStadeInfo')">Présentation</a></li>
           <li><a href="#">Organigramme</a></li>
-          <li><a href="#">Stade de l'Unité Maghrébine</a></li>
+          <li><a href="#" onclick="event.preventDefault(); openModal('modalStadeInfo')">Stade de l'Unité Maghrébine</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -994,6 +1010,38 @@
   </footer>
 
   <!-- ==================== TOUTES LES MODALES DU SITE ==================== -->
+  
+  <!-- MODALE STADE INFO -->
+  <div class="modal" id="modalStadeInfo">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('modalStadeInfo')">×</span>
+      <h3>🏟️ L'ANTRE SACRÉ DES CRABES</h3>
+      <p style="font-size:12px; line-height:1.6; margin-bottom:10px; color:#d1d5db;">Véritable cœur battant du sport à Béjaïa et temple incontesté de la ferveur populaire, le <strong>Stade de l'Unité Maghrébine</strong> s'impose comme l'enceinte sportive de référence de la région. Situé au sein du complexe sportif de l'OPOW sur le Boulevard de la Soummam (Code postal : 06000), ce stade omnisports vibre au rythme des exploits des deux clubs phares de la ville, la JSM Béjaïa et le MO Béjaïa (MOB).</p>
+      
+      <h4 style="color:var(--mob-gold); font-size:13px; margin-bottom:5px;">📋 Fiche technique</h4>
+      <ul style="font-size:12px; color:#d1d5db; padding-left:20px; margin-bottom:15px;">
+        <li><strong>Inauguration :</strong> 1987</li>
+        <li><strong>Capacité :</strong> Entre 18 000 et 20 000 places assises</li>
+        <li><strong>Surface de jeu :</strong> Pelouse synthétique de haute qualité (rénovation 2009)</li>
+        <li><strong>Clubs résidents :</strong> JSM Béjaïa (JSMB) & MO Béjaïa (MOB)</li>
+      </ul>
+
+      <h4 style="color:var(--mob-gold); font-size:13px; margin-bottom:5px;">📢 La cartographie des tribunes</h4>
+      <ul style="font-size:12px; color:#d1d5db; padding-left:20px; margin-bottom:15px;">
+        <li><strong>Couvert B :</strong> Repaire des Ultras Granchio</li>
+        <li><strong>Couvert A :</strong> Quartier général des Ultras Saldae Kings</li>
+        <li><strong>Tribune « Adrar N Tizi » :</strong> Territoire des Ultras Free Men 16</li>
+        <li><strong>Virage Sud-Est :</strong> Fief imprenable des Ultra Mobiste</li>
+      </ul>
+
+      <p style="font-size:12px; font-style:italic; text-align:center; color:var(--mob-green-neon); margin-bottom:15px;">« Crabe un jour, mob toujours »</p>
+      
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('modalStadeInfo')">Fermer</button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODALE RECHERCHE -->
   <div class="modal" id="modalSearch">
     <div class="modal-content">
@@ -1500,7 +1548,7 @@
       "AS Khroub": "https://upload.wikimedia.org/wikipedia/fr/4/4d/ASKhroub.png",
       "MO Constantine": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Logo_du_MOC.png",
       "USM Annaba": "https://upload.wikimedia.org/wikipedia/fr/7/73/USM_Annaba_logo.png",
-      "JS Azazga": "https://upload.wikimedia.org/wikipedia/fr/9/95/Logo_JS_Azazga.png",
+      "JS Azazga": "https://i.postimg.cc/hPTYhNPZ/JS-AZAZGA.png", // Logo mis à jour
       "MO Béjaïa": "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png",
       "NC Magra": "https://upload.wikimedia.org/wikipedia/fr/5/5e/NC_Magra_logo.png",
       "JSM Skikda": "https://upload.wikimedia.org/wikipedia/commons/4/48/JSMSkikdaofficiallogo.png",
@@ -1651,7 +1699,7 @@
 
     function logoImg(eq) {
       const url = LOGOS[eq] || "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png";
-      return `<img src="${url}" class="logo-mini" alt="${eq}">`;
+      return `<img src="${url}" class="logo-mini" alt="${eq}" onerror="this.style.display='none'">`;
     }
 
     function formatDate(d) {
@@ -2047,20 +2095,123 @@
         container.innerHTML = html;
       } else if (currentStatsSubTab === 'buteurs') {
         const tbody = document.getElementById('tbody-buteurs');
-        const buteurs = Object.entries((data.stats && data.stats.buteurs) || {}).sort((a,b) => b[1] - a[1]);
-        if (buteurs.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="empty">Aucun buteur.</td></tr>'; return; }
-        tbody.innerHTML = buteurs.map((b, i) => {
-          const act = isAdmin ? `<td class="col-actions"><button class="btn-small btn-del" onclick="deleteStat('buteur','${escapeQuotes(b[0])}')">🗑️</button></td>` : `<td class="col-actions" style="display:none;"></td>`;
-          return `<tr><td><b>${i+1}</b></td><td><img src="${getPlayerImg(b[0])}" class="vote-avatar" style="width:24px; height:24px; vertical-align:middle; margin-right:6px;"> ${b[0]}</td><td><b>${b[1]}</b></td>${act}</tr>`;
+        const buteurs = {};
+        
+        if (data.match_stats) {
+          Object.keys(data.match_stats).forEach(key => {
+            const match = data.match_stats[key];
+            if (match.buteurs) {
+              match.buteurs.forEach(b => {
+                if (b.joueur) {
+                  buteurs[b.joueur] = (buteurs[b.joueur] || 0) + 1;
+                }
+              });
+            }
+          });
+        }
+        
+        const sortedButeurs = Object.entries(buteurs).sort((a,b) => b[1] - a[1]);
+        
+        if (sortedButeurs.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="empty">Aucun buteur enregistré dans les fiches de match.</td></tr>'; return; }
+        tbody.innerHTML = sortedButeurs.map((b, i) => {
+          return `<tr><td><b>${i+1}</b></td><td><img src="${getPlayerImg(b[0])}" class="vote-avatar" style="width:24px; height:24px; vertical-align:middle; margin-right:6px;"> ${b[0]}</td><td><b>${b[1]}</b></td></tr>`;
         }).join('');
       } else if (currentStatsSubTab === 'cartons') {
         const tbody = document.getElementById('tbody-cartons');
-        const cartons = Object.entries((data.stats && data.stats.cartons) || {}).sort((a,b) => (b[1].rouge*10 + b[1].jaune) - (a[1].rouge*10 + a[1].jaune));
-        if (cartons.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="empty">Aucun carton.</td></tr>'; return; }
-        tbody.innerHTML = cartons.map(c => {
-          const act = isAdmin ? `<td class="col-actions"><button class="btn-small btn-del" onclick="deleteStat('carton','${escapeQuotes(c[0])}')">🗑️</button></td>` : `<td class="col-actions" style="display:none;"></td>`;
-          return `<tr><td><img src="${getPlayerImg(c[0])}" class="vote-avatar" style="width:24px; height:24px; vertical-align:middle; margin-right:6px;"> ${c[0]}</td><td>${c[1].jaune || 0}</td><td>${c[1].rouge || 0}</td>${act}</tr>`;
+        const cartons = {};
+        
+        if (data.match_stats) {
+          Object.keys(data.match_stats).forEach(key => {
+            const match = data.match_stats[key];
+            if (match.cartons) {
+              match.cartons.forEach(c => {
+                if (c.joueur) {
+                  if (!cartons[c.joueur]) cartons[c.joueur] = { jaune: 0, rouge: 0 };
+                  if (c.type === 'jaune') cartons[c.joueur].jaune++;
+                  if (c.type === 'rouge') cartons[c.joueur].rouge++;
+                }
+              });
+            }
+          });
+        }
+        
+        const sortedCartons = Object.entries(cartons).sort((a,b) => (b[1].rouge*10 + b[1].jaune) - (a[1].rouge*10 + a[1].jaune));
+        
+        if (sortedCartons.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="empty">Aucun carton enregistré dans les fiches de match.</td></tr>'; return; }
+        tbody.innerHTML = sortedCartons.map(c => {
+          return `<tr><td><img src="${getPlayerImg(c[0])}" class="vote-avatar" style="width:24px; height:24px; vertical-align:middle; margin-right:6px;"> ${c[0]}</td><td>${c[1].jaune || 0}</td><td>${c[1].rouge || 0}</td></tr>`;
         }).join('');
+      } else if (currentStatsSubTab === 'amendes') {
+        const tbody = document.getElementById('tbody-amendes');
+        let totalDzd = 0;
+        let html = '';
+        
+        if (data.match_stats) {
+          Object.keys(data.match_stats).forEach(key => {
+            const match = data.match_stats[key];
+            if (match.amendesList) {
+              match.amendesList.forEach(a => {
+                totalDzd += parseFloat(a.montant) || 0;
+                html += `<tr>
+                  <td>${formatDate(a.dateReelle)}</td>
+                  <td>${a.nom || '-'}</td>
+                  <td>${a.responsable || '-'}</td>
+                  <td>${a.montant || 0} DZD</td>
+                  <td>${a.motif || '-'}</td>
+                </tr>`;
+              });
+            }
+          });
+        }
+        
+        if (html === '') { tbody.innerHTML = '<tr><td colspan="5" class="empty">Aucune amende enregistrée.</td></tr>'; }
+        else { tbody.innerHTML = html; }
+        document.getElementById('total-amendes').textContent = `Total général : ${totalDzd} DZD`;
+        
+      } else if (currentStatsSubTab === 'temps') {
+        const tbody = document.getElementById('tbody-temps');
+        const tempsData = {};
+        
+        if (data.match_stats) {
+          Object.keys(data.match_stats).forEach(key => {
+            const match = data.match_stats[key];
+            if (!match.titulaires && !match.remplacants) return;
+            
+            const changements = match.changements || [];
+            
+            (match.titulaires || []).forEach(joueur => {
+              if (!joueur) return;
+              if (!tempsData[joueur]) tempsData[joueur] = { matchs: 0, minutes: 0 };
+              tempsData[joueur].matchs++;
+              
+              const sortie = changements.find(ch => ch.sortant === joueur);
+              const minuteSortie = sortie ? parseInt(sortie.minute) || 90 : 90;
+              tempsData[joueur].minutes += minuteSortie;
+            });
+            
+            (match.remplacants || []).forEach(joueur => {
+              if (!joueur) return;
+              const entree = changements.find(ch => ch.entrant === joueur);
+              if (entree) {
+                if (!tempsData[joueur]) tempsData[joueur] = { matchs: 0, minutes: 0 };
+                tempsData[joueur].matchs++;
+                const minuteEntree = parseInt(entree.minute) || 0;
+                tempsData[joueur].minutes += (90 - minuteEntree);
+              }
+            });
+          });
+        }
+        
+        const sortedTemps = Object.entries(tempsData).sort((a,b) => b[1].minutes - a[1].minutes);
+        if (sortedTemps.length === 0) { tbody.innerHTML = '<tr><td colspan="3" class="empty">Aucune donnée de temps de jeu disponible.</td></tr>'; return; }
+        
+        tbody.innerHTML = sortedTemps.map(([joueur, stats]) => `
+          <tr>
+            <td><img src="${getPlayerImg(joueur)}" class="vote-avatar" style="width:24px; height:24px; vertical-align:middle; margin-right:6px;"> ${joueur}</td>
+            <td>${stats.matchs}</td>
+            <td><b>${stats.minutes} min</b></td>
+          </tr>
+        `).join('');
       }
     }
 
@@ -3142,7 +3293,7 @@
     window.switchSubTabMob = (m) => { currentMobSubTab = m; document.querySelectorAll('#tab-mob .sub-tab').forEach(b => b.classList.remove('active')); document.getElementById('subtab-mob-'+m).classList.add('active'); ['avant','day','apres'].forEach(k => document.getElementById('mob-'+k).style.display = k === m ? 'block' : 'none'); renderMob(); };
     window.switchSubTabNews = (c) => { currentNewsSubTab = c; document.querySelectorAll('#tab-actualite .sub-tab').forEach(b => b.classList.remove('active')); document.getElementById('subtab-news-'+c).classList.add('active'); renderNewsTab(); };
     window.switchSubTabMedia = (t) => { currentMediaSubTab = t; document.querySelectorAll('#tab-medias .sub-tab').forEach(b => b.classList.remove('active')); document.getElementById('subtab-media-'+t).classList.add('active'); document.getElementById('media-images-container').style.display = t === 'images' ? 'block' : 'none'; document.getElementById('media-videos-container').style.display = t === 'videos' ? 'block' : 'none'; if(isAdmin) { document.getElementById('btnAddAlbum').style.display = t === 'images' ? 'inline-block' : 'none'; document.getElementById('btnAddVideoMedia').style.display = t === 'videos' ? 'inline-block' : 'none'; } renderMedias(); };
-    window.switchSubTabStats = (t) => { currentStatsSubTab = t; document.querySelectorAll('#tab-stats .sub-tab').forEach(b => b.classList.remove('active')); document.getElementById('subtab-stats-'+t).classList.add('active'); ['vote','buteurs','cartons'].forEach(k => document.getElementById('stats-'+k).style.display = k === t ? 'block' : 'none'); updateStatsAdminButtons(); renderStats(); };
+    window.switchSubTabStats = (t) => { currentStatsSubTab = t; document.querySelectorAll('#tab-stats .sub-tab').forEach(b => b.classList.remove('active')); document.getElementById('subtab-stats-'+t).classList.add('active'); ['vote','buteurs','cartons','amendes','temps'].forEach(k => document.getElementById('stats-'+k).style.display = k === t ? 'block' : 'none'); updateStatsAdminButtons(); renderStats(); };
     window.openModal = openModal;
     window.closeModal = closeModal;
     window.openModalMatch = openModalMatch;
@@ -3666,3 +3817,4 @@
   </script>
 </body>
 </html>
+
