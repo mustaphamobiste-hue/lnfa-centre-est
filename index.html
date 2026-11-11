@@ -3093,20 +3093,27 @@
       const admToolbar = document.getElementById('allBrevesAdminToolbar');
       if (admToolbar) admToolbar.style.display = isAdmin ? 'block' : 'none';
 
-      document.getElementById('allBrevesList').innerHTML = list.map((b, i) => `
-        <div style="display:flex; justify-content:space-between; align-items:center; background:#141c16; padding:8px 10px; margin-bottom:6px; border-radius:6px; border:1px solid rgba(255,255,255,0.06);">
-          <div>
-            <b style="color:#fff; font-size:12px;">${b.titre}</b>
-            <div style="font-size:10px; color:var(--text-muted);">${formatDate(b.date)}</div>
-          </div>
-          ${isAdmin ? `
-            <div style="display:flex; gap:4px; flex-shrink:0;">
-              <button class="btn-small btn-edit" onclick="openModalBreve(${i})">✏️</button>
-              <button class="btn-small btn-del" onclick="deleteItem('breves', ${i})">🗑️</button>
-            </div>
-          ` : ''}
+document.getElementById('allBrevesList').innerHTML = list.map((b, i) => `
+  <div style="background:#141c16; padding:10px; margin-bottom:6px; border-radius:6px; border:1px solid rgba(255,255,255,0.06);">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; cursor:pointer;" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">
+      <div>
+        <b style="color:#fff; font-size:13px;">${b.titre}</b>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:3px;">📅 ${formatDate(b.date)}</div>
+      </div>
+      ${isAdmin ? `
+        <div style="display:flex; gap:4px; flex-shrink:0;" onclick="event.stopPropagation();">
+          <button class="btn-small btn-edit" onclick="openModalBreve(${i})">✏️</button>
+          <button class="btn-small btn-del" onclick="deleteItem('breves', ${i})">🗑️</button>
         </div>
-      `).join('');
+      ` : ''}
+    </div>
+    ${b.texte ? `
+      <div style="display:none; margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.1); font-size:12px; color:#cbd5e1; white-space:pre-wrap;">
+        ${b.texte}
+      </div>
+    ` : ''}
+  </div>
+`).join('');
     }
 
     function openModalBreve(idx) {
