@@ -3,13 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MO Béjaïa - Ligue 2 Amateur 2026-2027</title>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9Q1GV46GFD"></script>
+<title>MO Béjaïa – Site indépendant des supporters • Actualités, calendrier, stats</title>
+<meta name="description" content="Site indépendant des supporters du MO Béjaïa (Les Crabes). Actualités, calendrier, résultats, effectif, histoire, vote homme du match.">
+<meta property="og:title" content="MO Béjaïa – Site des supporters">
+<meta property="og:description" content="Toute l'actualité du MO Béjaïa : matchs, effectif, historique et vote homme du match.">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mustaphamobiste-hue.github.io/lnfa-centre-est/">
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-9Q1GV46GFD');
+  function loadAnalytics() {
+    if (window._gaLoaded) return;
+    window._gaLoaded = true;
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-9Q1GV46GFD';
+    document.head.appendChild(s);
+    gtag('js', new Date());
+    gtag('config', 'G-9Q1GV46GFD');
+  }
+  if (localStorage.getItem('cookies_ok') === '1') { loadAnalytics(); }
 </script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,600;0,700;0,900;1,900&family=Teko:wght@700&display=swap');
@@ -540,6 +554,38 @@
   .footer-copyright { text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 30px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); }
   .footer-mob { text-align: center; padding: 25px 10px 10px; font-size: 11px; color: var(--text-muted); }
   .footer-mob strong { color: var(--mob-green-neon); }
+
+  /* BANDEAU COOKIES */
+  #cookie-banner {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: #0a0f0c;
+    border-top: 2px solid var(--mob-green-neon);
+    color: #fff;
+    padding: 14px 16px;
+    z-index: 9998;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.5;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
+  }
+  #cookie-banner button {
+    margin-left: 10px;
+    padding: 7px 16px;
+    border: none;
+    border-radius: 6px;
+    background: var(--mob-green-neon);
+    color: #000;
+    font-weight: 900;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  #cookie-banner a {
+    color: var(--mob-gold);
+    text-decoration: underline;
+    margin-left: 8px;
+  }
   
   /* 🦀 LE CRABE DU FOOTER EN VERT */
   .footer-crab {
@@ -971,6 +1017,13 @@
     </div>
   </div>
 
+  <!-- ✅ NOUVEAU : BANDEAU COOKIES (ajouté ici) -->
+  <div id="cookie-banner">
+    🍪 Ce site utilise Google Analytics pour mesurer l'audience. Acceptez-vous les cookies ?
+    <button onclick="acceptCookies()">Accepter</button>
+    <a href="confidentialite.html">En savoir plus</a>
+  </div>
+
   <div class="btn-share-float" id="btnShareMain" onclick="shareContext()">📤 Partager</div>
   <div class="visit-badge" id="visitCounter">👁️ -- visites</div>
 
@@ -994,17 +1047,21 @@
           <li><a href="https://www.lrfalger.dz/fr/" target="_blank">Ligue Régionale Alger</a></li>
         </ul>
       </div>
+      <!-- ✅ MODIFIÉ : lien "Confidentialité & cookies" ajouté -->
       <div class="footer-col">
         <h4>📞 Contact</h4>
         <ul>
           <li><a href="mailto:contactmobejaia@gmail.com">contactmobejaia@gmail.com</a></li>
           <li><a href="https://www.facebook.com/share/1AEUmcf9d6/" target="_blank">Signaler un bug</a></li>
+          <li><a href="confidentialite.html">Confidentialité & cookies</a></li>
         </ul>
       </div>
     </div>
+    <!-- ✅ MODIFIÉ : "site indépendant" au lieu de "site officiel" + mention légale -->
     <div class="footer-copyright">
       <div style="margin-bottom:5px;"><strong>MO BÉJAÏA</strong> • La Maison des Crabes</div>
-      <div>Site officiel des supporters, par les supporters @mustaphamobiste. Ferveur & Passion <span class="footer-crab">🦀</span></div>
+      <div>Site indépendant des supporters, par les supporters @mustaphamobiste. Ferveur & Passion <span class="footer-crab">🦀</span></div>
+      <div style="margin-top:8px; font-size:10px; color:#8b9b90; font-style:italic;">Ce site est géré par des supporters bénévoles. Il n'est pas affilié officiellement au MO Béjaïa.</div>
       <div style="margin-top:5px; font-size:10px; opacity:0.7;">© 2026 MO Béjaïa - Tous droits réservés.</div>
     </div>
   </footer>
@@ -1496,8 +1553,7 @@
       <iframe id="videoModalIframe" style="width:100%; aspect-ratio:16/9; border:none;" allowfullscreen></iframe>
     </div>
   </div>
-
-  <!-- SCRIPT DU SITE -->
+ <!-- SCRIPT DU SITE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getDatabase, ref, set, get, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
@@ -1664,7 +1720,8 @@
       stades: STADES,
       fdm: [],
       breves: [
-        { id: "b1", titre: "Bienvenue sur le site officiel du MO Béjaïa !", date: "2026-11-03", texte: "Retrouvez l'actualité des Crabes." }
+        // ✅ MODIFIÉ : "site officiel" → "site des supporters"
+        { id: "b1", titre: "Bienvenue sur le site des supporters du MO Béjaïa !", date: "2026-11-03", texte: "Retrouvez l'actualité des Crabes." }
       ],
       stats: {
         activeVote: {
@@ -2676,9 +2733,10 @@
       const lastMatch = [...mobMatches].reverse().find(m => new Date(m.date + 'T' + (m.heure || '15:00')) <= now && hasScore(m));
       const formatM = (m) => m ? `${m.dom} ${hasScore(m) ? m.sd+'-'+m.se : 'vs'} ${m.ext}` : "Aucun match.";
       
-      document.getElementById('mob-avant-auto').innerHTML = nextMatch ? `Prochain match : ${formatM(nextMatch)}<br><span style="font-size:12px; color:#888;">${formatDate(nextMatch.date)} à ${nextMatch.heure} - ${nextMatch.stade||''}</span>` : "Pas de match à venir.";
-      document.getElementById('mob-day-auto').innerHTML = nextMatch && nextMatch.date === now.toISOString().split('T')[0] ? formatM(nextMatch) : (lastMatch && lastMatch.date === now.toISOString().split('T')[0] ? formatM(lastMatch) : "Pas de match aujourd'hui.");
-      document.getElementById('mob-apres-auto').innerHTML = lastMatch ? `Dernier résultat : ${formatM(lastMatch)}` : "Pas de résultat récent.";
+      // ✅ MODIFIÉ : on évite la duplication "Prochain match" + date (déjà dans la carte hero en haut)
+      document.getElementById('mob-avant-auto').innerHTML = nextMatch ? `<b>${formatM(nextMatch)}</b>` : '';
+      document.getElementById('mob-day-auto').innerHTML = nextMatch && nextMatch.date === now.toISOString().split('T')[0] ? formatM(nextMatch) : (lastMatch && lastMatch.date === now.toISOString().split('T')[0] ? formatM(lastMatch) : '');
+      document.getElementById('mob-apres-auto').innerHTML = lastMatch ? `Dernier résultat : ${formatM(lastMatch)}` : '';
 
       const setContent = (prefix) => {
         const imgEl = document.getElementById(`mob-${prefix}-content-img`);
@@ -2689,7 +2747,13 @@
           imgEl.style.display = hasImg ? 'block' : 'none';
           if (hasImg) imgEl.src = data.mob[prefix].img;
         }
-        if (textEl) textEl.innerHTML = hasTxt ? formatText(data.mob[prefix].txt) : "Aucune info pour le moment.";
+        // ✅ MODIFIÉ : masquer le bloc "Infos & Analyse" quand il n'y a ni image ni texte
+        if (textEl) {
+          textEl.innerHTML = hasTxt ? formatText(data.mob[prefix].txt) : '';
+          textEl.style.display = hasTxt ? 'block' : 'none';
+          const card = textEl.closest('.mob-card');
+          if (card) card.style.display = (hasImg || hasTxt) ? 'block' : 'none';
+        }
       };
       setContent('avant'); setContent('day'); setContent('apres');
 
@@ -2789,8 +2853,9 @@
       const gridVideos = document.getElementById('grid-videos');
       
       if (currentMediaSubTab === 'images') {
+        // ✅ MODIFIÉ : message plus sympa / utile
         if (!data.medias || !data.medias.albums || data.medias.albums.length === 0) {
-          gridAlbums.innerHTML = '<p style="text-align:center; width:100%; color:#888; padding:25px;">Aucun album photo.</p>';
+          gridAlbums.innerHTML = isAdmin ? '<p style="text-align:center; width:100%; color:#888; padding:25px;">Aucun album photo. Cliquez sur « ➕ Créer un Album » pour commencer.</p>' : '<p style="text-align:center; width:100%; color:#888; padding:25px;">📸 Les photos arrivent bientôt !</p>';
         } else {
           gridAlbums.innerHTML = data.medias.albums.map((a, i) => `
             <div class="album-card" onclick="openAlbumView(${i})">
@@ -2806,8 +2871,9 @@
           `).join('');
         }
       } else {
+        // ✅ MODIFIÉ : message plus sympa / utile
         if (!data.medias || !data.medias.videos || data.medias.videos.length === 0) {
-          gridVideos.innerHTML = '<p style="text-align:center; color:#888; padding:25px;">Aucune vidéo.</p>';
+          gridVideos.innerHTML = isAdmin ? '<p style="text-align:center; color:#888; padding:25px;">Aucune vidéo. Cliquez sur « ➕ Ajouter une Vidéo » pour commencer.</p>' : '<p style="text-align:center; color:#888; padding:25px;">🎥 Les vidéos arrivent bientôt !</p>';
         } else {
           gridVideos.innerHTML = data.medias.videos.map((v, i) => {
             let embedUrl = "";
@@ -3230,7 +3296,8 @@
       const statusEl = document.getElementById('statusBar');
       if (statusEl) {
         statusEl.className = 'status online';
-        statusEl.textContent = '🟢 Connecté au serveur du MOB';
+        // ✅ MODIFIÉ : message plus simple et non technique
+        statusEl.textContent = '🟢 Site à jour';
       }
 
       if (!db) return;
@@ -3367,6 +3434,18 @@
     window.addNewStade = addNewStade;
     window.importAlbumData = importAlbumData;
     window.performSearch = performSearch;
+
+    // ✅ AJOUTÉ : gestion du bandeau cookies (à la fin, après toutes les fonctions)
+    window.acceptCookies = function() {
+      localStorage.setItem('cookies_ok', '1');
+      const banner = document.getElementById('cookie-banner');
+      if (banner) banner.style.display = 'none';
+      if (typeof window.loadAnalytics === 'function') window.loadAnalytics();
+    };
+    if (!localStorage.getItem('cookies_ok')) {
+      const banner = document.getElementById('cookie-banner');
+      if (banner) banner.style.display = 'block';
+    }
 
     /* GESTIONNAIRES D'ÉVÉNEMENTS DÉDIÉS AUX BOUTONS ADMIN RENCONTRES */
     window.handleBtnAddMatch = (evt) => {
@@ -3817,4 +3896,3 @@
   </script>
 </body>
 </html>
-
