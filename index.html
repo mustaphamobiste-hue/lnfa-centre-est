@@ -1310,7 +1310,7 @@
   </script>
 </div>
       </div>
-      <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalArticle')">Fermer</button></div>
+      <div class="modal-actions" style="display:flex; justify-content:space-between; align-items:center;"><button onclick="scrollToComments()" style="background:#16a34a; color:white; padding:8px 16px; border-radius:6px; font-weight:bold; border:none; font-size:13px; cursor:pointer;">💬 Commenter</button><button class="btn-cancel" onclick="closeModal('modalArticle')">Fermer</button></div>
     </div>
   </div>
 
@@ -3283,7 +3283,12 @@ document.getElementById('allBrevesList').innerHTML = list.map((b, i) => `
       const btnShare = document.getElementById('btnShareMain');
 if (btnShare) { btnShare.style.display = 'flex'; btnShare.style.zIndex = '9999'; }
     }
-
+window.scrollToComments = function() {
+  const giscusDiv = document.querySelector('.giscus');
+  if (giscusDiv) {
+    giscusDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+};
     function sanitizeData(obj) {
       return JSON.parse(JSON.stringify(obj, (k, v) => (v === undefined ? null : v)));
     }
