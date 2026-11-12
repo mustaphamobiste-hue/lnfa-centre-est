@@ -528,7 +528,7 @@
   .historique-image-caption { text-align: center; font-size: 0.8em; color: var(--text-muted); font-style: italic; margin-top: -6px; margin-bottom: 15px; }
 
   /* BOUTON FLOTTANT & VISITES */
-  .btn-share-float { position: fixed; bottom: 20px; right: 20px; background-color: #2563eb; color: white; border-radius: 50px; padding: 11px 18px; font-size: 14px; font-weight: 800; box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 6px; z-index: 1000; cursor: pointer; border: 2px solid white; }
+  .btn-share-float { position: fixed; bottom: 90px; right: 20px; background-color: #2563eb; color: white; border-radius: 50px; padding: 11px 18px; font-size: 14px; font-weight: 800; box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 6px; z-index: 1000; cursor: pointer; border: 2px solid white; z-index: 9999;}
   .visit-badge { position: fixed; bottom: 20px; left: 20px; background-color: #1e293b; color: white; border-radius: 50px; padding: 8px 14px; font-size: 12px; font-weight: 800; box-shadow: 0 4px 15px rgba(0,0,0,0.5); z-index: 1000; border: 2px solid white; display: none; align-items: center; gap: 5px; }
 
   /* MODALES AVEC DESIGN SOMBRE */
@@ -639,7 +639,7 @@
     table { font-size: 10px; min-width: 500px; }
     th, td { padding: 6px 4px; font-size: 10px; }
     
-    .btn-share-float { padding: 8px 14px; font-size: 12px; bottom: 15px; right: 15px; }
+    .btn-share-float { padding: 8px 14px; font-size: 12px; bottom: 90px; right: 15px; }
     .visit-badge { bottom: 15px; left: 15px; padding: 6px 10px; font-size: 10px; }
     
     .home-widgets { gap: 10px; }
@@ -1289,7 +1289,27 @@
       <h3 id="articleTitle"></h3>
       <div id="articleDate" style="font-size:11px; color:#777; margin-bottom:8px;"></div>
       <img id="articleImg" src="" style="width:100%; border-radius:8px; margin-bottom:10px; display:none;">
-      <div id="articleText" class="article-full-text"></div>
+      <div id="articleText" class="article-full-text">
+        <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #333;">
+  <h4 style="color: var(--mob-green-neon); font-size: 14px; margin-bottom: 10px;">💬 Commentaires (via GitHub)</h4>
+  <div class="giscus"></div>
+  <script src="https://giscus.app/client.js"
+          data-repo="mustaphamobiste-hue/lnfa-centre-est"
+          data-repo-id="R_kgDOVBdI4g"
+          data-category="Announcements"
+          data-category-id="DIC_kwDOVBdI4s4DK97_"
+          data-mapping="pathname"
+          data-strict="0"
+          data-reactions-enabled="1"
+          data-emit-metadata="0"
+          data-input-position="bottom"
+          data-theme="dark"
+          data-lang="fr"
+          crossorigin="anonymous"
+          async>
+  </script>
+</div>
+      </div>
       <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalArticle')">Fermer</button></div>
     </div>
   </div>
