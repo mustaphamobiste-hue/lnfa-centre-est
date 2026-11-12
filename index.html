@@ -1873,34 +1873,25 @@
       document.getElementById('btnAddCarton').style.display = (currentStatsSubTab === 'cartons') ? 'inline-block' : 'none';
     }
 
-    function openModal(id) { 
-      const target = document.getElementById(id);
-      if (target) {
-        target.classList.add('active'); 
-        const btnShare = document.getElementById('btnShareMain');
-        if (btnShare) btnShare.style.display = 'none';
-      }
-    }
+  function openModal(id) { 
+  const target = document.getElementById(id);
+  if (target) {
+    target.classList.add('active'); 
+  }
+}
 
-    function closeModal(id) { 
-      const target = document.getElementById(id);
-      if (target) {
-        target.classList.remove('active'); 
-        const btnShare = document.getElementById('btnShareMain');
-        if (btnShare) btnShare.style.display = 'flex';
-      }
-    function closeModal(id) { 
+function closeModal(id) { 
   const target = document.getElementById(id);
   if (target) {
     target.classList.remove('active'); 
     const btnShare = document.getElementById('btnShareMain');
     if (btnShare) btnShare.style.display = 'flex';
   }
-  // ✅ AJOUT : On oublie l'article quand la fenêtre se ferme
+  // ✅ On oublie l'article quand la fenêtre se ferme
   if (id === 'modalArticle') {
     currentArticleForShare = null;
   }
-}}
+}
 
     function switchTab(name, el) {
       currentTabName = name;
