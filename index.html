@@ -3286,8 +3286,7 @@ document.getElementById('allBrevesList').innerHTML = list.map((b, i) => `
       document.getElementById('articleImg').style.display = 'block';
       document.getElementById('articleText').innerHTML = formatText(a.texte);
       openModal('modalArticle');
-      const btnShare = document.getElementById('btnShareMain');
-if (btnShare) { btnShare.style.display = 'flex'; btnShare.style.zIndex = '9999'; }
+      
     }
 window.scrollToComments = function() {
   const giscusDiv = document.querySelector('.giscus');
