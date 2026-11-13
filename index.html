@@ -2838,7 +2838,8 @@ function closeModal(id) {
       container.innerHTML = sorted.map((a) => {
         const realIdx = (data.articles || []).findIndex(art => art.id === a.id);
         const editBtn = isAdmin ? `<button class="btn-edit-news-text" onclick="event.stopPropagation(); openModalNews(${realIdx})">✏️ Modifier</button>` : '';
-        return `<div class="news-card" onclick="openArticleModal('${a.id}')"><img src="${a.image}" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'"><div class="news-card-body"><div class="news-card-title">${a.titre}</div><div class="news-card-date">📅 ${formatDate(a.date)} ${editBtn}</div><div class="news-card-preview">${a.texte}</div></div></div>`;
+        const deleteBtn = isAdmin ? `<button class="btn-edit-news-text" style="background:#dc2626;" onclick="event.stopPropagation(); deleteItem('articles', ${realIdx})">🗑️ Supprimer</button>` : '';
+        return `<div class="news-card" onclick="openArticleModal('${a.id}')"><img src="${a.image}" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'"><div class="news-card-body"><div class="news-card-title">${a.titre}</div><div class="news-card-date">📅 ${formatDate(a.date)} ${editBtn} ${deleteBtn}.</div><div class="news-card-preview">${a.texte}</div></div></div>`;
       }).join('');
     }
 
