@@ -1897,6 +1897,11 @@
   const target = document.getElementById(id);
   if (target) {
     target.classList.add('active'); 
+    // ✅ On force le bouton Partager à rester visible sur les articles
+    if (id === 'modalArticle') {
+      const btnShare = document.getElementById('btnShareMain');
+      if (btnShare) { btnShare.style.display = 'flex'; btnShare.style.zIndex = '9999'; }
+    }
   }
 }
 
