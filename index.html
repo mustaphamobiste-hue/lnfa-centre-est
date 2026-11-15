@@ -996,11 +996,14 @@
     <div id="media-images-container">
       <div class="card-grid" id="grid-albums" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));"></div>
     </div>
-    < id="media-videos-container" style="display:none;">
+    <div id="media-videos-container" style="display:none;">
       <div class="video-grid" id="grid-videos"></div>
     <div id="media-audio-container" style="display:none;">
   <div id="admin-music-section" style="display: none; background: #101612; border: 2px solid #a855f7; border-radius: 10px; padding: 15px; margin: 15px 0;">
     <h4 style="color: #d8b4fe; margin-bottom: 10px;">🎵 Chansons des Ultras (Admin uniquement)</h4>
+    <div class="toolbar" id="audio-admin-toolbar" style="display:none; margin-bottom: 10px;">
+  <button onclick="openModalChanson('new')" style="background:#16a34a;">➕ Ajouter une chanson</button>
+</div>
     
     <div style="margin-bottom: 15px; background: #000; padding: 10px; border-radius: 8px;">
       <p style="color: #fff; font-weight: bold; margin-bottom: 5px;">ULTRAS SALDAE KING'S : Ruḥen ilkel</p>
@@ -1039,7 +1042,7 @@
 
   <div class="btn-share-float" id="btnShareMain" onclick="shareContext()">📤 Partager</div>
   <div class="visit-badge" id="visitCounter">👁️ -- visites</div>
-
+</div>
   <!-- NOUVEAU FOOTER RICHE -->
   <footer class="footer-rich">
     <div class="footer-grid">
@@ -1645,8 +1648,9 @@
   "CR Beni Thour": "https://i.ibb.co/Z6Q7Wk8P/cusson-CR-Beni-Thour.png",
   "CA Batna": "https://i.ibb.co/4wY5LhV4/cusson-CA-Batna.png",
   "AS Khroub": "https://i.ibb.co/CRnKXLS/cusson-AS-Khroub.png",
-  "IRB Nezla": "https://i.ibb.co/5XRxWcX4/cusson-IRB-Nezla.png"
-};
+  "IRB Nezla": "https://i.ibb.co/5XRxWcX4/cusson-IRB-Nezla.png",
+      "WB Aïn Benian": "https://i.ibb.co/96t9yVN/Logo-du-WBAB-A-n-Benian-Alger.png"
+ };
 
     const MATCHS_INIT = [
       {journee:"1", date:"2026-09-18", heure:"16:00", dom:"AS Khroub", ext:"Paradou AC", sd:"0", se:"0", stade:"Stade Abed-Hamdani (El Khroub)", obs:""},
@@ -1859,6 +1863,7 @@
         
         document.getElementById('adminBadge').innerHTML = '<span style="background:#27ae60;color:white;padding:3px 8px;border-radius:12px;font-size:11px;margin-left:8px;">ADMIN</span>';
         document.getElementById('adminPanel').style.display = 'block';
+        document.getElementById('admin-music-section').style.display = 'block';
         document.getElementById('visitCounter').style.display = 'flex';
         document.getElementById('btnAddFdm').style.display = 'block';
         document.getElementById('rencontres-admin-toolbar').style.display = 'flex';
@@ -1885,6 +1890,7 @@
       currentAdminEmail = "";
       document.getElementById('adminBadge').innerHTML = '';
       document.getElementById('adminPanel').style.display = 'none';
+      document.getElementById('admin-music-section').style.display = 'none';
       document.getElementById('visitCounter').style.display = 'none';
       document.getElementById('rencontres-admin-toolbar').style.display = 'none';
       document.getElementById('allBrevesAdminToolbar').style.display = 'none';
@@ -3414,7 +3420,7 @@ window.scrollToComments = function() {
     window.renderClassementView = renderClassementView;
     window.switchSubTabMob = (m) => { currentMobSubTab = m; document.querySelectorAll('#tab-mob .sub-tab').forEach(b => b.classList.remove('active')); document.getElementById('subtab-mob-'+m).classList.add('active'); ['avant','day','apres'].forEach(k => document.getElementById('mob-'+k).style.display = k === m ? 'block' : 'none'); renderMob(); };
     window.switchSubTabNews = (c) => { currentNewsSubTab = c; document.querySelectorAll('#tab-actualite .sub-tab').forEach(b => b.classList.remove('active')); document.getElementById('subtab-news-'+c).classList.add('active'); renderNewsTab(); };
-    window.switchSubTabMedia = (t) => { currentMediaSubTab = t; document.querySelectorAll('#tab-medias .sub-tab').forEach(b => b.classList.remove('active')); document.getElementById('subtab-media-'+t).classList.add('active'); document.getElementById('media-images-container').style.display = t === 'images' ? 'block' : 'none'; document.getElementById('media-videos-container').style.display = t === 'videos' ? 'block' : 'none'; if(isAdmin) { document.getElementById('btnAddAlbum').style.display = t === 'images' ? 'inline-block' : 'none'; document.getElementById('btnAddVideoMedia').style.display = t === 'videos' ? 'inline-block' : 'none'; } renderMedias(); };
+    window.switchSubTabMedia = (t) => { currentMediaSubTab = t; document.querySelectorAll('#tab-medias .sub-tab').forEach(b => b.classList.remove('active')); document.getElementById('subtab-media-'+t).classList.add('active'); document.getElementById('media-images-container').style.display = t === 'images' ? 'block' : 'none'; document.getElementById('media-videos-container').style.display = t === 'videos' ? 'block' : 'none'; document.getElementById('media-audio-container').style.display = t === 'audio' ? 'block' : 'none'; if(isAdmin) { document.getElementById('btnAddAlbum').style.display = t === 'images' ? 'inline-block' : 'none'; document.getElementById('btnAddVideoMedia').style.display = t === 'videos' ? 'inline-block' : 'none'; } renderMedias(); };
     window.switchSubTabStats = (t) => { currentStatsSubTab = t; document.querySelectorAll('#tab-stats .sub-tab').forEach(b => b.classList.remove('active')); document.getElementById('subtab-stats-'+t).classList.add('active'); ['vote','buteurs','cartons','amendes','temps'].forEach(k => document.getElementById('stats-'+k).style.display = k === t ? 'block' : 'none'); updateStatsAdminButtons(); renderStats(); };
     window.openModal = openModal;
     window.closeModal = closeModal;
