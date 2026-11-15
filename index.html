@@ -999,7 +999,7 @@
     <div id="media-videos-container" style="display:none;">
       <div class="video-grid" id="grid-videos"></div>
     <div id="media-audio-container" style="display:none;">
-  <div id="admin-music-section" style="display: none; background: #101612; border: 2px solid #a855f7; border-radius: 10px; padding: 15px; margin: 15px 0;">
+  <div id="admin-music-section" style=" background: #101612; border: 2px solid #a855f7; border-radius: 10px; padding: 15px; margin: 15px 0;">
     <h4 style="color: #d8b4fe; margin-bottom: 10px;">🎵 Chansons des Ultras (Admin uniquement)</h4>
     <div class="toolbar" id="audio-admin-toolbar" style="display:none; margin-bottom: 10px;">
   <button onclick="openModalChanson('new')" style="background:#16a34a;">➕ Ajouter une chanson</button>
@@ -3434,7 +3434,8 @@ window.scrollToComments = function() {
   if (t === 'audio') document.getElementById('media-audio-container').style.display = 'block';
   
   if(isAdmin) { 
-    document.getElementById('btnAddAlbum').style.display = (t === 'images') ? 'inline-block' : 'none'; 
+    document.getElementById('btnAddAlbum').style.display = (t === 'images') ? 'inline-block' : 'none';
+    document.getElementById('btnImportAlbum').style.display = (t === 'images') ? 'inline-block' : 'none';
     document.getElementById('btnAddVideoMedia').style.display = (t === 'videos') ? 'inline-block' : 'none'; 
   } 
 };
