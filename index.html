@@ -3420,7 +3420,24 @@ window.scrollToComments = function() {
     window.renderClassementView = renderClassementView;
     window.switchSubTabMob = (m) => { currentMobSubTab = m; document.querySelectorAll('#tab-mob .sub-tab').forEach(b => b.classList.remove('active')); document.getElementById('subtab-mob-'+m).classList.add('active'); ['avant','day','apres'].forEach(k => document.getElementById('mob-'+k).style.display = k === m ? 'block' : 'none'); renderMob(); };
     window.switchSubTabNews = (c) => { currentNewsSubTab = c; document.querySelectorAll('#tab-actualite .sub-tab').forEach(b => b.classList.remove('active')); document.getElementById('subtab-news-'+c).classList.add('active'); renderNewsTab(); };
-    window.switchSubTabMedia = (t) => { currentMediaSubTab = t; document.querySelectorAll('#tab-medias .sub-tab').forEach(b => b.classList.remove('active')); document.getElementById('subtab-media-'+t).classList.add('active'); document.getElementById('media-images-container').style.display = t === 'images' ? 'block' : 'none'; document.getElementById('media-videos-container').style.display = t === 'videos' ? 'block' : 'none'; document.getElementById('media-audio-container').style.display = t === 'audio' ? 'block' : 'none'; if(isAdmin) { document.getElementById('btnAddAlbum').style.display = t === 'images' ? 'inline-block' : 'none'; document.getElementById('btnAddVideoMedia').style.display = t === 'videos' ? 'inline-block' : 'none'; } renderMedias(); };
+    window.switchSubTabMedia = (t) => { 
+  currentMediaSubTab = t; 
+  document.querySelectorAll('#tab-medias .sub-tab').forEach(b => b.classList.remove('active')); 
+  document.getElementById('subtab-media-'+t).classList.add('active'); 
+  
+  document.getElementById('media-images-container').style.display = 'none'; 
+  document.getElementById('media-videos-container').style.display = 'none'; 
+  document.getElementById('media-audio-container').style.display = 'none'; 
+  
+  if (t === 'images') document.getElementById('media-images-container').style.display = 'block';
+  if (t === 'videos') document.getElementById('media-videos-container').style.display = 'block';
+  if (t === 'audio') document.getElementById('media-audio-container').style.display = 'block';
+  
+  if(isAdmin) { 
+    document.getElementById('btnAddAlbum').style.display = (t === 'images') ? 'inline-block' : 'none'; 
+    document.getElementById('btnAddVideoMedia').style.display = (t === 'videos') ? 'inline-block' : 'none'; 
+  } 
+};
     window.switchSubTabStats = (t) => { currentStatsSubTab = t; document.querySelectorAll('#tab-stats .sub-tab').forEach(b => b.classList.remove('active')); document.getElementById('subtab-stats-'+t).classList.add('active'); ['vote','buteurs','cartons','amendes','temps'].forEach(k => document.getElementById('stats-'+k).style.display = k === t ? 'block' : 'none'); updateStatsAdminButtons(); renderStats(); };
     window.openModal = openModal;
     window.closeModal = closeModal;
