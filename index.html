@@ -985,6 +985,7 @@
     <div class="sub-tabs">
       <div class="sub-tab active" id="subtab-media-images" onclick="switchSubTabMedia('images')">🖼️ Images</div>
       <div class="sub-tab" id="subtab-media-videos" onclick="switchSubTabMedia('videos')">🎥 Vidéos</div>
+      <div class="sub-tab" id="subtab-media-audio" onclick="switchSubTabMedia('audio')">🎵 Audio</div>
     </div>
     <div class="toolbar" id="media-toolbar" style="display:none;">
       <button id="btnAddAlbum" onclick="openModalAlbum()">➕ Créer un Album</button>
@@ -995,9 +996,21 @@
     <div id="media-images-container">
       <div class="card-grid" id="grid-albums" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));"></div>
     </div>
-    <div id="media-videos-container" style="display:none;">
+    < id="media-videos-container" style="display:none;">
       <div class="video-grid" id="grid-videos"></div>
+    <div id="media-audio-container" style="display:none;">
+  <div id="admin-music-section" style="display: none; background: #101612; border: 2px solid #a855f7; border-radius: 10px; padding: 15px; margin: 15px 0;">
+    <h4 style="color: #d8b4fe; margin-bottom: 10px;">🎵 Chansons des Ultras (Admin uniquement)</h4>
+    
+    <div style="margin-bottom: 15px; background: #000; padding: 10px; border-radius: 8px;">
+      <p style="color: #fff; font-weight: bold; margin-bottom: 5px;">ULTRAS SALDAE KING'S : Ruḥen ilkel</p>
+      <audio controls controlsList="nodownload" style="width: 100%;">
+        <source src="https://docs.google.com/uc?export=download&id=1xRKx54hsT83Jvwyoj7gI5qFZBtdOPq-B" type="audio/mpeg">
+        Votre navigateur ne supporte pas l'élément audio.
+      </audio>
     </div>
+  </div>
+</div>
   </div>
 
   <!-- 7. ONGLET HISTORIQUE COMPLET 100% MODIFIABLE -->
@@ -1615,24 +1628,25 @@
     let STADES = ["Stade Abed-Hamdani (El Khroub)", "Stade 19 Mai 1956 (Annaba)", "Stade Allag Abderrahmane (Aïn Fakroun)", "Stade Khabaza Bachir (Teleghma)", "Stade 1er Novembre 1954 (Batna)", "Stade 20 Août 1955 (Skikda)", "Stade 18 Février (Ouargla)", "Stade 10 000 places (Touggourt)", "Stade Tirsatine (Azazga)", "Stade Hammou Boukouffa (Beni Oulbane)", "Stade 20 Août 1955 (Alger)", "Stade des Frères Boucheligue (Magra)", "Stade 1er Novembre 1954 Guendouza (Akbou)", "Stade des Martyrs (Akbou)", "Stade Hocine Rouibah (Jijel)", "Stade Ramdane-Benabdelmalek (Constantine)", "Stade Zerdani Hassouna (Oum El Bouaghi)", "Terrain Neutre"];
 
     const LOGOS = {
-      "Paradou AC": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Paradou_AC.png",
-      "IRB Nezla": "https://upload.wikimedia.org/wikipedia/fr/1/1d/IRB_Nezla.png",
-      "NRB Beni Oulbane": "https://img.a.transfermarkt.technology/wappen/head/128331.png",
-      "NRB Teleghma": "https://img.a.transfermarkt.technology/wappen/head/64134.png",
-      "CA Batna": "https://upload.wikimedia.org/wikipedia/fr/f/fa/CA_Batna_logo.png",
-      "US Chaouia": "https://upload.wikimedia.org/wikipedia/fr/9/99/US_Chaouia_logo.png",
-      "AS Khroub": "https://upload.wikimedia.org/wikipedia/fr/4/4d/ASKhroub.png",
-      "MO Constantine": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Logo_du_MOC.png",
-      "USM Annaba": "https://upload.wikimedia.org/wikipedia/fr/7/73/USM_Annaba_logo.png",
-      "JS Azazga": "https://i.postimg.cc/hPTYhNPZ/JS-AZAZGA.png", // Logo mis à jour
-      "MO Béjaïa": "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png",
-      "NC Magra": "https://upload.wikimedia.org/wikipedia/fr/5/5e/NC_Magra_logo.png",
-      "JSM Skikda": "https://upload.wikimedia.org/wikipedia/commons/4/48/JSMSkikdaofficiallogo.png",
-      "MSP Batna": "https://upload.wikimedia.org/wikipedia/fr/a/a8/MSP_Batna_logo.png",
-      "JSD Jijel": "https://upload.wikimedia.org/wikipedia/fr/4/43/JSD_Jijel_logo.png",
-      "CR Beni Thour": "https://upload.wikimedia.org/wikipedia/fr/8/86/CR_Beni_Thour_logo.png",
-      "WB Aïn Benian": "https://i.postimg.cc/dQkvbQ28/Logo-du-WBAB-Ain-Benian-Alger.png"
-    };
+  "USM Annaba": "https://i.ibb.co/7tXB39jS/cusson-USM-Annaba.png",
+  "MO Béjaïa": "https://i.ibb.co/gb6sgZdQ/cusson-MO-B-ja-a.png",
+  "US Chaouia": "https://i.ibb.co/XfmQxRVG/cusson-US-Chaouia.png",
+  "Paradou AC": "https://i.ibb.co/KprBxDrP/cusson-Paradou-AC.png",
+  "NRB Teleghma": "https://i.ibb.co/W4gwvm0y/cusson-NRB-Teleghma.png",
+
+  "NRB Beni Oulbane": "https://i.ibb.co/5h5W0h4s/cusson-NRB-Beni-Oulbane.png",
+  "NC Magra": "https://i.ibb.co/WWvTgNC6/cusson-NC-Magra.png",
+  "MSP Batna": "https://i.ibb.co/W4JrMXVd/cusson-MSP-Batna.png",
+  "MO Constantine": "https://i.ibb.co/h1sGGhcH/cusson-MO-Constantine.png",
+
+  "JSM Skikda": "https://i.ibb.co/7t9xzjtf/cusson-JSM-Skikda.png",
+  "JSD Jijel": "https://i.ibb.co/XfFYnpxW/cusson-JSD-Jijel.png",
+  "JS Azazga": "https://i.ibb.co/gbykMZft/cusson-JS-Azazga.png",
+  "CR Beni Thour": "https://i.ibb.co/Z6Q7Wk8P/cusson-CR-Beni-Thour.png",
+  "CA Batna": "https://i.ibb.co/4wY5LhV4/cusson-CA-Batna.png",
+  "AS Khroub": "https://i.ibb.co/CRnKXLS/cusson-AS-Khroub.png",
+  "IRB Nezla": "https://i.ibb.co/5XRxWcX4/cusson-IRB-Nezla.png"
+};
 
     const MATCHS_INIT = [
       {journee:"1", date:"2026-09-18", heure:"16:00", dom:"AS Khroub", ext:"Paradou AC", sd:"0", se:"0", stade:"Stade Abed-Hamdani (El Khroub)", obs:""},
