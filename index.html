@@ -1117,7 +1117,48 @@
   </footer>
 
   <!-- ==================== TOUTES LES MODALES DU SITE ==================== -->
-  
+  <!-- MODALE ÉDITORIAL -->
+<div class="modal" id="modalEditorial">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('modalEditorial')">×</span>
+    <h3 style="color: #f59e0b; border-bottom: 1px dashed #f59e0b; padding-bottom: 5px;">✍️ L'ÉDITORIAL</h3>
+    <h2 id="editoViewTitle" style="color: #fff; font-size: 18px; margin: 15px 0 5px; font-style: italic;"></h2>
+    <div id="editoViewDate" style="font-size: 11px; color: #8b9b90; margin-bottom: 15px;"></div>
+    
+    <!-- Image ou Vidéo de l'édito -->
+    <div id="editoViewMediaContainer" style="margin-bottom: 15px; display: none;">
+      <img id="editoViewImg" src="" style="width: 100%; border-radius: 8px; display: none;">
+      <iframe id="editoViewVideo" class="mob-video" allowfullscreen style="display: none;"></iframe>
+    </div>
+
+    <!-- Texte complet -->
+    <div id="editoViewText" style="color: #d1d5db; line-height: 1.6; font-size: 14px; text-align: justify; white-space: pre-wrap; margin-bottom: 20px;"></div>
+    
+    <!-- Pied de l'édito (Boutons) -->
+    <div class="modal-actions" style="display:flex; justify-content:space-between; align-items:center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+      <button onclick="scrollToComments()" style="background:#16a34a; color:white; padding:8px 16px; border-radius:6px; font-weight:bold; border:none; font-size:13px; cursor:pointer;">💬 Commenter</button>
+      <button class="btn-cancel" onclick="closeModal('modalEditorial')">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODALE ADMIN ÉDITORIAL -->
+<div class="modal" id="modalEditorialEdit">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('modalEditorialEdit')">×</span>
+    <h3>✍️ Gérer l'Éditorial</h3>
+    <label>Date <input type="date" id="editoDate"></label>
+    <label>Titre <input type="text" id="editoTitre"></label>
+    <label>Auteur <input type="text" id="editoAuteur" placeholder="Ex: La Rédaction"></label>
+    <label>Lien Image (URL) <input type="url" id="editoImg" placeholder="https://..."></label>
+    <label>Lien Vidéo YouTube (URL) <input type="url" id="editoVideo" placeholder="https://youtube.com/..."></label>
+    <label>Texte complet de l'éditorial <textarea id="editoTexte" rows="10"></textarea></label>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modalEditorialEdit')">Annuler</button>
+      <button onclick="saveEditorial()">Enregistrer</button>
+    </div>
+  </div>
+</div>
   <!-- MODALE STADE INFO -->
   <div class="modal" id="modalStadeInfo">
     <div class="modal-content">
@@ -1776,6 +1817,7 @@
     ];
 
     let data = {
+      editorial: { date: "2026-11-16", titre: "Le réveil des Crabes : Plus qu'un match, une déclaration", auteur: "La Rédaction", img: "", video: "", texte: "Hier soir, au Stade des Martyrs d'Akbou, le MO Béjaïa n'a pas seulement gagné un match. Il a envoyé un signal fort à toute la Ligue 2. Face à l'IRB Nezla, les Vert et Noir ont montré un visage de combattants, refusant de plier malgré les difficultés. Ce but à la 91ème minute est la récompense de l'abnégation." },
       championnat: [...MATCHS_INIT],
       coupe: [...COUPE_INIT],
       players: [...PLAYERS_INIT],
@@ -1895,6 +1937,7 @@
         
         document.getElementById('adminBadge').innerHTML = '<span style="background:#27ae60;color:white;padding:3px 8px;border-radius:12px;font-size:11px;margin-left:8px;">ADMIN</span>';
         document.getElementById('adminPanel').style.display = 'block';
+        document.getElementById('admin-edito-tools').style.display = 'block';
         document.getElementById('visitCounter').style.display = 'flex';
         document.getElementById('btnAddFdm').style.display = 'block';
         document.getElementById('rencontres-admin-toolbar').style.display = 'flex';
@@ -1921,6 +1964,7 @@
       currentAdminEmail = "";
       document.getElementById('adminBadge').innerHTML = '';
       document.getElementById('adminPanel').style.display = 'none';
+      document.getElementById('admin-edito-tools').style.display = 'none';
       document.getElementById('visitCounter').style.display = 'none';
       document.getElementById('rencontres-admin-toolbar').style.display = 'none';
       document.getElementById('allBrevesAdminToolbar').style.display = 'none';
@@ -2348,7 +2392,63 @@ function closeModal(id) {
         `).join('');
       }
     }
+/* GESTION ÉDITORIAL */
+function renderHomeEditorial() {
+  const e = data.editorial || { date: "2026-11-16", titre: "Titre de l'éditorial", auteur: "La Rédaction", texte: "Texte à venir..." };
+  const titleEl = document.getElementById('homeEditoTitle');
+  const textEl = document.getElementById('homeEditoText');
+  const footerEl = document.getElementById('homeEditoFooter');
+  if (titleEl) titleEl.textContent = `"${e.titre}"`;
+  if (textEl) textEl.textContent = e.texte;
+  if (footerEl) footerEl.innerHTML = `📅 ${formatDate(e.date)} • Par <strong style="color: #00e676;">${e.auteur}</strong>`;
+}
 
+function openEditorialView() {
+  const e = data.editorial;
+  if (!e) return;
+  document.getElementById('editoViewTitle').textContent = `"${e.titre}"`;
+  document.getElementById('editoViewDate').innerHTML = `📅 ${formatDate(e.date)} • Par <strong style="color: #00e676;">${e.auteur}</strong>`;
+  document.getElementById('editoViewText').textContent = e.texte;
+  const mediaContainer = document.getElementById('editoViewMediaContainer');
+  const img = document.getElementById('editoViewImg');
+  const video = document.getElementById('editoViewVideo');
+  img.style.display = 'none'; video.style.display = 'none'; mediaContainer.style.display = 'none';
+  if (e.img) { img.src = e.img; img.style.display = 'block'; mediaContainer.style.display = 'block'; }
+  else if (e.video) {
+    let embedUrl = e.video;
+    if (e.video.includes("youtu.be/")) embedUrl = `https://www.youtube.com/embed/${e.video.split("youtu.be/")[1].split("?")[0]}`;
+    else if (e.video.includes("youtube.com/watch")) embedUrl = `https://www.youtube.com/embed/${e.video.split("v=")[1].split("&")[0]}`;
+    video.src = embedUrl; video.style.display = 'block'; mediaContainer.style.display = 'block';
+  }
+  openModal('modalEditorial');
+}
+
+function openModalEditorial() {
+  if (!isAdmin) return;
+  const e = data.editorial || {};
+  document.getElementById('editoDate').value = e.date || new Date().toISOString().split('T')[0];
+  document.getElementById('editoTitre').value = e.titre || '';
+  document.getElementById('editoAuteur').value = e.auteur || '';
+  document.getElementById('editoImg').value = e.img || '';
+  document.getElementById('editoVideo').value = e.video || '';
+  document.getElementById('editoTexte').value = e.texte || '';
+  openModal('modalEditorialEdit');
+}
+
+async function saveEditorial() {
+  data.editorial = {
+    date: document.getElementById('editoDate').value,
+    titre: document.getElementById('editoTitre').value,
+    auteur: document.getElementById('editoAuteur').value,
+    img: document.getElementById('editoImg').value,
+    video: document.getElementById('editoVideo').value,
+    texte: document.getElementById('editoTexte').value
+  };
+  await saveToFirebase();
+  closeModal('modalEditorialEdit');
+  renderHomeEditorial();
+  alert('✅ Éditorial mis à jour !');
+}
     function renderHomeVoteWidget() {
       const container = document.getElementById('homeVoteContainer');
 
@@ -3377,6 +3477,7 @@ window.scrollToComments = function() {
         updateNextMatch();
         renderHomeVoteWidget();
         renderHistoriqueDynamic();
+        renderHomeEditorial();
       } catch(err) {
         console.error("Erreur dans renderAll:", err);
       }
