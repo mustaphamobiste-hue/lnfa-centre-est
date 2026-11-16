@@ -742,6 +742,10 @@
         Lire la suite ➔
       </button>
     </div>
+    <!-- Bouton Admin -->
+<div id="admin-edito-tools" style="display:none; text-align:right; margin-top:10px;">
+  <button class="btn-small btn-edit" onclick="openModalEditorial()" style="background:#2563eb;">✏️ Modifier l'édito</button>
+</div>
   </div>
 </div>
 
@@ -1936,6 +1940,7 @@
         isAdmin = true;
         
         document.getElementById('adminBadge').innerHTML = '<span style="background:#27ae60;color:white;padding:3px 8px;border-radius:12px;font-size:11px;margin-left:8px;">ADMIN</span>';
+        document.getElementById('admin-edito-tools').style.display = 'block';
         document.getElementById('adminPanel').style.display = 'block';
         
         document.getElementById('visitCounter').style.display = 'flex';
@@ -1964,6 +1969,7 @@
       currentAdminEmail = "";
       document.getElementById('adminBadge').innerHTML = '';
       document.getElementById('adminPanel').style.display = 'none';
+      document.getElementById('admin-edito-tools').style.display = 'none';
       
       document.getElementById('visitCounter').style.display = 'none';
       document.getElementById('rencontres-admin-toolbar').style.display = 'none';
@@ -3477,6 +3483,7 @@ window.scrollToComments = function() {
         updateNextMatch();
         renderHomeVoteWidget();
         renderHistoriqueDynamic();
+        renderHomeEditorial();
         
       } catch(err) {
         console.error("Erreur dans renderAll:", err);
@@ -3514,6 +3521,7 @@ window.scrollToComments = function() {
               if (fb.fdm && Array.isArray(fb.fdm)) data.fdm = fb.fdm;
               if (fb.breves && Array.isArray(fb.breves)) data.breves = fb.breves;
               if (fb.stats) data.stats = fb.stats;
+              if (fb.editorial) data.editorial = fb.editorial;
               if (fb.match_stats) data.match_stats = fb.match_stats;
               if (fb.historique && Array.isArray(fb.historique)) data.historique = fb.historique;
               if (fb.stades && Array.isArray(fb.stades)) { data.stades = fb.stades; STADES = fb.stades; }
@@ -3607,6 +3615,9 @@ window.scrollToComments = function() {
     window.tryLogin = tryLogin;
     window.logoutAdmin = logoutAdmin;
     window.openArticleModal = openArticleModal;
+    window.openModalEditorial = openModalEditorial;
+window.saveEditorial = saveEditorial;
+window.openEditorialView = openEditorialView;
     window.shareContext = () => { 
   let shareData = { title: 'MO Béjaïa', text: 'Suivez le MO Béjaïa ! 🦀 #LaMaisonDesCrabes', url: window.location.href }; 
   if (currentArticleForShare) { 
