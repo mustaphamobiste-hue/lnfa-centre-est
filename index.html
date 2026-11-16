@@ -708,6 +708,56 @@
     </div>
   </div>
 
+  <!-- 📝 ESPACE ÉDITORIAL (Page d'accueil) ANIMÉ -->
+<div class="editorial-card" style="margin-bottom: 15px; background: linear-gradient(135deg, #0d1410 0%, #050806 100%); border: 1px solid #f59e0b; border-radius: 12px; padding: 20px; position: relative; overflow: hidden; box-shadow: 0 6px 20px rgba(245, 158, 11, 0.15);">
+  
+  <!-- Effet de lueur verte en arrière-plan -->
+  <div style="position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(0,230,118,0.15) 0%, transparent 70%); border-radius: 50%;"></div>
+
+  <!-- En-tête de l'éditorial avec l'animation du stylo -->
+  <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(245, 158, 11, 0.3); padding-bottom: 10px; margin-bottom: 15px; position: relative; z-index: 2;">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <!-- L'icône animée du stylo qui écrit -->
+      <span class="pen-animation" style="font-size: 24px; display: inline-block; transform-origin: bottom left;">✍️</span>
+      <span style="color: #f59e0b; font-family: 'Teko', sans-serif; font-size: 24px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase;">L'ÉDITORIAL</span>
+    </div>
+    <span style="background: rgba(245, 158, 11, 0.1); color: #f59e0b; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; border: 1px solid #f59e0b;">À la Une</span>
+  </div>
+
+  <!-- Contenu de l'éditorial -->
+  <div style="position: relative; z-index: 2;">
+    <h3 style="color: #ffffff; font-size: 18px; margin-bottom: 10px; line-height: 1.4; font-style: italic; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
+      "Le réveil des Crabes : Plus qu'un match, une déclaration"
+    </h3>
+    
+    <!-- Introduction limitée à 4 lignes -->
+    <p style="color: #cbd5e1; font-size: 13px; line-height: 1.6; text-align: justify; margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;">
+      Hier soir, au Stade des Martyrs d'Akbou, le MO Béjaïa n'a pas seulement gagné un match. Il a envoyé un signal fort à toute la Ligue 2. Face à l'IRB Nezla, les Vert et Noir ont montré un visage de combattants, refusant de plier malgré les difficultés. Ce but à la 91ème minute est la récompense de l'abnégation et de la hargne d'un groupe qui ne lâche rien. Une équipe qui souffre, qui doute, mais qui finit par s'imposer...
+    </p>
+
+    <!-- Pied de l'éditorial -->
+    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px;">
+      <span style="font-size: 11px; color: #8b9b90;">📅 16 Nov 2026 • Par <strong style="color: #00e676;">La Rédaction</strong></span>
+      <button onclick="alert('La lecture complète de l éditorial arrivera bientôt !')" style="background: transparent; border: 1px solid #00e676; color: #00e676; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.3s;" onmouseover="this.style.background='#00e676'; this.style.color='#000';" onmouseout="this.style.background='transparent'; this.style.color='#00e676';">
+        Lire la suite ➔
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- L'animation du stylo en CSS -->
+<style>
+  @keyframes writeHand {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(2px, 2px) rotate(-10deg); }
+    50% { transform: translate(0, 0) rotate(0deg); }
+    75% { transform: translate(-2px, 2px) rotate(10deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+  }
+  .pen-animation {
+    animation: writeHand 1.5s infinite ease-in-out;
+  }
+</style>
   <!-- FLASH INFOS RUBAN -->
   <div class="ticker-container" onclick="openModalAllBreves()">
     <div class="ticker-title">FLASH MOB</div>
