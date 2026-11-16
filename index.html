@@ -1937,7 +1937,7 @@
         
         document.getElementById('adminBadge').innerHTML = '<span style="background:#27ae60;color:white;padding:3px 8px;border-radius:12px;font-size:11px;margin-left:8px;">ADMIN</span>';
         document.getElementById('adminPanel').style.display = 'block';
-        document.getElementById('admin-edito-tools').style.display = 'block';
+        
         document.getElementById('visitCounter').style.display = 'flex';
         document.getElementById('btnAddFdm').style.display = 'block';
         document.getElementById('rencontres-admin-toolbar').style.display = 'flex';
@@ -1964,7 +1964,7 @@
       currentAdminEmail = "";
       document.getElementById('adminBadge').innerHTML = '';
       document.getElementById('adminPanel').style.display = 'none';
-      document.getElementById('admin-edito-tools').style.display = 'none';
+      
       document.getElementById('visitCounter').style.display = 'none';
       document.getElementById('rencontres-admin-toolbar').style.display = 'none';
       document.getElementById('allBrevesAdminToolbar').style.display = 'none';
@@ -3477,7 +3477,7 @@ window.scrollToComments = function() {
         updateNextMatch();
         renderHomeVoteWidget();
         renderHistoriqueDynamic();
-        renderHomeEditorial();
+        
       } catch(err) {
         console.error("Erreur dans renderAll:", err);
       }
