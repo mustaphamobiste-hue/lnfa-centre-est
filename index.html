@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
-
+<>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MO Béjaïa – Site indépendant des supporters • Actualités, calendrier, stats</title>
@@ -2414,7 +2414,7 @@ function closeModal(id) {
 /* GESTION ÉDITORIAL */
 function renderHomeEditorial() {
   const list = data.editoriaux || [];
-  const e = list.length > 0 ? list[0] : { date: "2026-11-16", titre: "Aucun éditorial pour le moment", auteur: "La Rédaction", texte: "..." };
+  const e = list.length > 0 ? list[0] : { date: "2026-11-16", titre: "Aucun éditorial", auteur: "La Rédaction", texte: "..." };
   
   const titleEl = document.getElementById('homeEditoTitle');
   const textEl = document.getElementById('homeEditoText');
@@ -2425,15 +2425,19 @@ function renderHomeEditorial() {
 }
 
 function openEditorialView() {
-  const e = data.editorial;
+  const list = data.editoriaux || [];
+  const e = list.length > 0 ? list[0] : null;
   if (!e) return;
+  
   document.getElementById('editoViewTitle').textContent = `"${e.titre}"`;
   document.getElementById('editoViewDate').innerHTML = `📅 ${formatDate(e.date)} • Par <strong style="color: #00e676;">${e.auteur}</strong>`;
   document.getElementById('editoViewText').textContent = e.texte;
+  
   const mediaContainer = document.getElementById('editoViewMediaContainer');
   const img = document.getElementById('editoViewImg');
   const video = document.getElementById('editoViewVideo');
   img.style.display = 'none'; video.style.display = 'none'; mediaContainer.style.display = 'none';
+  
   if (e.img) { img.src = e.img; img.style.display = 'block'; mediaContainer.style.display = 'block'; }
   else if (e.video) {
     let embedUrl = e.video;
