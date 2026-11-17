@@ -1830,7 +1830,7 @@
     ];
 
     let data = {
-      editorial: { date: "2026-11-16", titre: "Le réveil des Crabes : Plus qu'un match, une déclaration", auteur: "La Rédaction", img: "", video: "", texte: "Hier soir, au Stade des Martyrs d'Akbou, le MO Béjaïa n'a pas seulement gagné un match. Il a envoyé un signal fort à toute la Ligue 2. Face à l'IRB Nezla, les Vert et Noir ont montré un visage de combattants, refusant de plier malgré les difficultés. Ce but à la 91ème minute est la récompense de l'abnégation." },
+      editoriaux: [ { date: "2026-11-16", titre: "Le réveil des Crabes : Plus qu'un match, une déclaration", auteur: "La Rédaction", img: "", video: "", texte: "Hier soir, au Stade des Martyrs d'Akbou, le MO Béjaïa n'a pas seulement gagné un match. Il a envoyé un signal fort à toute la Ligue 2. Face à l'IRB Nezla, les Vert et Noir ont montré un visage de combattants, refusant de plier malgré les difficultés. Ce but à la 91ème minute est la récompense de l'abnégation." } ],
       championnat: [...MATCHS_INIT],
       coupe: [...COUPE_INIT],
       players: [...PLAYERS_INIT],
@@ -2413,7 +2413,9 @@ function closeModal(id) {
     }
 /* GESTION ÉDITORIAL */
 function renderHomeEditorial() {
-  const e = data.editorial || { date: "2026-11-16", titre: "Titre de l'éditorial", auteur: "La Rédaction", texte: "Texte à venir..." };
+  const list = data.editoriaux || [];
+  const e = list.length > 0 ? list[0] : { date: "2026-11-16", titre: "Aucun éditorial pour le moment", auteur: "La Rédaction", texte: "..." };
+  
   const titleEl = document.getElementById('homeEditoTitle');
   const textEl = document.getElementById('homeEditoText');
   const footerEl = document.getElementById('homeEditoFooter');
@@ -2455,7 +2457,8 @@ function openModalEditorial() {
 }
 
 async function saveEditorial() {
-  data.editorial = {
+  const newEdito = {
+    id: 'edito_' + Date.now(),
     date: document.getElementById('editoDate').value,
     titre: document.getElementById('editoTitre').value,
     auteur: document.getElementById('editoAuteur').value,
@@ -2463,10 +2466,12 @@ async function saveEditorial() {
     video: document.getElementById('editoVideo').value,
     texte: document.getElementById('editoTexte').value
   };
+  if (!data.editoriaux) data.editoriaux = [];
+  data.editoriaux.unshift(newEdito); // Ajoute au début de la liste
   await saveToFirebase();
   closeModal('modalEditorialEdit');
   renderHomeEditorial();
-  alert('✅ Éditorial mis à jour !');
+  alert('✅ Éditorial publié avec succès !');
 }
     function renderHomeVoteWidget() {
       const container = document.getElementById('homeVoteContainer');
@@ -3534,7 +3539,8 @@ window.scrollToComments = function() {
               if (fb.fdm && Array.isArray(fb.fdm)) data.fdm = fb.fdm;
               if (fb.breves && Array.isArray(fb.breves)) data.breves = fb.breves;
               if (fb.stats) data.stats = fb.stats;
-              if (fb.editorial) data.editorial = fb.editorial;
+              if (fb.editoriaux && Array.isArray(fb.editoriaux)) data.editoriaux = fb.editoriaux;
+if (fb.editorial && !fb.editoriaux) { data.editoriaux = [fb.editorial]; } // Rétrocompatibilité
               if (fb.match_stats) data.match_stats = fb.match_stats;
               if (fb.historique && Array.isArray(fb.historique)) data.historique = fb.historique;
               if (fb.stades && Array.isArray(fb.stades)) { data.stades = fb.stades; STADES = fb.stades; }
