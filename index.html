@@ -1797,6 +1797,15 @@
       return `<img src="${url}" class="logo-mini" alt="${eq}" onerror="this.style.display='none'">`;
     }
 
+    function escHtml(s) {
+  return String(s ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
     function formatDate(d) {
       if (!d) return '';
       const p = String(d).split('-');
@@ -2862,7 +2871,7 @@ function closeModal(id) {
         const realIdx = (data.articles || []).findIndex(art => art.id === a.id);
         const editBtn = isAdmin ? `<button class="btn-edit-news-text" onclick="event.stopPropagation(); openModalNews(${realIdx})">✏️ Modifier</button>` : '';
         const deleteBtn = isAdmin ? `<button class="btn-edit-news-text" style="background:#dc2626;" onclick="event.stopPropagation(); deleteItem('articles', ${realIdx})">🗑️ Supprimer</button>` : '';
-        return `<div class="news-card" onclick="openArticleModal('${a.id}')"><img src="${a.image}" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'"><div class="news-card-body"><div class="news-card-title">${a.titre}</div><div class="news-card-date">📅 ${formatDate(a.date)} ${editBtn} ${deleteBtn}.</div><div class="news-card-preview">${a.texte}</div></div></div>`;
+        return `<div class="news-card" onclick="openArticleModal('${a.id}')"><img src="${a.image}" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'"><div class="news-card-body"><div class="news-card-title">${escHtml(a.titre)}</div><div class="news-card-date">📅 ${formatDate(a.date)} ${editBtn} ${deleteBtn}.</div><div class="news-card-preview">${escHtml(a.texte)}</div></div></div>`;
       }).join('');
     }
 
@@ -3143,7 +3152,7 @@ document.getElementById('allBrevesList').innerHTML = list.map((b, i) => `
   <div style="background:#141c16; padding:10px; margin-bottom:6px; border-radius:6px; border:1px solid rgba(255,255,255,0.06);">
     <div style="display:flex; justify-content:space-between; align-items:flex-start; cursor:pointer;" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">
       <div>
-        <b style="color:#fff; font-size:13px;">${b.titre}</b>
+        <b style="color:#fff; font-size:13px;">${escHtml(b.titre)}</b>
         <div style="font-size:10px; color:var(--text-muted); margin-top:3px;">📅 ${formatDate(b.date)}</div>
       </div>
       ${isAdmin ? `
@@ -3155,7 +3164,7 @@ document.getElementById('allBrevesList').innerHTML = list.map((b, i) => `
     </div>
     ${b.texte ? `
       <div style="display:none; margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.1); font-size:12px; color:#cbd5e1; white-space:pre-wrap;">
-        ${b.texte}
+        ${escHtml(b.texte)}}
       </div>
     ` : ''}
   </div>
@@ -3262,7 +3271,7 @@ document.getElementById('allBrevesList').innerHTML = list.map((b, i) => `
       const validMob = (data.championnat || []).concat(data.coupe || []).filter(m => (m.dom === 'MO Béjaïa' || m.ext === 'MO Béjaïa') && !hasScore(m) && (!m.obs || !m.obs.toLowerCase().includes('report')));
       if (validMob.length === 0) { document.getElementById('nextMatchBanner').style.display = 'none'; return; }
       validMob.sort((a,b) => { if(a.date && b.date) return new Date(a.date + 'T' + (a.heure || '15:00')) - new Date(b.date + 'T' + (b.heure || '15:00')); return 0; });
-      let next = validMob.find(m => m.date && new Date(m.date + 'T' + (m.heure || '15:00')) > now) || validMob[0];
+      let next = validMob.find(m => m.date && new Date(m.date + 'T' + (m.heure || '15:00')) > now);
       if (!next) { document.getElementById('nextMatchBanner').style.display = 'none'; return; }
       
       const domEl = document.getElementById('nextMatchDom');
