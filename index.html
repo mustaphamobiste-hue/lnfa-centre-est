@@ -622,6 +622,16 @@
   /* OPTIMISATION MOBILE (TÉLÉPHONE)           */
   /* ========================================= */
   @media (max-width: 600px) {
+    /* ✅ CORRECTION TABLEAU COUPE D'ALGÉRIE SUR MOBILE */
+#view-coupe th:nth-child(3), #view-coupe td:nth-child(3), /* Heure */
+#view-coupe th:nth-child(7), #view-coupe td:nth-child(7), /* Stade */
+#view-coupe th:nth-child(8), #view-coupe td:nth-child(8), /* Obs */
+#view-coupe th:nth-child(9), #view-coupe td:nth-child(9)  /* Actions */
+{
+  display: none !important;
+}
+#view-coupe table { min-width: 100% !important; }
+#view-coupe th, #view-coupe td { white-space: normal !important; font-size: 10px !important; }
     .header { padding: 15px 8px 10px; }
     .header-title { font-size: 20px; }
     .next-match-teams { font-size: 1.1em; }
@@ -650,7 +660,15 @@
     
     /* Bandeau Direct plus grand sur téléphone */
     .live-banner { font-size: 16px; padding: 14px 16px; }
-  }
+    /* Cacher les colonnes inutiles sur mobile pour la Coupe */
+#view-coupe th:nth-child(3), #view-coupe td:nth-child(3), /* Heure */
+#view-coupe th:nth-child(7), #view-coupe td:nth-child(7), /* Stade */
+#view-coupe th:nth-child(8), #view-coupe td:nth-child(8), /* Obs */
+#view-coupe th:nth-child(9), #view-coupe td:nth-child(9)  /* Actions */
+{
+  display: none !important;
+}
+  
 </style>
 </head>
 <body>
