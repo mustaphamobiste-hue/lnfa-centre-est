@@ -451,6 +451,32 @@
   .player-card .pc-info { padding: 8px; }
   .player-card .pc-name { font-weight: 800; font-size: 12px; color: #fff; line-height: 1.2; margin-bottom: 3px; }
   .player-card .pc-pos { font-size: 10px; color: var(--text-muted); }
+  /* FICHE JOUEUR */
+  .fiche-photo { width: 100%; max-height: 300px; object-fit: cover; object-position: top; border-radius: 12px; border: 3px solid var(--mob-green); background: #000; }
+  .fiche-titre { color: var(--mob-green); font-weight: 900; font-size: 22px; margin: 12px 0 2px; }
+  .fiche-poste { color: var(--text-muted); font-size: 14px; margin-bottom: 12px; }
+  .fiche-grille { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .fiche-stat { background: var(--card-dark); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px 4px; text-align: center; font-size: 11px; color: var(--text-muted); }
+  .fiche-stat b { display: block; font-size: 22px; color: var(--mob-gold); }
+  .fiche-signature { text-align: center; margin-top: 14px; font-weight: 800; color: var(--mob-green); }
+  /* EDITORIAL A LA UNE */
+  .edito-card { margin: 14px 0; padding: 14px 14px 12px; border-radius: 14px; background: linear-gradient(135deg, #12201a 0%, #08100c 100%); border: 1px solid rgba(0,230,118,0.35); border-left: 5px solid var(--mob-gold); box-shadow: 0 4px 16px rgba(0,0,0,0.45); }
+  .edito-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .edito-label { display: flex; align-items: center; gap: 6px; font-weight: 900; letter-spacing: 2px; font-size: 13px; color: var(--mob-green-neon); }
+  .edito-hand { display: inline-block; font-size: 22px; transform-origin: 70% 80%; animation: editoWrite 1.2s ease-in-out infinite; }
+  @keyframes editoWrite { 0%,100% { transform: rotate(-8deg) translateX(0); } 25% { transform: rotate(6deg) translateX(3px); } 50% { transform: rotate(-4deg) translateX(-2px); } 75% { transform: rotate(8deg) translateX(3px); } }
+  @media (prefers-reduced-motion: reduce) { .edito-hand { animation: none; } }
+  .edito-une { background: var(--mob-gold); color: #000; font-weight: 900; font-size: 11px; letter-spacing: 1px; padding: 4px 10px; border-radius: 20px; }
+  .edito-titre { font-size: 19px; font-weight: 900; line-height: 1.25; color: #fff; margin: 0 0 8px; }
+  .edito-extrait { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; font-size: 14px; line-height: 1.55; color: #cfd8d2; }
+  .edito-bottom { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .edito-admin { display: flex; gap: 4px; flex-wrap: wrap; }
+  .edito-lire { margin-left: auto; background: var(--mob-green-neon); color: #000; border: none; border-radius: 20px; padding: 8px 16px; font-weight: 900; font-size: 13px; cursor: pointer; }
+  .edito-vide { border-style: dashed; }
+  .edito-vide p { color: #aaa; font-size: 13px; margin: 0; }
+  .edito-date { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+  .edito-media { width: 100%; border-radius: 10px; margin: 8px 0; }
+  .edito-texte { white-space: pre-line; font-size: 15px; line-height: 1.65; color: #e6ece8; }
 
   /* MÉDIAS */
   .album-card { 
@@ -731,6 +757,9 @@
     <div class="ticker-title">FLASH MOB</div>
     <div class="ticker-content" id="tickerContent">Chargement des brèves...</div>
   </div>
+
+  <!-- EDITORIAL A LA UNE -->
+  <div id="editoBox"></div>
 
   <!-- WIDGETS D'ACCUEIL -->
   <div class="home-widgets">
@@ -1353,6 +1382,35 @@
     </div>
   </div>
 
+  <div class="modal" id="modalEditoLire">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('modalEditoLire')">×</span>
+      <div id="editoLireBody"></div>
+    </div>
+  </div>
+
+  <div class="modal" id="modalEditoForm">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('modalEditoForm')">×</span>
+      <h3>✍️ Éditorial</h3>
+      <label>Titre <input type="text" id="editoTitreIn"></label>
+      <label>Date <input type="date" id="editoDateIn"></label>
+      <label>Lien de l'image ou de la vidéo YouTube (facultatif) <input type="url" id="editoMediaIn" placeholder="https://..."></label>
+      <label>Texte de l'éditorial <textarea id="editoTexteIn" rows="10"></textarea></label>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('modalEditoForm')">Annuler</button>
+        <button onclick="editoSave()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modalFiche">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('modalFiche')">×</span>
+      <div id="ficheBody"></div>
+    </div>
+  </div>
+
   <div class="modal" id="modalPlayer">
     <div class="modal-content">
       <span class="modal-close" onclick="closeModal('modalPlayer')">×</span>
@@ -1796,15 +1854,6 @@
       const url = LOGOS[eq] || "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png";
       return `<img src="${url}" class="logo-mini" alt="${eq}" onerror="this.style.display='none'">`;
     }
-
-    function escHtml(s) {
-  return String(s ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
 
     function formatDate(d) {
       if (!d) return '';
@@ -2771,7 +2820,7 @@ function closeModal(id) {
       document.getElementById('grid-players').innerHTML = (data.players || []).sort((a,b) => a.num - b.num).map((p) => {
         const realIdx = (data.players || []).indexOf(p);
         const actions = isAdmin ? `<div class="pc-actions"><button class="btn-small btn-edit" onclick="openModalPlayer(${realIdx})">✏️</button><button class="btn-small btn-del" onclick="deleteItem('players',${realIdx})">🗑️</button></div>` : '';
-        return `<div class="player-card">${actions}<div class="pc-num">${p.num}</div><img src="${p.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}"><div class="pc-info"><div class="pc-name">${p.nom}</div><div class="pc-pos">${p.poste}</div></div></div>`;
+        return `<div class="player-card" style="cursor:pointer" onclick="openFichePlayer(${realIdx}, event)">${actions}<div class="pc-num">${p.num}</div><img src="${p.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}"><div class="pc-info"><div class="pc-name">${p.nom}</div><div class="pc-pos">${p.poste}</div></div></div>`;
       }).join('');
 
       document.getElementById('grid-dirigeants').innerHTML = (data.dirigeants || []).map((d, idx) => {
@@ -2871,7 +2920,7 @@ function closeModal(id) {
         const realIdx = (data.articles || []).findIndex(art => art.id === a.id);
         const editBtn = isAdmin ? `<button class="btn-edit-news-text" onclick="event.stopPropagation(); openModalNews(${realIdx})">✏️ Modifier</button>` : '';
         const deleteBtn = isAdmin ? `<button class="btn-edit-news-text" style="background:#dc2626;" onclick="event.stopPropagation(); deleteItem('articles', ${realIdx})">🗑️ Supprimer</button>` : '';
-        return `<div class="news-card" onclick="openArticleModal('${a.id}')"><img src="${a.image}" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'"><div class="news-card-body"><div class="news-card-title">${escHtml(a.titre)}</div><div class="news-card-date">📅 ${formatDate(a.date)} ${editBtn} ${deleteBtn}.</div><div class="news-card-preview">${escHtml(a.texte)}</div></div></div>`;
+        return `<div class="news-card" onclick="openArticleModal('${a.id}')"><img src="${a.image}" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'"><div class="news-card-body"><div class="news-card-title">${a.titre}</div><div class="news-card-date">📅 ${formatDate(a.date)} ${editBtn} ${deleteBtn}.</div><div class="news-card-preview">${a.texte}</div></div></div>`;
       }).join('');
     }
 
@@ -3152,7 +3201,7 @@ document.getElementById('allBrevesList').innerHTML = list.map((b, i) => `
   <div style="background:#141c16; padding:10px; margin-bottom:6px; border-radius:6px; border:1px solid rgba(255,255,255,0.06);">
     <div style="display:flex; justify-content:space-between; align-items:flex-start; cursor:pointer;" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">
       <div>
-        <b style="color:#fff; font-size:13px;">${escHtml(b.titre)}</b>
+        <b style="color:#fff; font-size:13px;">${b.titre}</b>
         <div style="font-size:10px; color:var(--text-muted); margin-top:3px;">📅 ${formatDate(b.date)}</div>
       </div>
       ${isAdmin ? `
@@ -3164,7 +3213,7 @@ document.getElementById('allBrevesList').innerHTML = list.map((b, i) => `
     </div>
     ${b.texte ? `
       <div style="display:none; margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.1); font-size:12px; color:#cbd5e1; white-space:pre-wrap;">
-        ${escHtml(b.texte)}}
+        ${b.texte}
       </div>
     ` : ''}
   </div>
@@ -3272,6 +3321,10 @@ document.getElementById('allBrevesList').innerHTML = list.map((b, i) => `
       if (validMob.length === 0) { document.getElementById('nextMatchBanner').style.display = 'none'; return; }
       validMob.sort((a,b) => { if(a.date && b.date) return new Date(a.date + 'T' + (a.heure || '15:00')) - new Date(b.date + 'T' + (b.heure || '15:00')); return 0; });
       let next = validMob.find(m => m.date && new Date(m.date + 'T' + (m.heure || '15:00')) > now);
+if (!next) {
+  validMob.sort((a,b) => new Date(b.date + 'T' + (b.heure || '15:00')) - new Date(a.date + 'T' + (a.heure || '15:00')));
+  next = validMob[0];
+}
       if (!next) { document.getElementById('nextMatchBanner').style.display = 'none'; return; }
       
       const domEl = document.getElementById('nextMatchDom');
@@ -3357,6 +3410,7 @@ window.scrollToComments = function() {
       } catch(err) {
         console.error("Erreur dans renderAll:", err);
       }
+      try { renderEdito(); } catch (e) { console.warn('Edito:', e); }
     }
 
     function loadFromFirebase() {
@@ -3383,6 +3437,7 @@ window.scrollToComments = function() {
               if (fb.dirigeants && Array.isArray(fb.dirigeants)) data.dirigeants = fb.dirigeants;
               if (fb.mob) data.mob = fb.mob;
               if (fb.live) data.live = fb.live;
+              data.edito = fb.edito || null;
               if (fb.affiches) data.affiches = fb.affiches;
               if (fb.videos) data.videos = fb.videos;
               if (fb.articles && Array.isArray(fb.articles)) { data.articles = fb.articles; articles = fb.articles; }
@@ -3436,6 +3491,11 @@ window.scrollToComments = function() {
     window.deleteItem = deleteItem;
     window.openModalPlayer = openModalPlayer;
     window.savePlayer = savePlayer;
+    window.openFichePlayer = openFichePlayer;
+    window.editoLire = editoLire;
+    window.editoOpenForm = editoOpenForm;
+    window.editoSave = editoSave;
+    window.editoDelete = editoDelete;
     window.openModalStaff = openModalStaff;
     window.saveStaff = saveStaff;
     window.openModalDirigeant = openModalDirigeant;
@@ -3733,6 +3793,143 @@ window.scrollToComments = function() {
       document.getElementById('pPoste').value = p.poste || '';
       document.getElementById('pImg').value = p.img || '';
       openModal('modalPlayer');
+    }
+
+    /* ===== EDITORIAL A LA UNE (bloc independant) ===== */
+    function editoEsc(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    function editoDateFr(d) {
+      if (!d) return '';
+      const x = new Date(d + 'T12:00:00');
+      return isNaN(x) ? editoEsc(d) : x.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    function editoMediaHtml(url) {
+      url = (url || '').trim();
+      if (!url) return '';
+      const yt = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+      if (yt) return `<div class="video-embed-container"><iframe src="https://www.youtube.com/embed/${yt[1]}" allowfullscreen></iframe></div>`;
+      if (/^https?:\/\//i.test(url)) return `<img class="edito-media" src="${editoEsc(url)}" alt="">`;
+      return '';
+    }
+
+    function renderEdito() {
+      const box = document.getElementById('editoBox');
+      if (!box) return;
+      const e = data.edito;
+      const has = !!(e && e.titre);
+      if (!has && !isAdmin) { box.innerHTML = ''; return; }
+
+      const top = `<div class="edito-top">
+          <div class="edito-label"><span class="edito-hand">✍️</span> EDITO</div>
+          <div class="edito-une">À LA UNE</div>
+        </div>`;
+      const adminBar = isAdmin ? `<div class="edito-admin">
+          <button class="btn-small" style="background:#16a34a;" onclick="editoOpenForm('new')">➕ Ajouter</button>
+          ${has ? `<button class="btn-small btn-edit" onclick="editoOpenForm('edit')">✏️ Modifier</button>
+          <button class="btn-small btn-del" onclick="editoDelete()">🗑️ Supprimer</button>` : ''}
+        </div>` : '';
+
+      if (!has) {
+        box.innerHTML = `<div class="edito-card edito-vide">${top}<p>Aucun éditorial publié pour le moment.</p><div class="edito-bottom">${adminBar}</div></div>`;
+        return;
+      }
+      const extrait = editoEsc(String(e.texte || '').replace(/\s+/g, ' ').trim());
+      box.innerHTML = `<div class="edito-card">${top}
+        <h2 class="edito-titre">${editoEsc(e.titre)}</h2>
+        <div class="edito-extrait">${extrait}</div>
+        <div class="edito-bottom">${adminBar}<button class="edito-lire" onclick="editoLire()">Lire la suite …</button></div>
+      </div>`;
+    }
+
+    function editoLire() {
+      const e = data.edito;
+      if (!e) return;
+      document.getElementById('editoLireBody').innerHTML =
+        `<div class="edito-label" style="margin-bottom:8px;"><span class="edito-hand">✍️</span> EDITO</div>
+         <h2 class="edito-titre">${editoEsc(e.titre)}</h2>
+         <div class="edito-date">${editoDateFr(e.date)}</div>
+         ${editoMediaHtml(e.media)}
+         <div class="edito-texte">${editoEsc(e.texte)}</div>`;
+      openModal('modalEditoLire');
+    }
+
+    function editoOpenForm(mode) {
+      if (!isAdmin) return;
+      let e = { titre: '', date: new Date().toISOString().slice(0, 10), media: '', texte: '' };
+      if (mode === 'edit' && data.edito) e = data.edito;
+      if (mode === 'new' && data.edito && !confirm("Un éditorial existe déjà. Voulez-vous le remplacer par un nouveau ?")) return;
+      document.getElementById('editoTitreIn').value = e.titre || '';
+      document.getElementById('editoDateIn').value = e.date || '';
+      document.getElementById('editoMediaIn').value = e.media || '';
+      document.getElementById('editoTexteIn').value = e.texte || '';
+      openModal('modalEditoForm');
+    }
+
+    async function editoSave() {
+      if (!isAdmin) return;
+      const titre = document.getElementById('editoTitreIn').value.trim();
+      const texte = document.getElementById('editoTexteIn').value.trim();
+      if (!titre || !texte) { alert('Le titre et le texte sont obligatoires.'); return; }
+      if (!auth || !auth.currentUser) { alert('Connexion admin expirée. Reconnectez-vous.'); return; }
+      data.edito = {
+        titre: titre,
+        date: document.getElementById('editoDateIn').value,
+        media: document.getElementById('editoMediaIn').value.trim(),
+        texte: texte
+      };
+      await saveToFirebase();
+      closeModal('modalEditoForm');
+      renderEdito();
+    }
+
+    async function editoDelete() {
+      if (!isAdmin || !data.edito) return;
+      if (!confirm("Supprimer définitivement l'éditorial ?")) return;
+      data.edito = null;
+      await saveToFirebase();
+      renderEdito();
+    }
+    /* ===== FIN EDITORIAL ===== */
+
+    function openFichePlayer(idx, ev) {
+      if (ev && ev.target.closest('.pc-actions')) return;
+      const p = (data.players || [])[idx];
+      if (!p) return;
+      const nom = p.nom;
+      const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      let matchs = 0, minutes = 0, buts = 0, jaunes = 0, rouges = 0;
+      Object.values(data.match_stats || {}).forEach(m => {
+        const ch = m.changements || [];
+        if ((m.titulaires || []).includes(nom)) {
+          matchs++;
+          const s = ch.find(c => c.sortant === nom);
+          minutes += s ? (parseInt(s.minute) || 90) : 90;
+        } else if ((m.remplacants || []).includes(nom)) {
+          const e = ch.find(c => c.entrant === nom);
+          if (e) { matchs++; minutes += 90 - (parseInt(e.minute) || 0); }
+        }
+        (m.buteurs || []).forEach(b => { if (b.joueur === nom) buts++; });
+        (m.cartons || []).forEach(c => {
+          if (c.joueur === nom) { if (c.type === 'jaune') jaunes++; if (c.type === 'rouge') rouges++; }
+        });
+      });
+      const img = p.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png';
+      document.getElementById('ficheBody').innerHTML =
+        `<img class="fiche-photo" src="${esc(img)}" alt="${esc(nom)}">
+         <div class="fiche-titre">N°${esc(p.num)} ${esc(nom)}</div>
+         <div class="fiche-poste">${esc(p.poste)}</div>
+         <div class="fiche-grille">
+           <div class="fiche-stat"><b>${matchs}</b>Matchs</div>
+           <div class="fiche-stat"><b>${minutes}</b>Minutes</div>
+           <div class="fiche-stat"><b>${buts}</b>Buts</div>
+           <div class="fiche-stat"><b>${jaunes}</b>Cartons jaunes</div>
+           <div class="fiche-stat"><b>${rouges}</b>Cartons rouges</div>
+         </div>
+         <div class="fiche-signature">Yiw Yiw ya MOB 🦀</div>`;
+      openModal('modalFiche');
     }
 
     async function savePlayer() {
