@@ -477,6 +477,16 @@
   .edito-date { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
   .edito-media { width: 100%; border-radius: 10px; margin: 8px 0; }
   .edito-texte { white-space: pre-line; font-size: 15px; line-height: 1.65; color: #e6ece8; }
+  .edito-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+  .edito-thumb { width: 56px; height: 56px; object-fit: cover; border-radius: 8px; border: 2px solid var(--mob-gold); cursor: pointer; background: #000; }
+  .edito-arch-btn { background: transparent; color: var(--mob-gold); border: 1px solid var(--mob-gold); border-radius: 16px; padding: 5px 12px; font-weight: 800; font-size: 12px; cursor: pointer; }
+  .edito-arch-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 4px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .edito-arch-main { flex: 1; cursor: pointer; }
+  .edito-arch-titre { font-weight: 800; color: #fff; }
+  /* BOUTON PARTAGER DISCRET */
+  #btnShareMain.btn-share-float { width: 46px; height: 46px; padding: 0; justify-content: center; font-size: 0; bottom: 100px; right: 12px; opacity: 0.92; transition: transform 0.25s, opacity 0.25s; }
+  #btnShareMain.btn-share-float::before { content: '📤'; font-size: 20px; }
+  #btnShareMain.share-hidden { transform: translateY(150px); opacity: 0; pointer-events: none; }
 
   /* MÉDIAS */
   .album-card { 
@@ -844,6 +854,7 @@
       <div style="text-align:center; margin-bottom:12px;">
         <h3 style="color:var(--mob-green-neon); font-size:14px;">🦀 Parcours du MO Béjaïa en Coupe d'Algérie</h3>
       </div>
+      <div id="coupeAdminBar"></div>
       <div class="table-wrap">
         <table>
           <thead><tr><th>Tour</th><th>Date</th><th>Heure</th><th>Domicile</th><th>Score</th><th>Extérieur</th><th>Stade</th><th>Obs.</th><th class="col-actions" style="display:none;">Actions</th></tr></thead>
@@ -1071,7 +1082,7 @@
     <a href="confidentialite.html">En savoir plus</a>
   </div>
 
-  <div class="btn-share-float" id="btnShareMain" onclick="shareContext()">📤 Partager</div>
+  <div class="btn-share-float" id="btnShareMain" onclick="shareContext()" title="Partager" aria-label="Partager">📤 Partager</div>
   <div class="visit-badge" id="visitCounter">👁️ -- visites</div>
 
   <!-- NOUVEAU FOOTER RICHE -->
@@ -1306,7 +1317,9 @@
       <label>Date <input type="date" id="fDate"></label>
       <label>Heure <input type="time" id="fHeure"></label>
       <label>Domicile <select id="fDom"></select></label>
+      <label>Ou domicile hors liste (facultatif) <input type="text" id="fDomAutre" placeholder="Ex: US Biskra"></label>
       <label>Extérieur <select id="fExt"></select></label>
+      <label>Ou adversaire hors liste (facultatif) <input type="text" id="fExtAutre" placeholder="Ex: US Biskra"></label>
       <div style="display:flex; gap:10px;">
         <label style="flex:1;">Score Domicile <input type="number" id="fSd" min="0"></label>
         <label style="flex:1;">Score Extérieur <input type="number" id="fSe" min="0"></label>
@@ -1379,6 +1392,22 @@
       <label>Lien Image <input type="url" id="nImg"></label>
       <label>Contenu <textarea id="nTexte" rows="8"></textarea></label>
       <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalNewsEdit')">Annuler</button><button onclick="saveNews()">Enregistrer</button></div>
+    </div>
+  </div>
+
+  <div class="modal" id="modalEditoArchive">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('modalEditoArchive')">×</span>
+      <h3>📚 Archives des éditos</h3>
+      <div id="editoArchiveBody"></div>
+    </div>
+  </div>
+
+  <div class="modal" id="modalMobArchive">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('modalMobArchive')">×</span>
+      <h3 id="mobArchiveTitle">📚 Archives</h3>
+      <div id="mobArchiveBody"></div>
     </div>
   </div>
 
@@ -1574,6 +1603,7 @@
       <input type="hidden" id="mobSection">
       <label>Image (URL) <input type="url" id="mobImgInput"></label>
       <label>Texte <textarea id="mobTextInput" rows="6"></textarea></label>
+      <label style="display:flex; align-items:center; gap:8px;"><input type="checkbox" id="archKeepMob" checked style="width:auto;"> 📚 Garder l'ancien contenu dans les archives</label>
       <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalMob')">Annuler</button><button onclick="saveMobContent()">Enregistrer</button></div>
     </div>
   </div>
@@ -1584,6 +1614,7 @@
       <h3>🖼️ Changer l'affiche</h3>
       <input type="hidden" id="afficheSection">
       <label>Lien Image (URL) <input type="url" id="afficheUrl"></label>
+      <label style="display:flex; align-items:center; gap:8px;"><input type="checkbox" id="archKeepAffiche" checked style="width:auto;"> 📚 Garder l'ancien contenu dans les archives</label>
       <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalAffiche')">Annuler</button><button onclick="saveAffiche()">Enregistrer</button></div>
     </div>
   </div>
@@ -1595,6 +1626,7 @@
       <input type="hidden" id="videoSection">
       <label>Lien YouTube <input type="url" id="videoUrl"></label>
       <label>Légende <input type="text" id="videoTexte"></label>
+      <label style="display:flex; align-items:center; gap:8px;"><input type="checkbox" id="archKeepVideo" checked style="width:auto;"> 📚 Garder l'ancien contenu dans les archives</label>
       <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalVideo')">Annuler</button><button onclick="saveVideo()">Enregistrer</button></div>
     </div>
   </div>
@@ -1686,6 +1718,10 @@
     let currentRencontreView = 'programme';
 
     let currentArticleForShare = null;
+    let currentEditoForShare = null;
+    let editoMode = 'edit';
+    let deepLinkDone = false;
+    const MOB_SEC_LABEL = { avant: 'Avant-match', day: 'Match Day', apres: 'Après-match' };
 
     let EQUIPES = ["Paradou AC", "IRB Nezla", "NRB Beni Oulbane", "NRB Teleghma", "CA Batna", "US Chaouia", "AS Khroub", "MO Constantine", "USM Annaba", "JS Azazga", "MO Béjaïa", "NC Magra", "JSM Skikda", "MSP Batna", "JSD Jijel", "CR Beni Thour", "WB Aïn Benian"];
     let STADES = ["Stade Abed-Hamdani (El Khroub)", "Stade 19 Mai 1956 (Annaba)", "Stade Allag Abderrahmane (Aïn Fakroun)", "Stade Khabaza Bachir (Teleghma)", "Stade 1er Novembre 1954 (Batna)", "Stade 20 Août 1955 (Skikda)", "Stade 18 Février (Ouargla)", "Stade 10 000 places (Touggourt)", "Stade Tirsatine (Azazga)", "Stade Hammou Boukouffa (Beni Oulbane)", "Stade 20 Août 1955 (Alger)", "Stade des Frères Boucheligue (Magra)", "Stade 1er Novembre 1954 Guendouza (Akbou)", "Stade des Martyrs (Akbou)", "Stade Hocine Rouibah (Jijel)", "Stade Ramdane-Benabdelmalek (Constantine)", "Stade Zerdani Hassouna (Oum El Bouaghi)", "Terrain Neutre"];
@@ -1851,6 +1887,7 @@
     }
 
     function logoImg(eq) {
+      if (!LOGOS[eq] && eq !== 'MO Béjaïa') return '<span class="logo-mini" style="display:inline-block;width:auto;">⚽</span> ';
       const url = LOGOS[eq] || "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png";
       return `<img src="${url}" class="logo-mini" alt="${eq}" onerror="this.style.display='none'">`;
     }
@@ -1974,9 +2011,9 @@
   if (target) {
     target.classList.add('active'); 
     // ✅ On force le bouton Partager à rester visible sur les articles
-    if (id === 'modalArticle') {
+    if (id === 'modalArticle' || id === 'modalEditoLire') {
       const btnShare = document.getElementById('btnShareMain');
-      if (btnShare) { btnShare.style.display = 'flex'; btnShare.style.zIndex = '9999'; }
+      if (btnShare) { btnShare.style.display = 'flex'; btnShare.style.zIndex = '9999'; btnShare.classList.remove('share-hidden'); }
     }
   }
 }
@@ -1991,6 +2028,9 @@ function closeModal(id) {
   // ✅ On oublie l'article quand la fenêtre se ferme
   if (id === 'modalArticle') {
     currentArticleForShare = null;
+  }
+  if (id === 'modalEditoLire') {
+    currentEditoForShare = null;
   }
 }
 
@@ -2130,6 +2170,7 @@ function closeModal(id) {
     }
 
     function renderCoupeMobView() {
+      try { renderCoupeAdminBar(); } catch (e) { console.warn('Coupe:', e); }
       const tbody = document.getElementById('tbody-coupe-mob');
       const matches = (data.coupe || []).filter(m => m.dom === 'MO Béjaïa' || m.ext === 'MO Béjaïa');
       if (matches.length === 0) { tbody.innerHTML = '<tr><td colspan="9" class="empty">Aucune rencontre de Coupe pour le MOB.</td></tr>'; return; }
@@ -2438,10 +2479,23 @@ function closeModal(id) {
       if (!data.stats || !data.stats.activeVote) return;
       const v = data.stats.activeVote;
       if (localStorage.getItem('voted_' + v.id)) return;
-      if (!v.votes) v.votes = {};
-      v.votes[pName] = (v.votes[pName] || 0) + 1;
-      localStorage.setItem('voted_' + v.id, 'true');
-      await saveToFirebase();
+      if (!db) { alert("Le vote est indisponible pour le moment."); return; }
+      if (/[.$#\[\]\/]/.test(pName)) { alert("Ce nom ne peut pas être voté (caractère non autorisé)."); return; }
+      try {
+        // Le vote est encore ouvert ? (l'admin a pu le clôturer entre-temps)
+        const idSnap = await get(ref(db, 'data_v10/stats/activeVote/id'));
+        if (!idSnap.exists() || idSnap.val() !== v.id) {
+          alert("Ce vote est terminé.");
+          return;
+        }
+        // +1 sur ce joueur uniquement, sans réécrire le reste du site
+        await runTransaction(ref(db, 'data_v10/stats/activeVote/votes/' + pName), (cur) => (typeof cur === 'number' ? cur : 0) + 1);
+        localStorage.setItem('voted_' + v.id, 'true');
+      } catch (e) {
+        console.warn('Vote:', e);
+        alert("Le vote n'a pas pu être enregistré. Réessayez plus tard.");
+        return;
+      }
       renderStats();
       renderHomeVoteWidget();
     }
@@ -3411,6 +3465,8 @@ window.scrollToComments = function() {
         console.error("Erreur dans renderAll:", err);
       }
       try { renderEdito(); } catch (e) { console.warn('Edito:', e); }
+      try { renderMobArchiveLinks(); } catch (e) { console.warn('ArchivesMob:', e); }
+      try { renderCoupeAdminBar(); } catch (e) { console.warn('Coupe:', e); }
     }
 
     function loadFromFirebase() {
@@ -3438,6 +3494,8 @@ window.scrollToComments = function() {
               if (fb.mob) data.mob = fb.mob;
               if (fb.live) data.live = fb.live;
               data.edito = fb.edito || null;
+              data.editoArchive = fb.editoArchive ? Object.values(fb.editoArchive) : [];
+              data.mobArchive = fb.mobArchive || {};
               if (fb.affiches) data.affiches = fb.affiches;
               if (fb.videos) data.videos = fb.videos;
               if (fb.articles && Array.isArray(fb.articles)) { data.articles = fb.articles; articles = fb.articles; }
@@ -3455,6 +3513,7 @@ window.scrollToComments = function() {
               }
             }
             renderAll();
+            try { handleDeepLinkOnce(); } catch (e) { console.warn('Lien:', e); }
             if (statusEl) {
               statusEl.className = 'status online';
               statusEl.textContent = `🟢 Site à jour (${(data.championnat||[]).length} matchs enregistrés)`;
@@ -3472,6 +3531,7 @@ window.scrollToComments = function() {
     }
 
     document.getElementById('mainTitle').addEventListener('click', handleTitleClick);
+    try { initShareAutoHide(); } catch (e) { console.warn('Partager:', e); }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadFromFirebase); else loadFromFirebase();
 
     /* EXPOSITIONS GLOBALES WINDOW */
@@ -3496,6 +3556,13 @@ window.scrollToComments = function() {
     window.editoOpenForm = editoOpenForm;
     window.editoSave = editoSave;
     window.editoDelete = editoDelete;
+    window.editoOpenArchive = editoOpenArchive;
+    window.editoLireArchive = editoLireArchive;
+    window.editoRestore = editoRestore;
+    window.editoDeleteArchive = editoDeleteArchive;
+    window.mobOpenArchive = mobOpenArchive;
+    window.mobDeleteArchive = mobDeleteArchive;
+    window.coupeAddNext = coupeAddNext;
     window.openModalStaff = openModalStaff;
     window.saveStaff = saveStaff;
     window.openModalDirigeant = openModalDirigeant;
@@ -3543,17 +3610,20 @@ window.scrollToComments = function() {
     window.tryLogin = tryLogin;
     window.logoutAdmin = logoutAdmin;
     window.openArticleModal = openArticleModal;
-    window.shareContext = () => { 
-  let shareData = { title: 'MO Béjaïa', text: 'Suivez le MO Béjaïa ! 🦀 #LaMaisonDesCrabes', url: window.location.href }; 
-  if (currentArticleForShare) { 
-    shareData = { 
-      title: currentArticleForShare.titre, 
-      text: currentArticleForShare.texte ? currentArticleForShare.texte.substring(0, 100) + '...' : 'Découvrez cet article sur le MO Béjaïa', 
-      url: window.location.href 
-    }; 
-  } 
-  if (navigator.share) navigator.share(shareData).catch(console.warn); 
-  else prompt("Lien :", shareData.url); 
+    window.shareContext = () => {
+  const base = location.origin + location.pathname;
+  const cut = (t) => { t = String(t || '').replace(/\s+/g, ' ').trim(); return t.length > 110 ? t.slice(0, 110) + '...' : t; };
+  let shareData = { title: 'MO Béjaïa', text: 'Suivez le MO Béjaïa ! 🦀 #LaMaisonDesCrabes', url: base };
+  if (currentEditoForShare) {
+    const e = currentEditoForShare;
+    shareData = { title: e.titre, text: cut(e.texte) || 'Éditorial du MO Béjaïa', url: base + '#edito' + (e.id ? '-' + e.id : '') };
+  } else if (currentArticleForShare) {
+    const a = currentArticleForShare;
+    shareData = { title: a.titre, text: cut(a.texte) || 'Découvrez cet article sur le MO Béjaïa', url: base + '#article-' + encodeURIComponent(a.id) };
+  }
+  if (navigator.share) navigator.share(shareData).catch(() => {});
+  else if (navigator.clipboard) navigator.clipboard.writeText(shareData.url).then(() => alert('Lien copié : ' + shareData.url)).catch(() => prompt('Lien :', shareData.url));
+  else prompt('Lien :', shareData.url);
 };
     window.openModalFDM = openModalFDM;
     window.saveFDM = saveFDM;
@@ -3680,12 +3750,14 @@ window.scrollToComments = function() {
         document.getElementById('fHeure').value = m.heure || '';
         if (selectDom) selectDom.value = m.dom || EQUIPES[0];
         if (selectExt) selectExt.value = m.ext || EQUIPES[1];
+        document.getElementById('fDomAutre').value = EQUIPES.includes(m.dom) ? '' : (m.dom || '');
+        document.getElementById('fExtAutre').value = EQUIPES.includes(m.ext) ? '' : (m.ext || '');
         document.getElementById('fSd').value = m.sd ?? '';
         document.getElementById('fSe').value = m.se ?? '';
         if (selectStade) selectStade.value = m.stade || STADES[0];
         document.getElementById('fObs').value = m.obs || '';
       } else {
-        ['fJournee','fDate','fHeure','fSd','fSe','fObs'].forEach(id => {
+        ['fJournee','fDate','fHeure','fSd','fSe','fObs','fDomAutre','fExtAutre'].forEach(id => {
           const el = document.getElementById(id);
           if (el) el.value = '';
         });
@@ -3700,8 +3772,8 @@ window.scrollToComments = function() {
         journee: document.getElementById('fJournee').value.trim(),
         date: document.getElementById('fDate').value,
         heure: document.getElementById('fHeure').value,
-        dom: document.getElementById('fDom').value,
-        ext: document.getElementById('fExt').value,
+        dom: (document.getElementById('fDomAutre').value.trim() || document.getElementById('fDom').value),
+        ext: (document.getElementById('fExtAutre').value.trim() || document.getElementById('fExt').value),
         sd: document.getElementById('fSd').value,
         se: document.getElementById('fSe').value,
         stade: document.getElementById('fStade').value,
@@ -3806,13 +3878,42 @@ window.scrollToComments = function() {
       return isNaN(x) ? editoEsc(d) : x.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
     }
 
-    function editoMediaHtml(url) {
-      url = (url || '').trim();
+    function editoYoutubeId(url) {
+      const m = String(url || '').match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+      return m ? m[1] : null;
+    }
+
+    function editoThumbUrl(url) {
+      url = String(url || '').trim();
       if (!url) return '';
-      const yt = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
-      if (yt) return `<div class="video-embed-container"><iframe src="https://www.youtube.com/embed/${yt[1]}" allowfullscreen></iframe></div>`;
+      const yt = editoYoutubeId(url);
+      if (yt) return 'https://img.youtube.com/vi/' + yt + '/mqdefault.jpg';
+      return /^https?:\/\//i.test(url) ? url : '';
+    }
+
+    function editoMediaHtml(url) {
+      url = String(url || '').trim();
+      if (!url) return '';
+      const yt = editoYoutubeId(url);
+      if (yt) return `<div class="video-embed-container"><iframe src="https://www.youtube.com/embed/${yt}" allowfullscreen></iframe></div>`;
       if (/^https?:\/\//i.test(url)) return `<img class="edito-media" src="${editoEsc(url)}" alt="">`;
       return '';
+    }
+
+    function editoArchiveList() {
+      const a = data.editoArchive;
+      return Array.isArray(a) ? a.filter(Boolean) : Object.values(a || {});
+    }
+
+    function editoNeedAuth() {
+      if (!auth || !auth.currentUser) { alert('Connexion admin expirée. Reconnectez-vous.'); return true; }
+      return false;
+    }
+
+    function editoFindById(id) {
+      if (!id) return data.edito && data.edito.titre ? data.edito : null;
+      if (data.edito && data.edito.id === id) return data.edito;
+      return editoArchiveList().find(x => x.id === id) || null;
     }
 
     function renderEdito() {
@@ -3820,33 +3921,36 @@ window.scrollToComments = function() {
       if (!box) return;
       const e = data.edito;
       const has = !!(e && e.titre);
-      if (!has && !isAdmin) { box.innerHTML = ''; return; }
+      const arch = editoArchiveList();
+      if (!has && !isAdmin && arch.length === 0) { box.innerHTML = ''; return; }
 
       const top = `<div class="edito-top">
           <div class="edito-label"><span class="edito-hand">✍️</span> EDITO</div>
           <div class="edito-une">À LA UNE</div>
         </div>`;
-      const adminBar = isAdmin ? `<div class="edito-admin">
-          <button class="btn-small" style="background:#16a34a;" onclick="editoOpenForm('new')">➕ Ajouter</button>
+      const archBtn = arch.length ? `<button class="edito-arch-btn" onclick="editoOpenArchive()">📚 Archives (${arch.length})</button>` : '';
+      const adminBtns = isAdmin ? `<button class="btn-small" style="background:#16a34a;" onclick="editoOpenForm('new')">➕ Ajouter</button>
           ${has ? `<button class="btn-small btn-edit" onclick="editoOpenForm('edit')">✏️ Modifier</button>
-          <button class="btn-small btn-del" onclick="editoDelete()">🗑️ Supprimer</button>` : ''}
-        </div>` : '';
+          <button class="btn-small btn-del" onclick="editoDelete()">🗑️ Supprimer</button>` : ''}` : '';
+      const left = `<div class="edito-admin">${archBtn}${adminBtns}</div>`;
 
       if (!has) {
-        box.innerHTML = `<div class="edito-card edito-vide">${top}<p>Aucun éditorial publié pour le moment.</p><div class="edito-bottom">${adminBar}</div></div>`;
+        box.innerHTML = `<div class="edito-card edito-vide">${top}<p>Aucun éditorial à la une pour le moment.</p><div class="edito-bottom">${left}</div></div>`;
         return;
       }
       const extrait = editoEsc(String(e.texte || '').replace(/\s+/g, ' ').trim());
+      const thumb = editoThumbUrl(e.media);
+      const thumbHtml = thumb ? `<img class="edito-thumb" src="${editoEsc(thumb)}" alt="" onclick="editoLire()" onerror="this.style.display='none'">` : '';
       box.innerHTML = `<div class="edito-card">${top}
         <h2 class="edito-titre">${editoEsc(e.titre)}</h2>
         <div class="edito-extrait">${extrait}</div>
-        <div class="edito-bottom">${adminBar}<button class="edito-lire" onclick="editoLire()">Lire la suite …</button></div>
+        <div class="edito-bottom">${left}<div class="edito-right"><button class="edito-lire" onclick="editoLire()">Lire la suite …</button>${thumbHtml}</div></div>
       </div>`;
     }
 
-    function editoLire() {
-      const e = data.edito;
+    function editoLireItem(e) {
       if (!e) return;
+      currentEditoForShare = e;
       document.getElementById('editoLireBody').innerHTML =
         `<div class="edito-label" style="margin-bottom:8px;"><span class="edito-hand">✍️</span> EDITO</div>
          <h2 class="edito-titre">${editoEsc(e.titre)}</h2>
@@ -3856,11 +3960,14 @@ window.scrollToComments = function() {
       openModal('modalEditoLire');
     }
 
+    function editoLire() { editoLireItem(data.edito); }
+
     function editoOpenForm(mode) {
       if (!isAdmin) return;
       let e = { titre: '', date: new Date().toISOString().slice(0, 10), media: '', texte: '' };
       if (mode === 'edit' && data.edito) e = data.edito;
-      if (mode === 'new' && data.edito && !confirm("Un éditorial existe déjà. Voulez-vous le remplacer par un nouveau ?")) return;
+      if (mode === 'new' && data.edito && data.edito.titre && !confirm("L'éditorial actuel sera déplacé dans les archives. Continuer ?")) return;
+      editoMode = mode;
       document.getElementById('editoTitreIn').value = e.titre || '';
       document.getElementById('editoDateIn').value = e.date || '';
       document.getElementById('editoMediaIn').value = e.media || '';
@@ -3873,8 +3980,15 @@ window.scrollToComments = function() {
       const titre = document.getElementById('editoTitreIn').value.trim();
       const texte = document.getElementById('editoTexteIn').value.trim();
       if (!titre || !texte) { alert('Le titre et le texte sont obligatoires.'); return; }
-      if (!auth || !auth.currentUser) { alert('Connexion admin expirée. Reconnectez-vous.'); return; }
+      if (editoNeedAuth()) return;
+      const keepId = (editoMode === 'edit' && data.edito && data.edito.id) ? data.edito.id : 'e' + Date.now();
+      if (editoMode === 'new' && data.edito && data.edito.titre) {
+        const old = Object.assign({}, data.edito);
+        if (!old.id) old.id = 'e' + (Date.now() - 1);
+        data.editoArchive = [old].concat(editoArchiveList());
+      }
       data.edito = {
+        id: keepId,
         titre: titre,
         date: document.getElementById('editoDateIn').value,
         media: document.getElementById('editoMediaIn').value.trim(),
@@ -3887,10 +4001,187 @@ window.scrollToComments = function() {
 
     async function editoDelete() {
       if (!isAdmin || !data.edito) return;
-      if (!confirm("Supprimer définitivement l'éditorial ?")) return;
+      if (!confirm("Supprimer définitivement l'éditorial à la une ? (Les archives sont conservées.)")) return;
+      if (editoNeedAuth()) return;
       data.edito = null;
       await saveToFirebase();
       renderEdito();
+    }
+
+    function editoOpenArchive() {
+      const arch = editoArchiveList();
+      document.getElementById('editoArchiveBody').innerHTML = arch.length ? arch.map((e, i) => `<div class="edito-arch-item">
+          <div class="edito-arch-main" onclick="editoLireArchive(${i})">
+            <div class="edito-arch-titre">${editoEsc(e.titre)}</div>
+            <div class="edito-date" style="margin:2px 0 0;">${editoDateFr(e.date)}</div>
+          </div>
+          ${isAdmin ? `<div class="edito-admin"><button class="btn-small" style="background:#16a34a;" onclick="editoRestore(${i})">↩️ À la une</button><button class="btn-small btn-del" onclick="editoDeleteArchive(${i})">🗑️</button></div>` : ''}
+        </div>`).join('') : '<p>Aucun éditorial archivé.</p>';
+      openModal('modalEditoArchive');
+    }
+
+    function editoLireArchive(i) {
+      const e = editoArchiveList()[i];
+      if (!e) return;
+      closeModal('modalEditoArchive');
+      editoLireItem(e);
+    }
+
+    async function editoRestore(i) {
+      if (!isAdmin) return;
+      const arch = editoArchiveList();
+      const e = arch[i];
+      if (!e) return;
+      if (editoNeedAuth()) return;
+      const rest = arch.filter((_, k) => k !== i);
+      if (data.edito && data.edito.titre) {
+        const old = Object.assign({}, data.edito);
+        if (!old.id) old.id = 'e' + (Date.now() - 1);
+        rest.unshift(old);
+      }
+      if (!e.id) e.id = 'e' + Date.now();
+      data.edito = e;
+      data.editoArchive = rest;
+      await saveToFirebase();
+      closeModal('modalEditoArchive');
+      renderEdito();
+    }
+
+    async function editoDeleteArchive(i) {
+      if (!isAdmin) return;
+      if (!confirm("Supprimer définitivement cet éditorial archivé ?")) return;
+      if (editoNeedAuth()) return;
+      data.editoArchive = editoArchiveList().filter((_, k) => k !== i);
+      await saveToFirebase();
+      renderEdito();
+      editoOpenArchive();
+    }
+
+    /* ===== ARCHIVES DE L'ONGLET MOB ===== */
+    function mobArchiveList(sec) {
+      const a = data.mobArchive && data.mobArchive[sec];
+      return Array.isArray(a) ? a.filter(Boolean) : Object.values(a || {});
+    }
+
+    function mobArchivePush(sec, entry) {
+      if (!data.mobArchive) data.mobArchive = {};
+      entry.date = new Date().toISOString().slice(0, 10);
+      data.mobArchive[sec] = [entry].concat(mobArchiveList(sec));
+    }
+
+    function renderMobArchiveLinks() {
+      ['avant', 'day', 'apres'].forEach(sec => {
+        const section = document.getElementById('mob-' + sec);
+        if (!section) return;
+        let el = document.getElementById('mobArchLink-' + sec);
+        if (!el) {
+          el = document.createElement('div');
+          el.id = 'mobArchLink-' + sec;
+          el.style.cssText = 'text-align:right; margin:6px 0;';
+          section.insertBefore(el, section.querySelector('.mob-card') || null);
+        }
+        const n = mobArchiveList(sec).length;
+        el.innerHTML = n ? `<button class="edito-arch-btn" onclick="mobOpenArchive('${sec}')">📚 Archives (${n})</button>` : '';
+      });
+    }
+
+    function mobOpenArchive(sec) {
+      const list = mobArchiveList(sec);
+      document.getElementById('mobArchiveTitle').textContent = '📚 Archives : ' + (MOB_SEC_LABEL[sec] || '');
+      const labels = { texte: '📝 Texte et image', affiche: '🖼️ Affiche', video: '🎥 Vidéo' };
+      document.getElementById('mobArchiveBody').innerHTML = list.length ? list.map((e, i) => {
+        let inner = '';
+        if (e.type === 'texte') inner = editoMediaHtml(e.img) + (e.txt ? `<div class="edito-texte">${editoEsc(e.txt)}</div>` : '');
+        else if (e.type === 'affiche') inner = editoMediaHtml(e.url);
+        else if (e.type === 'video') inner = editoMediaHtml(e.url) + (e.txt ? `<div class="edito-texte">${editoEsc(e.txt)}</div>` : '');
+        return `<div class="edito-arch-item" style="display:block;">
+          <div class="edito-date">${labels[e.type] || ''} · archivé le ${editoDateFr(e.date)}</div>
+          ${inner}
+          ${isAdmin ? `<div class="edito-admin" style="margin-top:6px;"><button class="btn-small btn-del" onclick="mobDeleteArchive('${sec}',${i})">🗑️ Supprimer</button></div>` : ''}
+        </div>`;
+      }).join('') : '<p>Aucune archive.</p>';
+      openModal('modalMobArchive');
+    }
+
+    async function mobDeleteArchive(sec, i) {
+      if (!isAdmin) return;
+      if (!confirm("Supprimer définitivement cet élément archivé ?")) return;
+      if (editoNeedAuth()) return;
+      data.mobArchive[sec] = mobArchiveList(sec).filter((_, k) => k !== i);
+      await saveToFirebase();
+      renderMobArchiveLinks();
+      mobOpenArchive(sec);
+    }
+
+    /* ===== COUPE D'ALGERIE : bouton "tour suivant" ===== */
+    function coupeStatus() {
+      const ms = (data.coupe || []).filter(m => m.dom === 'MO Béjaïa' || m.ext === 'MO Béjaïa').sort((a, b) => new Date(a.date) - new Date(b.date));
+      if (!ms.length) return { ok: true, last: null, reason: '' };
+      const last = ms[ms.length - 1];
+      if (!hasScore(last)) return { ok: false, last, reason: 'Saisissez d\'abord le score du dernier match de Coupe.' };
+      const mobIsDom = last.dom === 'MO Béjaïa';
+      const mob = Number(mobIsDom ? last.sd : last.se), opp = Number(mobIsDom ? last.se : last.sd);
+      if (mob > opp) return { ok: true, last, reason: '' };
+      if (mob === opp && /qualifi|tab|t\.a\.b|penalt|pénalt/i.test(last.obs || '')) return { ok: true, last, reason: '' };
+      if (mob === opp) return { ok: false, last, reason: 'Égalité : écrivez « qualifié (tab) » dans Obs. pour débloquer le bouton.' };
+      return { ok: false, last, reason: 'Le MOB est éliminé de la Coupe.' };
+    }
+
+    function renderCoupeAdminBar() {
+      const bar = document.getElementById('coupeAdminBar');
+      if (!bar) return;
+      if (!isAdmin) { bar.innerHTML = ''; return; }
+      const st = coupeStatus();
+      bar.innerHTML = st.ok
+        ? `<div style="text-align:center; margin:8px 0;"><button class="btn-small" style="background:#16a34a; font-size:13px; padding:9px 16px;" onclick="coupeAddNext()">➕ Ajouter le match du tour suivant</button></div>`
+        : `<p style="text-align:center; color:#aaa; font-size:12px; margin:8px 0;">ℹ️ Le bouton « Ajouter le match du tour suivant » apparaît dès que le MOB est qualifié. ${editoEsc(st.reason)}</p>`;
+    }
+
+    function coupeAddNext() {
+      if (!isAdmin) return;
+      const st = coupeStatus();
+      openModalMatch('coupe');
+      const set = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+      set('fDom', 'MO Béjaïa');
+      let jour = '';
+      if (st.last) {
+        const mm = String(st.last.journee || '').match(/(\d+)/);
+        if (mm) jour = (parseInt(mm[1], 10) + 1) + 'e Tour';
+      }
+      set('fJournee', jour);
+      set('fObs', "Coupe d'Algérie");
+    }
+
+    /* ===== LIENS DIRECTS VERS UN ARTICLE + BOUTON PARTAGER DISCRET ===== */
+    function handleDeepLinkOnce() {
+      if (deepLinkDone) return;
+      let h = '';
+      try { h = decodeURIComponent(location.hash || ''); } catch (e) { h = location.hash || ''; }
+      if (!h) { deepLinkDone = true; return; }
+      let m;
+      if ((m = h.match(/^#article-(.+)$/))) {
+        const a = articles.find(x => String(x.id) === m[1]);
+        if (a) { deepLinkDone = true; openArticleModal(a.id); }
+      } else if ((m = h.match(/^#edito(?:-(.+))?$/))) {
+        const found = editoFindById(m[1]);
+        if (found) { deepLinkDone = true; editoLireItem(found); }
+      } else {
+        deepLinkDone = true;
+      }
+    }
+
+    function initShareAutoHide() {
+      const btn = document.getElementById('btnShareMain');
+      if (!btn) return;
+      const last = new WeakMap();
+      document.addEventListener('scroll', (ev) => {
+        const t = (ev.target === document) ? (document.scrollingElement || document.documentElement) : ev.target;
+        const y = t.scrollTop || 0;
+        const prev = last.has(t) ? last.get(t) : y;
+        if (y > prev + 6 && y > 80) btn.classList.add('share-hidden');
+        else if (y < prev - 6 || y <= 80) btn.classList.remove('share-hidden');
+        last.set(t, y);
+      }, true);
     }
     /* ===== FIN EDITORIAL ===== */
 
@@ -4128,12 +4419,18 @@ window.scrollToComments = function() {
       document.getElementById('mobSection').value = sec;
       document.getElementById('mobImgInput').value = (data.mob[sec] && data.mob[sec].img) ? data.mob[sec].img : '';
       document.getElementById('mobTextInput').value = (data.mob[sec] && data.mob[sec].txt) ? data.mob[sec].txt : '';
+      document.getElementById('archKeepMob').checked = true;
       openModal('modalMob');
     }
 
     async function saveMobContent() {
       const sec = document.getElementById('mobSection').value;
-      data.mob[sec] = { img: document.getElementById('mobImgInput').value, txt: document.getElementById('mobTextInput').value };
+      const newImg = document.getElementById('mobImgInput').value, newTxt = document.getElementById('mobTextInput').value;
+      const old = data.mob[sec];
+      if (document.getElementById('archKeepMob').checked && old && (old.img || old.txt) && (old.img !== newImg || old.txt !== newTxt)) {
+        mobArchivePush(sec, { type: 'texte', img: old.img || '', txt: old.txt || '' });
+      }
+      data.mob[sec] = { img: newImg, txt: newTxt };
       await saveToFirebase();
       closeModal('modalMob');
       renderMob();
@@ -4143,12 +4440,18 @@ window.scrollToComments = function() {
       if (!isAdmin) return;
       document.getElementById('afficheSection').value = sec;
       document.getElementById('afficheUrl').value = data.affiches[sec] || '';
+      document.getElementById('archKeepAffiche').checked = true;
       openModal('modalAffiche');
     }
 
     async function saveAffiche() {
       const sec = document.getElementById('afficheSection').value;
-      data.affiches[sec] = document.getElementById('afficheUrl').value;
+      const newUrl = document.getElementById('afficheUrl').value;
+      const oldUrl = data.affiches[sec];
+      if (document.getElementById('archKeepAffiche').checked && oldUrl && oldUrl !== newUrl) {
+        mobArchivePush(sec, { type: 'affiche', url: oldUrl });
+      }
+      data.affiches[sec] = newUrl;
       await saveToFirebase();
       closeModal('modalAffiche');
       renderMob();
@@ -4159,12 +4462,18 @@ window.scrollToComments = function() {
       document.getElementById('videoSection').value = sec;
       document.getElementById('videoUrl').value = (data.videos[sec] && data.videos[sec].url) ? data.videos[sec].url : '';
       document.getElementById('videoTexte').value = (data.videos[sec] && data.videos[sec].txt) ? data.videos[sec].txt : '';
+      document.getElementById('archKeepVideo').checked = true;
       openModal('modalVideo');
     }
 
     async function saveVideo() {
       const sec = document.getElementById('videoSection').value;
-      data.videos[sec] = { url: document.getElementById('videoUrl').value, txt: document.getElementById('videoTexte').value };
+      const newVUrl = document.getElementById('videoUrl').value, newVTxt = document.getElementById('videoTexte').value;
+      const oldV = data.videos[sec];
+      if (document.getElementById('archKeepVideo').checked && oldV && (oldV.url || oldV.txt) && (oldV.url !== newVUrl || oldV.txt !== newVTxt)) {
+        mobArchivePush(sec, { type: 'video', url: oldV.url || '', txt: oldV.txt || '' });
+      }
+      data.videos[sec] = { url: newVUrl, txt: newVTxt };
       await saveToFirebase();
       closeModal('modalVideo');
       renderMob();
