@@ -483,6 +483,11 @@
   .edito-arch-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 4px; border-bottom: 1px solid rgba(255,255,255,0.1); }
   .edito-arch-main { flex: 1; cursor: pointer; }
   .edito-arch-titre { font-weight: 800; color: #fff; }
+  .org-titre { color: var(--mob-gold); font-size: 14px; font-weight: 900; margin: 16px 0 6px; }
+  .org-card { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .org-card img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid var(--mob-green); background: #000; flex-shrink: 0; }
+  .org-nom { font-weight: 800; color: #fff; font-size: 14px; }
+  .org-fonction { color: var(--text-muted); font-size: 12px; }
   /* BOUTON PARTAGER DISCRET */
   #btnShareMain.btn-share-float { width: 46px; height: 46px; padding: 0; justify-content: center; font-size: 0; bottom: 100px; right: 12px; opacity: 0.92; transition: transform 0.25s, opacity 0.25s; }
   #btnShareMain.btn-share-float::before { content: '📤'; font-size: 20px; }
@@ -1092,7 +1097,7 @@
       <h4><span class="footer-crab">🦀</span> Le Club</h4>  
         <ul>
           <li><a href="#" onclick="event.preventDefault(); openModal('modalStadeInfo')">Présentation</a></li>
-          <li><a href="#">Organigramme</a></li>
+          <li><a href="#" onclick="event.preventDefault(); openOrganigramme()">Organigramme</a></li>
           <li><a href="#" onclick="event.preventDefault(); openModal('modalStadeInfo')">Stade de l'Unité Maghrébine</a></li>
         </ul>
       </div>
@@ -1392,6 +1397,15 @@
       <label>Lien Image <input type="url" id="nImg"></label>
       <label>Contenu <textarea id="nTexte" rows="8"></textarea></label>
       <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalNewsEdit')">Annuler</button><button onclick="saveNews()">Enregistrer</button></div>
+    </div>
+  </div>
+
+  <div class="modal" id="modalOrganigramme">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('modalOrganigramme')">×</span>
+      <h3>🦀 ORGANIGRAMME DU MOB</h3>
+      <div id="organigrammeBody"></div>
+      <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalOrganigramme')">Fermer</button></div>
     </div>
   </div>
 
@@ -3563,6 +3577,7 @@ window.scrollToComments = function() {
     window.mobOpenArchive = mobOpenArchive;
     window.mobDeleteArchive = mobDeleteArchive;
     window.coupeAddNext = coupeAddNext;
+    window.openOrganigramme = openOrganigramme;
     window.openModalStaff = openModalStaff;
     window.saveStaff = saveStaff;
     window.openModalDirigeant = openModalDirigeant;
@@ -4183,6 +4198,23 @@ window.scrollToComments = function() {
         last.set(t, y);
       }, true);
     }
+    /* ===== ORGANIGRAMME (alimente par les listes Dirigeants et Staff) ===== */
+    function openOrganigramme() {
+      const fiche = (p) => {
+        const img = /^https?:\/\//i.test(p.img || '') ? p.img : 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png';
+        return `<div class="org-card"><img src="${editoEsc(img)}" alt="" onerror="this.style.display='none'"><div><div class="org-nom">${editoEsc(p.nom)}</div><div class="org-fonction">${editoEsc(p.fonction)}</div></div></div>`;
+      };
+      const bloc = (titre, liste) => liste.length ? `<div class="org-titre">${titre}</div>${liste.map(fiche).join('')}` : '';
+      const dir = (data.dirigeants || []).filter(Boolean);
+      const staff = (data.staff || []).filter(Boolean);
+      document.getElementById('organigrammeBody').innerHTML =
+        (dir.length || staff.length)
+          ? `<p style="font-size:12px; color:#d1d5db; line-height:1.6;">Les responsables du club et de l'encadrement technique, tels que publiés par les administrateurs du site.</p>`
+            + bloc('👔 Direction du club (CSA)', dir) + bloc('🛡️ Staff technique', staff)
+          : `<p style="font-size:13px; color:#d1d5db;">L'organigramme sera publié prochainement.</p>`;
+      openModal('modalOrganigramme');
+    }
+
     /* ===== FIN EDITORIAL ===== */
 
     function openFichePlayer(idx, ev) {
