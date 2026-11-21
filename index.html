@@ -605,7 +605,7 @@
     border-top: 2px solid var(--mob-green-neon);
     color: #fff;
     padding: 14px 16px;
-    z-index: 9998;
+    z-index: 2500;
     text-align: center;
     font-size: 12px;
     line-height: 1.5;
@@ -622,6 +622,7 @@
     cursor: pointer;
     font-size: 12px;
   }
+  #cookie-banner button.cookie-refuse { background: transparent; color: #fff; border: 1px solid #6b7c72; }
   #cookie-banner a {
     color: var(--mob-gold);
     text-decoration: underline;
@@ -1095,6 +1096,7 @@
   <div id="cookie-banner">
     🍪 Ce site utilise Google Analytics pour mesurer l'audience. Acceptez-vous les cookies ?
     <button onclick="acceptCookies()">Accepter</button>
+    <button class="cookie-refuse" onclick="refuseCookies()">Refuser</button>
     <a href="confidentialite.html">En savoir plus</a>
   </div>
 
@@ -1128,6 +1130,7 @@
           <li><a href="mailto:contactmobejaia@gmail.com">contactmobejaia@gmail.com</a></li>
           <li><a href="https://www.facebook.com/share/1AEUmcf9d6/" target="_blank">Signaler un bug</a></li>
           <li><a href="confidentialite.html">Confidentialité & cookies</a></li>
+          <li><a href="#" onclick="event.preventDefault(); manageCookies()">Gérer mes cookies</a></li>
         </ul>
       </div>
     </div>
@@ -1136,7 +1139,7 @@
       <div style="margin-bottom:5px;"><strong>MO BÉJAÏA</strong> • La Maison des Crabes</div>
       <div>Site indépendant des supporters, par les supporters @mustaphamobiste. Ferveur & Passion <span class="footer-crab">🦀</span></div>
       <div style="margin-top:8px; font-size:10px; color:#8b9b90; font-style:italic;">Ce site est géré par des supporters bénévoles. Il n'est pas affilié officiellement au MO Béjaïa.</div>
-      <div style="margin-top:5px; font-size:10px; opacity:0.7;">© 2026 MO Béjaïa - Tous droits réservés.</div>
+      <div style="margin-top:5px; font-size:10px; opacity:0.7;">© 2026 Site indépendant des supporters du MO Béjaïa. Le nom et le logo du club appartiennent à leurs propriétaires respectifs.</div>
     </div>
   </footer>
 
@@ -3697,6 +3700,23 @@ window.scrollToComments = function() {
       const banner = document.getElementById('cookie-banner');
       if (banner) banner.style.display = 'none';
       if (typeof window.loadAnalytics === 'function') window.loadAnalytics();
+    };
+    window.refuseCookies = function() {
+      localStorage.setItem('cookies_ok', '0');
+      window['ga-disable-G-9Q1GV46GFD'] = true;
+      const banner = document.getElementById('cookie-banner');
+      if (banner) banner.style.display = 'none';
+      try {
+        document.cookie.split(';').forEach(function (c) {
+          const n = c.split('=')[0].trim();
+          if (n.indexOf('_ga') === 0) document.cookie = n + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+        });
+      } catch (e) {}
+    };
+    window.manageCookies = function() {
+      localStorage.removeItem('cookies_ok');
+      const banner = document.getElementById('cookie-banner');
+      if (banner) banner.style.display = 'block';
     };
     if (!localStorage.getItem('cookies_ok')) {
       const banner = document.getElementById('cookie-banner');
