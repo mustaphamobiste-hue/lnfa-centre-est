@@ -498,6 +498,10 @@
   .carte-parcours div { color: #e6ece8; white-space: pre-line; line-height: 1.5; }
   .carte-obs { margin-top: 8px; padding: 7px 10px; border-radius: 8px; background: rgba(245,158,11,0.12); border: 1px solid var(--mob-gold); color: #fff; font-size: 12px; font-weight: 700; }
   .edito-auteur { color: var(--text-muted); font-size: 12px; font-style: italic; margin: -2px 0 8px; }
+  .crab { display: inline-block; filter: hue-rotate(110deg); }
+  .pc-badge { display: inline-block; margin-top: 4px; padding: 2px 7px; border-radius: 10px; font-size: 9px; font-weight: 900; letter-spacing: 0.5px; background: var(--mob-gold); color: #000; }
+  .pc-badge.out { background: #ef4444; color: #fff; }
+  .pc-badge-club { display: block; margin-top: 3px; font-size: 10px; color: var(--mob-gold); font-weight: 700; }
   /* BOUTON PARTAGER DISCRET */
   #btnShareMain.btn-share-float { width: 46px; height: 46px; padding: 0; justify-content: center; font-size: 0; bottom: 100px; right: 12px; opacity: 0.92; transition: transform 0.25s, opacity 0.25s; }
   #btnShareMain.btn-share-float::before { content: '📤'; font-size: 20px; }
@@ -979,6 +983,7 @@
       <button onclick="openModalPlayer('new')">➕ Ajouter Joueur</button>
       <button onclick="openModalStaff('new')">➕ Ajouter Staff</button>
       <button onclick="openModalDirigeant('new')">➕ Ajouter Dirigeant</button>
+      <button onclick="carteImportAll()">📥 Importer les cartes d'identité</button>
     </div>
     <div class="club-section">
       <div class="club-title">🛡️ Staff Technique</div>
@@ -2939,13 +2944,13 @@ function closeModal(id) {
     function renderClub() {
       document.getElementById('grid-staff').innerHTML = (data.staff || []).map((s, idx) => {
         const actions = isAdmin ? `<div class="pc-actions"><button class="btn-small btn-edit" onclick="openModalStaff(${idx})">✏️</button><button class="btn-small btn-del" onclick="deleteItem('staff',${idx})">🗑️</button></div>` : '';
-        return `<div class="player-card" style="cursor:pointer" onclick="openFicheStaff(${idx}, event)">${actions}<img src="${s.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}"><div class="pc-info"><div class="pc-name">${s.nom}</div><div class="pc-pos">${s.fonction}</div></div></div>`;
+        return `<div class="player-card" style="cursor:pointer" onclick="openFicheStaff(${idx}, event)">${actions}<img src="${s.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}"><div class="pc-info"><div class="pc-name">${s.nom}</div><div class="pc-pos">${s.fonction}</div>${carteBadgeHtml(s)}</div></div>`;
       }).join('');
 
       document.getElementById('grid-players').innerHTML = (data.players || []).sort((a,b) => a.num - b.num).map((p) => {
         const realIdx = (data.players || []).indexOf(p);
         const actions = isAdmin ? `<div class="pc-actions"><button class="btn-small btn-edit" onclick="openModalPlayer(${realIdx})">✏️</button><button class="btn-small btn-del" onclick="deleteItem('players',${realIdx})">🗑️</button></div>` : '';
-        return `<div class="player-card" style="cursor:pointer" onclick="openFichePlayer(${realIdx}, event)">${actions}<div class="pc-num">${p.num}</div><img src="${p.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}"><div class="pc-info"><div class="pc-name">${p.nom}</div><div class="pc-pos">${p.poste}</div></div></div>`;
+        return `<div class="player-card" style="cursor:pointer" onclick="openFichePlayer(${realIdx}, event)">${actions}<div class="pc-num">${p.num}</div><img src="${p.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}"><div class="pc-info"><div class="pc-name">${p.nom}</div><div class="pc-pos">${p.poste}</div>${carteBadgeHtml(p)}</div></div>`;
       }).join('');
 
       document.getElementById('grid-dirigeants').innerHTML = (data.dirigeants || []).map((d, idx) => {
@@ -3613,6 +3618,7 @@ window.scrollToComments = function() {
 
     document.getElementById('mainTitle').addEventListener('click', handleTitleClick);
     try { initShareAutoHide(); } catch (e) { console.warn('Partager:', e); }
+    try { initGreenCrabs(); } catch (e) { console.warn('Crabes:', e); }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadFromFirebase); else loadFromFirebase();
 
     /* EXPOSITIONS GLOBALES WINDOW */
@@ -3650,6 +3656,7 @@ window.scrollToComments = function() {
     window.openFicheStaff = openFicheStaff;
     window.carteOpenForm = carteOpenForm;
     window.carteSave = carteSave;
+    window.carteImportAll = carteImportAll;
     window.openModalStaff = openModalStaff;
     window.saveStaff = saveStaff;
     window.openModalDirigeant = openModalDirigeant;
@@ -4415,6 +4422,453 @@ window.scrollToComments = function() {
       await saveToFirebase();
       closeModal('modalCarte');
       if (t.type === 'players') openFichePlayer(t.idx); else openFicheStaff(t.idx);
+    }
+
+    /* ===== CRABES EN VERT, BADGES, IMPORT DES CARTES ===== */
+    function greenCrabsIn(root) {
+      const nodes = [];
+      const consider = (n) => {
+        if (n.nodeValue && n.nodeValue.indexOf('🦀') !== -1 && n.parentNode && n.parentNode.closest && !n.parentNode.closest('script, style, textarea, option, title, .crab')) nodes.push(n);
+      };
+      if (root.nodeType === 3) consider(root);
+      else if (root.nodeType === 1) { const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT); while (w.nextNode()) consider(w.currentNode); }
+      nodes.forEach(n => {
+        const parts = n.nodeValue.split('🦀');
+        const frag = document.createDocumentFragment();
+        parts.forEach((t, i) => {
+          if (i > 0) { const s = document.createElement('span'); s.className = 'crab'; s.textContent = '🦀'; frag.appendChild(s); }
+          if (t) frag.appendChild(document.createTextNode(t));
+        });
+        n.parentNode.replaceChild(frag, n);
+      });
+    }
+
+    function initGreenCrabs() {
+      greenCrabsIn(document.body);
+      const pending = new Set();
+      let scheduled = false;
+      new MutationObserver((muts) => {
+        muts.forEach(m => { m.addedNodes.forEach(n => pending.add(n)); if (m.type === 'characterData') pending.add(m.target); });
+        if (!scheduled) {
+          scheduled = true;
+          requestAnimationFrame(() => {
+            scheduled = false;
+            const list = Array.from(pending);
+            pending.clear();
+            list.forEach(n => { if (n.isConnected) greenCrabsIn(n); });
+          });
+        }
+      }).observe(document.body, { childList: true, subtree: true, characterData: true });
+    }
+
+    function carteBadgeHtml(item) {
+      const c = (item && item.carte) || {};
+      const obs = String(c.obs || '').trim();
+      const nc = String(c.nouveauClub || '').trim();
+      const leaving = nc && !/b[ée]ja[iï]a/i.test(nc);
+      if (!obs && !leaving) return '';
+      const out = /lib[ée]r|r[ée]sili/i.test(obs);
+      return (obs ? `<span class="pc-badge${out ? ' out' : ''}">${editoEsc(obs.toUpperCase())}</span>` : '')
+        + (leaving ? `<span class="pc-badge-club">➜ ${editoEsc(nc)}</span>` : '');
+    }
+
+    function carteNorm(s) {
+      return String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/).filter(Boolean);
+    }
+
+    function carteSame(a, b) {
+      const ta = carteNorm(a), tb = carteNorm(b);
+      const sa = ta.join('').split('').sort().join(''), sb = tb.join('').split('').sort().join('');
+      if (sa && sa === sb) return true;
+      const small = ta.length <= tb.length ? ta : tb, big = ta.length <= tb.length ? tb : ta;
+      return small.length >= 2 && small.every(t => big.indexOf(t) !== -1);
+    }
+
+    const CARTES_IMPORT = [
+ {
+  "type": "players",
+  "nom": "Bouakaz Abderrahim",
+  "carte": {
+   "nomPrenom": "Bouakaz Abderrahim",
+   "naissance": "02 juillet 2002 à Khenchela (Algérie)",
+   "nationalite": "Algérienne",
+   "poste": "Milieu de terrain",
+   "dernierClub": "USM El Harrach"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Rebiai Hamza",
+  "carte": {
+   "nomPrenom": "Rebiai Hamza",
+   "naissance": "11 janvier 1994 à El Cheria, Tébessa (Algérie)",
+   "nationalite": "Algérienne",
+   "poste": "Défenseur central (axe droit / gauche)",
+   "gabarit": "1,79 m",
+   "piedFort": "Droit",
+   "dernierClub": "MB Rouissat (mercato hivernal 2026)",
+   "nouveauClub": "MO Béjaïa (saison 2026-2027)",
+   "parcours": "MB Rouissat, janvier 2026 : 9 présences sur la feuille de match\n5 titularisations (450 minutes de jeu)\n4 fois remplaçant (sans entrée en jeu)"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Guessoum Kelyan Jean Said",
+  "carte": {
+   "nomPrenom": "Guessoum Kelyan Jean Said",
+   "naissance": "5 février 1999 à Alès, Gard (France)",
+   "nationalite": "Franco-algérienne",
+   "poste": "Défenseur central (secondaire : latéral droit)",
+   "gabarit": "1,76 m / 70 kg",
+   "piedFort": "Droit",
+   "dernierClub": "MC Oran (Ligue 1 professionnelle)",
+   "nouveauClub": "MO Béjaïa (saison 2026-2027)",
+   "parcours": "Formation : Olympique Alès, Nîmes Olympique (arrivé en 2014)\nNîmes Olympique : contrat pro en 2019, 15 matchs en Ligue 1 française\nEtar Veliko Tarnovo (première division bulgare)\nMC Oran (Ligue 1 professionnelle) : 2024-2025 et 2025-2026\nSaison 2025-2026 : 9 présences sur la feuille de match, remplaçant sans entrée en jeu"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Oukaci Juba",
+  "carte": {
+   "nomPrenom": "Oukaci Juba",
+   "naissance": "8 juillet 1996 à Azazga (wilaya de Tizi Ouzou)",
+   "nationalite": "Algérienne",
+   "poste": "Milieu central / milieu défensif",
+   "gabarit": "1,71 m",
+   "piedFort": "Gauche",
+   "dernierClub": "JS Saoura (Ligue 1 professionnelle)",
+   "parcours": "JS Saoura : 2e au classement général à la 30e journée de Ligue 1 professionnelle\nSaison 2025-2026 (Ligue 1) : 8 apparitions, 3 titularisations, 5 entrées en jeu, 233 minutes\nSans club depuis janvier 2026"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Benmazouz Mohamed Saïd",
+  "carte": {
+   "nomPrenom": "Benmazouz Mohamed Saïd",
+   "naissance": "22 mars 2004 à Beni Messous, Alger",
+   "nationalite": "Algérienne",
+   "poste": "Attaquant / avant-centre (n° 9)",
+   "gabarit": "1,82 m / 76 kg",
+   "piedFort": "Droit",
+   "dernierClub": "ES Sahel (Ligue 1 tunisienne)",
+   "parcours": "Formation : USM Alger (équipes de jeunes jusqu'à l'équipe fanion)"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Ziane Islem",
+  "carte": {
+   "nomPrenom": "Ziane Islem",
+   "naissance": "25 octobre 2006 à Béjaïa",
+   "nationalite": "Algérienne",
+   "poste": "Attaquant et ailier polyvalent",
+   "dernierClub": "JS Kabylie (jeunes)",
+   "nouveauClub": "MO Béjaïa (saison 2026-2027)",
+   "parcours": "Chez les jeunes : 8 buts et 7 passes décisives, un exercice convaincant"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Sami Tlemcani",
+  "carte": {
+   "nomPrenom": "Sami Tlemcani",
+   "naissance": "21 juillet 2004 à Saint-Maurice (France)",
+   "nationalite": "Algérienne (nationalité sportive, changement validé en février 2023)",
+   "poste": "Gardien de but",
+   "gabarit": "1,95 m",
+   "piedFort": "Droit",
+   "dernierClub": "GS Ilioupoli (Grèce), annoncé en 2025",
+   "nouveauClub": "MO Béjaïa (saison 2026-2027)",
+   "parcours": "Centres de formation : US Créteil, Paris FC, Chelsea FC\n2020-2023 : Chelsea FC (Angleterre)\n2022 : prêt à Merstham FC\n2023-2025 : AEK Athènes B (Grèce)\n2025 : annoncé au GS Ilioupoli (Grèce)\n2026-2027 : MO Béjaïa (Ligue 2 Amateur)\nAtouts : envergure et jeu aérien (1,95 m), culture du haut niveau"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Yaya Nadjim",
+  "carte": {
+   "nomPrenom": "Yaya Nadjim",
+   "naissance": "12 juin 2001 à Timezrit, Sidi-Aïch (wilaya de Béjaïa)",
+   "nationalite": "Algérienne",
+   "poste": "Attaquant / ailier gauche",
+   "parcours": "Saison 2025-2026 : 23 matchs joués, 1 058 minutes\n11 titularisations (remplacé 8 fois), 12 entrées en jeu\n4 buts (9,09 % des 44 buts du MOB)"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Yaya Faouzi",
+  "carte": {
+   "nomPrenom": "Yaya Faouzi",
+   "naissance": "21 septembre 1989 à Timezrit, Sidi Aïch (wilaya de Béjaïa)",
+   "nationalite": "Algérienne",
+   "poste": "Milieu offensif (n° 10), capitaine",
+   "gabarit": "1,74 m",
+   "piedFort": "Droit",
+   "parcours": "MO Béjaïa, Ligue 2 Amateur groupe Centre-Est (4e à la 30e journée, saison 2025-2026)\nSaison 2025-2026 : 25 apparitions, 1 891 minutes\n17 titularisations (remplacé 4 fois), 7 fois sur le banc (6 entrées en jeu)\n9 buts (20,45 % des 44 buts du MOB), 3 cartons jaunes"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Benbelaid Amine",
+  "carte": {
+   "nomPrenom": "Amine Benbelaid",
+   "naissance": "25 mars 1992 à Oran (Algérie)",
+   "nationalite": "Algérienne",
+   "poste": "Milieu offensif, relayeur et meneur de jeu",
+   "dernierClub": "WA Tlemcen (Ligue 2 Amateur, groupe Centre-Ouest)",
+   "parcours": "Saison 2025-2026 : 22 matchs, 1 226 minutes, 1 but\n15 titularisations (remplacé à chaque fois), 7 entrées en jeu\n24 convocations (2 fois remplaçant non utilisé)\nNon convoqué à 6 reprises consécutives"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Ait Mouloud Rayane Karim",
+  "carte": {
+   "nomPrenom": "Ait Mouloud Rayane Karim",
+   "naissance": "30 novembre 2003 à Tiaret",
+   "nationalite": "Algérienne",
+   "poste": "Attaquant, ailier polyvalent",
+   "piedFort": "Droit",
+   "dernierClub": "JSM Tiaret (Ligue 2 Amateur, groupe Centre-Ouest)",
+   "parcours": "Saison 2025-2026 : 15 apparitions (9 titularisations, 6 entrées en jeu), 758 minutes\n17 convocations (2 fois remplaçant non entré)\n1 but, 2 cartons jaunes\nNon convoqué à 13 reprises"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Benleguemari Chaouki",
+  "carte": {
+   "nomPrenom": "Benleguemari Chaouki",
+   "naissance": "12 avril 2000 à Constantine",
+   "nationalite": "Algérienne",
+   "poste": "Défenseur central axial",
+   "piedFort": "Droit",
+   "dernierClub": "RCA Larbaâ",
+   "parcours": "Saison 2025-2026 : 23 matchs dont 20 titularisations (3 entrées en jeu)\n24 convocations (1 fois remplaçant non entré)\nNon convoqué à 4 reprises"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Nacef Tariq",
+  "carte": {
+   "nomPrenom": "Nacef Tariq",
+   "naissance": "28 avril 2001 à Chlef",
+   "nationalite": "Algérienne",
+   "poste": "Milieu relayeur et milieu défensif",
+   "dernierClub": "RCA Larbaâ",
+   "parcours": "Saison 2025-2026 : 21 apparitions (11 titularisations, 10 entrées en jeu)\n1 224 minutes, 3 cartons jaunes"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Benazza Mohamed",
+  "carte": {
+   "nomPrenom": "Mohamed Benazza",
+   "nationalite": "Algérienne",
+   "poste": "Milieu offensif et meneur de jeu",
+   "dernierClub": "WA Souk Ahras",
+   "parcours": "Âge : 30 ans"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Sabri Mohamed Abderrahmane",
+  "carte": {
+   "nomPrenom": "Sabri Mohamed Abderrahmane",
+   "naissance": "19 novembre 2005 à Tizi Ouzou",
+   "nationalite": "Algérienne",
+   "poste": "Défenseur central, milieu défensif",
+   "dernierClub": "Olympique Akbou (OA)"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Boukebal Zakaria",
+  "carte": {
+   "nomPrenom": "Boukebal Zakaria",
+   "naissance": "9 janvier 2002 à Sidi Moussa, Alger",
+   "nationalite": "Algérienne",
+   "poste": "Défenseur latéral gauche et arrière gauche",
+   "piedFort": "Gauche",
+   "dernierClub": "RCA Larbaâ",
+   "parcours": "Saison 2025-2026 : 19 matchs, 1 637 minutes, 2 cartons jaunes"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Akhrib Akram",
+  "carte": {
+   "nomPrenom": "Akram Akhrib",
+   "naissance": "12 février 2005 à Tizi-Ouzou",
+   "nationalite": "Algérienne",
+   "poste": "Attaquant, ailier gauche et ailier droit",
+   "dernierClub": "SS Sidi Aïch (Soummam Sport Sidi Aïch), inter-régions (division 3)",
+   "parcours": "Saison 2025-2026 : 10 buts, 6 passes décisives"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Bounaama Abdessamed",
+  "carte": {
+   "nomPrenom": "Bounaama Abdessamed",
+   "naissance": "26 février 1994 à El Bayadh",
+   "nationalite": "Algérienne",
+   "poste": "Arrière gauche, latéral gauche",
+   "piedFort": "Gauche",
+   "dernierClub": "NA Hussein Dey",
+   "parcours": "Saison 2025-2026 : 21 matchs, 1 824 minutes, 2 cartons jaunes"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Benmeddah Mohammed Hamza",
+  "carte": {
+   "nomPrenom": "Benmeddah Mohammed Hamza",
+   "naissance": "11 novembre 2003 à Béni Saf",
+   "nationalite": "Algérienne",
+   "poste": "Gardien de but",
+   "dernierClub": "CR Témouchent",
+   "parcours": "Saison 2025-2026 : 14 matchs, 1 204 minutes"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Zamoum Aimad",
+  "carte": {
+   "nomPrenom": "Zamoum Aimad",
+   "naissance": "2 février 2002 à Béjaïa",
+   "nationalite": "Algérienne",
+   "poste": "Joueur de couloir (latéral droit, ailier droit)",
+   "piedFort": "Droit",
+   "dernierClub": "JSM Béjaïa",
+   "parcours": "Saison 2025-2026 : 7 buts, 9 passes décisives"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Tamer Nizar",
+  "carte": {
+   "nomPrenom": "Tamer Nizar",
+   "naissance": "31 juillet 2001 à Biskra",
+   "nationalite": "Algérienne",
+   "poste": "Attaquant, ailier et meneur de jeu",
+   "dernierClub": "NC Magra",
+   "parcours": "Saison 2025-2026 : 19 matchs, 619 minutes"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Bouzid Dadache",
+  "carte": {
+   "nomPrenom": "Bouzid Dadache",
+   "naissance": "27 septembre 1993 à Bordj Bou Arréridj",
+   "nationalite": "Algérienne",
+   "poste": "Avant-centre, attaquant de pointe",
+   "piedFort": "Droit",
+   "dernierClub": "RCA Larbaâ",
+   "parcours": "Saison 2025-2026 : 12 matchs, 1 036 minutes, 4 buts"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Djelloul Abbou M'hamed",
+  "carte": {
+   "nomPrenom": "Djelloul Abbou M'hamed",
+   "naissance": "28 février 2001 à Relizane",
+   "nationalite": "Algérienne",
+   "poste": "Latéral droit, arrière droit",
+   "dernierClub": "CR Témouchent",
+   "parcours": "Saison 2025-2026 : 27 matchs, 1 029 minutes"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Hammi Waris",
+  "carte": {
+   "nomPrenom": "Waris Hammi",
+   "naissance": "20 novembre 2004 à Beni Djellil (wilaya de Béjaïa)",
+   "nationalite": "Algérienne",
+   "poste": "Joueur polyvalent (ailier, milieu offensif et attaquant)",
+   "dernierClub": "JSM Béjaïa",
+   "parcours": "Saison 2025-2026 : 29 matchs, 2 158 minutes, 8 buts"
+  }
+ },
+ {
+  "type": "players",
+  "nom": "Haddad Fouad",
+  "carte": {
+   "nomPrenom": "Haddad Fouad",
+   "naissance": "1er novembre 1990 à Collo (wilaya de Skikda)",
+   "nationalite": "Algérienne",
+   "poste": "Milieu défensif et milieu récupérateur",
+   "piedFort": "Droit",
+   "dernierClub": "RC Kouba",
+   "parcours": "Saison 2025-2026 : 19 matchs, 1 451 minutes"
+  }
+ },
+ {
+  "type": "staff",
+  "nom": "Djafri Abdelkader",
+  "carte": {
+   "nomPrenom": "Djafri Abdelkader",
+   "naissance": "6 juillet 1984 (origine : Tighennif, wilaya de Mascara)",
+   "nationalite": "Algérienne",
+   "poste": "Préparateur physique principal",
+   "dernierClub": "CR Témouchent (saison 2025-2026)",
+   "nouveauClub": "MO Béjaïa (saison 2026-2027)",
+   "parcours": "Qualification FAF : retenu dans les listes de formation supérieure pour le module 2 de préparateur physique (session de janvier 2026)\n2025-2026 : CR Témouchent, a participé au parcours réussi du club et à son accession\n2026-2027 : MO Béjaïa, intégration du staff mené par Hamid Lamara Aït-Ahmed (développement athlétique, prévention des blessures, préparation d'avant-saison au Stade Scolaire)\nAtouts : méthodologie moderne, maîtrise des cycles de récupération, certification récente de la FAF"
+  }
+ },
+ {
+  "type": "staff",
+  "nom": "Hamide Aït-Ahmed Lamara",
+  "carte": {
+   "nomPrenom": "Hamide Aït-Ahmed Lamara",
+   "naissance": "14 juin 1974 à Charleville-Mézières (France)",
+   "nationalite": "Franco-algérienne",
+   "poste": "Entraîneur principal",
+   "gabarit": "1,83 m",
+   "dernierClub": "JSM Tiaret (saison 2025-2026, Ligue 2)",
+   "nouveauClub": "MO Béjaïa (saison 2026-2027)",
+   "parcours": "Diplôme : licence UEFA Pro\n2016-2021 : Standard de Liège Fémina (Belgique), entraîneur principal : champion de Belgique 2017, Coupe de Belgique 2018, finaliste de la Coupe de Belgique 2019, finaliste 2020 (finale non disputée)\n2022-2023 : JS Kabylie, entraîneur adjoint de José Riga\n2024-2025 : ASM Oran, entraîneur principal (Ligue 2)\n2025-2026 : JSM Tiaret, entraîneur principal (Ligue 2)\n2026-2027 : MO Béjaïa, entraîneur principal (Ligue 2)"
+  }
+ },
+ {
+  "type": "staff",
+  "nom": "Mourad Tairi",
+  "carte": {
+   "nomPrenom": "Mourad Tairi",
+   "naissance": "8 mars 1974 à Aokas (Béjaïa)",
+   "poste": "Entraîneur des gardiens de but",
+   "nouveauClub": "MO Béjaïa (saison 2026-2027)",
+   "parcours": "Éducateur sportif, qualification niveau 2\nAncien gardien du CRB Aokas\nEntraîneur des gardiens durant plusieurs périodes au MO Béjaïa\n2014-2015 : membre du staff d'Abdelkader Amrani, vainqueur de la Coupe d'Algérie 2015 et vice-champion d'Algérie 2014-2015\nO. El Kseur : entraîneur des gardiens, accession en Régionale 1\nUS Oued Amizour : entraîneur des gardiens\n2026-2027 : MO Béjaïa, entraîneur des gardiens\nUne figure de continuité dans l'encadrement du MOB"
+  }
+ }
+];
+
+    async function carteImportAll() {
+      if (!isAdmin) return;
+      const plan = [], introuves = [];
+      CARTES_IMPORT.forEach(e => {
+        const it = (data[e.type] || []).find(x => carteSame(x.nom, e.nom));
+        if (!it) { introuves.push(e.nom); return; }
+        const c0 = it.carte || {};
+        if (Object.keys(e.carte).some(k => !c0[k] && e.carte[k])) plan.push({ it: it, e: e });
+      });
+      if (!plan.length) {
+        alert(introuves.length ? "Aucune fiche à compléter. Non trouvés dans vos listes :\n- " + introuves.join("\n- ") : "Toutes les cartes d'identité sont déjà complétées.");
+        return;
+      }
+      let msg = plan.length + " fiche(s) vont être complétées.\nLes champs déjà remplis ne seront pas modifiés.";
+      if (introuves.length) msg += "\n\nNon trouvés dans vos listes (à ajouter ou corriger à la main) :\n- " + introuves.join("\n- ");
+      msg += "\n\nContinuer ?";
+      if (!confirm(msg)) return;
+      if (editoNeedAuth()) return;
+      plan.forEach(p => {
+        const c = Object.assign({}, p.it.carte || {});
+        Object.keys(p.e.carte).forEach(k => { if (!c[k] && p.e.carte[k]) c[k] = p.e.carte[k]; });
+        p.it.carte = c;
+      });
+      await saveToFirebase();
+      renderClub();
+      alert(plan.length + " fiche(s) complétée(s)." + (introuves.length ? "\n" + introuves.length + " non trouvée(s)." : ""));
     }
 
     /* ===== FIN EDITORIAL ===== */
