@@ -488,6 +488,16 @@
   .org-card img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid var(--mob-green); background: #000; flex-shrink: 0; }
   .org-nom { font-weight: 800; color: #fff; font-size: 14px; }
   .org-fonction { color: var(--text-muted); font-size: 12px; }
+  .carte-id { background: var(--card-dark); border: 1px solid rgba(255,255,255,0.1); border-left: 4px solid var(--mob-gold); border-radius: 10px; padding: 10px 12px; margin: 10px 0; }
+  .carte-id-titre { color: var(--mob-gold); font-weight: 900; font-size: 12px; letter-spacing: 1px; margin-bottom: 6px; }
+  .carte-row { display: flex; justify-content: space-between; gap: 10px; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.07); font-size: 12px; }
+  .carte-row span { color: var(--text-muted); flex-shrink: 0; }
+  .carte-row b { color: #fff; text-align: right; }
+  .carte-parcours { padding: 6px 0; font-size: 12px; }
+  .carte-parcours span { color: var(--text-muted); display: block; margin-bottom: 2px; }
+  .carte-parcours div { color: #e6ece8; white-space: pre-line; line-height: 1.5; }
+  .carte-obs { margin-top: 8px; padding: 7px 10px; border-radius: 8px; background: rgba(245,158,11,0.12); border: 1px solid var(--mob-gold); color: #fff; font-size: 12px; font-weight: 700; }
+  .edito-auteur { color: var(--text-muted); font-size: 12px; font-style: italic; margin: -2px 0 8px; }
   /* BOUTON PARTAGER DISCRET */
   #btnShareMain.btn-share-float { width: 46px; height: 46px; padding: 0; justify-content: center; font-size: 0; bottom: 100px; right: 12px; opacity: 0.92; transition: transform 0.25s, opacity 0.25s; }
   #btnShareMain.btn-share-float::before { content: '📤'; font-size: 20px; }
@@ -1414,6 +1424,28 @@
     </div>
   </div>
 
+  <div class="modal" id="modalCarte">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('modalCarte')">×</span>
+      <h3>🪪 Carte d'identité</h3>
+      <label>Nom &amp; Prénom <input type="text" id="carteNom"></label>
+      <label>Date &amp; lieu de naissance <input type="text" id="carteNaissance" placeholder="Ex : 12/03/1998 à Béjaïa"></label>
+      <label>Nationalité <input type="text" id="carteNationalite" placeholder="Ex : Algérienne"></label>
+      <label>Poste <input type="text" id="cartePoste"></label>
+      <label>Gabarit (taille / poids) <input type="text" id="carteGabarit" placeholder="Ex : 1m82 / 76 kg"></label>
+      <label>Pied fort <select id="cartePied"><option value="">-</option><option>Droit</option><option>Gauche</option><option>Les deux</option></select></label>
+      <label>Parcours <textarea id="carteParcours" rows="4" placeholder="Clubs précédents, titres..."></textarea></label>
+      <label>Dernier club <input type="text" id="carteDernier"></label>
+      <label>Nouveau club <input type="text" id="carteNouveau"></label>
+      <label>OBS (si libéré, résiliation de contrat ou autre) <input type="text" id="carteObs" list="carteObsList" placeholder="Ex : Libéré, résiliation à l'amiable..."></label>
+      <datalist id="carteObsList"><option value="Libéré"><option value="Résiliation de contrat"><option value="Résiliation à l'amiable"><option value="Prêté"></datalist>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('modalCarte')">Annuler</button>
+        <button onclick="carteSave()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
   <div class="modal" id="modalPresentation">
     <div class="modal-content">
       <span class="modal-close" onclick="closeModal('modalPresentation')">×</span>
@@ -1460,6 +1492,7 @@
       <span class="modal-close" onclick="closeModal('modalEditoForm')">×</span>
       <h3>✍️ Éditorial</h3>
       <label>Titre <input type="text" id="editoTitreIn"></label>
+      <label>Auteur (ex : La rédaction) <input type="text" id="editoAuteurIn" placeholder="La rédaction"></label>
       <label>Date <input type="date" id="editoDateIn"></label>
       <label>Lien de l'image ou de la vidéo YouTube (facultatif) <input type="url" id="editoMediaIn" placeholder="https://..."></label>
       <label>Texte de l'éditorial <textarea id="editoTexteIn" rows="10"></textarea></label>
@@ -1757,6 +1790,7 @@
     let currentArticleForShare = null;
     let currentEditoForShare = null;
     let editoMode = 'edit';
+    let carteTarget = null;
     let deepLinkDone = false;
     const MOB_SEC_LABEL = { avant: 'Avant-match', day: 'Match Day', apres: 'Après-match' };
 
@@ -2905,7 +2939,7 @@ function closeModal(id) {
     function renderClub() {
       document.getElementById('grid-staff').innerHTML = (data.staff || []).map((s, idx) => {
         const actions = isAdmin ? `<div class="pc-actions"><button class="btn-small btn-edit" onclick="openModalStaff(${idx})">✏️</button><button class="btn-small btn-del" onclick="deleteItem('staff',${idx})">🗑️</button></div>` : '';
-        return `<div class="player-card">${actions}<img src="${s.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}"><div class="pc-info"><div class="pc-name">${s.nom}</div><div class="pc-pos">${s.fonction}</div></div></div>`;
+        return `<div class="player-card" style="cursor:pointer" onclick="openFicheStaff(${idx}, event)">${actions}<img src="${s.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}"><div class="pc-info"><div class="pc-name">${s.nom}</div><div class="pc-pos">${s.fonction}</div></div></div>`;
       }).join('');
 
       document.getElementById('grid-players').innerHTML = (data.players || []).sort((a,b) => a.num - b.num).map((p) => {
@@ -3613,6 +3647,9 @@ window.scrollToComments = function() {
     window.openOrganigramme = openOrganigramme;
     window.openPresentation = openPresentation;
     window.openPresentationHistoire = openPresentationHistoire;
+    window.openFicheStaff = openFicheStaff;
+    window.carteOpenForm = carteOpenForm;
+    window.carteSave = carteSave;
     window.openModalStaff = openModalStaff;
     window.saveStaff = saveStaff;
     window.openModalDirigeant = openModalDirigeant;
@@ -4010,6 +4047,7 @@ window.scrollToComments = function() {
       const thumbHtml = thumb ? `<img class="edito-thumb" src="${editoEsc(thumb)}" alt="" onclick="editoLire()" onerror="this.style.display='none'">` : '';
       box.innerHTML = `<div class="edito-card">${top}
         <h2 class="edito-titre">${editoEsc(e.titre)}</h2>
+        ${e.auteur ? `<div class="edito-auteur">Par ${editoEsc(e.auteur)}</div>` : ''}
         <div class="edito-extrait">${extrait}</div>
         <div class="edito-bottom">${left}<div class="edito-right"><button class="edito-lire" onclick="editoLire()">Lire la suite …</button>${thumbHtml}</div></div>
       </div>`;
@@ -4021,7 +4059,7 @@ window.scrollToComments = function() {
       document.getElementById('editoLireBody').innerHTML =
         `<div class="edito-label" style="margin-bottom:8px;"><span class="edito-hand">✍️</span> EDITO</div>
          <h2 class="edito-titre">${editoEsc(e.titre)}</h2>
-         <div class="edito-date">${editoDateFr(e.date)}</div>
+         <div class="edito-date">${e.auteur ? 'Par ' + editoEsc(e.auteur) + ' · ' : ''}${editoDateFr(e.date)}</div>
          ${editoMediaHtml(e.media)}
          <div class="edito-texte">${editoEsc(e.texte)}</div>`;
       openModal('modalEditoLire');
@@ -4036,6 +4074,7 @@ window.scrollToComments = function() {
       if (mode === 'new' && data.edito && data.edito.titre && !confirm("L'éditorial actuel sera déplacé dans les archives. Continuer ?")) return;
       editoMode = mode;
       document.getElementById('editoTitreIn').value = e.titre || '';
+      document.getElementById('editoAuteurIn').value = (mode === 'new') ? 'La rédaction' : (e.auteur || '');
       document.getElementById('editoDateIn').value = e.date || '';
       document.getElementById('editoMediaIn').value = e.media || '';
       document.getElementById('editoTexteIn').value = e.texte || '';
@@ -4057,6 +4096,7 @@ window.scrollToComments = function() {
       data.edito = {
         id: keepId,
         titre: titre,
+        auteur: document.getElementById('editoAuteurIn').value.trim(),
         date: document.getElementById('editoDateIn').value,
         media: document.getElementById('editoMediaIn').value.trim(),
         texte: texte
@@ -4080,7 +4120,7 @@ window.scrollToComments = function() {
       document.getElementById('editoArchiveBody').innerHTML = arch.length ? arch.map((e, i) => `<div class="edito-arch-item">
           <div class="edito-arch-main" onclick="editoLireArchive(${i})">
             <div class="edito-arch-titre">${editoEsc(e.titre)}</div>
-            <div class="edito-date" style="margin:2px 0 0;">${editoDateFr(e.date)}</div>
+            <div class="edito-date" style="margin:2px 0 0;">${e.auteur ? 'Par ' + editoEsc(e.auteur) + ' · ' : ''}${editoDateFr(e.date)}</div>
           </div>
           ${isAdmin ? `<div class="edito-admin"><button class="btn-small" style="background:#16a34a;" onclick="editoRestore(${i})">↩️ À la une</button><button class="btn-small btn-del" onclick="editoDeleteArchive(${i})">🗑️</button></div>` : ''}
         </div>`).join('') : '<p>Aucun éditorial archivé.</p>';
@@ -4305,6 +4345,78 @@ window.scrollToComments = function() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    /* ===== CARTE D'IDENTITE (joueurs et staff technique) ===== */
+    function ficheCarteHtml(item) {
+      const c = (item && item.carte) || {};
+      const rows = [
+        ['Nom & Prénom', c.nomPrenom], ['Date & lieu de naissance', c.naissance], ['Nationalité', c.nationalite],
+        ['Poste', c.poste], ['Gabarit', c.gabarit], ['Pied fort', c.piedFort],
+        ['Dernier club', c.dernierClub], ['Nouveau club', c.nouveauClub]
+      ].filter(r => r[1]);
+      if (!rows.length && !c.parcours && !c.obs) return '';
+      return `<div class="carte-id"><div class="carte-id-titre">🪪 CARTE D'IDENTITÉ</div>`
+        + rows.map(r => `<div class="carte-row"><span>${r[0]}</span><b>${editoEsc(r[1])}</b></div>`).join('')
+        + (c.parcours ? `<div class="carte-parcours"><span>Parcours</span><div>${editoEsc(c.parcours)}</div></div>` : '')
+        + (c.obs ? `<div class="carte-obs">ℹ️ OBS : ${editoEsc(c.obs)}</div>` : '')
+        + `</div>`;
+    }
+
+    function carteAdminBtn(type, idx) {
+      return isAdmin ? `<div style="text-align:center; margin-top:12px;"><button class="btn-small btn-edit" style="font-size:13px; padding:8px 14px;" onclick="carteOpenForm('${type}', ${idx})">✏️ Carte d'identité</button></div>` : '';
+    }
+
+    function openFicheStaff(idx, ev) {
+      if (ev && ev.target.closest('.pc-actions')) return;
+      const s = (data.staff || [])[idx];
+      if (!s) return;
+      const img = /^https?:\/\//i.test(s.img || '') ? s.img : 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png';
+      document.getElementById('ficheBody').innerHTML =
+        `<img class="fiche-photo" src="${editoEsc(img)}" alt="${editoEsc(s.nom)}">
+         <div class="fiche-titre">${editoEsc(s.nom)}</div>
+         <div class="fiche-poste">${editoEsc(s.fonction)}</div>
+         ${ficheCarteHtml(s)}
+         <div class="fiche-signature">Yiw Yiw ya MOB 🦀</div>${carteAdminBtn('staff', idx)}`;
+      openModal('modalFiche');
+    }
+
+    function carteOpenForm(type, idx) {
+      if (!isAdmin) return;
+      const it = (data[type] || [])[idx];
+      if (!it) return;
+      carteTarget = { type: type, idx: idx };
+      const c = it.carte || {};
+      const set = (id, v) => { document.getElementById(id).value = v || ''; };
+      set('carteNom', c.nomPrenom || it.nom);
+      set('carteNaissance', c.naissance);
+      set('carteNationalite', c.nationalite);
+      set('cartePoste', c.poste || it.poste || it.fonction);
+      set('carteGabarit', c.gabarit);
+      set('cartePied', c.piedFort);
+      set('carteParcours', c.parcours);
+      set('carteDernier', c.dernierClub);
+      set('carteNouveau', c.nouveauClub);
+      set('carteObs', c.obs);
+      closeModal('modalFiche');
+      openModal('modalCarte');
+    }
+
+    async function carteSave() {
+      if (!isAdmin || !carteTarget) return;
+      if (editoNeedAuth()) return;
+      const it = (data[carteTarget.type] || [])[carteTarget.idx];
+      if (!it) return;
+      const val = (id) => document.getElementById(id).value.trim();
+      it.carte = {
+        nomPrenom: val('carteNom'), naissance: val('carteNaissance'), nationalite: val('carteNationalite'),
+        poste: val('cartePoste'), gabarit: val('carteGabarit'), piedFort: val('cartePied'),
+        parcours: val('carteParcours'), dernierClub: val('carteDernier'), nouveauClub: val('carteNouveau'), obs: val('carteObs')
+      };
+      const t = carteTarget;
+      await saveToFirebase();
+      closeModal('modalCarte');
+      if (t.type === 'players') openFichePlayer(t.idx); else openFicheStaff(t.idx);
+    }
+
     /* ===== FIN EDITORIAL ===== */
 
     function openFichePlayer(idx, ev) {
@@ -4334,6 +4446,7 @@ window.scrollToComments = function() {
         `<img class="fiche-photo" src="${esc(img)}" alt="${esc(nom)}">
          <div class="fiche-titre">N°${esc(p.num)} ${esc(nom)}</div>
          <div class="fiche-poste">${esc(p.poste)}</div>
+         ${ficheCarteHtml(p)}
          <div class="fiche-grille">
            <div class="fiche-stat"><b>${matchs}</b>Matchs</div>
            <div class="fiche-stat"><b>${minutes}</b>Minutes</div>
@@ -4341,7 +4454,7 @@ window.scrollToComments = function() {
            <div class="fiche-stat"><b>${jaunes}</b>Cartons jaunes</div>
            <div class="fiche-stat"><b>${rouges}</b>Cartons rouges</div>
          </div>
-         <div class="fiche-signature">Yiw Yiw ya MOB 🦀</div>`;
+         <div class="fiche-signature">Yiw Yiw ya MOB 🦀</div>${carteAdminBtn('players', idx)}`;
       openModal('modalFiche');
     }
 
