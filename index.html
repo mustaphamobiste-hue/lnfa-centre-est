@@ -3,16 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mobistes : le site indépendant des supporters des Crabes</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cfilter id='g'%3E%3CfeColorMatrix type='hueRotate' values='110'/%3E%3C/filter%3E%3Ctext x='50' y='80' font-size='80' text-anchor='middle' filter='url(%23g)'%3E%F0%9F%A6%80%3C/text%3E%3C/svg%3E">
-<meta name="description" content="Site indépendant de supporters du MO Béjaïa : actualités, calendrier, résultats, effectif, mercato et vote de l'homme du match. Non affilié au club.">
-<meta property="og:site_name" content="Mobistes">
-<meta property="og:title" content="Mobistes : actualités, résultats et mercato des Crabes">
-<meta property="og:description" content="Site indépendant de supporters du MO Béjaïa : calendrier, résultats, effectif, mercato et vote de l'homme du match. Non affilié au club.">
-<meta property="og:image" content="https://mustaphamobiste-hue.github.io/lnfa-centre-est/og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
+<title>MO Béjaïa – Site indépendant des supporters • Actualités, calendrier, stats</title>
+<meta name="description" content="Site indépendant des supporters du MO Béjaïa (Les Crabes). Actualités, calendrier, résultats, effectif, histoire, vote homme du match.">
+<meta property="og:title" content="MO Béjaïa – Site des supporters">
+<meta property="og:description" content="Toute l'actualité du MO Béjaïa : matchs, effectif, historique et vote homme du match.">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://mustaphamobiste-hue.github.io/lnfa-centre-est/">
 <script>
@@ -75,8 +70,6 @@
     transition: transform 0.2s;
   }
   .header-logo:hover { transform: scale(1.05); }
-  .header-crab { display: block; font-size: 56px; line-height: 64px; height: 64px; margin: 0 auto; cursor: pointer; filter: hue-rotate(110deg) drop-shadow(0 0 15px rgba(0, 230, 118, 0.5)); transition: transform 0.2s; }
-  .header-crab:hover { transform: scale(1.05); }
   .header-title {
     font-size: 22px;
     font-weight: 900;
@@ -770,15 +763,15 @@
 #splash .sp-load{font-family:sans-serif;font-size:12px;color:#8a9a90;letter-spacing:2px}
 @keyframes splashPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
 </style>
-<div id="splash"><div class="sp-crab"><span class="crab">🦀</span></div><div class="sp-name">MOB<b>ISTES</b></div><div class="sp-load">CHARGEMENT...</div></div>
+<div id="splash"><div class="sp-crab"><span class="crab">🦀</span></div><div class="sp-name">MO <b>BÉJAÏA</b></div><div class="sp-load">CHARGEMENT...</div></div>
 <script>setTimeout(function(){var s=document.getElementById('splash');if(s){s.classList.add('hide');setTimeout(function(){if(s.parentNode)s.parentNode.removeChild(s);},450);}},7000);</script>
 
   <!-- EN-TÊTE DU SITE -->
   <header class="header">
     <div class="btn-search" onclick="openModal('modalSearch')">🔍</div>
-    <span class="header-crab crab" onclick="handleTitleClick()" role="img" aria-label="Mobistes">🦀</span>
-    <div class="header-title" id="mainTitle">MOB<span>ISTES</span><span id="adminBadge"></span></div>
-    <div><span class="header-badge-1954">⭐ SITE INDÉPENDANT • LES CRABES ⭐</span></div>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png" alt="MO Béjaïa" class="header-logo" onclick="handleTitleClick()">
+    <div class="header-title" id="mainTitle">MO <span>BÉJAÏA</span><span id="adminBadge"></span></div>
+    <div><span class="header-badge-1954">⭐ FONDÉ EN 1954 • LES CRABES ⭐</span></div>
   </header>
 
   <div id="statusBar" class="status loading">⏳ Connexion en direct...</div>
@@ -1144,7 +1137,7 @@
     
     <div class="historique-container" id="historique-content">
       <div class="historique-header">
-        <div class="historique-logo" style="font-size:90px; line-height:1.1; text-align:center;"><span class="crab">🦀</span></div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png" alt="Logo MO Béjaïa" class="historique-logo">
         <div class="historique-title">MO Béjaïa : Identité, Histoire et Passion des Crabes</div>
         <div class="historique-subtitle">Le Mouloudia Olympique de Béjaïa, bien plus qu'un simple club de football</div>
       </div>
@@ -1200,7 +1193,7 @@
       <div style="margin-bottom:5px;"><strong>MO BÉJAÏA</strong> • La Maison des Crabes</div>
       <div>Site indépendant des supporters, par les supporters @mustaphamobiste. Ferveur & Passion <span class="footer-crab">🦀</span></div>
       <div style="margin-top:8px; font-size:10px; color:#8b9b90; font-style:italic;">Ce site est géré par des supporters bénévoles. Il n'est pas affilié officiellement au MO Béjaïa.</div>
-      <div style="margin-top:5px; font-size:10px; opacity:0.7;">© 2026 Mobistes, site indépendant de supporters. Le nom et le logo du MO Béjaïa appartiennent à leurs propriétaires respectifs.</div>
+      <div style="margin-top:5px; font-size:10px; opacity:0.7;">© 2026 Site indépendant des supporters du MO Béjaïa. Le nom et le logo du club appartiennent à leurs propriétaires respectifs.</div>
     </div>
   </footer>
 
@@ -1868,7 +1861,6 @@
     let EQUIPES = ["Paradou AC", "IRB Nezla", "NRB Beni Oulbane", "NRB Teleghma", "CA Batna", "US Chaouia", "AS Khroub", "MO Constantine", "USM Annaba", "JS Azazga", "MO Béjaïa", "NC Magra", "JSM Skikda", "MSP Batna", "JSD Jijel", "CR Beni Thour", "WB Aïn Benian"];
     let STADES = ["Stade Abed-Hamdani (El Khroub)", "Stade 19 Mai 1956 (Annaba)", "Stade Allag Abderrahmane (Aïn Fakroun)", "Stade Khabaza Bachir (Teleghma)", "Stade 1er Novembre 1954 (Batna)", "Stade 20 Août 1955 (Skikda)", "Stade 18 Février (Ouargla)", "Stade 10 000 places (Touggourt)", "Stade Tirsatine (Azazga)", "Stade Hammou Boukouffa (Beni Oulbane)", "Stade 20 Août 1955 (Alger)", "Stade des Frères Boucheligue (Magra)", "Stade 1er Novembre 1954 Guendouza (Akbou)", "Stade des Martyrs (Akbou)", "Stade Hocine Rouibah (Jijel)", "Stade Ramdane-Benabdelmalek (Constantine)", "Stade Zerdani Hassouna (Oum El Bouaghi)", "Terrain Neutre"];
 
-    const CRAB_IMG = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#101612"/><filter id="g"><feColorMatrix type="hueRotate" values="110"/></filter><text x="50" y="70" font-size="64" text-anchor="middle" filter="url(#g)">🦀</text></svg>');
     const LOGOS = {
       "Paradou AC": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Paradou_AC.png",
       "IRB Nezla": "https://upload.wikimedia.org/wikipedia/fr/1/1d/IRB_Nezla.png",
@@ -1880,7 +1872,7 @@
       "MO Constantine": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Logo_du_MOC.png",
       "USM Annaba": "https://upload.wikimedia.org/wikipedia/fr/7/73/USM_Annaba_logo.png",
       "JS Azazga": "https://i.postimg.cc/hPTYhNPZ/JS-AZAZGA.png", // Logo mis à jour
-      "MO Béjaïa": CRAB_IMG,
+      "MO Béjaïa": "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png",
       "NC Magra": "https://upload.wikimedia.org/wikipedia/fr/5/5e/NC_Magra_logo.png",
       "JSM Skikda": "https://upload.wikimedia.org/wikipedia/commons/4/48/JSMSkikdaofficiallogo.png",
       "MSP Batna": "https://upload.wikimedia.org/wikipedia/fr/a/a8/MSP_Batna_logo.png",
@@ -1917,15 +1909,15 @@
     ];
 
     const ARTICLES_INIT = [
-      { id: "a1", cat: "all", date: "2026-11-03", titre: "Coupe d'Algérie (4e tour LRFA) : Le MO Béjaïa affrontera le WB Aïn Benian", image: CRAB_IMG, texte: "Le tirage au sort du 4e tour régional de la Coupe d'Algérie a désigné le Wifak Baladiat Aïn Benian (WBAB) comme adversaire des Crabes du MO Béjaïa. La rencontre se jouera les 13 ou 14 novembre 2026 sur terrain neutre.\n#LaMaisonDesCrabes" },
+      { id: "a1", cat: "all", date: "2026-11-03", titre: "Coupe d'Algérie (4e tour LRFA) : Le MO Béjaïa affrontera le WB Aïn Benian", image: "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png", texte: "Le tirage au sort du 4e tour régional de la Coupe d'Algérie a désigné le Wifak Baladiat Aïn Benian (WBAB) comme adversaire des Crabes du MO Béjaïa. La rencontre se jouera les 13 ou 14 novembre 2026 sur terrain neutre.\n#LaMaisonDesCrabes" },
       { id: "a2", cat: "all", date: "2026-10-13", titre: "COUP DE MASSUE / J5 : MO Béjaïa vs NRB Beni Oulbane à huis clos", image: "https://i.postimg.cc/NjDfRd1H/MO-Bejaia-vs-NRB-Beni-Oulbane-a-Huis-Clos.jpg", texte: "La rencontre opposant le MO Béjaïa au NRB Beni Oulbane se disputera à huis clos au Stade des Martyrs d'Akbou.\n#LaMaisonDesCrabes" }
     ];
 
     const PLAYERS_INIT = [
       { num: 10, nom: "Faouzi Yaya", poste: "Milieu offensif", img: "https://i.postimg.cc/wxbjfpQ9/Yaya-Faouzi-renouvelle-au-MO-Bejaia-saison-2026-2027.jpg" },
-      { num: 24, nom: "Ben Mazouz Mohamed Saïd", poste: "Attaquant", img: CRAB_IMG },
-      { num: 4, nom: "Hamza Rebiai", poste: "Défenseur central", img: CRAB_IMG },
-      { num: 16, nom: "Sami Tlemcani", poste: "Gardien de but", img: CRAB_IMG },
+      { num: 24, nom: "Ben Mazouz Mohamed Saïd", poste: "Attaquant", img: "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png" },
+      { num: 4, nom: "Hamza Rebiai", poste: "Défenseur central", img: "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png" },
+      { num: 16, nom: "Sami Tlemcani", poste: "Gardien de but", img: "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png" },
       { num: 2, nom: "Djelloul Abbou M'hamed", poste: "Latéral droit", img: "https://i.postimg.cc/wTTzKNPM/Djelloul-Abbou-M-hamed-rejoint-le-MO-Bejaia.jpg" }
     ];
 
@@ -1996,7 +1988,7 @@
       fdm: [],
       breves: [
         // ✅ MODIFIÉ : "site officiel" → "site des supporters"
-        { id: "b1", titre: "Bienvenue sur Mobistes, le site des supporters des Crabes !", date: "2026-11-03", texte: "Retrouvez l'actualité des Crabes." }
+        { id: "b1", titre: "Bienvenue sur le site des supporters du MO Béjaïa !", date: "2026-11-03", texte: "Retrouvez l'actualité des Crabes." }
       ],
       stats: {
         activeVote: {
@@ -2019,19 +2011,19 @@
     function escapeQuotes(str) { return str ? String(str).replace(/'/g, "\\'") : ""; }
 
     function getPlayerImg(playerName) {
-      if (!playerName) return CRAB_IMG;
+      if (!playerName) return "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png";
       const clean = String(playerName).replace(/'/g, "").toLowerCase().trim();
       const list = data.players || PLAYERS_INIT;
       const p = list.find(x => {
         const n = (x.nom || '').replace(/'/g, "").toLowerCase().trim();
         return n.includes(clean) || clean.includes(n);
       });
-      return (p && p.img) ? p.img : CRAB_IMG;
+      return (p && p.img) ? p.img : "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png";
     }
 
     function logoImg(eq) {
       if (!LOGOS[eq] && eq !== 'MO Béjaïa') return '<span class="logo-mini" style="display:inline-block;width:auto;">⚽</span> ';
-      const url = LOGOS[eq] || CRAB_IMG;
+      const url = LOGOS[eq] || "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png";
       return `<img src="${url}" class="logo-mini" alt="${eq}" onerror="this.style.display='none'">`;
     }
 
@@ -2385,7 +2377,7 @@ function closeModal(id) {
                 </div>
               ` : ''}
               <div class="vote-header-tag" style="background:rgba(245,158,11,0.2);">🏆 HOMME DU MATCH ÉLU</div>
-              <img src="${e.img || getPlayerImg(e.nom)}" class="elu-img" onerror="this.src='${CRAB_IMG}'">
+              <img src="${e.img || getPlayerImg(e.nom)}" class="elu-img" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'">
               <div class="elu-nom">${e.nom}</div>
               <div class="elu-titre">${e.titre || ''}</div>
               <div class="elu-texte">${formatText(e.texte || '')}</div>
@@ -3012,18 +3004,18 @@ function closeModal(id) {
     function renderClub() {
       document.getElementById('grid-staff').innerHTML = (data.staff || []).map((s, idx) => {
         const actions = isAdmin ? `<div class="pc-actions"><button class="btn-small btn-edit" onclick="openModalStaff(${idx})">✏️</button><button class="btn-small btn-del" onclick="deleteItem('staff',${idx})">🗑️</button></div>` : '';
-        return `<div class="player-card" style="cursor:pointer" onclick="openFicheStaff(${idx}, event)">${actions}<img src="${s.img || CRAB_IMG}"><div class="pc-info"><div class="pc-name">${s.nom}</div><div class="pc-pos">${s.fonction}</div>${carteBadgeHtml(s)}</div></div>`;
+        return `<div class="player-card" style="cursor:pointer" onclick="openFicheStaff(${idx}, event)">${actions}<img src="${s.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}"><div class="pc-info"><div class="pc-name">${s.nom}</div><div class="pc-pos">${s.fonction}</div>${carteBadgeHtml(s)}</div></div>`;
       }).join('');
 
       document.getElementById('grid-players').innerHTML = (data.players || []).sort((a,b) => a.num - b.num).map((p) => {
         const realIdx = (data.players || []).indexOf(p);
         const actions = isAdmin ? `<div class="pc-actions"><button class="btn-small btn-edit" onclick="openModalPlayer(${realIdx})">✏️</button><button class="btn-small btn-del" onclick="deleteItem('players',${realIdx})">🗑️</button></div>` : '';
-        return `<div class="player-card" style="cursor:pointer" onclick="openFichePlayer(${realIdx}, event)">${actions}<div class="pc-num">${p.num}</div><img src="${p.img || CRAB_IMG}"><div class="pc-info"><div class="pc-name">${p.nom}</div><div class="pc-pos">${p.poste}</div>${carteBadgeHtml(p)}</div></div>`;
+        return `<div class="player-card" style="cursor:pointer" onclick="openFichePlayer(${realIdx}, event)">${actions}<div class="pc-num">${p.num}</div><img src="${p.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}"><div class="pc-info"><div class="pc-name">${p.nom}</div><div class="pc-pos">${p.poste}</div>${carteBadgeHtml(p)}</div></div>`;
       }).join('');
 
       document.getElementById('grid-dirigeants').innerHTML = (data.dirigeants || []).map((d, idx) => {
         const actions = isAdmin ? `<div class="pc-actions"><button class="btn-small btn-edit" onclick="openModalDirigeant(${idx})">✏️</button><button class="btn-small btn-del" onclick="deleteItem('dirigeants',${idx})">🗑️</button></div>` : '';
-        return `<div class="player-card">${actions}<img src="${d.img || CRAB_IMG}"><div class="pc-info"><div class="pc-name">${d.nom}</div><div class="pc-pos">${d.fonction}</div></div></div>`;
+        return `<div class="player-card">${actions}<img src="${d.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}"><div class="pc-info"><div class="pc-name">${d.nom}</div><div class="pc-pos">${d.fonction}</div></div></div>`;
       }).join('');
     }
 
@@ -3179,7 +3171,7 @@ function closeModal(id) {
         } else {
           gridVideos.innerHTML = data.medias.videos.map((v, i) => {
             let embedUrl = "";
-            let thumbUrl = CRAB_IMG;
+            let thumbUrl = "https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png";
             if (v.url.includes("youtube.com/shorts/")) { const id = v.url.split("shorts/")[1].split("?")[0]; embedUrl = `https://www.youtube.com/embed/${id}`; thumbUrl = `https://img.youtube.com/vi/${id}/0.jpg`; }
             else if (v.url.includes("youtu.be/")) { const id = v.url.split("youtu.be/")[1].split("?")[0]; embedUrl = `https://www.youtube.com/embed/${id}`; thumbUrl = `https://img.youtube.com/vi/${id}/0.jpg`; }
             else if (v.url.includes("youtube.com/watch")) { const id = v.url.split("v=")[1].split("&")[0]; embedUrl = `https://www.youtube.com/embed/${id}`; thumbUrl = `https://img.youtube.com/vi/${id}/0.jpg`; }
@@ -3371,7 +3363,7 @@ function closeModal(id) {
             <button class="btn-small btn-del" onclick="event.stopPropagation(); deleteFDM(${realIdx})">🗑️</button>
           </div>
         ` : '';
-        return `<div class="fdm-item" onclick="openFDMView('${f.id}')"><img src="${f.image}" onerror="this.src='${CRAB_IMG}'"><div><h4>${f.titre}</h4><p>${formatDate(f.date)} ${act}</p></div></div>`;
+        return `<div class="fdm-item" onclick="openFDMView('${f.id}')"><img src="${f.image}" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'"><div><h4>${f.titre}</h4><p>${formatDate(f.date)} ${act}</p></div></div>`;
       }).join('');
       startFdmAutoScroll();
     }
@@ -3784,7 +3776,7 @@ window.scrollToComments = function() {
     window.shareContext = () => {
   const base = location.origin + location.pathname;
   const cut = (t) => { t = String(t || '').replace(/\s+/g, ' ').trim(); return t.length > 110 ? t.slice(0, 110) + '...' : t; };
-  let shareData = { title: 'Mobistes', text: 'Suivez les Crabes sur Mobistes ! 🦀 #LaMaisonDesCrabes', url: base };
+  let shareData = { title: 'MO Béjaïa', text: 'Suivez le MO Béjaïa ! 🦀 #LaMaisonDesCrabes', url: base };
   if (currentEditoForShare) {
     const e = currentEditoForShare;
     shareData = { title: e.titre, text: cut(e.texte) || 'Éditorial du MO Béjaïa', url: base + '#edito' + (e.id ? '-' + e.id : '') };
@@ -4377,7 +4369,7 @@ window.scrollToComments = function() {
     /* ===== ORGANIGRAMME (alimente par les listes Dirigeants et Staff) ===== */
     function openOrganigramme() {
       const fiche = (p) => {
-        const img = /^https?:\/\//i.test(p.img || '') ? p.img : CRAB_IMG;
+        const img = /^https?:\/\//i.test(p.img || '') ? p.img : 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png';
         return `<div class="org-card"><img src="${editoEsc(img)}" alt="" onerror="this.style.display='none'"><div><div class="org-nom">${editoEsc(p.nom)}</div><div class="org-fonction">${editoEsc(p.fonction)}</div></div></div>`;
       };
       const bloc = (titre, liste) => liste.length ? `<div class="org-titre">${titre}</div>${liste.map(fiche).join('')}` : '';
@@ -4453,7 +4445,7 @@ window.scrollToComments = function() {
       if (ev && ev.target.closest('.pc-actions')) return;
       const s = (data.staff || [])[idx];
       if (!s) return;
-      const img = /^https?:\/\//i.test(s.img || '') ? s.img : CRAB_IMG;
+      const img = /^https?:\/\//i.test(s.img || '') ? s.img : 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png';
       document.getElementById('ficheBody').innerHTML =
         `<img class="fiche-photo" src="${editoEsc(img)}" alt="${editoEsc(s.nom)}">
          <div class="fiche-titre">${editoEsc(s.nom)}</div>
@@ -4950,7 +4942,7 @@ window.scrollToComments = function() {
 
     /* ===== IMAGES DES ACTUALITES (image entiere, fond flou) ===== */
     function newsMediaHtml(src, lazy) {
-      const logo = CRAB_IMG;
+      const logo = 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png';
       const s = src || logo;
       const bg = String(s).replace(/[\s'"()\\]/g, ch => '%' + ch.charCodeAt(0).toString(16).toUpperCase().padStart(2, '0'));
       return `<div class="news-media" style="--bg:url('${bg}')"><img src="${editoEsc(s)}" alt="" ${lazy ? 'loading="lazy"' : ''} onerror="this.onerror=null; this.src='${logo}'; this.parentNode.style.setProperty('--bg', 'none');"></div>`;
@@ -4973,7 +4965,7 @@ window.scrollToComments = function() {
       const all = (data.players || []).concat(data.staff || []);
       const p = all.find(x => carteSame(x.nom, e.nom));
       if (p && /^https?:\/\//i.test(p.img || '')) return p.img;
-      return CRAB_IMG;
+      return 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png';
     }
 
     function mercatoSetFilter(f) { mercatoFilter = f; renderMercato(); }
@@ -5000,7 +4992,7 @@ window.scrollToComments = function() {
         const meta = [e.note ? editoEsc(e.note) : '', e.date ? editoDateFr(e.date) : ''].filter(Boolean).join(' · ');
         const adm = isAdmin ? `<div class="merc-admin"><button class="btn-small btn-edit" onclick="event.stopPropagation(); mercatoOpenForm(${e._i})">✏️</button><button class="btn-small btn-del" onclick="event.stopPropagation(); mercatoDelete(${e._i})">🗑️</button></div>` : '';
         return `<div class="merc-card ${t.cls}" onclick="mercatoOpen(${e._i})">
-          <img class="merc-photo" src="${editoEsc(mercatoPhoto(e))}" alt="" loading="lazy" onerror="this.onerror=null; this.src='${CRAB_IMG}'">
+          <img class="merc-photo" src="${editoEsc(mercatoPhoto(e))}" alt="" loading="lazy" onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'">
           <div class="merc-info">
             <span class="merc-badge ${t.cls}">${t.label}</span>
             <div class="merc-nom">${editoEsc(e.nom)}</div>
@@ -5105,7 +5097,7 @@ window.scrollToComments = function() {
           if (c.joueur === nom) { if (c.type === 'jaune') jaunes++; if (c.type === 'rouge') rouges++; }
         });
       });
-      const img = p.img || CRAB_IMG;
+      const img = p.img || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png';
       document.getElementById('ficheBody').innerHTML =
         `<img class="fiche-photo" src="${esc(img)}" alt="${esc(nom)}">
          <div class="fiche-titre">N°${esc(p.num)} ${esc(nom)}</div>
