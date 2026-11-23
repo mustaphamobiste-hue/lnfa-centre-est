@@ -201,10 +201,10 @@
   .next-match {
     margin-bottom: 15px;
     background: radial-gradient(circle at 50% 30%, #152219 0%, #0a0f0c 100%);
-    border: 1px solid var(--card-border);
+    border: 2px solid rgba(0, 230, 118, 0.8);
     border-radius: 14px;
     padding: 16px 12px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.7), 0 0 20px rgba(0, 230, 118, 0.35), 0 8px 25px rgba(0,0,0,0.6);
     text-align: center;
   }
   .next-match-title { font-size: 11px; font-weight: 900; color: var(--mob-gold); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; }
@@ -212,7 +212,7 @@
   .next-match-teams .vs { color: var(--mob-gold); margin: 0 10px; font-size: 0.9em; }
   .next-match-date { font-size: 12px; color: #d4edda; margin-bottom: 10px; font-weight: 700; }
   .countdown { display: flex; justify-content: center; gap: 6px; }
-  .cd-box { background: #000; border: 1px solid rgba(0, 230, 118, 0.3); border-radius: 8px; padding: 6px 10px; min-width: 52px; }
+  .cd-box { background: #000; border: 1.5px solid rgba(0, 230, 118, 0.7); border-radius: 8px; padding: 6px 10px; min-width: 52px; }
   .cd-num { font-family: 'Teko', sans-serif; font-size: 24px; line-height: 1; color: var(--mob-green-neon); display: block; }
   .cd-label { font-size: 8px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; }
 
@@ -257,6 +257,8 @@
     z-index: 1;
   }
   @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
+  .tk-item { margin: 0 26px; }
+  .tk-sep { color: var(--mob-gold); font-weight: 900; }
 
   /* WIDGETS D'ACCUEIL */
   .home-widgets { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 15px; }
@@ -266,7 +268,7 @@
   .news-fade-container {
     position: relative;
     width: 100%;
-    height: 235px;
+    height: 290px;
     background: var(--card-dark);
     border: 1px solid rgba(255,255,255,0.08);
     border-radius: 10px;
@@ -308,6 +310,13 @@
   .news-fade-dots { position: absolute; bottom: 6px; right: 8px; display: flex; gap: 4px; z-index: 5; }
   .news-fade-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: background 0.3s; }
   .news-fade-dot.active { background: var(--mob-green-neon); transform: scale(1.2); }
+  /* IMAGE ENTIERE + FOND FLOU (aucune affiche coupee) */
+  .news-media { position: relative; overflow: hidden; background: #000; }
+  .news-media::before { content: ''; position: absolute; inset: -12px; background-image: var(--bg); background-size: cover; background-position: center; filter: blur(14px) brightness(0.55); }
+  .news-fade-slide .news-media, .news-card .news-media { flex-shrink: 0; }
+  .news-fade-slide .news-media { height: 205px; }
+  .news-card .news-media { height: 230px; }
+  .news-fade-slide .news-media img, .news-card .news-media img { position: relative; display: block; width: 100%; height: 100%; object-fit: contain; background: transparent; }
 
   /* FEUILLES DE MATCH */
   .fdm-container { display: flex; flex-direction: column; gap: 10px; max-height: 235px; overflow-y: auto; padding-right: 5px; scroll-behavior: smooth; }
@@ -499,6 +508,22 @@
   .carte-obs { margin-top: 8px; padding: 7px 10px; border-radius: 8px; background: rgba(245,158,11,0.12); border: 1px solid var(--mob-gold); color: #fff; font-size: 12px; font-weight: 700; }
   .edito-auteur { color: var(--text-muted); font-size: 12px; font-style: italic; margin: -2px 0 8px; }
   .crab { display: inline-block; filter: hue-rotate(110deg); }
+  .merc-filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .merc-chip { background: var(--card-dark); color: #d1d5db; border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; padding: 6px 12px; font-size: 12px; font-weight: 800; cursor: pointer; }
+  .merc-chip.active { background: var(--mob-green-neon); color: #000; border-color: var(--mob-green-neon); }
+  .merc-card { display: flex; align-items: center; gap: 12px; background: var(--card-dark); border: 1px solid rgba(255,255,255,0.08); border-left: 4px solid var(--mob-green-neon); border-radius: 10px; padding: 10px; margin-bottom: 10px; cursor: pointer; }
+  .merc-card.out { border-left-color: #ef4444; }
+  .merc-card.ext { border-left-color: var(--mob-gold); }
+  .merc-photo { width: 62px; height: 62px; border-radius: 10px; object-fit: cover; background: #000; flex-shrink: 0; }
+  .merc-info { flex: 1; min-width: 0; }
+  .merc-badge { display: inline-block; font-size: 9px; font-weight: 900; letter-spacing: 1px; padding: 2px 8px; border-radius: 10px; background: var(--mob-green-neon); color: #000; }
+  .merc-badge.out { background: #ef4444; color: #fff; }
+  .merc-badge.ext { background: var(--mob-gold); color: #000; }
+  .merc-nom { font-weight: 900; color: #fff; font-size: 14px; margin-top: 3px; }
+  .merc-sub { color: var(--text-muted); font-size: 12px; }
+  .merc-club { color: #e6ece8; font-size: 12px; font-weight: 700; margin-top: 2px; }
+  .merc-note { color: var(--text-muted); font-size: 11px; margin-top: 2px; }
+  .merc-admin { display: flex; flex-direction: column; gap: 4px; }
   .pc-badge { display: inline-block; margin-top: 4px; padding: 2px 7px; border-radius: 10px; font-size: 9px; font-weight: 900; letter-spacing: 0.5px; background: var(--mob-gold); color: #000; }
   .pc-badge.out { background: #ef4444; color: #fff; }
   .pc-badge-club { display: block; margin-top: 3px; font-size: 10px; color: var(--mob-gold); font-weight: 700; }
@@ -758,6 +783,7 @@
     <div class="tab" onclick="switchTab('mob', this)"><span class="tab-crab-green">🦀</span> MOB</div>
     <div class="tab active" onclick="switchTab('rencontres', this)">🏆 Rencontres</div>
     <div class="tab" onclick="switchTab('club', this)">👥 Club</div>
+    <div class="tab" onclick="switchTab('mercato', this)">🔄 Mercato</div>
     <div class="tab" onclick="switchTab('stats', this)">📊 Stats</div>
     <div class="tab" onclick="switchTab('actualite', this)">📰 Actualité</div>
     <div class="tab" onclick="switchTab('medias', this)">📸 Médias</div>
@@ -1088,6 +1114,18 @@
     <div id="media-videos-container" style="display:none;">
       <div class="video-grid" id="grid-videos"></div>
     </div>
+  </div>
+
+  <!-- MERCATO -->
+  <div id="tab-mercato" class="tab-content">
+    <div class="toolbar" id="mercato-toolbar" style="display:none; margin-bottom: 12px;">
+      <button onclick="mercatoOpenForm(-1)">➕ Ajouter</button>
+      <button onclick="mercatoImport()">📥 Importer depuis l'effectif</button>
+    </div>
+    <h3 style="color:var(--mob-green-neon); font-size:15px; margin-bottom:4px;">🔄 MERCATO DU MOB</h3>
+    <p style="font-size:12px; color:#9ca3af; margin-bottom:10px;">Arrivées, départs et prolongations de la saison. Touchez un joueur pour voir sa fiche.</p>
+    <div id="mercatoFilters" class="merc-filters"></div>
+    <div id="mercatoList"></div>
   </div>
 
   <!-- 7. ONGLET HISTORIQUE COMPLET 100% MODIFIABLE -->
@@ -1426,6 +1464,24 @@
       <label>Lien Image <input type="url" id="nImg"></label>
       <label>Contenu <textarea id="nTexte" rows="8"></textarea></label>
       <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalNewsEdit')">Annuler</button><button onclick="saveNews()">Enregistrer</button></div>
+    </div>
+  </div>
+
+  <div class="modal" id="modalMercato">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('modalMercato')">×</span>
+      <h3>🔄 Mercato</h3>
+      <label>Type <select id="mercType"><option value="arrivee">Arrivée</option><option value="depart">Départ</option><option value="prolongation">Prolongation</option></select></label>
+      <label>Nom &amp; Prénom <input type="text" id="mercNom"></label>
+      <label>Poste ou fonction <input type="text" id="mercPoste"></label>
+      <label>Club (ex-club pour une arrivée, nouveau club pour un départ) <input type="text" id="mercClub"></label>
+      <label>Date <input type="date" id="mercDate"></label>
+      <label>Lien de la photo (facultatif) <input type="url" id="mercImg" placeholder="https://..."></label>
+      <label>Note (ex : Libéré, Prêté, contrat jusqu'en 2028) <input type="text" id="mercNote"></label>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('modalMercato')">Annuler</button>
+        <button onclick="mercatoSave()">Enregistrer</button>
+      </div>
     </div>
   </div>
 
@@ -1796,6 +1852,8 @@
     let currentEditoForShare = null;
     let editoMode = 'edit';
     let carteTarget = null;
+    let mercatoFilter = 'all';
+    let mercatoEditIdx = -1;
     let deepLinkDone = false;
     const MOB_SEC_LABEL = { avant: 'Avant-match', day: 'Match Day', apres: 'Après-match' };
 
@@ -2125,6 +2183,7 @@ function closeModal(id) {
       if (name === 'medias') renderMedias();
       if (name === 'stats') renderStats();
       if (name === 'historique') renderHistoriqueDynamic();
+      if (name === 'mercato') renderMercato();
     }
 
     function switchRencontreNav(mode) {
@@ -2273,7 +2332,7 @@ function closeModal(id) {
       container.className = 'news-fade-container';
       container.innerHTML = sorted.map((a, i) => `
         <div class="news-fade-slide ${i === 0 ? 'active' : ''}" onclick="openArticleModal('${a.id}')" data-idx="${i}">
-          <img src="${a.image || 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'}" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'">
+          ${newsMediaHtml(a.image, false)}
           <div class="news-fade-body">
             <span class="news-fade-meta">📅 ${formatDate(a.date)}</span>
             <div class="news-fade-title">${a.titre}</div>
@@ -3050,7 +3109,7 @@ function closeModal(id) {
         const realIdx = (data.articles || []).findIndex(art => art.id === a.id);
         const editBtn = isAdmin ? `<button class="btn-edit-news-text" onclick="event.stopPropagation(); openModalNews(${realIdx})">✏️ Modifier</button>` : '';
         const deleteBtn = isAdmin ? `<button class="btn-edit-news-text" style="background:#dc2626;" onclick="event.stopPropagation(); deleteItem('articles', ${realIdx})">🗑️ Supprimer</button>` : '';
-        return `<div class="news-card" onclick="openArticleModal('${a.id}')"><img src="${a.image}" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'"><div class="news-card-body"><div class="news-card-title">${a.titre}</div><div class="news-card-date">📅 ${formatDate(a.date)} ${editBtn} ${deleteBtn}.</div><div class="news-card-preview">${a.texte}</div></div></div>`;
+        return `<div class="news-card" onclick="openArticleModal('${a.id}')">${newsMediaHtml(a.image, true)}<div class="news-card-body"><div class="news-card-title">${a.titre}</div><div class="news-card-date">📅 ${formatDate(a.date)} ${editBtn} ${deleteBtn}.</div><div class="news-card-preview">${a.texte}</div></div></div>`;
       }).join('');
     }
 
@@ -3322,7 +3381,8 @@ function closeModal(id) {
     function renderBreves() {
       const ticker = document.getElementById('tickerContent');
       const list = data.breves || [];
-      ticker.textContent = list.map(b => b.titre).join('  •  ') + '  •  ';
+      ticker.innerHTML = list.map(b => '<span class="tk-item">' + editoEsc(b.titre) + '</span><span class="tk-sep">•</span>').join('');
+      ticker.style.animationDuration = Math.max(25, Math.round(ticker.scrollWidth / 60)) + 's';
 
       const admToolbar = document.getElementById('allBrevesAdminToolbar');
       if (admToolbar) admToolbar.style.display = isAdmin ? 'block' : 'none';
@@ -3543,6 +3603,7 @@ window.scrollToComments = function() {
       try { renderEdito(); } catch (e) { console.warn('Edito:', e); }
       try { renderMobArchiveLinks(); } catch (e) { console.warn('ArchivesMob:', e); }
       try { renderCoupeAdminBar(); } catch (e) { console.warn('Coupe:', e); }
+      try { renderMercato(); } catch (e) { console.warn('Mercato:', e); }
     }
 
     function loadFromFirebase() {
@@ -3574,6 +3635,7 @@ window.scrollToComments = function() {
               data.edito = fb.edito || null;
               data.editoArchive = fb.editoArchive ? Object.values(fb.editoArchive) : [];
               data.mobArchive = fb.mobArchive || {};
+              data.mercato = fb.mercato ? Object.values(fb.mercato) : [];
               if (fb.affiches) data.affiches = fb.affiches;
               if (fb.videos) data.videos = fb.videos;
               if (fb.articles && Array.isArray(fb.articles)) { data.articles = fb.articles; articles = fb.articles; }
@@ -3657,6 +3719,12 @@ window.scrollToComments = function() {
     window.carteOpenForm = carteOpenForm;
     window.carteSave = carteSave;
     window.carteImportAll = carteImportAll;
+    window.mercatoSetFilter = mercatoSetFilter;
+    window.mercatoOpen = mercatoOpen;
+    window.mercatoOpenForm = mercatoOpenForm;
+    window.mercatoSave = mercatoSave;
+    window.mercatoDelete = mercatoDelete;
+    window.mercatoImport = mercatoImport;
     window.openModalStaff = openModalStaff;
     window.saveStaff = saveStaff;
     window.openModalDirigeant = openModalDirigeant;
@@ -4869,6 +4937,139 @@ window.scrollToComments = function() {
       await saveToFirebase();
       renderClub();
       alert(plan.length + " fiche(s) complétée(s)." + (introuves.length ? "\n" + introuves.length + " non trouvée(s)." : ""));
+    }
+
+    /* ===== IMAGES DES ACTUALITES (image entiere, fond flou) ===== */
+    function newsMediaHtml(src, lazy) {
+      const logo = 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png';
+      const s = src || logo;
+      const bg = String(s).replace(/[\s'"()\\]/g, ch => '%' + ch.charCodeAt(0).toString(16).toUpperCase().padStart(2, '0'));
+      return `<div class="news-media" style="--bg:url('${bg}')"><img src="${editoEsc(s)}" alt="" ${lazy ? 'loading="lazy"' : ''} onerror="this.onerror=null; this.src='${logo}'; this.parentNode.style.setProperty('--bg', 'none');"></div>`;
+    }
+
+    /* ===== MERCATO ===== */
+    const MERC_TYPES = {
+      arrivee: { label: 'ARRIVÉE', cls: 'in' },
+      depart: { label: 'DÉPART', cls: 'out' },
+      prolongation: { label: 'PROLONGATION', cls: 'ext' }
+    };
+
+    function mercatoList() {
+      const a = data.mercato;
+      return Array.isArray(a) ? a.filter(Boolean) : Object.values(a || {});
+    }
+
+    function mercatoPhoto(e) {
+      if (/^https?:\/\//i.test(e.img || '')) return e.img;
+      const all = (data.players || []).concat(data.staff || []);
+      const p = all.find(x => carteSame(x.nom, e.nom));
+      if (p && /^https?:\/\//i.test(p.img || '')) return p.img;
+      return 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png';
+    }
+
+    function mercatoSetFilter(f) { mercatoFilter = f; renderMercato(); }
+
+    function renderMercato() {
+      const box = document.getElementById('mercatoList');
+      if (!box) return;
+      const tb = document.getElementById('mercato-toolbar');
+      if (tb) tb.style.display = isAdmin ? '' : 'none';
+      const all = mercatoList().map((e, i) => Object.assign({ _i: i }, e));
+      const n = (t) => all.filter(e => e.type === t).length;
+      const chips = [['all', 'Tout', all.length], ['arrivee', 'Arrivées', n('arrivee')], ['depart', 'Départs', n('depart')], ['prolongation', 'Prolongations', n('prolongation')]];
+      document.getElementById('mercatoFilters').innerHTML = chips.map(c =>
+        `<button class="merc-chip ${mercatoFilter === c[0] ? 'active' : ''}" onclick="mercatoSetFilter('${c[0]}')">${c[1]} (${c[2]})</button>`).join('');
+      let items = mercatoFilter === 'all' ? all : all.filter(e => e.type === mercatoFilter);
+      items = items.slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+      if (!items.length) {
+        box.innerHTML = '<p style="text-align:center; padding:20px; color:#888; font-size:13px;">Aucun mouvement pour le moment.</p>';
+        return;
+      }
+      box.innerHTML = items.map(e => {
+        const t = MERC_TYPES[e.type] || MERC_TYPES.arrivee;
+        const clubLine = e.club ? (e.type === 'arrivee' ? 'Ex : ' + editoEsc(e.club) : (e.type === 'depart' ? '➜ ' + editoEsc(e.club) : editoEsc(e.club))) : '';
+        const meta = [e.note ? editoEsc(e.note) : '', e.date ? editoDateFr(e.date) : ''].filter(Boolean).join(' · ');
+        const adm = isAdmin ? `<div class="merc-admin"><button class="btn-small btn-edit" onclick="event.stopPropagation(); mercatoOpenForm(${e._i})">✏️</button><button class="btn-small btn-del" onclick="event.stopPropagation(); mercatoDelete(${e._i})">🗑️</button></div>` : '';
+        return `<div class="merc-card ${t.cls}" onclick="mercatoOpen(${e._i})">
+          <img class="merc-photo" src="${editoEsc(mercatoPhoto(e))}" alt="" loading="lazy" onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png'">
+          <div class="merc-info">
+            <span class="merc-badge ${t.cls}">${t.label}</span>
+            <div class="merc-nom">${editoEsc(e.nom)}</div>
+            <div class="merc-sub">${editoEsc(e.poste)}</div>
+            ${clubLine ? `<div class="merc-club">${clubLine}</div>` : ''}
+            ${meta ? `<div class="merc-note">${meta}</div>` : ''}
+          </div>${adm}</div>`;
+      }).join('');
+    }
+
+    function mercatoOpen(i) {
+      const e = mercatoList()[i];
+      if (!e) return;
+      const pi = (data.players || []).findIndex(x => carteSame(x.nom, e.nom));
+      if (pi >= 0) { openFichePlayer(pi); return; }
+      const si = (data.staff || []).findIndex(x => carteSame(x.nom, e.nom));
+      if (si >= 0) openFicheStaff(si);
+    }
+
+    function mercatoOpenForm(i) {
+      if (!isAdmin) return;
+      mercatoEditIdx = i;
+      const e = i >= 0 ? (mercatoList()[i] || {}) : { type: 'arrivee', date: new Date().toISOString().slice(0, 10) };
+      const set = (id, v) => { document.getElementById(id).value = v || ''; };
+      set('mercType', e.type || 'arrivee'); set('mercNom', e.nom); set('mercPoste', e.poste);
+      set('mercClub', e.club); set('mercDate', e.date); set('mercImg', e.img); set('mercNote', e.note);
+      openModal('modalMercato');
+    }
+
+    async function mercatoSave() {
+      if (!isAdmin) return;
+      const val = (id) => document.getElementById(id).value.trim();
+      if (!val('mercNom')) { alert('Le nom est obligatoire.'); return; }
+      if (editoNeedAuth()) return;
+      const e = { type: val('mercType'), nom: val('mercNom'), poste: val('mercPoste'), club: val('mercClub'), date: val('mercDate'), img: val('mercImg'), note: val('mercNote') };
+      const list = mercatoList();
+      if (mercatoEditIdx >= 0 && list[mercatoEditIdx]) list[mercatoEditIdx] = e; else list.unshift(e);
+      data.mercato = list;
+      await saveToFirebase();
+      closeModal('modalMercato');
+      renderMercato();
+    }
+
+    async function mercatoDelete(i) {
+      if (!isAdmin) return;
+      if (!confirm('Supprimer ce mouvement du mercato ?')) return;
+      if (editoNeedAuth()) return;
+      data.mercato = mercatoList().filter((_, k) => k !== i);
+      await saveToFirebase();
+      renderMercato();
+    }
+
+    async function mercatoImport() {
+      if (!isAdmin) return;
+      const list = mercatoList();
+      const exists = (type, nom) => list.some(x => x.type === type && carteSame(x.nom, nom));
+      const toAdd = [];
+      const people = (data.players || []).map(p => ({ p: p, staff: false })).concat((data.staff || []).map(p => ({ p: p, staff: true })));
+      people.forEach(o => {
+        const p = o.p, c = p.carte || {};
+        const nom = c.nomPrenom || p.nom;
+        const poste = c.poste || p.poste || p.fonction || '';
+        const obs = String(c.obs || '').trim();
+        const nc = String(c.nouveauClub || '').trim();
+        const leaving = /lib[ée]r|r[ée]sili|pr[eê]t/i.test(obs) || (nc && !/b[ée]ja[iï]a/i.test(nc));
+        if (leaving) {
+          if (!exists('depart', nom)) toAdd.push({ type: 'depart', nom: nom, poste: poste, club: /b[ée]ja[iï]a/i.test(nc) ? '' : nc, date: '', img: p.img || '', note: obs });
+        } else if (c.dernierClub || /b[ée]ja[iï]a/i.test(nc)) {
+          if (!exists('arrivee', nom)) toAdd.push({ type: 'arrivee', nom: nom, poste: poste, club: c.dernierClub || '', date: '', img: p.img || '', note: o.staff ? 'Staff technique' : '' });
+        }
+      });
+      if (!toAdd.length) { alert("Rien à importer : les arrivées et départs de l'effectif sont déjà dans le mercato."); return; }
+      const nA = toAdd.filter(x => x.type === 'arrivee').length, nD = toAdd.length - nA;
+      if (!confirm(nA + " arrivée(s) et " + nD + " départ(s) vont être ajoutés d'après les cartes d'identité.\nVous pourrez ensuite modifier ou supprimer chaque ligne.\n\nContinuer ?")) return;
+      if (editoNeedAuth()) return;
+      data.mercato = toAdd.concat(list);
+      await saveToFirebase();
+      renderMercato();
     }
 
     /* ===== FIN EDITORIAL ===== */
