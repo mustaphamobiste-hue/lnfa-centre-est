@@ -3,11 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MO Béjaïa – Site indépendant des supporters • Actualités, calendrier, stats</title>
-<meta name="description" content="Site indépendant des supporters du MO Béjaïa (Les Crabes). Actualités, calendrier, résultats, effectif, histoire, vote homme du match.">
-<meta property="og:title" content="MO Béjaïa – Site des supporters">
-<meta property="og:description" content="Toute l'actualité du MO Béjaïa : matchs, effectif, historique et vote homme du match.">
-<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png">
+<title>Mobistes : le site indépendant des supporters des Crabes</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cfilter id='g'%3E%3CfeColorMatrix type='hueRotate' values='110'/%3E%3C/filter%3E%3Ctext x='50' y='80' font-size='80' text-anchor='middle' filter='url(%23g)'%3E%F0%9F%A6%80%3C/text%3E%3C/svg%3E">
+<meta name="description" content="Site indépendant de supporters du MO Béjaïa : actualités, calendrier, résultats, effectif, mercato et vote de l'homme du match. Non affilié au club.">
+<meta property="og:site_name" content="Mobistes">
+<meta property="og:title" content="Mobistes : actualités, résultats et mercato des Crabes">
+<meta property="og:description" content="Site indépendant de supporters du MO Béjaïa : actualités, calendrier, résultats, effectif, mercato et vote de l'homme du match. Non affilié au club.">
+<meta property="og:image" content="https://mustaphamobiste-hue.github.io/lnfa-centre-est/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://mustaphamobiste-hue.github.io/lnfa-centre-est/">
 <script>
@@ -70,6 +75,9 @@
     transition: transform 0.2s;
   }
   .header-logo:hover { transform: scale(1.05); }
+  .header .header-crab { display: block; font-size: 56px; line-height: 64px; height: 64px; margin: 0 auto; cursor: pointer; filter: hue-rotate(110deg) drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 0 12px rgba(0, 230, 118, 0.45)); transition: transform 0.2s; }
+  .header .header-crab:hover { transform: scale(1.05); }
+  .header-note { margin-top: 6px; font-size: 10.5px; font-weight: 700; color: #cbd5e1; letter-spacing: 0.3px; }
   .header-title {
     font-size: 22px;
     font-weight: 900;
@@ -514,6 +522,9 @@
   .merc-card { display: flex; align-items: center; gap: 12px; background: var(--card-dark); border: 1px solid rgba(255,255,255,0.08); border-left: 4px solid var(--mob-green-neon); border-radius: 10px; padding: 10px; margin-bottom: 10px; cursor: pointer; }
   .merc-card.out { border-left-color: #ef4444; }
   .merc-card.ext { border-left-color: var(--mob-gold); }
+  .merc-card.stf { border-left-color: #38bdf8; }
+  .merc-badge.stf { background: #38bdf8; color: #000; }
+  .merc-legend { font-size: 11px; color: #9ca3af; margin: -4px 0 10px; }
   .merc-photo { width: 62px; height: 62px; border-radius: 10px; object-fit: cover; background: #000; flex-shrink: 0; }
   .merc-info { flex: 1; min-width: 0; }
   .merc-badge { display: inline-block; font-size: 9px; font-weight: 900; letter-spacing: 1px; padding: 2px 8px; border-radius: 10px; background: var(--mob-green-neon); color: #000; }
@@ -634,6 +645,9 @@
   .footer-copyright { text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 30px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); }
   .footer-mob { text-align: center; padding: 25px 10px 10px; font-size: 11px; color: var(--text-muted); }
   .footer-mob strong { color: var(--mob-green-neon); }
+  .foot-mention { margin-top: 10px; display: inline-block; padding: 5px 12px; border: 1px solid rgba(203,213,225,0.35); border-radius: 12px; font-size: 11px; font-weight: 700; color: #e2e8f0; line-height: 1.5; }
+  .foot-edit { background: none; border: none; cursor: pointer; font-size: 12px; padding: 0 3px; color: inherit; }
+  .foot-add { background: transparent; color: var(--mob-gold); border: 1px dashed var(--mob-gold); border-radius: 12px; padding: 3px 10px; font-size: 11px; font-weight: 800; cursor: pointer; }
 
   /* BANDEAU COOKIES */
   #cookie-banner {
@@ -757,21 +771,22 @@
 #splash{position:fixed;inset:0;z-index:100000;background:#070a08;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;transition:opacity .35s ease}
 #splash.hide{opacity:0;pointer-events:none}
 #splash .sp-crab{font-size:104px;line-height:1.1}
-#splash .crab{display:inline-block;filter:hue-rotate(110deg) drop-shadow(0 0 14px rgba(0,230,118,.45));animation:splashPulse 1.1s ease-in-out infinite}
+#splash .crab{display:inline-block;filter:hue-rotate(110deg) drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 0 14px rgba(0,230,118,.45));animation:splashPulse 1.1s ease-in-out infinite}
 #splash .sp-name{font-family:sans-serif;font-weight:900;font-size:22px;letter-spacing:2px;color:#fff}
 #splash .sp-name b{color:#00e676}
 #splash .sp-load{font-family:sans-serif;font-size:12px;color:#8a9a90;letter-spacing:2px}
 @keyframes splashPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
 </style>
-<div id="splash"><div class="sp-crab"><span class="crab">🦀</span></div><div class="sp-name">MO <b>BÉJAÏA</b></div><div class="sp-load">CHARGEMENT...</div></div>
+<div id="splash"><div class="sp-crab"><span class="crab">🦀</span></div><div class="sp-name">LE <b>MOBISTE</b></div><div class="sp-load">CHARGEMENT...</div></div>
 <script>setTimeout(function(){var s=document.getElementById('splash');if(s){s.classList.add('hide');setTimeout(function(){if(s.parentNode)s.parentNode.removeChild(s);},450);}},7000);</script>
 
   <!-- EN-TÊTE DU SITE -->
   <header class="header">
     <div class="btn-search" onclick="openModal('modalSearch')">🔍</div>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png" alt="MO Béjaïa" class="header-logo" onclick="handleTitleClick()">
-    <div class="header-title" id="mainTitle">MO <span>BÉJAÏA</span><span id="adminBadge"></span></div>
-    <div><span class="header-badge-1954">⭐ FONDÉ EN 1954 • LES CRABES ⭐</span></div>
+    <span class="header-crab crab" onclick="handleTitleClick()" role="img" aria-label="Mobistes">🦀</span>
+    <div class="header-title" id="mainTitle">MOB<span>ISTES</span><span id="adminBadge"></span></div>
+    <div><span class="header-badge-1954">⭐ SITE INDÉPENDANT • LES CRABES ⭐</span></div>
+    <div class="header-note">Site de supporters, non affilié au MO Béjaïa</div>
   </header>
 
   <div id="statusBar" class="status loading">⏳ Connexion en direct...</div>
@@ -1137,7 +1152,7 @@
     
     <div class="historique-container" id="historique-content">
       <div class="historique-header">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png" alt="Logo MO Béjaïa" class="historique-logo">
+        <div class="historique-logo" style="font-size:90px; line-height:1.1; text-align:center;"><span class="crab">🦀</span></div>
         <div class="historique-title">MO Béjaïa : Identité, Histoire et Passion des Crabes</div>
         <div class="historique-subtitle">Le Mouloudia Olympique de Béjaïa, bien plus qu'un simple club de football</div>
       </div>
@@ -1157,43 +1172,41 @@
   <div class="btn-share-float" id="btnShareMain" onclick="shareContext()" title="Partager" aria-label="Partager">📤 Partager</div>
   <div class="visit-badge" id="visitCounter">👁️ -- visites</div>
 
-  <!-- NOUVEAU FOOTER RICHE -->
+  <!-- PIED DE PAGE MODIFIABLE (admin) -->
   <footer class="footer-rich">
     <div class="footer-grid">
       <div class="footer-col">
-      <h4><span class="footer-crab">🦀</span> Le Club</h4>  
-        <ul>
+        <h4 id="footH4-club">🦀 Le Club</h4>
+        <ul id="footUl-club">
           <li><a href="#" onclick="event.preventDefault(); openPresentation()">Présentation</a></li>
           <li><a href="#" onclick="event.preventDefault(); openOrganigramme()">Organigramme</a></li>
           <li><a href="#" onclick="event.preventDefault(); openModal('modalStadeInfo')">Stade de l'Unité Maghrébine</a></li>
         </ul>
       </div>
       <div class="footer-col">
-       <h4><span class="footer-crab">🌐</span> Nos Réseaux</h4>
-<ul>
-  <li><a href="https://www.facebook.com/share/1TGGgkkAHi/" target="_blank">Page Facebook (MOB-BEJAIA.COM)</a></li>
-  <li><a href="https://www.facebook.com/share/g/18swJodjuB/" target="_blank">Groupe Facebook (Les Crabes)</a></li>
-  <li><a href="https://tiktok.com/@mustaphamobiste" target="_blank">TikTok</a></li>
-  <li><a href="https://youtube.com/@mustaphamobiste" target="_blank">Chaîne YouTube</a></li>
-</ul> 
+        <h4 id="footH4-reseaux">🌐 Nos Réseaux</h4>
+        <ul id="footUl-reseaux">
+          <li><a href="https://www.facebook.com/share/1TGGgkkAHi/" target="_blank" rel="noopener">Page Facebook (MOB-BEJAIA.COM)</a></li>
+          <li><a href="https://www.facebook.com/share/g/18swJodjuB/" target="_blank" rel="noopener">Groupe Facebook (Les Crabes)</a></li>
+          <li><a href="https://tiktok.com/@mustaphamobiste" target="_blank" rel="noopener">TikTok</a></li>
+          <li><a href="https://youtube.com/@mustaphamobiste" target="_blank" rel="noopener">Chaîne YouTube</a></li>
+        </ul>
       </div>
-      <!-- ✅ MODIFIÉ : lien "Confidentialité & cookies" ajouté -->
       <div class="footer-col">
-        <h4>📞 Contact</h4>
-        <ul>
-          <li><a href="mailto:contactmobejaia@gmail.com">contactmobejaia@gmail.com</a></li>
-          <li><a href="https://www.facebook.com/share/1AEUmcf9d6/" target="_blank">Signaler un bug</a></li>
-          <li><a href="confidentialite.html">Confidentialité & cookies</a></li>
+        <h4 id="footH4-contact">📞 Contact</h4>
+        <ul id="footUl-contact">
+          <li><a href="mailto:mustaphamobiste@gmail.com">mustaphamobiste@gmail.com</a></li>
+          <li><a href="https://www.facebook.com/share/1AEUmcf9d6/" target="_blank" rel="noopener">Signaler un bug</a></li>
+          <li><a href="confidentialite.html">Confidentialité &amp; cookies</a></li>
           <li><a href="#" onclick="event.preventDefault(); manageCookies()">Gérer mes cookies</a></li>
         </ul>
       </div>
     </div>
-    <!-- ✅ MODIFIÉ : "site indépendant" au lieu de "site officiel" + mention légale -->
     <div class="footer-copyright">
-      <div style="margin-bottom:5px;"><strong>MO BÉJAÏA</strong> • La Maison des Crabes</div>
-      <div>Site indépendant des supporters, par les supporters @mustaphamobiste. Ferveur & Passion <span class="footer-crab">🦀</span></div>
-      <div style="margin-top:8px; font-size:10px; color:#8b9b90; font-style:italic;">Ce site est géré par des supporters bénévoles. Il n'est pas affilié officiellement au MO Béjaïa.</div>
-      <div style="margin-top:5px; font-size:10px; opacity:0.7;">© 2026 Site indépendant des supporters du MO Béjaïa. Le nom et le logo du club appartiennent à leurs propriétaires respectifs.</div>
+      <div id="footTitre" style="margin-bottom:5px;"><strong>MOBISTES</strong> • La Maison des Crabes</div>
+      <div id="footDesc">Site indépendant des supporters, par les supporters @mustaphamobiste. Ferveur &amp; Passion 🦀</div>
+      <div id="footMention" class="foot-mention">Ce site est géré par des supporters bénévoles. Il n'est pas affilié officiellement au MO Béjaïa.</div>
+      <div id="footCopy" style="margin-top:5px; font-size:10px; opacity:0.7;">© 2026 Mobistes, site indépendant de supporters. Le nom et le logo du MO Béjaïa appartiennent à leurs propriétaires respectifs.</div>
     </div>
   </footer>
 
@@ -1504,6 +1517,33 @@
       <div class="modal-actions">
         <button class="btn-cancel" onclick="closeModal('modalCarte')">Annuler</button>
         <button onclick="carteSave()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modalFootText">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('modalFootText')">×</span>
+      <h3>✏️ Pied de page</h3>
+      <label>Texte <textarea id="footTextIn" rows="4"></textarea></label>
+      <p style="font-size:11px; color:#9ca3af; margin-top:6px;">Laissez vide pour rétablir le texte d'origine.</p>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('modalFootText')">Annuler</button>
+        <button onclick="footSaveText()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modalFootLink">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('modalFootLink')">×</span>
+      <h3>🔗 Lien du pied de page</h3>
+      <label>Colonne <select id="footLinkCol"><option value="club">Le Club</option><option value="reseaux">Nos Réseaux</option><option value="contact">Contact</option></select></label>
+      <label>Libellé <input type="text" id="footLinkLabel" placeholder="Ex : Page Instagram"></label>
+      <label id="footLinkUrlWrap">Adresse (https://..., mailto:... ou page du site) <input type="text" id="footLinkUrl" placeholder="https://..."></label>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('modalFootLink')">Annuler</button>
+        <button onclick="footSaveLink()">Enregistrer</button>
       </div>
     </div>
   </div>
@@ -1861,6 +1901,9 @@
     let EQUIPES = ["Paradou AC", "IRB Nezla", "NRB Beni Oulbane", "NRB Teleghma", "CA Batna", "US Chaouia", "AS Khroub", "MO Constantine", "USM Annaba", "JS Azazga", "MO Béjaïa", "NC Magra", "JSM Skikda", "MSP Batna", "JSD Jijel", "CR Beni Thour", "WB Aïn Benian"];
     let STADES = ["Stade Abed-Hamdani (El Khroub)", "Stade 19 Mai 1956 (Annaba)", "Stade Allag Abderrahmane (Aïn Fakroun)", "Stade Khabaza Bachir (Teleghma)", "Stade 1er Novembre 1954 (Batna)", "Stade 20 Août 1955 (Skikda)", "Stade 18 Février (Ouargla)", "Stade 10 000 places (Touggourt)", "Stade Tirsatine (Azazga)", "Stade Hammou Boukouffa (Beni Oulbane)", "Stade 20 Août 1955 (Alger)", "Stade des Frères Boucheligue (Magra)", "Stade 1er Novembre 1954 Guendouza (Akbou)", "Stade des Martyrs (Akbou)", "Stade Hocine Rouibah (Jijel)", "Stade Ramdane-Benabdelmalek (Constantine)", "Stade Zerdani Hassouna (Oum El Bouaghi)", "Terrain Neutre"];
 
+    const CRAB_IMG = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#101612"/><filter id="g"><feColorMatrix type="hueRotate" values="110"/></filter><text x="50" y="70" font-size="64" text-anchor="middle" filter="url(#g)">🦀</text></svg>');
+    const CREST_URL = 'https://upload.wikimedia.org/wikipedia/commons/3/37/MO_Bejaia_logo.png';
+    const FOOTER_DEFAULT = {"textes": {"colClub": "🦀 Le Club", "colReseaux": "🌐 Nos Réseaux", "colContact": "📞 Contact", "titre": "MOBISTES • La Maison des Crabes", "description": "Site indépendant des supporters, par les supporters @mustaphamobiste. Ferveur & Passion 🦀", "mention": "Ce site est géré par des supporters bénévoles. Il n'est pas affilié officiellement au MO Béjaïa.", "copyright": "© 2026 Mobistes, site indépendant de supporters. Le nom et le logo du MO Béjaïa appartiennent à leurs propriétaires respectifs."}, "cols": {"club": [{"label": "Présentation", "action": "presentation"}, {"label": "Organigramme", "action": "organigramme"}, {"label": "Stade de l'Unité Maghrébine", "action": "stade"}], "reseaux": [{"label": "Page Facebook (MOB-BEJAIA.COM)", "url": "https://www.facebook.com/share/1TGGgkkAHi/"}, {"label": "Groupe Facebook (Les Crabes)", "url": "https://www.facebook.com/share/g/18swJodjuB/"}, {"label": "TikTok", "url": "https://tiktok.com/@mustaphamobiste"}, {"label": "Chaîne YouTube", "url": "https://youtube.com/@mustaphamobiste"}], "contact": [{"label": "mustaphamobiste@gmail.com", "url": "mailto:mustaphamobiste@gmail.com"}, {"label": "Signaler un bug", "url": "https://www.facebook.com/share/1AEUmcf9d6/"}, {"label": "Confidentialité & cookies", "url": "confidentialite.html"}, {"label": "Gérer mes cookies", "action": "cookies"}]}};
     const LOGOS = {
       "Paradou AC": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Paradou_AC.png",
       "IRB Nezla": "https://upload.wikimedia.org/wikipedia/fr/1/1d/IRB_Nezla.png",
@@ -1988,7 +2031,7 @@
       fdm: [],
       breves: [
         // ✅ MODIFIÉ : "site officiel" → "site des supporters"
-        { id: "b1", titre: "Bienvenue sur le site des supporters du MO Béjaïa !", date: "2026-11-03", texte: "Retrouvez l'actualité des Crabes." }
+        { id: "b1", titre: "Bienvenue sur Mobistes, le site des supporters des Crabes !", date: "2026-11-03", texte: "Retrouvez l'actualité des Crabes." }
       ],
       stats: {
         activeVote: {
@@ -3605,6 +3648,7 @@ window.scrollToComments = function() {
       try { renderMobArchiveLinks(); } catch (e) { console.warn('ArchivesMob:', e); }
       try { renderCoupeAdminBar(); } catch (e) { console.warn('Coupe:', e); }
       try { renderMercato(); } catch (e) { console.warn('Mercato:', e); }
+      try { renderFooter(); } catch (e) { console.warn('Pied de page:', e); }
     }
 
     function loadFromFirebase() {
@@ -3636,6 +3680,7 @@ window.scrollToComments = function() {
               data.edito = fb.edito || null;
               data.editoArchive = fb.editoArchive ? Object.values(fb.editoArchive) : [];
               data.mobArchive = fb.mobArchive || {};
+              data.footer = fb.footer || null;
               data.mercato = fb.mercato ? Object.values(fb.mercato) : [];
               if (fb.affiches) data.affiches = fb.affiches;
               if (fb.videos) data.videos = fb.videos;
@@ -3682,6 +3727,7 @@ window.scrollToComments = function() {
     document.getElementById('mainTitle').addEventListener('click', handleTitleClick);
     try { initShareAutoHide(); } catch (e) { console.warn('Partager:', e); }
     try { initGreenCrabs(); } catch (e) { console.warn('Crabes:', e); }
+    try { initCrestSwap(); } catch (e) { console.warn('Ecusson:', e); }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadFromFirebase); else loadFromFirebase();
 
     /* EXPOSITIONS GLOBALES WINDOW */
@@ -3726,6 +3772,11 @@ window.scrollToComments = function() {
     window.mercatoSave = mercatoSave;
     window.mercatoDelete = mercatoDelete;
     window.mercatoImport = mercatoImport;
+    window.footEditText = footEditText;
+    window.footSaveText = footSaveText;
+    window.footEditLink = footEditLink;
+    window.footSaveLink = footSaveLink;
+    window.footDeleteLink = footDeleteLink;
     window.openModalStaff = openModalStaff;
     window.saveStaff = saveStaff;
     window.openModalDirigeant = openModalDirigeant;
@@ -3776,7 +3827,7 @@ window.scrollToComments = function() {
     window.shareContext = () => {
   const base = location.origin + location.pathname;
   const cut = (t) => { t = String(t || '').replace(/\s+/g, ' ').trim(); return t.length > 110 ? t.slice(0, 110) + '...' : t; };
-  let shareData = { title: 'MO Béjaïa', text: 'Suivez le MO Béjaïa ! 🦀 #LaMaisonDesCrabes', url: base };
+  let shareData = { title: 'Mobistes', text: 'Suivez les Crabes sur Mobistes ! 🦀 #LaMaisonDesCrabes', url: base };
   if (currentEditoForShare) {
     const e = currentEditoForShare;
     shareData = { title: e.titre, text: cut(e.texte) || 'Éditorial du MO Béjaïa', url: base + '#edito' + (e.id ? '-' + e.id : '') };
@@ -4406,6 +4457,7 @@ window.scrollToComments = function() {
           <li><strong>5 juillet 1954 :</strong> naissance administrative du club.</li>
           <li><strong>2012/2013 :</strong> première accession à la Ligue 1 professionnelle.</li>
           <li><strong>2015 :</strong> Coupe d'Algérie remportée face au RC Arbaâ, et titre de vice-champion d'Algérie 2014/2015.</li>
+          <li><strong>2016 :</strong> finaliste de la Coupe de la CAF.</li>
         </ul>
         <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;">
           <button class="edito-lire" style="margin-left:0;" onclick="openPresentationHistoire()">📜 Lire toute l'histoire du club</button>
@@ -4497,7 +4549,7 @@ window.scrollToComments = function() {
     function greenCrabsIn(root) {
       const nodes = [];
       const consider = (n) => {
-        if (n.nodeValue && n.nodeValue.indexOf('🦀') !== -1 && n.parentNode && n.parentNode.closest && !n.parentNode.closest('script, style, textarea, option, title, .crab')) nodes.push(n);
+        if (n.nodeValue && n.nodeValue.indexOf('🦀') !== -1 && n.parentNode && n.parentNode.closest && !n.parentNode.closest('script, style, textarea, option, title, .crab, .tab-crab-green, .footer-crab')) nodes.push(n);
       };
       if (root.nodeType === 3) consider(root);
       else if (root.nodeType === 1) { const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT); while (w.nextNode()) consider(w.currentNode); }
@@ -4986,8 +5038,10 @@ window.scrollToComments = function() {
         box.innerHTML = '<p style="text-align:center; padding:20px; color:#888; font-size:13px;">Aucun mouvement pour le moment.</p>';
         return;
       }
-      box.innerHTML = items.map(e => {
-        const t = MERC_TYPES[e.type] || MERC_TYPES.arrivee;
+      box.innerHTML = '<div class="merc-legend">🟢 Joueurs &nbsp;·&nbsp; 🔵 Staff technique</div>' + items.map(e => {
+        const t0 = MERC_TYPES[e.type] || MERC_TYPES.arrivee;
+        const isStaff = /staff/i.test(e.note || '') || (data.staff || []).some(s => carteSame(s.nom, e.nom));
+        const t = isStaff ? { label: t0.label + ' STAFF', cls: e.type === 'arrivee' ? 'stf' : t0.cls } : t0;
         const clubLine = e.club ? (e.type === 'arrivee' ? 'Ex : ' + editoEsc(e.club) : (e.type === 'depart' ? '➜ ' + editoEsc(e.club) : editoEsc(e.club))) : '';
         const meta = [e.note ? editoEsc(e.note) : '', e.date ? editoDateFr(e.date) : ''].filter(Boolean).join(' · ');
         const adm = isAdmin ? `<div class="merc-admin"><button class="btn-small btn-edit" onclick="event.stopPropagation(); mercatoOpenForm(${e._i})">✏️</button><button class="btn-small btn-del" onclick="event.stopPropagation(); mercatoDelete(${e._i})">🗑️</button></div>` : '';
@@ -5071,6 +5125,153 @@ window.scrollToComments = function() {
       data.mercato = toAdd.concat(list);
       await saveToFirebase();
       renderMercato();
+    }
+
+    /* ===== ECUSSON REMPLACE PAR UN CRABE (sauf rencontres) ===== */
+    function swapCrestIn(root) {
+      const imgs = root.nodeType === 1 ? (root.tagName === 'IMG' ? [root] : Array.from(root.querySelectorAll('img'))) : [];
+      imgs.forEach(img => {
+        if ((img.getAttribute('src') || '') !== CREST_URL) return;
+        if (typeof img.className === 'string' && /logo/i.test(img.className)) return;
+        if (img.closest('#tab-rencontres, #nextMatchBanner, #globalLiveBanner, .live-banner, .next-match')) return;
+        img.setAttribute('src', CRAB_IMG);
+        const nm = img.closest('.news-media');
+        if (nm) nm.style.setProperty('--bg', 'none');
+      });
+    }
+
+    function initCrestSwap() {
+      swapCrestIn(document.body);
+      new MutationObserver((muts) => {
+        muts.forEach(m => {
+          if (m.type === 'attributes') swapCrestIn(m.target);
+          else m.addedNodes.forEach(n => { if (n.nodeType === 1) swapCrestIn(n); });
+        });
+      }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['src'] });
+    }
+
+    /* ===== PIED DE PAGE MODIFIABLE ===== */
+    let footEditing = null;
+    let footTextKey = null;
+
+    function footSafeUrl(u) {
+      u = String(u || '').trim();
+      if (!u) return '';
+      if (/^(https?:\/\/|mailto:|tel:)/i.test(u)) return u;
+      if (!/^[a-z][a-z0-9+.\-]*:/i.test(u) && /^[A-Za-z0-9_\-.\/]+(\?[^\s"'<>]*)?(#[^\s"'<>]*)?$/.test(u)) return u;
+      return '';
+    }
+
+    function footEnsure() {
+      if (!data.footer || typeof data.footer !== 'object') data.footer = {};
+      if (!data.footer.textes) data.footer.textes = {};
+      if (!data.footer.cols) data.footer.cols = {};
+    }
+
+    function footCol(id) {
+      const c = data.footer && data.footer.cols && data.footer.cols[id];
+      if (c && c.set) return (Array.isArray(c.liens) ? c.liens : Object.values(c.liens || {})).filter(Boolean);
+      return FOOTER_DEFAULT.cols[id].map(x => Object.assign({}, x));
+    }
+
+    function footSetCol(id, liens) {
+      footEnsure();
+      data.footer.cols[id] = { set: true, liens: liens };
+    }
+
+    function footLinkHtml(l) {
+      const label = editoEsc(l.label);
+      const acts = { presentation: 'openPresentation()', organigramme: 'openOrganigramme()', stade: "openModal('modalStadeInfo')", cookies: 'manageCookies()' };
+      if (l.action && acts[l.action]) return `<a href="#" onclick="event.preventDefault(); ${acts[l.action]}">${label}</a>`;
+      const u = footSafeUrl(l.url);
+      if (!u) return `<span>${label}</span>`;
+      const ext = /^https?:/i.test(u);
+      return `<a href="${editoEsc(u)}"${ext ? ' target="_blank" rel="noopener"' : ''}>${label}</a>`;
+    }
+
+    function renderFooter() {
+      const T = Object.assign({}, FOOTER_DEFAULT.textes, (data.footer && data.footer.textes) || {});
+      const ed = (k) => isAdmin ? ` <button class="foot-edit" onclick="footEditText('${k}')">✏️</button>` : '';
+      const put = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+      put('footH4-club', editoEsc(T.colClub) + ed('colClub'));
+      put('footH4-reseaux', editoEsc(T.colReseaux) + ed('colReseaux'));
+      put('footH4-contact', editoEsc(T.colContact) + ed('colContact'));
+      ['club', 'reseaux', 'contact'].forEach(id => {
+        let html = footCol(id).map((l, i) => `<li>${footLinkHtml(l)}${isAdmin ? ` <button class="foot-edit" onclick="footEditLink('${id}', ${i})">✏️</button><button class="foot-edit" onclick="footDeleteLink('${id}', ${i})">🗑️</button>` : ''}</li>`).join('');
+        if (isAdmin) html += `<li><button class="foot-add" onclick="footEditLink('${id}', -1)">➕ Ajouter un lien</button></li>`;
+        put('footUl-' + id, html);
+      });
+      const parts = String(T.titre).split(' • ');
+      put('footTitre', (parts.length > 1 ? `<strong>${editoEsc(parts[0])}</strong> • ${editoEsc(parts.slice(1).join(' • '))}` : `<strong>${editoEsc(T.titre)}</strong>`) + ed('titre'));
+      put('footDesc', editoEsc(T.description) + ed('description'));
+      put('footMention', editoEsc(T.mention) + ed('mention'));
+      put('footCopy', editoEsc(T.copyright) + ed('copyright'));
+    }
+
+    function footEditText(key) {
+      if (!isAdmin) return;
+      footTextKey = key;
+      const T = Object.assign({}, FOOTER_DEFAULT.textes, (data.footer && data.footer.textes) || {});
+      document.getElementById('footTextIn').value = T[key] || '';
+      openModal('modalFootText');
+    }
+
+    async function footSaveText() {
+      if (!isAdmin || !footTextKey) return;
+      if (editoNeedAuth()) return;
+      const v = document.getElementById('footTextIn').value.trim();
+      footEnsure();
+      if (v) data.footer.textes[footTextKey] = v; else delete data.footer.textes[footTextKey];
+      await saveToFirebase();
+      closeModal('modalFootText');
+      renderFooter();
+    }
+
+    function footEditLink(col, idx) {
+      if (!isAdmin) return;
+      footEditing = { col: col, idx: idx };
+      const l = idx >= 0 ? (footCol(col)[idx] || {}) : {};
+      document.getElementById('footLinkCol').value = col;
+      document.getElementById('footLinkCol').disabled = idx >= 0;
+      document.getElementById('footLinkLabel').value = l.label || '';
+      document.getElementById('footLinkUrl').value = l.url || '';
+      document.getElementById('footLinkUrlWrap').style.display = l.action ? 'none' : '';
+      openModal('modalFootLink');
+    }
+
+    async function footSaveLink() {
+      if (!isAdmin || !footEditing) return;
+      const label = document.getElementById('footLinkLabel').value.trim();
+      if (!label) { alert('Le libellé est obligatoire.'); return; }
+      const idx = footEditing.idx;
+      const col = idx >= 0 ? footEditing.col : document.getElementById('footLinkCol').value;
+      const liens = footCol(col);
+      const isAction = idx >= 0 && liens[idx] && liens[idx].action;
+      let url = '';
+      if (!isAction) {
+        url = footSafeUrl(document.getElementById('footLinkUrl').value);
+        if (!url) { alert("Adresse invalide. Utilisez une adresse commençant par https://, mailto: ou le nom d'une page du site."); return; }
+      }
+      if (editoNeedAuth()) return;
+      if (idx >= 0) liens[idx] = isAction ? Object.assign({}, liens[idx], { label: label }) : { label: label, url: url };
+      else liens.push({ label: label, url: url });
+      footSetCol(col, liens);
+      await saveToFirebase();
+      closeModal('modalFootLink');
+      renderFooter();
+    }
+
+    async function footDeleteLink(col, idx) {
+      if (!isAdmin) return;
+      const liens = footCol(col);
+      const l = liens[idx];
+      if (!l) return;
+      if (l.action === 'cookies') { alert('Ce lien est nécessaire pour que les visiteurs puissent gérer leur choix sur les cookies.'); return; }
+      if (!confirm('Supprimer le lien « ' + l.label + ' » ?')) return;
+      if (editoNeedAuth()) return;
+      footSetCol(col, liens.filter((_, k) => k !== idx));
+      await saveToFirebase();
+      renderFooter();
     }
 
     /* ===== FIN EDITORIAL ===== */
