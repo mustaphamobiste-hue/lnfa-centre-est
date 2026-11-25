@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mustaphamobiste-hue.github.io/lnfa-centre-est/sitemap.xml
