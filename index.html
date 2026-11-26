@@ -516,6 +516,10 @@
   .carte-obs { margin-top: 8px; padding: 7px 10px; border-radius: 8px; background: rgba(245,158,11,0.12); border: 1px solid var(--mob-gold); color: #fff; font-size: 12px; font-weight: 700; }
   .edito-auteur { color: var(--text-muted); font-size: 12px; font-style: italic; margin: -2px 0 8px; }
   .crab { display: inline-block; filter: hue-rotate(110deg); }
+  .cal-btn { background: transparent; color: var(--mob-gold); border: 1.5px solid var(--mob-gold); border-radius: 20px; padding: 8px 18px; font-weight: 900; font-size: 13px; cursor: pointer; }
+  .cal-mini { background: none; border: none; cursor: pointer; font-size: 14px; padding: 0 0 0 4px; vertical-align: middle; }
+  .cal-choice { display: block; width: 100%; margin: 8px 0; padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15); background: var(--card-dark); color: #fff; font-weight: 800; font-size: 14px; cursor: pointer; text-align: left; }
+  .cal-choice small { display: block; font-weight: 400; color: var(--text-muted); font-size: 11px; margin-top: 2px; }
   .merc-filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
   .merc-chip { background: var(--card-dark); color: #d1d5db; border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; padding: 6px 12px; font-size: 12px; font-weight: 800; cursor: pointer; }
   .merc-chip.active { background: var(--mob-green-neon); color: #000; border-color: var(--mob-green-neon); }
@@ -833,6 +837,7 @@
       <div class="cd-box"><span class="cd-num" id="cdMins">--</span><span class="cd-label">Min</span></div>
       <div class="cd-box"><span class="cd-num" id="cdSecs">--</span><span class="cd-label">Sec</span></div>
     </div>
+    <div style="text-align:center; margin-top:12px;"><button id="nextMatchCalBtn" class="cal-btn" onclick="calOpenNext()">📅 Ajouter au calendrier</button></div>
   </div>
 
   <!-- FLASH INFOS RUBAN -->
@@ -1548,6 +1553,17 @@
     </div>
   </div>
 
+  <div class="modal" id="modalCalendrier">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('modalCalendrier')">×</span>
+      <h3>📅 Ajouter au calendrier</h3>
+      <div id="calSummary" style="font-size:13px; line-height:1.6; color:#e6ece8; margin-bottom:8px;"></div>
+      <button class="cal-choice" onclick="calOpenGoogle()">Google Agenda<small>Le plus simple sur Android : l'événement s'ouvre prérempli.</small></button>
+      <button class="cal-choice" onclick="calDownloadIcs()">Calendrier du téléphone (.ics)<small>iPhone, Samsung et autres : ouvrez le fichier téléchargé.</small></button>
+      <p style="font-size:11px; color:#9ca3af; margin-top:8px;">Rappels : 1 jour et 1 heure avant le match. Heure d'Algérie. Si rien ne se passe, ouvrez le site dans Chrome ou Safari.</p>
+    </div>
+  </div>
+
   <div class="modal" id="modalPresentation">
     <div class="modal-content">
       <span class="modal-close" onclick="closeModal('modalPresentation')">×</span>
@@ -1895,6 +1911,9 @@
     let carteTarget = null;
     let mercatoFilter = 'all';
     let mercatoEditIdx = -1;
+    let calCurrent = null;
+    let calNextMatch = null;
+    let calNextType = 'championnat';
     let deepLinkDone = false;
     const MOB_SEC_LABEL = { avant: 'Avant-match', day: 'Match Day', apres: 'Après-match' };
 
@@ -2296,7 +2315,7 @@ function closeModal(id) {
       tbody.innerHTML = matches.map(m => {
         const idx = data.championnat.indexOf(m);
         const act = isAdmin ? `<td class="col-actions"><button class="btn-small btn-edit" onclick="openModalMatch('championnat',${idx})">✏️</button><button class="btn-small btn-del" onclick="deleteItem('championnat',${idx})">🗑️</button></td>` : `<td class="col-actions" style="display:none;"></td>`;
-        return `<tr><td><b>J${m.journee}</b></td><td>${formatDate(m.date)}</td><td>${m.heure||'15:00'}</td><td>${logoImg(m.dom)}${m.dom}</td><td>${logoImg(m.ext)}${m.ext}</td><td>${m.stade||'—'}</td><td class="obs">${m.obs||'—'}</td>${act}</tr>`;
+        return `<tr><td><b>J${m.journee}</b></td><td>${formatDate(m.date)}${calMiniBtn(m, 'championnat')}</td><td>${m.heure||'15:00'}</td><td>${logoImg(m.dom)}${m.dom}</td><td>${logoImg(m.ext)}${m.ext}</td><td>${m.stade||'—'}</td><td class="obs">${m.obs||'—'}</td>${act}</tr>`;
       }).join('');
     }
 
@@ -2357,7 +2376,7 @@ function closeModal(id) {
         const idx = data.coupe.indexOf(m);
         const sc = hasScore(m) ? `<span class="score">${m.sd} - ${m.se}</span>` : 'vs';
         const act = isAdmin ? `<td class="col-actions"><button class="btn-small btn-edit" onclick="openModalMatch('coupe',${idx})">✏️</button><button class="btn-small btn-del" onclick="deleteItem('coupe',${idx})">🗑️</button></td>` : `<td class="col-actions" style="display:none;"></td>`;
-        return `<tr><td><b>${m.journee||'Tour'}</b></td><td>${formatDate(m.date)}</td><td>${m.heure||'15:00'}</td><td>${logoImg(m.dom)}${m.dom}</td><td>${sc}</td><td>${logoImg(m.ext)}${m.ext}</td><td>${m.stade||'—'}</td><td class="obs">${m.obs||'—'}</td>${act}</tr>`;
+        return `<tr><td><b>${m.journee||'Tour'}</b></td><td>${formatDate(m.date)}${calMiniBtn(m, 'coupe')}</td><td>${m.heure||'15:00'}</td><td>${logoImg(m.dom)}${m.dom}</td><td>${sc}</td><td>${logoImg(m.ext)}${m.ext}</td><td>${m.stade||'—'}</td><td class="obs">${m.obs||'—'}</td>${act}</tr>`;
       }).join('');
     }
 
@@ -3588,6 +3607,10 @@ if (!next) {
         document.getElementById('nextMatchDate').textContent = '📅 Date à confirmer par la LNFA';
         if (countdownInterval) clearInterval(countdownInterval);
       }
+      calNextMatch = next;
+      calNextType = (data.coupe || []).indexOf(next) >= 0 ? 'coupe' : 'championnat';
+      const calBtn = document.getElementById('nextMatchCalBtn');
+      if (calBtn) calBtn.style.display = next.date ? '' : 'none';
       document.getElementById('nextMatchBanner').style.display = 'block';
     }
 
@@ -3777,6 +3800,10 @@ window.scrollToComments = function() {
     window.footEditLink = footEditLink;
     window.footSaveLink = footSaveLink;
     window.footDeleteLink = footDeleteLink;
+    window.calOpenNext = calOpenNext;
+    window.calOpenMatch = calOpenMatch;
+    window.calOpenGoogle = calOpenGoogle;
+    window.calDownloadIcs = calDownloadIcs;
     window.openModalStaff = openModalStaff;
     window.saveStaff = saveStaff;
     window.openModalDirigeant = openModalDirigeant;
@@ -3827,7 +3854,7 @@ window.scrollToComments = function() {
     window.shareContext = () => {
   const base = location.origin + location.pathname;
   const cut = (t) => { t = String(t || '').replace(/\s+/g, ' ').trim(); return t.length > 110 ? t.slice(0, 110) + '...' : t; };
-  let shareData = { title: 'Mobistes', text: 'Suivez les Crabes sur Mobistes ! 🦀 #LaMaisonDesCrabes', url: base };
+  let shareData = { title: 'Mobistes', text: 'Suivez les Crabes sur Mobistes ! #LaMaisonDesCrabes', url: base };
   if (currentEditoForShare) {
     const e = currentEditoForShare;
     shareData = { title: e.titre, text: cut(e.texte) || 'Éditorial du MO Béjaïa', url: base + '#edito' + (e.id ? '-' + e.id : '') };
@@ -5272,6 +5299,98 @@ window.scrollToComments = function() {
       footSetCol(col, liens.filter((_, k) => k !== idx));
       await saveToFirebase();
       renderFooter();
+    }
+
+    /* ===== AJOUTER AU CALENDRIER ===== */
+    function calMiniBtn(m, type) {
+      if (!m || !m.date || hasScore(m)) return '';
+      const idx = (data[type] || []).indexOf(m);
+      if (idx < 0) return '';
+      return `<button class="cal-mini" title="Ajouter au calendrier" onclick="calOpenMatch('${type}', ${idx})">📅</button>`;
+    }
+
+    function calDetails(m, type) {
+      const heure = m.heure || '15:00';
+      const start = new Date(m.date + 'T' + heure + ':00+01:00');
+      if (isNaN(start)) return null;
+      const end = new Date(start.getTime() + 2 * 3600000);
+      const compet = type === 'coupe' ? "Coupe d'Algérie" + (m.journee ? ', ' + m.journee : '') : 'Ligue 2 Amateur, groupe Centre-Est' + (m.journee ? ', J' + m.journee : '');
+      return {
+        start: start, end: end, heure: heure, compet: compet,
+        summary: m.dom + ' - ' + m.ext + (type === 'coupe' ? " (Coupe d'Algérie)" : ' (Ligue 2 Amateur)'),
+        location: m.stade || '',
+        description: compet + '\nSuivez le match sur Mobistes : ' + location.origin + location.pathname,
+        uid: 'mob-' + m.date + '-' + carteNorm(m.dom).join('') + '-' + carteNorm(m.ext).join('') + '@mobistes'
+      };
+    }
+
+    function calUtc(d) { return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, ''); }
+
+    function calOpenMatch(type, idx) {
+      const m = (data[type] || [])[idx];
+      if (m) calShow(m, type);
+    }
+
+    function calOpenNext() {
+      if (calNextMatch) calShow(calNextMatch, calNextType);
+    }
+
+    function calShow(m, type) {
+      const d = calDetails(m, type);
+      if (!d) return;
+      calCurrent = { m: m, type: type, d: d };
+      document.getElementById('calSummary').innerHTML =
+        `<strong>${editoEsc(d.summary)}</strong><br>📅 ${editoDateFr(m.date)} à ${editoEsc(d.heure)}` + (d.location ? `<br>📍 ${editoEsc(d.location)}` : '');
+      openModal('modalCalendrier');
+    }
+
+    function calOpenGoogle() {
+      if (!calCurrent) return;
+      const d = calCurrent.d;
+      const q = (s) => encodeURIComponent(s);
+      const url = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + q(d.summary) + '&dates=' + calUtc(d.start) + '/' + calUtc(d.end) + '&details=' + q(d.description) + '&location=' + q(d.location);
+      const a = document.createElement('a');
+      a.href = url; a.target = '_blank'; a.rel = 'noopener';
+      document.body.appendChild(a); a.click(); a.remove();
+    }
+
+    function calIcsEsc(s) { return String(s || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n'); }
+
+    function calFold(line) {
+      const enc = new TextEncoder();
+      let out = '', cur = '', bytes = 0;
+      for (const ch of line) {
+        const b = enc.encode(ch).length;
+        if (bytes + b > 75) { out += cur + '\r\n '; cur = ch; bytes = 1 + b; } else { cur += ch; bytes += b; }
+      }
+      return out + cur;
+    }
+
+    function calDownloadIcs() {
+      if (!calCurrent) return;
+      const d = calCurrent.d;
+      const lines = [
+        'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Mobistes//Calendrier des matchs//FR', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
+        'BEGIN:VEVENT',
+        'UID:' + d.uid,
+        'DTSTAMP:' + calUtc(new Date()),
+        'DTSTART:' + calUtc(d.start),
+        'DTEND:' + calUtc(d.end),
+        'SUMMARY:' + calIcsEsc(d.summary),
+        'LOCATION:' + calIcsEsc(d.location),
+        'DESCRIPTION:' + calIcsEsc(d.description),
+        'BEGIN:VALARM', 'TRIGGER:-PT1H', 'ACTION:DISPLAY', 'DESCRIPTION:Coup d\'envoi dans 1 heure', 'END:VALARM',
+        'BEGIN:VALARM', 'TRIGGER:-P1D', 'ACTION:DISPLAY', 'DESCRIPTION:Match demain', 'END:VALARM',
+        'END:VEVENT', 'END:VCALENDAR'
+      ];
+      const ics = lines.map(calFold).join('\r\n') + '\r\n';
+      const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'match-mob-' + calCurrent.m.date + '.ics';
+      document.body.appendChild(a); a.click();
+      setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 3000);
     }
 
     /* ===== FIN EDITORIAL ===== */
