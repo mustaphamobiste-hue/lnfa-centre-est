@@ -3854,7 +3854,7 @@ window.scrollToComments = function() {
     window.shareContext = () => {
   const base = location.origin + location.pathname;
   const cut = (t) => { t = String(t || '').replace(/\s+/g, ' ').trim(); return t.length > 110 ? t.slice(0, 110) + '...' : t; };
-  let shareData = { title: 'Mobistes', text: 'Suivez les Crabes sur Mobistes ! #LaMaisonDesCrabes', url: base };
+  let shareData = { title: 'Mobistes', text: 'Suivez les Crabes sur Mobistes ! 💚 #LaMaisonDesCrabes', url: base };
   if (currentEditoForShare) {
     const e = currentEditoForShare;
     shareData = { title: e.titre, text: cut(e.texte) || 'Éditorial du MO Béjaïa', url: base + '#edito' + (e.id ? '-' + e.id : '') };
