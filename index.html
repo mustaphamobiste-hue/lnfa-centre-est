@@ -15,6 +15,19 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://mustaphamobiste-hue.github.io/lnfa-centre-est/">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#070a08">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mobistes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script>
+window.__installEvt = null;
+window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); window.__installEvt = e; document.dispatchEvent(new Event('install-ready')); });
+window.addEventListener('appinstalled', function () { window.__installEvt = null; document.dispatchEvent(new Event('install-ready')); });
+if ('serviceWorker' in navigator) { window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); }); }
+</script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -1211,6 +1224,7 @@
       <div id="footTitre" style="margin-bottom:5px;"><strong>MOBISTES</strong> • La Maison des Crabes</div>
       <div id="footDesc">Site indépendant des supporters, par les supporters @mustaphamobiste. Ferveur &amp; Passion 🦀</div>
       <div id="footMention" class="foot-mention">Ce site est géré par des supporters bénévoles. Il n'est pas affilié officiellement au MO Béjaïa.</div>
+      <div id="installWrap" style="display:none; margin-top:10px;"><button class="cal-btn" onclick="installApp()">📲 Installer l'application</button></div>
       <div id="footCopy" style="margin-top:5px; font-size:10px; opacity:0.7;">© 2026 Mobistes, site indépendant de supporters. Le nom et le logo du MO Béjaïa appartiennent à leurs propriétaires respectifs.</div>
     </div>
   </footer>
@@ -1561,6 +1575,17 @@
       <button class="cal-choice" onclick="calOpenGoogle()">Google Agenda<small>Le plus simple sur Android : l'événement s'ouvre prérempli.</small></button>
       <button class="cal-choice" onclick="calDownloadIcs()">Calendrier du téléphone (.ics)<small>iPhone, Samsung et autres : ouvrez le fichier téléchargé.</small></button>
       <p style="font-size:11px; color:#9ca3af; margin-top:8px;">Rappels : 1 jour et 1 heure avant le match. Heure d'Algérie. Si rien ne se passe, ouvrez le site dans Chrome ou Safari.</p>
+    </div>
+  </div>
+
+  <div class="modal" id="modalInstall">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('modalInstall')">×</span>
+      <h3>📲 Installer Mobistes</h3>
+      <p style="font-size:13px; line-height:1.7; color:#e6ece8;"><strong>Sur iPhone</strong> (dans Safari) : appuyez sur le bouton <strong>Partager</strong> (le carré avec une flèche), puis sur <strong>Sur l'écran d'accueil</strong>, puis <strong>Ajouter</strong>.</p>
+      <p style="font-size:13px; line-height:1.7; color:#e6ece8;"><strong>Sur Android</strong> (dans Chrome) : ouvrez le menu <strong>⋮</strong>, puis <strong>Installer l'application</strong> ou <strong>Ajouter à l'écran d'accueil</strong>.</p>
+      <p style="font-size:11px; color:#9ca3af;">Une icône du crabe vert apparaît sur votre téléphone et le site s'ouvre en plein écran.</p>
+      <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalInstall')">Fermer</button></div>
     </div>
   </div>
 
@@ -3751,6 +3776,7 @@ window.scrollToComments = function() {
     try { initShareAutoHide(); } catch (e) { console.warn('Partager:', e); }
     try { initGreenCrabs(); } catch (e) { console.warn('Crabes:', e); }
     try { initCrestSwap(); } catch (e) { console.warn('Ecusson:', e); }
+    try { initInstall(); } catch (e) { console.warn('Installation:', e); }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadFromFirebase); else loadFromFirebase();
 
     /* EXPOSITIONS GLOBALES WINDOW */
@@ -3804,6 +3830,7 @@ window.scrollToComments = function() {
     window.calOpenMatch = calOpenMatch;
     window.calOpenGoogle = calOpenGoogle;
     window.calDownloadIcs = calDownloadIcs;
+    window.installApp = installApp;
     window.openModalStaff = openModalStaff;
     window.saveStaff = saveStaff;
     window.openModalDirigeant = openModalDirigeant;
@@ -5391,6 +5418,35 @@ window.scrollToComments = function() {
       a.download = 'match-mob-' + calCurrent.m.date + '.ics';
       document.body.appendChild(a); a.click();
       setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 3000);
+    }
+
+    /* ===== SITE INSTALLABLE (PWA) ===== */
+    function isStandalone() {
+      return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+    }
+
+    function refreshInstallBtn() {
+      const w = document.getElementById('installWrap');
+      if (!w) return;
+      const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+      w.style.display = (!isStandalone() && (window.__installEvt || ios)) ? '' : 'none';
+    }
+
+    async function installApp() {
+      const evt = window.__installEvt;
+      if (evt) {
+        evt.prompt();
+        try { await evt.userChoice; } catch (e) {}
+        window.__installEvt = null;
+        refreshInstallBtn();
+        return;
+      }
+      openModal('modalInstall');
+    }
+
+    function initInstall() {
+      refreshInstallBtn();
+      document.addEventListener('install-ready', refreshInstallBtn);
     }
 
     /* ===== FIN EDITORIAL ===== */
