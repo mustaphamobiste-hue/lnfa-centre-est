@@ -529,6 +529,27 @@ if ('serviceWorker' in navigator) { window.addEventListener('load', function () 
   .carte-obs { margin-top: 8px; padding: 7px 10px; border-radius: 8px; background: rgba(245,158,11,0.12); border: 1px solid var(--mob-gold); color: #fff; font-size: 12px; font-weight: 700; }
   .edito-auteur { color: var(--text-muted); font-size: 12px; font-style: italic; margin: -2px 0 8px; }
   .crab { display: inline-block; filter: hue-rotate(110deg); }
+  .ag-nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 4px 0 6px; }
+  .ag-title { font-weight: 900; font-size: 17px; color: #fff; text-transform: capitalize; text-align: center; flex: 1; }
+  .ag-arrow { background: var(--card-dark); color: var(--mob-green-neon); border: 1px solid rgba(0,230,118,0.4); border-radius: 10px; width: 44px; height: 40px; font-size: 16px; cursor: pointer; }
+  .ag-today-row { text-align: center; margin-bottom: 8px; }
+  .ag-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .ag-dow { text-align: center; font-size: 10px; font-weight: 800; color: var(--text-muted); padding: 2px 0; }
+  .ag-cell { aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: #101612; color: #cbd5e1; font-size: 13px; font-weight: 700; }
+  .ag-cell.empty { background: transparent; }
+  .ag-cell.has { cursor: pointer; color: #fff; font-weight: 900; }
+  .ag-cell.w { background: #16a34a; } .ag-cell.d { background: #6b7280; } .ag-cell.l { background: #dc2626; }
+  .ag-cell.up { background: var(--mob-gold); color: #000; } .ag-cell.pend { background: transparent; border: 2px dashed var(--mob-gold); color: var(--mob-gold); }
+  .ag-cell.cup { box-shadow: inset 0 0 0 3px #38bdf8; }
+  .ag-cell.today { outline: 2px solid #fff; outline-offset: 1px; }
+  .ag-legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; font-size: 11px; color: #cbd5e1; }
+  .ag-dot { display: inline-block; width: 11px; height: 11px; border-radius: 3px; vertical-align: middle; margin-right: 3px; }
+  .ag-dot.w { background: #16a34a; } .ag-dot.d { background: #6b7280; } .ag-dot.l { background: #dc2626; } .ag-dot.up { background: var(--mob-gold); } .ag-dot.cup { background: transparent; box-shadow: inset 0 0 0 2px #38bdf8; }
+  .ag-row { display: flex; align-items: center; gap: 10px; background: var(--card-dark); border-left: 4px solid #6b7280; border-radius: 8px; padding: 9px 10px; margin-bottom: 7px; cursor: pointer; }
+  .ag-row.w { border-left-color: #16a34a; } .ag-row.l { border-left-color: #dc2626; } .ag-row.up { border-left-color: var(--mob-gold); } .ag-row.cup { border-right: 4px solid #38bdf8; }
+  .ag-row-date { font-size: 11px; color: var(--text-muted); min-width: 52px; font-weight: 800; }
+  .ag-row-teams { flex: 1; font-size: 13px; font-weight: 800; color: #fff; }
+  .ag-row-res { font-weight: 900; font-size: 14px; color: var(--mob-gold); white-space: nowrap; }
   .cal-btn { background: transparent; color: var(--mob-gold); border: 1.5px solid var(--mob-gold); border-radius: 20px; padding: 8px 18px; font-weight: 900; font-size: 13px; cursor: pointer; }
   .cal-mini { background: none; border: none; cursor: pointer; font-size: 14px; padding: 0 0 0 4px; vertical-align: middle; }
   .cal-choice { display: block; width: 100%; margin: 8px 0; padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15); background: var(--card-dark); color: #fff; font-weight: 800; font-size: 14px; cursor: pointer; text-align: left; }
@@ -817,6 +838,7 @@ if ('serviceWorker' in navigator) { window.addEventListener('load', function () 
     <div class="tab active" onclick="switchTab('rencontres', this)">🏆 Rencontres</div>
     <div class="tab" onclick="switchTab('club', this)">👥 Club</div>
     <div class="tab" onclick="switchTab('mercato', this)">🔄 Mercato</div>
+    <div class="tab" onclick="switchTab('agenda', this)">🗓️ Calendrier</div>
     <div class="tab" onclick="switchTab('stats', this)">📊 Stats</div>
     <div class="tab" onclick="switchTab('actualite', this)">📰 Actualité</div>
     <div class="tab" onclick="switchTab('medias', this)">📸 Médias</div>
@@ -1148,6 +1170,25 @@ if ('serviceWorker' in navigator) { window.addEventListener('load', function () 
     <div id="media-videos-container" style="display:none;">
       <div class="video-grid" id="grid-videos"></div>
     </div>
+  </div>
+
+  <!-- CALENDRIER INTERACTIF -->
+  <div id="tab-agenda" class="tab-content">
+    <h3 style="color:var(--mob-green-neon); font-size:15px; margin-bottom:4px;">🗓️ CALENDRIER DE LA SAISON</h3>
+    <p style="font-size:12px; color:#9ca3af; margin-bottom:10px;">Touchez un jour coloré pour voir le match.</p>
+    <div id="agendaFilters" class="merc-filters"></div>
+    <div class="ag-nav">
+      <button class="ag-arrow" onclick="agendaShift(-1)" aria-label="Mois précédent">◀</button>
+      <div id="agendaTitle" class="ag-title"></div>
+      <button class="ag-arrow" onclick="agendaShift(1)" aria-label="Mois suivant">▶</button>
+    </div>
+    <div class="ag-today-row"><button class="edito-arch-btn" onclick="agendaToday()">Aujourd'hui</button></div>
+    <div id="agendaGrid" class="ag-grid"></div>
+    <div class="ag-legend">
+      <span><i class="ag-dot w"></i> Victoire</span><span><i class="ag-dot d"></i> Nul</span><span><i class="ag-dot l"></i> Défaite</span><span><i class="ag-dot up"></i> À venir</span><span><i class="ag-dot cup"></i> Coupe</span>
+    </div>
+    <h4 style="color:var(--mob-gold); font-size:13px; margin:14px 0 6px;">Matchs du mois</h4>
+    <div id="agendaList"></div>
   </div>
 
   <!-- MERCATO -->
@@ -1567,6 +1608,15 @@ if ('serviceWorker' in navigator) { window.addEventListener('load', function () 
     </div>
   </div>
 
+  <div class="modal" id="modalAgendaJour">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('modalAgendaJour')">×</span>
+      <h3 id="agendaJourTitre">Match</h3>
+      <div id="agendaJourBody"></div>
+      <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalAgendaJour')">Fermer</button></div>
+    </div>
+  </div>
+
   <div class="modal" id="modalCalendrier">
     <div class="modal-content">
       <span class="modal-close" onclick="closeModal('modalCalendrier')">×</span>
@@ -1937,6 +1987,8 @@ if ('serviceWorker' in navigator) { window.addEventListener('load', function () 
     let mercatoFilter = 'all';
     let mercatoEditIdx = -1;
     let calCurrent = null;
+    let agendaMonth = null;
+    let agendaFilter = 'all';
     let calNextMatch = null;
     let calNextType = 'championnat';
     let deepLinkDone = false;
@@ -2272,6 +2324,7 @@ function closeModal(id) {
       if (name === 'stats') renderStats();
       if (name === 'historique') renderHistoriqueDynamic();
       if (name === 'mercato') renderMercato();
+      if (name === 'agenda') renderAgenda();
     }
 
     function switchRencontreNav(mode) {
@@ -3696,6 +3749,7 @@ window.scrollToComments = function() {
       try { renderMobArchiveLinks(); } catch (e) { console.warn('ArchivesMob:', e); }
       try { renderCoupeAdminBar(); } catch (e) { console.warn('Coupe:', e); }
       try { renderMercato(); } catch (e) { console.warn('Mercato:', e); }
+      try { renderAgenda(); } catch (e) { console.warn('Calendrier:', e); }
       try { renderFooter(); } catch (e) { console.warn('Pied de page:', e); }
     }
 
@@ -3831,6 +3885,10 @@ window.scrollToComments = function() {
     window.calOpenGoogle = calOpenGoogle;
     window.calDownloadIcs = calDownloadIcs;
     window.installApp = installApp;
+    window.agendaShift = agendaShift;
+    window.agendaToday = agendaToday;
+    window.agendaSetFilter = agendaSetFilter;
+    window.agendaOpenDay = agendaOpenDay;
     window.openModalStaff = openModalStaff;
     window.saveStaff = saveStaff;
     window.openModalDirigeant = openModalDirigeant;
@@ -5447,6 +5505,113 @@ window.scrollToComments = function() {
     function initInstall() {
       refreshInstallBtn();
       document.addEventListener('install-ready', refreshInstallBtn);
+    }
+
+    /* ===== CALENDRIER INTERACTIF DE LA SAISON ===== */
+    const AG_MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+
+    function agendaPad(n) { return String(n).padStart(2, '0'); }
+    function agendaTodayStr() { const d = new Date(); return d.getFullYear() + '-' + agendaPad(d.getMonth() + 1) + '-' + agendaPad(d.getDate()); }
+
+    function agendaMatches() {
+      const out = [];
+      ['championnat', 'coupe'].forEach(type => {
+        (data[type] || []).forEach(m => {
+          if (m && m.date && (m.dom === 'MO Béjaïa' || m.ext === 'MO Béjaïa')) out.push({ m: m, type: type });
+        });
+      });
+      return out.filter(x => agendaFilter === 'all' || x.type === agendaFilter);
+    }
+
+    function agendaOutcome(x) {
+      const m = x.m;
+      if (!hasScore(m)) return m.date >= agendaTodayStr() ? 'up' : 'pend';
+      const mobDom = m.dom === 'MO Béjaïa';
+      const a = Number(mobDom ? m.sd : m.se), b = Number(mobDom ? m.se : m.sd);
+      if (a > b) return 'w';
+      if (a < b) return 'l';
+      return (x.type === 'coupe' && /qualifi|tab|t\.a\.b|penalt|pénalt/i.test(m.obs || '')) ? 'w' : 'd';
+    }
+
+    function agendaCurrentMonth() {
+      if (agendaMonth) return agendaMonth;
+      const all = agendaMatches().slice().sort((a, b) => a.m.date.localeCompare(b.m.date));
+      const t = agendaTodayStr();
+      const pick = all.find(x => x.m.date >= t && !hasScore(x.m)) || all[all.length - 1];
+      const ref = pick ? pick.m.date : t;
+      return { y: parseInt(ref.slice(0, 4), 10), m: parseInt(ref.slice(5, 7), 10) - 1 };
+    }
+
+    function agendaShift(d) {
+      const cur = agendaCurrentMonth();
+      let m = cur.m + d, y = cur.y;
+      if (m < 0) { m = 11; y--; } else if (m > 11) { m = 0; y++; }
+      agendaMonth = { y: y, m: m };
+      renderAgenda();
+    }
+
+    function agendaToday() { const n = new Date(); agendaMonth = { y: n.getFullYear(), m: n.getMonth() }; renderAgenda(); }
+    function agendaSetFilter(f) { agendaFilter = f; agendaMonth = null; renderAgenda(); }
+
+    function renderAgenda() {
+      const grid = document.getElementById('agendaGrid');
+      if (!grid) return;
+      document.getElementById('agendaFilters').innerHTML = [['all', 'Tout'], ['championnat', 'Championnat'], ['coupe', "Coupe d'Algérie"]].map(c =>
+        `<button class="merc-chip ${agendaFilter === c[0] ? 'active' : ''}" onclick="agendaSetFilter('${c[0]}')">${c[1]}</button>`).join('');
+      const cur = agendaCurrentMonth();
+      const y = cur.y, mo = cur.m;
+      document.getElementById('agendaTitle').textContent = AG_MOIS[mo] + ' ' + y;
+      const byDate = {};
+      agendaMatches().forEach(x => { (byDate[x.m.date] = byDate[x.m.date] || []).push(x); });
+      const first = (new Date(y, mo, 1).getDay() + 6) % 7;
+      const days = new Date(y, mo + 1, 0).getDate();
+      const today = agendaTodayStr();
+      let html = ['L', 'M', 'M', 'J', 'V', 'S', 'D'].map(d => `<div class="ag-dow">${d}</div>`).join('');
+      for (let i = 0; i < first; i++) html += '<div class="ag-cell empty"></div>';
+      for (let d = 1; d <= days; d++) {
+        const ds = y + '-' + agendaPad(mo + 1) + '-' + agendaPad(d);
+        const list = byDate[ds];
+        let cls = 'ag-cell';
+        if (list) { cls += ' has ' + agendaOutcome(list[0]) + (list.some(x => x.type === 'coupe') ? ' cup' : ''); }
+        if (ds === today) cls += ' today';
+        html += `<div class="${cls}"${list ? ` onclick="agendaOpenDay('${ds}')"` : ''}>${d}</div>`;
+      }
+      grid.innerHTML = html;
+      const prefix = y + '-' + agendaPad(mo + 1);
+      const month = [].concat(...Object.keys(byDate).filter(k => k.indexOf(prefix) === 0).sort().map(k => byDate[k]));
+      document.getElementById('agendaList').innerHTML = month.length ? month.map(x => agendaRowHtml(x)).join('') :
+        '<p style="text-align:center; padding:14px; color:#888; font-size:13px;">Aucun match ce mois-ci.</p>';
+    }
+
+    function agendaRowHtml(x) {
+      const m = x.m, o = agendaOutcome(x);
+      const d = new Date(m.date + 'T12:00:00');
+      const jour = ['dim', 'lun', 'mar', 'mer', 'jeu', 'ven', 'sam'][d.getDay()] + ' ' + agendaPad(d.getDate()) + '/' + agendaPad(d.getMonth() + 1);
+      const res = hasScore(m) ? m.sd + ' - ' + m.se : (m.heure || '15:00');
+      return `<div class="ag-row ${o}${x.type === 'coupe' ? ' cup' : ''}" onclick="agendaOpenDay('${m.date}')">
+        <div class="ag-row-date">${jour}</div>
+        <div class="ag-row-teams">${editoEsc(m.dom)} <span style="color:#9ca3af; font-weight:400;">vs</span> ${editoEsc(m.ext)}</div>
+        <div class="ag-row-res">${editoEsc(res)}</div></div>`;
+    }
+
+    function agendaOpenDay(ds) {
+      const list = agendaMatches().filter(x => x.m.date === ds);
+      if (!list.length) return;
+      document.getElementById('agendaJourTitre').textContent = editoDateFr(ds);
+      document.getElementById('agendaJourBody').innerHTML = list.map(x => {
+        const m = x.m, o = agendaOutcome(x);
+        const label = x.type === 'coupe' ? "Coupe d'Algérie" + (m.journee ? ', ' + m.journee : '') : 'Ligue 2 Amateur' + (m.journee ? ', J' + m.journee : '');
+        const idx = (data[x.type] || []).indexOf(m);
+        const upcoming = o === 'up' && idx >= 0;
+        return `<div class="carte-id" style="margin-top:0;">
+          <div class="carte-id-titre">${editoEsc(label)}</div>
+          <div style="font-size:15px; font-weight:900; color:#fff; margin:6px 0;">${logoImg(m.dom)}${editoEsc(m.dom)} <span style="color:var(--mob-gold)">${hasScore(m) ? m.sd + ' - ' + m.se : 'vs'}</span> ${logoImg(m.ext)}${editoEsc(m.ext)}</div>
+          <div style="font-size:12px; color:#cbd5e1;">🕒 ${editoEsc(m.heure || '15:00')}${m.stade ? ' &nbsp;·&nbsp; 📍 ' + editoEsc(m.stade) : ''}</div>
+          ${m.obs ? `<div style="font-size:11px; color:#9ca3af; margin-top:4px;">${editoEsc(m.obs)}</div>` : ''}
+          ${upcoming ? `<div style="text-align:center; margin-top:10px;"><button class="cal-btn" onclick="closeModal('modalAgendaJour'); calOpenMatch('${x.type}', ${idx})">📅 Ajouter au calendrier</button></div>` : ''}
+        </div>`;
+      }).join('');
+      openModal('modalAgendaJour');
     }
 
     /* ===== FIN EDITORIAL ===== */
